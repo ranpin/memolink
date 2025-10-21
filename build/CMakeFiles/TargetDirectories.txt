@@ -2,7 +2,6 @@
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/mirix_main.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/comprehensive_demo.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/enhanced_comprehensive_demo.dir
-/Users/ranpin/code/mirix-cpp/build/CMakeFiles/multimodal_demo.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/real_multimodal_demo.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/initialize_memories.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_embedding.dir

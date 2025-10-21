@@ -73,7 +73,6 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/mirix_main.dir/DependInfo.cmake"
   "CMakeFiles/comprehensive_demo.dir/DependInfo.cmake"
   "CMakeFiles/enhanced_comprehensive_demo.dir/DependInfo.cmake"
-  "CMakeFiles/multimodal_demo.dir/DependInfo.cmake"
   "CMakeFiles/real_multimodal_demo.dir/DependInfo.cmake"
   "CMakeFiles/initialize_memories.dir/DependInfo.cmake"
   "CMakeFiles/test_embedding.dir/DependInfo.cmake"

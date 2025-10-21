@@ -99,7 +99,6 @@ set(OLD_GLOB
   "/Users/ranpin/code/mirix-cpp/src/models/ModelManager.cpp"
   "/Users/ranpin/code/mirix-cpp/src/models/QwenAPI.cpp"
   "/Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.cpp"
-  "/Users/ranpin/code/mirix-cpp/src/multimodal_demo.cpp"
   "/Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp"
   "/Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp"
   "/Users/ranpin/code/mirix-cpp/src/test_agents.cpp"
