@@ -81,4 +81,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/test_embedding.dir/DependInfo.cmake"
   "CMakeFiles/test_vector_serializer.dir/DependInfo.cmake"
   "CMakeFiles/test_embedding_comprehensive.dir/DependInfo.cmake"
+  "CMakeFiles/test_clip_processor.dir/DependInfo.cmake"
   )
