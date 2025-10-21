@@ -248,79 +248,66 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
     }
 
     // 创建审计日志表
-    std::string auditLogTable = R"(
+    std::string createAuditLogTable = R"(
         CREATE TABLE IF NOT EXISTS audit_log (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
             session_id INTEGER,
-            action TEXT NOT NULL,
+            action_type TEXT NOT NULL,
+            description TEXT,
             details TEXT,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            ip_address TEXT,
+            user_agent TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES user(id),
             FOREIGN KEY (agent_id) REFERENCES agent(id),
             FOREIGN KEY (session_id) REFERENCES session(id)
         );
     )";
-    
-    if (!storage.executeNonQuery(auditLogTable)) {
+
+    if (!storage.executeNonQuery(createAuditLogTable)) {
+        std::cerr << "Failed to create audit_log table" << std::endl;
         return false;
     }
 
-    // 创建备份表
-    std::string backupTable = R"(
-        CREATE TABLE IF NOT EXISTS backup (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            data TEXT NOT NULL,
-            backup_type TEXT NOT NULL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES user(id)
-        );
-    )";
-    
-    if (!storage.executeNonQuery(backupTable)) {
-        return false;
+    // 创建索引
+    std::vector<std::string> indexStatements = {
+        "CREATE INDEX IF NOT EXISTS idx_resource_memory_user_id ON resource_memory(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_resource_memory_agent_id ON resource_memory(agent_id);",
+        "CREATE INDEX IF NOT EXISTS idx_resource_memory_resource_type ON resource_memory(resource_type);",
+        "CREATE INDEX IF NOT EXISTS idx_recall_memory_user_id ON recall_memory(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_recall_memory_agent_id ON recall_memory(agent_id);",
+        "CREATE INDEX IF NOT EXISTS idx_recall_memory_session_id ON recall_memory(session_id);",
+        "CREATE INDEX IF NOT EXISTS idx_recall_memory_created_at ON recall_memory(created_at);",
+        "CREATE INDEX IF NOT EXISTS idx_episodic_memory_user_id ON episodic_memory(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_episodic_memory_agent_id ON episodic_memory(agent_id);",
+        "CREATE INDEX IF NOT EXISTS idx_episodic_memory_timestamp ON episodic_memory(timestamp);",
+        "CREATE INDEX IF NOT EXISTS idx_semantic_memory_user_id ON semantic_memory(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_semantic_memory_agent_id ON semantic_memory(agent_id);",
+        "CREATE INDEX IF NOT EXISTS idx_semantic_memory_name ON semantic_memory(name);",
+        "CREATE INDEX IF NOT EXISTS idx_procedural_memory_user_id ON procedural_memory(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_procedural_memory_agent_id ON procedural_memory(agent_id);",
+        "CREATE INDEX IF NOT EXISTS idx_procedural_memory_title ON procedural_memory(title);",
+        "CREATE INDEX IF NOT EXISTS idx_core_memory_block_user_id ON core_memory_block(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_core_memory_block_agent_id ON core_memory_block(agent_id);",
+        "CREATE INDEX IF NOT EXISTS idx_core_memory_block_label ON core_memory_block(label);",
+        "CREATE INDEX IF NOT EXISTS idx_knowledge_vault_user_id ON knowledge_vault(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_knowledge_vault_agent_id ON knowledge_vault(agent_id);",
+        "CREATE INDEX IF NOT EXISTS idx_archival_memory_user_id ON archival_memory(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_archival_memory_agent_id ON archival_memory(agent_id);",
+        "CREATE INDEX IF NOT EXISTS idx_agent_user_id ON agent(user_id);",
+        "CREATE INDEX IF NOT EXISTS idx_embedding_index_memory_id ON embedding_index(memory_id);",
+        "CREATE INDEX IF NOT EXISTS idx_embedding_index_memory_type ON embedding_index(memory_type);"
+    };
+
+    for (const auto& indexStatement : indexStatements) {
+        if (!storage.executeNonQuery(indexStatement)) {
+            std::cerr << "Warning: Failed to create index with statement: " << indexStatement << std::endl;
+            // 不返回false，因为索引创建失败不应该导致整个初始化失败
+        }
     }
 
-    // 创建多模态数据表
-    std::string multimodalDataTable = R"(
-        CREATE TABLE IF NOT EXISTS multimodal_data (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            data_type TEXT NOT NULL,
-            file_path TEXT NOT NULL,
-            description TEXT,
-            emotions TEXT,
-            transcription TEXT,
-            embedding TEXT,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-            metadata TEXT
-        );
-    )";
-    
-    if (!storage.executeNonQuery(multimodalDataTable)) {
-        return false;
-    }
-
-    // 创建向量索引表
-    std::string embeddingIndexTable = R"(
-        CREATE TABLE IF NOT EXISTS embedding_index (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            memory_id INTEGER,
-            memory_type TEXT,
-            embedding TEXT,
-            metadata TEXT
-        );
-    )";
-    
-    if (!storage.executeNonQuery(embeddingIndexTable)) {
-        return false;
-    }
-
-    // 移除外键约束，因为我们可能需要引用不同类型的memory表
-    // 外键约束会限制我们只能引用一个特定的表
-    
     return true;
 }
 
