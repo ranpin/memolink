@@ -76,6 +76,7 @@ set(SOURCES
     src/models/TextEmbeddingGenerator.cpp
     src/models/VectorSearchManager.cpp
     src/models/EmbeddingIndexManager.cpp
+    src/models/CLIPProcessor.cpp
     src/agents/AgentManager.cpp
     src/agents/AgentWrapper.cpp
     src/agents/ChatAgent.cpp
@@ -101,6 +102,7 @@ set(SOURCES
     src/test_embedding_functionality.cpp
     src/test_vector_serializer.cpp
     src/test_embedding_comprehensive.cpp
+    src/test_clip_processor.cpp
 )
 
 # 处理Objective-C++源文件（如果存在）
@@ -155,6 +157,9 @@ target_link_libraries(test_vector_serializer mirix_lib)
 add_executable(test_embedding_comprehensive src/test_embedding_comprehensive.cpp)
 target_link_libraries(test_embedding_comprehensive mirix_lib)
 
+add_executable(test_clip_processor src/test_clip_processor.cpp)
+target_link_libraries(test_clip_processor mirix_lib)
+
 # GUI 可执行文件
 if(Qt5_FOUND)
     add_executable(mirix_gui WIN32 src/gui_main.cpp)
@@ -174,9 +179,10 @@ enable_testing()
 add_test(NAME test_embedding_comprehensive COMMAND test_embedding_comprehensive)
 add_test(NAME test_embedding COMMAND test_embedding)
 add_test(NAME test_vector_serializer COMMAND test_vector_serializer)
+add_test(NAME test_clip_processor COMMAND test_clip_processor)
 
 # 安装规则
-install(TARGETS mirix_main cli_main real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive
+install(TARGETS mirix_main cli_main real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive test_clip_processor
     RUNTIME DESTINATION bin
     LIBRARY DESTINATION lib
     ARCHIVE DESTINATION lib

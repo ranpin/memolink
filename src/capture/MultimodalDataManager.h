@@ -5,7 +5,9 @@
 #include "ScreenActivityTracker.h"
 #include "SystemEventManager.h"
 #include "../database/core/StorageManager.h"
+#include "../models/CLIPProcessor.h"
 #include <string>
+#include <memory>
 
 // 前向声明
 class ModelManager;
@@ -48,6 +50,7 @@ public:
 
 private:
     StorageManager storage_;
+    std::unique_ptr<CLIPProcessor> clipProcessor_;
     bool createTableIfNotExists();
     MultimodalDataItem rowToMultimodalDataItem(sqlite3_stmt* stmt);
 };

@@ -275,6 +275,19 @@ test_embedding_comprehensive/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/build
 .PHONY : test_embedding_comprehensive/fast
 
+#=============================================================================
+# Target rules for targets named test_clip_processor
+
+# Build rule for target.
+test_clip_processor: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_clip_processor
+.PHONY : test_clip_processor
+
+# fast build rule for target.
+test_clip_processor/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/build
+.PHONY : test_clip_processor/fast
+
 src/agents/AgentManager.o: src/agents/AgentManager.cpp.o
 .PHONY : src/agents/AgentManager.o
 
@@ -1211,6 +1224,30 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_main.dir/build.make CMakeFiles/mirix_main.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/models/CLIPProcessor.o: src/models/CLIPProcessor.cpp.o
+.PHONY : src/models/CLIPProcessor.o
+
+# target to build an object file
+src/models/CLIPProcessor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/CLIPProcessor.cpp.o
+.PHONY : src/models/CLIPProcessor.cpp.o
+
+src/models/CLIPProcessor.i: src/models/CLIPProcessor.cpp.i
+.PHONY : src/models/CLIPProcessor.i
+
+# target to preprocess a source file
+src/models/CLIPProcessor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/CLIPProcessor.cpp.i
+.PHONY : src/models/CLIPProcessor.cpp.i
+
+src/models/CLIPProcessor.s: src/models/CLIPProcessor.cpp.s
+.PHONY : src/models/CLIPProcessor.s
+
+# target to generate assembly for a file
+src/models/CLIPProcessor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/CLIPProcessor.cpp.s
+.PHONY : src/models/CLIPProcessor.cpp.s
+
 src/models/EmbeddingIndexManager.o: src/models/EmbeddingIndexManager.cpp.o
 .PHONY : src/models/EmbeddingIndexManager.o
 
@@ -1379,6 +1416,33 @@ src/storage/StorageManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s
 .PHONY : src/storage/StorageManager.cpp.s
 
+src/test_clip_processor.o: src/test_clip_processor.cpp.o
+.PHONY : src/test_clip_processor.o
+
+# target to build an object file
+src/test_clip_processor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o
+.PHONY : src/test_clip_processor.cpp.o
+
+src/test_clip_processor.i: src/test_clip_processor.cpp.i
+.PHONY : src/test_clip_processor.i
+
+# target to preprocess a source file
+src/test_clip_processor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.i
+.PHONY : src/test_clip_processor.cpp.i
+
+src/test_clip_processor.s: src/test_clip_processor.cpp.s
+.PHONY : src/test_clip_processor.s
+
+# target to generate assembly for a file
+src/test_clip_processor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.s
+.PHONY : src/test_clip_processor.cpp.s
+
 src/test_embedding_comprehensive.o: src/test_embedding_comprehensive.cpp.o
 .PHONY : src/test_embedding_comprehensive.o
 
@@ -1526,6 +1590,7 @@ help:
 	@echo "... mirix_lib"
 	@echo "... mirix_main"
 	@echo "... real_multimodal_demo"
+	@echo "... test_clip_processor"
 	@echo "... test_embedding"
 	@echo "... test_embedding_comprehensive"
 	@echo "... test_vector_serializer"
@@ -1646,6 +1711,9 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/models/CLIPProcessor.o"
+	@echo "... src/models/CLIPProcessor.i"
+	@echo "... src/models/CLIPProcessor.s"
 	@echo "... src/models/EmbeddingIndexManager.o"
 	@echo "... src/models/EmbeddingIndexManager.i"
 	@echo "... src/models/EmbeddingIndexManager.s"
@@ -1667,6 +1735,9 @@ help:
 	@echo "... src/storage/StorageManager.o"
 	@echo "... src/storage/StorageManager.i"
 	@echo "... src/storage/StorageManager.s"
+	@echo "... src/test_clip_processor.o"
+	@echo "... src/test_clip_processor.i"
+	@echo "... src/test_clip_processor.s"
 	@echo "... src/test_embedding_comprehensive.o"
 	@echo "... src/test_embedding_comprehensive.i"
 	@echo "... src/test_embedding_comprehensive.s"
