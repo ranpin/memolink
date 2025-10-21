@@ -96,6 +96,9 @@ test_embedding_EXTERNAL_OBJECTS =
 test_embedding: CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o
 test_embedding: CMakeFiles/test_embedding.dir/build.make
 test_embedding: libmirix_lib.a
+test_embedding: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
+test_embedding: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
+test_embedding: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd
 test_embedding: /opt/homebrew/lib/libopencv_gapi.4.12.0.dylib
 test_embedding: /opt/homebrew/lib/libopencv_stitching.4.12.0.dylib
 test_embedding: /opt/homebrew/lib/libopencv_alphamat.4.12.0.dylib
@@ -152,7 +155,6 @@ test_embedding: /opt/homebrew/lib/libopencv_xphoto.4.12.0.dylib
 test_embedding: /opt/homebrew/lib/libopencv_photo.4.12.0.dylib
 test_embedding: /opt/homebrew/lib/libopencv_imgproc.4.12.0.dylib
 test_embedding: /opt/homebrew/lib/libopencv_core.4.12.0.dylib
-test_embedding: /usr/local/lib/libfaiss.dylib
 test_embedding: CMakeFiles/test_embedding.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable test_embedding"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_embedding.dir/link.txt --verbose=$(VERBOSE)

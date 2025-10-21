@@ -96,6 +96,9 @@ test_vector_serializer_EXTERNAL_OBJECTS =
 test_vector_serializer: CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o
 test_vector_serializer: CMakeFiles/test_vector_serializer.dir/build.make
 test_vector_serializer: libmirix_lib.a
+test_vector_serializer: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
+test_vector_serializer: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
+test_vector_serializer: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd
 test_vector_serializer: /opt/homebrew/lib/libopencv_gapi.4.12.0.dylib
 test_vector_serializer: /opt/homebrew/lib/libopencv_stitching.4.12.0.dylib
 test_vector_serializer: /opt/homebrew/lib/libopencv_alphamat.4.12.0.dylib
@@ -152,7 +155,6 @@ test_vector_serializer: /opt/homebrew/lib/libopencv_xphoto.4.12.0.dylib
 test_vector_serializer: /opt/homebrew/lib/libopencv_photo.4.12.0.dylib
 test_vector_serializer: /opt/homebrew/lib/libopencv_imgproc.4.12.0.dylib
 test_vector_serializer: /opt/homebrew/lib/libopencv_core.4.12.0.dylib
-test_vector_serializer: /usr/local/lib/libfaiss.dylib
 test_vector_serializer: CMakeFiles/test_vector_serializer.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable test_vector_serializer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_vector_serializer.dir/link.txt --verbose=$(VERBOSE)

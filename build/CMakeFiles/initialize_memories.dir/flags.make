@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/opt/homebrew/Cellar/portaudio/19.7.0/include -I/opt/homebrew/Cellar/jsoncpp/1.9.6/include -isystem /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4
+CXX_INCLUDES = -I/Users/ranpin/code/mirix-cpp/src -I/opt/homebrew/Cellar/openssl@3/3.6.0/include -I/opt/homebrew/Cellar/jsoncpp/1.9.6/include -I/opt/homebrew/Cellar/portaudio/19.7.0/include -isystem /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4
 
 CXX_FLAGSarm64 = -g -std=gnu++17 -arch arm64
 

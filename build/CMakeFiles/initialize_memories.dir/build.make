@@ -96,6 +96,9 @@ initialize_memories_EXTERNAL_OBJECTS =
 initialize_memories: CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o
 initialize_memories: CMakeFiles/initialize_memories.dir/build.make
 initialize_memories: libmirix_lib.a
+initialize_memories: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
+initialize_memories: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
+initialize_memories: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd
 initialize_memories: /opt/homebrew/lib/libopencv_gapi.4.12.0.dylib
 initialize_memories: /opt/homebrew/lib/libopencv_stitching.4.12.0.dylib
 initialize_memories: /opt/homebrew/lib/libopencv_alphamat.4.12.0.dylib
@@ -152,7 +155,6 @@ initialize_memories: /opt/homebrew/lib/libopencv_xphoto.4.12.0.dylib
 initialize_memories: /opt/homebrew/lib/libopencv_photo.4.12.0.dylib
 initialize_memories: /opt/homebrew/lib/libopencv_imgproc.4.12.0.dylib
 initialize_memories: /opt/homebrew/lib/libopencv_core.4.12.0.dylib
-initialize_memories: /usr/local/lib/libfaiss.dylib
 initialize_memories: CMakeFiles/initialize_memories.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable initialize_memories"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/initialize_memories.dir/link.txt --verbose=$(VERBOSE)

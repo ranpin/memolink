@@ -1,136 +1,144 @@
 cmake_minimum_required(VERSION 3.10)
-project(Mirix VERSION 1.0)
+project(MIRIX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 设置默认构建类型为 Debug
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
-endif()
-
-# 设置模块路径
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
-
-# 查找所需的库
+# 查找依赖库
 find_package(PkgConfig REQUIRED)
-find_package(OpenCV REQUIRED)
-pkg_check_modules(PORTAUDIO REQUIRED portaudio-2.0)
-
-# 可选的FAISS支持
-option(USE_FAISS "Use FAISS for vector search" OFF)
-if(USE_FAISS)
-    find_package(faiss REQUIRED)
-endif()
-
-# 查找JsonCpp
-pkg_check_modules(JSONCPP REQUIRED jsoncpp)
-
-# 查找SQLite3
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(SQLITE3 REQUIRED sqlite3)
-
-# 查找CURL
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(CURL REQUIRED libcurl)
-
-# 查找Qt5（用于GUI）
+find_package(OpenSSL REQUIRED)
 find_package(Qt5 COMPONENTS Widgets Core Gui OPTIONAL_COMPONENTS)
 
-# 收集源文件（更明确的路径）
-file(GLOB_RECURSE MIRIX_SOURCES CONFIGURE_DEPENDS
-    "src/*.cpp"
-    "src/**/*.cpp"
+# 查找SQLite3
+find_package(SQLite3 REQUIRED)
+
+# 查找cURL
+find_package(CURL REQUIRED)
+
+# 查找JsonCpp
+find_package(jsoncpp REQUIRED)
+if(NOT jsoncpp_FOUND)
+    pkg_check_modules(JSONCPP REQUIRED jsoncpp)
+endif()
+
+# 查找PortAudio
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(PORTAUDIO REQUIRED portaudio-2.0)
+
+# 查找OpenCV
+find_package(OpenCV REQUIRED)
+
+# 查找Faiss
+find_package(faiss REQUIRED)
+
+# 包含目录
+include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${SQLITE3_INCLUDE_DIRS})
+include_directories(${OPENSSL_INCLUDE_DIR})
+include_directories(${CURL_INCLUDE_DIRS})
+include_directories(${JSONCPP_INCLUDE_DIRS})
+include_directories(${PORTAUDIO_INCLUDE_DIRS})
+include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${FAISS_INCLUDE_DIRS})
+
+# 链接目录
+link_directories(${SQLITE3_LIBRARY_DIRS})
+link_directories(${OPENSSL_LIBRARIES})
+link_directories(${CURL_LIBRARY_DIRS})
+link_directories(${JSONCPP_LIBRARY_DIRS})
+link_directories(${PORTAUDIO_LIBRARY_DIRS})
+link_directories(${OpenCV_LIBRARY_DIRS})
+link_directories(${FAISS_LIBRARY_DIRS})
+
+# 收集源文件（明确列出所有源文件）
+set(SOURCES
+    # 核心源文件
+    src/database/core/StorageManager.cpp
+    src/database/core/TransactionManager.cpp
+    src/database/initialization/InitDB.cpp
+    src/database/initialization/ConfigManager/ConfigManager.cpp
+    src/database/managers/UserManager.cpp
+    src/database/managers/SessionManager.cpp
+    src/database/managers/CoreMemoryBlockManager.cpp
+    src/database/managers/EpisodicMemoryManager.cpp
+    src/database/managers/SemanticMemoryManager.cpp
+    src/database/managers/ProceduralMemoryManager.cpp
+    src/database/managers/ResourceMemoryManager.cpp
+    src/database/managers/KnowledgeVaultManager.cpp
+    src/database/managers/ArchivalMemoryManager.cpp
+    src/database/managers/RecallMemoryManager.cpp
+    src/database/managers/BackupManager.cpp
+    src/database/managers/AuditLogManager.cpp
+    src/database/managers/VisualizationManager.cpp
+    src/database/managers/MemoryOrchestrator.cpp
+    src/models/ModelManager.cpp
+    src/models/QwenAPI.cpp
+    src/models/TextEmbeddingGenerator.cpp
+    src/models/VectorSearchManager.cpp
+    src/models/EmbeddingIndexManager.cpp
+    src/agents/AgentManager.cpp
+    src/agents/AgentWrapper.cpp
+    src/agents/ChatAgent.cpp
+    src/agents/CoreMemoryAgent.cpp
+    src/agents/EpisodicMemoryAgent.cpp
+    src/agents/SemanticMemoryAgent.cpp
+    src/agents/ProceduralMemoryAgent.cpp
+    src/agents/ResourceMemoryAgent.cpp
+    src/agents/KnowledgeVaultAgent.cpp
+    src/capture/CameraCaptureManager.cpp
+    src/capture/AudioCaptureManager.cpp
+    src/capture/ScreenActivityTracker.cpp
+    src/capture/SystemEventManager.cpp
+    src/capture/MultimodalDataManager.cpp
+    src/utils/VectorSerializer.cpp
+    src/utils/TimeUtils.cpp
+    src/cli/CommandLineInterface.cpp
+    src/api/APIServer.cpp
+    src/gui/GUIManager.cpp
+    src/storage/StorageManager.cpp
+    
+    # 测试程序
+    src/test_embedding_functionality.cpp
+    src/test_vector_serializer.cpp
+    src/test_embedding_comprehensive.cpp
 )
 
-# 排除特定用途文件
-list(FILTER MIRIX_SOURCES EXCLUDE REGEX ".*\\/(demo|test|main|api)_.*\\.cpp")
-list(FILTER MIRIX_SOURCES EXCLUDE REGEX "src/main\\.cpp")
-list(FILTER MIRIX_SOURCES EXCLUDE REGEX ".*\\/multimodal_demo\\.cpp")
-
-# 在macOS上包含Objective-C++文件
+# 处理Objective-C++源文件（如果存在）
 if(APPLE)
+    # 查找Objective-C++源文件
     file(GLOB_RECURSE OBJCPP_SOURCES "src/*.mm")
-    list(APPEND MIRIX_SOURCES ${OBJCPP_SOURCES})
+    if(OBJCPP_SOURCES)
+        list(APPEND SOURCES ${OBJCPP_SOURCES})
+    endif()
 endif()
 
 # 创建静态库
-add_library(mirix_lib STATIC ${MIRIX_SOURCES})
-
-# 添加包含目录
-include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(${PORTAUDIO_INCLUDE_DIRS})
-include_directories(${JSONCPP_INCLUDE_DIRS})
-include_directories(${SQLITE3_INCLUDE_DIRS})
-include_directories(${CURL_INCLUDE_DIRS})
-
-# 添加链接目录
-link_directories(${PORTAUDIO_LIBRARY_DIRS})
-link_directories(${JSONCPP_LIBRARY_DIRS})
-link_directories(${SQLITE3_LIBRARY_DIRS})
-link_directories(${CURL_LIBRARY_DIRS})
-
-# 添加编译选项
-add_compile_options(${PORTAUDIO_CFLAGS_OTHER})
-add_compile_options(${JSONCPP_CFLAGS_OTHER})
-add_compile_options(${SQLITE3_CFLAGS_OTHER})
-add_compile_options(${CURL_CFLAGS_OTHER})
-
-# 条件编译定义
-if(USE_FAISS)
-    target_compile_definitions(mirix_lib PRIVATE USE_FAISS)
-endif()
-
-# 链接库
+add_library(mirix_lib STATIC ${SOURCES})
 target_link_libraries(mirix_lib 
-    ${OpenCV_LIBS}
-    ${PORTAUDIO_LIBRARIES}
-    ${JSONCPP_LIBRARIES}
     ${SQLITE3_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
     ${CURL_LIBRARIES}
-    portaudio  # 直接链接portaudio库
+    ${JSONCPP_LIBRARIES}
+    ${PORTAUDIO_LIBRARIES}
+    ${OpenCV_LIBS}
+    ${FAISS_LIBRARIES}
 )
 
-# 如果启用了FAISS，则链接FAISS库
-if(USE_FAISS)
-    target_link_libraries(mirix_lib faiss)
-endif()
-
-# macOS 特定框架
 if(APPLE)
-    find_library(CORE_GRAPHICS_FRAMEWORK CoreGraphics)
-    find_library(CORE_FOUNDATION_FRAMEWORK CoreFoundation)
-    find_library(IOKIT_FRAMEWORK IOKit)
-    find_library(AVFOUNDATION_FRAMEWORK AVFoundation)
-    find_library(CORE_VIDEO_FRAMEWORK CoreVideo)
-    find_library(COCOA_FRAMEWORK Cocoa)
-    find_library(IMAGE_IO_FRAMEWORK ImageIO)
-
-    target_link_libraries(mirix_lib
-        ${CORE_GRAPHICS_FRAMEWORK}
-        ${CORE_FOUNDATION_FRAMEWORK}
-        ${IOKIT_FRAMEWORK}
-        ${AVFOUNDATION_FRAMEWORK}
-        ${CORE_VIDEO_FRAMEWORK}
-        ${COCOA_FRAMEWORK}
-        ${IMAGE_IO_FRAMEWORK}
-    )
-
-    # 确保.mm文件被视为C++
     if(TARGET mirix_lib AND OBJCPP_SOURCES)
         set_source_files_properties(${OBJCPP_SOURCES} PROPERTIES LANGUAGE CXX)
     endif()
+    
+    # 为使用屏幕捕获功能的可执行文件链接ApplicationServices框架
+    target_link_libraries(mirix_lib "-framework ApplicationServices")
 endif()
 
 # 创建可执行文件并链接
 add_executable(mirix_main src/main.cpp)
 target_link_libraries(mirix_main mirix_lib)
 
-add_executable(comprehensive_demo src/comprehensive_demo.cpp)
-target_link_libraries(comprehensive_demo mirix_lib)
-
-add_executable(enhanced_comprehensive_demo src/enhanced_comprehensive_demo.cpp)
-target_link_libraries(enhanced_comprehensive_demo mirix_lib)
+add_executable(cli_main src/cli_main.cpp)
+target_link_libraries(cli_main mirix_lib)
 
 add_executable(real_multimodal_demo src/real_multimodal_demo.cpp)
 target_link_libraries(real_multimodal_demo mirix_lib)
@@ -144,11 +152,41 @@ target_link_libraries(test_embedding mirix_lib)
 add_executable(test_vector_serializer src/test_vector_serializer.cpp)
 target_link_libraries(test_vector_serializer mirix_lib)
 
+add_executable(test_embedding_comprehensive src/test_embedding_comprehensive.cpp)
+target_link_libraries(test_embedding_comprehensive mirix_lib)
+
 # GUI 可执行文件
 if(Qt5_FOUND)
-    add_executable(mirix_gui src/gui_main.cpp)
+    add_executable(mirix_gui WIN32 src/gui_main.cpp)
     target_link_libraries(mirix_gui mirix_lib Qt5::Widgets Qt5::Core Qt5::Gui)
-    message(STATUS "Qt5 found, building GUI support")
-else()
-    message(STATUS "Qt5 not found, building without GUI support")
+    if(APPLE)
+        # 设置macOS应用bundle属性
+        set_target_properties(mirix_gui PROPERTIES
+            MACOSX_BUNDLE TRUE
+            MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/src/gui/MacOSXBundleInfo.plist.in
+        )
+    endif()
 endif()
+
+# 添加测试
+enable_testing()
+
+add_test(NAME test_embedding_comprehensive COMMAND test_embedding_comprehensive)
+add_test(NAME test_embedding COMMAND test_embedding)
+add_test(NAME test_vector_serializer COMMAND test_vector_serializer)
+
+# 安装规则
+install(TARGETS mirix_main cli_main real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
+# 安装头文件
+install(DIRECTORY src/ 
+    DESTINATION include/mirix
+    FILES_MATCHING PATTERN "*.h"
+)
+
+# 安装配置文件
+install(FILES config.ini DESTINATION etc)

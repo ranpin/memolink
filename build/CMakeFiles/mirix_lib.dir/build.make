@@ -72,262 +72,10 @@ include CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/codegen:
 .PHONY : CMakeFiles/mirix_lib.dir/codegen
 
-CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/AgentManager.cpp
-CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/AgentManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/AgentManager.cpp > CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/AgentManager.cpp -o CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/AgentWrapper.cpp
-CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/AgentWrapper.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/AgentWrapper.cpp > CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/AgentWrapper.cpp -o CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.cpp
-CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/CoreMemoryAgent.cpp
-CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/CoreMemoryAgent.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/CoreMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/CoreMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/EpisodicMemoryAgent.cpp
-CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/EpisodicMemoryAgent.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/EpisodicMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/EpisodicMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/KnowledgeVaultAgent.cpp
-CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/KnowledgeVaultAgent.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/KnowledgeVaultAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/KnowledgeVaultAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/ProceduralMemoryAgent.cpp
-CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/ProceduralMemoryAgent.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/ProceduralMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/ProceduralMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/ResourceMemoryAgent.cpp
-CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/ResourceMemoryAgent.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/ResourceMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/ResourceMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/SemanticMemoryAgent.cpp
-CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/SemanticMemoryAgent.cpp
-
-CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/SemanticMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/SemanticMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o: /Users/ranpin/code/mirix-cpp/src/api/APIServer.cpp
-CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o -MF CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o -c /Users/ranpin/code/mirix-cpp/src/api/APIServer.cpp
-
-CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/api/APIServer.cpp > CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/api/APIServer.cpp -o CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.cpp
-CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.cpp > CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.cpp -o CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.cpp
-CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.cpp > CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.cpp -o CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.cpp
-CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.cpp > CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.cpp -o CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.cpp
-CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.cpp
-
-CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.cpp > CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.cpp -o CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.cpp
-CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.cpp > CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.cpp -o CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o: /Users/ranpin/code/mirix-cpp/src/cli/CommandLineInterface.cpp
-CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o -MF CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o -c /Users/ranpin/code/mirix-cpp/src/cli/CommandLineInterface.cpp
-
-CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/cli/CommandLineInterface.cpp > CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/cli/CommandLineInterface.cpp -o CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o: /Users/ranpin/code/mirix-cpp/src/cli_main.cpp
-CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o -MF CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o -c /Users/ranpin/code/mirix-cpp/src/cli_main.cpp
-
-CMakeFiles/mirix_lib.dir/src/cli_main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/cli_main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/cli_main.cpp > CMakeFiles/mirix_lib.dir/src/cli_main.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/cli_main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/cli_main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/cli_main.cpp -o CMakeFiles/mirix_lib.dir/src/cli_main.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o: /Users/ranpin/code/mirix-cpp/src/comprehensive_demo.cpp
-CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o -MF CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o -c /Users/ranpin/code/mirix-cpp/src/comprehensive_demo.cpp
-
-CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/comprehensive_demo.cpp > CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/comprehensive_demo.cpp -o CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.s
-
 CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.cpp
 CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.i: cmake_force
@@ -341,7 +89,7 @@ CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.s: cmake_force
 CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/core/TransactionManager.cpp
 CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/core/TransactionManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.i: cmake_force
@@ -352,24 +100,10 @@ CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/core/TransactionManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.cpp > CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.s
-
 CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/initialization/InitDB.cpp
 CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/initialization/InitDB.cpp
 
 CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.i: cmake_force
@@ -380,52 +114,52 @@ CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/initialization/InitDB.cpp -o CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/ArchivalMemoryManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/ArchivalMemoryManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.cpp
 
-CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/ArchivalMemoryManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.i
+CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.cpp > CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/ArchivalMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.s
+CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/AuditLogManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/AuditLogManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/UserManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/UserManager.cpp
 
-CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/AuditLogManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.i
+CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/UserManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/AuditLogManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.s
+CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/UserManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/BackupManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/BackupManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/SessionManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/SessionManager.cpp
 
-CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/BackupManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.i
+CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/SessionManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/BackupManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.s
+CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/SessionManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.s
 
 CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/CoreMemoryBlockManager.cpp
 CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/CoreMemoryBlockManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.i: cmake_force
@@ -439,7 +173,7 @@ CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.s: cma
 CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/EpisodicMemoryManager.cpp
 CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/EpisodicMemoryManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.i: cmake_force
@@ -450,80 +184,10 @@ CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.s: cmak
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/EpisodicMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/KnowledgeVaultManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/KnowledgeVaultManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/KnowledgeVaultManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/KnowledgeVaultManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/MemoryOrchestrator.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/MemoryOrchestrator.cpp
-
-CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/MemoryOrchestrator.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/MemoryOrchestrator.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/ProceduralMemoryManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/ProceduralMemoryManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/ProceduralMemoryManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/ProceduralMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.s
-
 CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/SemanticMemoryManager.cpp
 CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/SemanticMemoryManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.i: cmake_force
@@ -534,38 +198,108 @@ CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.s: cmak
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/SemanticMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/SessionManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/SessionManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/ProceduralMemoryManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/ProceduralMemoryManager.cpp
 
-CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/SessionManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.i
+CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/ProceduralMemoryManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/SessionManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.s
+CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/ProceduralMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/UserManager.cpp
-CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/UserManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.cpp
 
-CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/UserManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.i
+CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/UserManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.s
+CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/KnowledgeVaultManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/KnowledgeVaultManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/KnowledgeVaultManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/KnowledgeVaultManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/ArchivalMemoryManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/ArchivalMemoryManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/ArchivalMemoryManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/ArchivalMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/BackupManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/BackupManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/BackupManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/BackupManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/AuditLogManager.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/AuditLogManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/AuditLogManager.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/AuditLogManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.s
 
 CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/VisualizationManager.cpp
 CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/VisualizationManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.i: cmake_force
@@ -576,80 +310,24 @@ CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.s: cmake
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/VisualizationManager.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o: /Users/ranpin/code/mirix-cpp/src/enhanced_comprehensive_demo.cpp
-CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o -MF CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o -c /Users/ranpin/code/mirix-cpp/src/enhanced_comprehensive_demo.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o: /Users/ranpin/code/mirix-cpp/src/database/managers/MemoryOrchestrator.cpp
+CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o -MF CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o -c /Users/ranpin/code/mirix-cpp/src/database/managers/MemoryOrchestrator.cpp
 
-CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/enhanced_comprehensive_demo.cpp > CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.i
+CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/database/managers/MemoryOrchestrator.cpp > CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/enhanced_comprehensive_demo.cpp -o CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/gui/GUIManager.cpp
-CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/gui/GUIManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/gui/GUIManager.cpp > CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/gui/GUIManager.cpp -o CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o: /Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp
-CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o -MF CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o -c /Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp
-
-CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp > CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp -o CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o: /Users/ranpin/code/mirix-cpp/src/interactive_main.cpp
-CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o -MF CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o -c /Users/ranpin/code/mirix-cpp/src/interactive_main.cpp
-
-CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/interactive_main.cpp > CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/interactive_main.cpp -o CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.s
-
-CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/models/EmbeddingIndexManager.cpp
-CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/models/EmbeddingIndexManager.cpp
-
-CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/models/EmbeddingIndexManager.cpp > CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/models/EmbeddingIndexManager.cpp -o CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.s
+CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/database/managers/MemoryOrchestrator.cpp -o CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.s
 
 CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/models/ModelManager.cpp
 CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/models/ModelManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.i: cmake_force
@@ -663,7 +341,7 @@ CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.s: cmake_force
 CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o: /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.cpp
 CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o -MF CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o -c /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.cpp
 
 CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.i: cmake_force
@@ -674,10 +352,24 @@ CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.cpp -o CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.s
 
+CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o: /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.cpp
+CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o -MF CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o -c /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.cpp
+
+CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.cpp > CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.cpp -o CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.s
+
 CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.cpp
 CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.i: cmake_force
@@ -688,52 +380,220 @@ CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.cpp -o CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o: /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp
-CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o -MF CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o -c /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp
+CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/models/EmbeddingIndexManager.cpp
+CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/models/EmbeddingIndexManager.cpp
 
-CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp > CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.i
+CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/models/EmbeddingIndexManager.cpp > CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp -o CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.s
+CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/models/EmbeddingIndexManager.cpp -o CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp
-CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp
+CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/AgentManager.cpp
+CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/AgentManager.cpp
 
-CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp > CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.i
+CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/AgentManager.cpp > CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp -o CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s
+CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/AgentManager.cpp -o CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp
-CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o -MF CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o -c /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp
+CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/AgentWrapper.cpp
+CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/AgentWrapper.cpp
 
-CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp > CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.i
+CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/AgentWrapper.cpp > CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.i
 
-CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp -o CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s
+CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/AgentWrapper.cpp -o CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.cpp
+CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.cpp
+
+CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/CoreMemoryAgent.cpp
+CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/CoreMemoryAgent.cpp
+
+CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/CoreMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/CoreMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/EpisodicMemoryAgent.cpp
+CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/EpisodicMemoryAgent.cpp
+
+CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/EpisodicMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/EpisodicMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/SemanticMemoryAgent.cpp
+CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/SemanticMemoryAgent.cpp
+
+CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/SemanticMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/SemanticMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/ProceduralMemoryAgent.cpp
+CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/ProceduralMemoryAgent.cpp
+
+CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/ProceduralMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/ProceduralMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/ResourceMemoryAgent.cpp
+CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/ResourceMemoryAgent.cpp
+
+CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/ResourceMemoryAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/ResourceMemoryAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o: /Users/ranpin/code/mirix-cpp/src/agents/KnowledgeVaultAgent.cpp
+CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o -MF CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o -c /Users/ranpin/code/mirix-cpp/src/agents/KnowledgeVaultAgent.cpp
+
+CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/agents/KnowledgeVaultAgent.cpp > CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/agents/KnowledgeVaultAgent.cpp -o CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.cpp
+CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.cpp > CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.cpp -o CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.cpp
+CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.cpp > CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.cpp -o CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.cpp
+CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.cpp
+
+CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.cpp > CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.cpp -o CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.cpp
+CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.cpp > CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.cpp -o CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.cpp
+CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.cpp > CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.cpp -o CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.s
 
 CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o: /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.cpp
 CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o -MF CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o -c /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.cpp
 
 CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.i: cmake_force
@@ -744,10 +604,122 @@ CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.cpp -o CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.s
 
+CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp
+CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o -MF CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o -c /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp
+
+CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp > CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp -o CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o: /Users/ranpin/code/mirix-cpp/src/cli/CommandLineInterface.cpp
+CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o -MF CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o -c /Users/ranpin/code/mirix-cpp/src/cli/CommandLineInterface.cpp
+
+CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/cli/CommandLineInterface.cpp > CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/cli/CommandLineInterface.cpp -o CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o: /Users/ranpin/code/mirix-cpp/src/api/APIServer.cpp
+CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o -MF CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o -c /Users/ranpin/code/mirix-cpp/src/api/APIServer.cpp
+
+CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/api/APIServer.cpp > CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/api/APIServer.cpp -o CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/gui/GUIManager.cpp
+CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/gui/GUIManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/gui/GUIManager.cpp > CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/gui/GUIManager.cpp -o CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp
+CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp
+
+CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp > CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp -o CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp
+CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o -MF CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp
+
+CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp > CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp -o CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp
+CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o -MF CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp
+
+CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp > CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp -o CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.s
+
+CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp
+CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o -MF CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp
+
+CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp > CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp -o CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.s
+
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: /Users/ranpin/code/mirix-cpp/src/capture/mac/ScreenCaptureHelper.mm
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o -MF CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o.d -o CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o -c /Users/ranpin/code/mirix-cpp/src/capture/mac/ScreenCaptureHelper.mm
 
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.i: cmake_force
@@ -760,111 +732,107 @@ CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.s: cmake_force
 
 # Object files for target mirix_lib
 mirix_lib_OBJECTS = \
+"CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o"
 
 # External object files for target mirix_lib
 mirix_lib_EXTERNAL_OBJECTS =
 
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/cli_main.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/comprehensive_demo.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/enhanced_comprehensive_demo.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/initialize_memories.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/interactive_main.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/build.make
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Linking CXX static library libmirix_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Linking CXX static library libmirix_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/mirix_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mirix_lib.dir/link.txt --verbose=$(VERBOSE)
 
