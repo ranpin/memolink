@@ -170,19 +170,6 @@ enhanced_comprehensive_demo/fast:
 .PHONY : enhanced_comprehensive_demo/fast
 
 #=============================================================================
-# Target rules for targets named multimodal_demo
-
-# Build rule for target.
-multimodal_demo: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 multimodal_demo
-.PHONY : multimodal_demo
-
-# fast build rule for target.
-multimodal_demo/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/multimodal_demo.dir/build.make CMakeFiles/multimodal_demo.dir/build
-.PHONY : multimodal_demo/fast
-
-#=============================================================================
 # Target rules for targets named real_multimodal_demo
 
 # Build rule for target.
@@ -1334,33 +1321,6 @@ src/models/VectorSearchManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s
 .PHONY : src/models/VectorSearchManager.cpp.s
 
-src/multimodal_demo.o: src/multimodal_demo.cpp.o
-.PHONY : src/multimodal_demo.o
-
-# target to build an object file
-src/multimodal_demo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/multimodal_demo.dir/build.make CMakeFiles/multimodal_demo.dir/src/multimodal_demo.cpp.o
-.PHONY : src/multimodal_demo.cpp.o
-
-src/multimodal_demo.i: src/multimodal_demo.cpp.i
-.PHONY : src/multimodal_demo.i
-
-# target to preprocess a source file
-src/multimodal_demo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/multimodal_demo.dir/build.make CMakeFiles/multimodal_demo.dir/src/multimodal_demo.cpp.i
-.PHONY : src/multimodal_demo.cpp.i
-
-src/multimodal_demo.s: src/multimodal_demo.cpp.s
-.PHONY : src/multimodal_demo.s
-
-# target to generate assembly for a file
-src/multimodal_demo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/multimodal_demo.dir/build.make CMakeFiles/multimodal_demo.dir/src/multimodal_demo.cpp.s
-.PHONY : src/multimodal_demo.cpp.s
-
 src/real_multimodal_demo.o: src/real_multimodal_demo.cpp.o
 .PHONY : src/real_multimodal_demo.o
 
@@ -1473,7 +1433,6 @@ help:
 	@echo "... initialize_memories"
 	@echo "... mirix_lib"
 	@echo "... mirix_main"
-	@echo "... multimodal_demo"
 	@echo "... real_multimodal_demo"
 	@echo "... test_embedding"
 	@echo "... src/agents/AgentManager.o"
@@ -1614,9 +1573,6 @@ help:
 	@echo "... src/models/VectorSearchManager.o"
 	@echo "... src/models/VectorSearchManager.i"
 	@echo "... src/models/VectorSearchManager.s"
-	@echo "... src/multimodal_demo.o"
-	@echo "... src/multimodal_demo.i"
-	@echo "... src/multimodal_demo.s"
 	@echo "... src/real_multimodal_demo.o"
 	@echo "... src/real_multimodal_demo.i"
 	@echo "... src/real_multimodal_demo.s"

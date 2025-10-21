@@ -688,24 +688,10 @@ CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.cpp -o CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s
 
-CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
-CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o: /Users/ranpin/code/mirix-cpp/src/multimodal_demo.cpp
-CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o -MF CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o -c /Users/ranpin/code/mirix-cpp/src/multimodal_demo.cpp
-
-CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/multimodal_demo.cpp > CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.i
-
-CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/multimodal_demo.cpp -o CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.s
-
 CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o: /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp
 CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o -MF CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o -c /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp
 
 CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.i: cmake_force
@@ -719,7 +705,7 @@ CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.s: cmake_force
 CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp
 CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o -MF CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o -c /Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp
 
 CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.i: cmake_force
@@ -733,7 +719,7 @@ CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s: cmake_force
 CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp
 CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o -MF CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o -c /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp
 
 CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.i: cmake_force
@@ -747,7 +733,7 @@ CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s: cmake_force
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: /Users/ranpin/code/mirix-cpp/src/capture/mac/ScreenCaptureHelper.mm
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o -MF CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o.d -o CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o -c /Users/ranpin/code/mirix-cpp/src/capture/mac/ScreenCaptureHelper.mm
 
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.i: cmake_force
@@ -804,7 +790,6 @@ mirix_lib_OBJECTS = \
 "CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o" \
-"CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o" \
@@ -857,14 +842,13 @@ libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o
-libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/build.make
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Linking CXX static library libmirix_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Linking CXX static library libmirix_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/mirix_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mirix_lib.dir/link.txt --verbose=$(VERBOSE)
 

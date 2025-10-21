@@ -89,8 +89,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o.d"
   "CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o"
   "CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o.d"
-  "CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o"
-  "CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o.d"
   "CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o"
   "CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o.d"
   "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o"

@@ -53,7 +53,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/ranpin/code/mirix-cpp/src/models/ModelManager.cpp" "CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/models/QwenAPI.cpp" "CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.cpp" "CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o.d"
-  "/Users/ranpin/code/mirix-cpp/src/multimodal_demo.cpp" "CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/multimodal_demo.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp" "CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp" "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp" "CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o.d"

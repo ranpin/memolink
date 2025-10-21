@@ -46,6 +46,7 @@ file(GLOB_RECURSE MIRIX_SOURCES CONFIGURE_DEPENDS
 # 排除特定用途文件
 list(FILTER MIRIX_SOURCES EXCLUDE REGEX ".*\\/(demo|test|main|api)_.*\\.cpp")
 list(FILTER MIRIX_SOURCES EXCLUDE REGEX "src/main\\.cpp")
+list(FILTER MIRIX_SOURCES EXCLUDE REGEX ".*\\/multimodal_demo\\.cpp")
 
 # 在macOS上包含Objective-C++文件
 if(APPLE)
@@ -130,9 +131,6 @@ target_link_libraries(comprehensive_demo mirix_lib)
 
 add_executable(enhanced_comprehensive_demo src/enhanced_comprehensive_demo.cpp)
 target_link_libraries(enhanced_comprehensive_demo mirix_lib)
-
-add_executable(multimodal_demo src/multimodal_demo.cpp)
-target_link_libraries(multimodal_demo mirix_lib)
 
 add_executable(real_multimodal_demo src/real_multimodal_demo.cpp)
 target_link_libraries(real_multimodal_demo mirix_lib)
