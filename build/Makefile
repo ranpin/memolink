@@ -208,6 +208,19 @@ test_embedding/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/build
 .PHONY : test_embedding/fast
 
+#=============================================================================
+# Target rules for targets named test_vector_serializer
+
+# Build rule for target.
+test_vector_serializer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_vector_serializer
+.PHONY : test_vector_serializer
+
+# fast build rule for target.
+test_vector_serializer/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/build
+.PHONY : test_vector_serializer/fast
+
 src/agents/AgentManager.o: src/agents/AgentManager.cpp.o
 .PHONY : src/agents/AgentManager.o
 
@@ -1396,6 +1409,30 @@ src/test_embedding_functionality.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.s
 .PHONY : src/test_embedding_functionality.cpp.s
 
+src/test_vector_serializer.o: src/test_vector_serializer.cpp.o
+.PHONY : src/test_vector_serializer.o
+
+# target to build an object file
+src/test_vector_serializer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o
+.PHONY : src/test_vector_serializer.cpp.o
+
+src/test_vector_serializer.i: src/test_vector_serializer.cpp.i
+.PHONY : src/test_vector_serializer.i
+
+# target to preprocess a source file
+src/test_vector_serializer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.i
+.PHONY : src/test_vector_serializer.cpp.i
+
+src/test_vector_serializer.s: src/test_vector_serializer.cpp.s
+.PHONY : src/test_vector_serializer.s
+
+# target to generate assembly for a file
+src/test_vector_serializer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.s
+.PHONY : src/test_vector_serializer.cpp.s
+
 src/utils/TimeUtils.o: src/utils/TimeUtils.cpp.o
 .PHONY : src/utils/TimeUtils.o
 
@@ -1420,6 +1457,30 @@ src/utils/TimeUtils.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s
 .PHONY : src/utils/TimeUtils.cpp.s
 
+src/utils/VectorSerializer.o: src/utils/VectorSerializer.cpp.o
+.PHONY : src/utils/VectorSerializer.o
+
+# target to build an object file
+src/utils/VectorSerializer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o
+.PHONY : src/utils/VectorSerializer.cpp.o
+
+src/utils/VectorSerializer.i: src/utils/VectorSerializer.cpp.i
+.PHONY : src/utils/VectorSerializer.i
+
+# target to preprocess a source file
+src/utils/VectorSerializer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.i
+.PHONY : src/utils/VectorSerializer.cpp.i
+
+src/utils/VectorSerializer.s: src/utils/VectorSerializer.cpp.s
+.PHONY : src/utils/VectorSerializer.s
+
+# target to generate assembly for a file
+src/utils/VectorSerializer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.s
+.PHONY : src/utils/VectorSerializer.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1435,6 +1496,7 @@ help:
 	@echo "... mirix_main"
 	@echo "... real_multimodal_demo"
 	@echo "... test_embedding"
+	@echo "... test_vector_serializer"
 	@echo "... src/agents/AgentManager.o"
 	@echo "... src/agents/AgentManager.i"
 	@echo "... src/agents/AgentManager.s"
@@ -1582,9 +1644,15 @@ help:
 	@echo "... src/test_embedding_functionality.o"
 	@echo "... src/test_embedding_functionality.i"
 	@echo "... src/test_embedding_functionality.s"
+	@echo "... src/test_vector_serializer.o"
+	@echo "... src/test_vector_serializer.i"
+	@echo "... src/test_vector_serializer.s"
 	@echo "... src/utils/TimeUtils.o"
 	@echo "... src/utils/TimeUtils.i"
 	@echo "... src/utils/TimeUtils.s"
+	@echo "... src/utils/VectorSerializer.o"
+	@echo "... src/utils/VectorSerializer.i"
+	@echo "... src/utils/VectorSerializer.s"
 .PHONY : help
 
 

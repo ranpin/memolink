@@ -32,13 +32,19 @@ public:
         int id;
         int user_id;
         int agent_id;
+        std::string filename;
         std::string title;
         std::string content;
         std::string resource_type;
+        std::string summary;
+        int size;
+        std::string tree_path;
         std::string path;
         std::string metadata;
         std::string embedding;
+        std::string last_accessed;
         std::string created_at;
+        std::string updated_at;
     };
     
     bool add_resource_memory(const ResourceMemoryItem& item);
@@ -46,6 +52,8 @@ public:
     bool delete_resource_memory(int id);
     std::vector<ResourceMemoryItem> list_resource_memories(int user_id, int limit = 100);
     std::vector<ResourceMemoryItem> search_resource_memories(int user_id, const std::string& query);
+    std::vector<ResourceMemoryItem> getResourcesByType(int user_id, const std::string& resourceType);
+    ResourceMemoryItem getResourceById(int id);
     
     // 添加处理embedding的方法
     bool saveEmbedding(int resourceId, const std::vector<float>& embedding);

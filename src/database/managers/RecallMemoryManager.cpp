@@ -1,8 +1,10 @@
 #include "RecallMemoryManager.h"
-#include "../../utils/TimeUtils.h"
-#include <sqlite3.h>
+#include "../core/StorageManager.h"
 #include <iostream>
 #include <sstream>
+#include <sqlite3.h>
+#include "../../utils/VectorSerializer.h"
+#include "../../utils/TimeUtils.h"
 
 // 修复add_recall_memory方法
 bool RecallMemoryManager::add_recall_memory(const RecallMemoryItem& item) {
@@ -192,15 +194,11 @@ bool RecallMemoryManager::saveEmbedding(int memoryId, const std::vector<float>& 
         return false;
     }
 
-    // 将向量转换为逗号分隔的字符串
-    std::ostringstream oss;
-    for (size_t i = 0; i < embedding.size(); ++i) {
-        if (i > 0) oss << ",";
-        oss << embedding[i];
-    }
-    std::string embeddingStr = oss.str();
+    // 使用VectorSerializer序列化向量
+    std::string serializedEmbedding = VectorSerializer::serialize(embedding);
 
-    sqlite3_bind_text(stmt, 1, embeddingStr.c_str(), -1, SQLITE_STATIC);
+    // 绑定BLOB数据
+    sqlite3_bind_blob(stmt, 1, serializedEmbedding.data(), serializedEmbedding.size(), SQLITE_STATIC);
     sqlite3_bind_int(stmt, 2, memoryId);
 
     int rc = sqlite3_step(stmt);
@@ -234,22 +232,15 @@ std::vector<float> RecallMemoryManager::getEmbedding(int memoryId) {
     sqlite3_bind_int(stmt, 1, memoryId);
 
     if (sqlite3_step(stmt) == SQLITE_ROW) {
-        const char* embeddingStr = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-        if (embeddingStr) {
-            std::string str(embeddingStr);
-            // 检查是否为空字符串
-            if (!str.empty()) {
-                std::istringstream iss(str);
-                std::string token;
-                while (std::getline(iss, token, ',')) {
-                    try {
-                        embedding.push_back(std::stof(token));
-                    } catch (const std::exception& e) {
-                        // 忽略转换错误
-                        std::cerr << "Error parsing embedding value: " << token << std::endl;
-                    }
-                }
-            }
+        // 从BLOB字段读取数据
+        const void* blobData = sqlite3_column_blob(stmt, 0);
+        int blobSize = sqlite3_column_bytes(stmt, 0);
+        
+        if (blobData && blobSize > 0) {
+            // 将BLOB数据转换为字符串
+            std::string serializedData(static_cast<const char*>(blobData), blobSize);
+            // 使用VectorSerializer反序列化向量
+            embedding = VectorSerializer::deserialize(serializedData);
         }
     }
 
