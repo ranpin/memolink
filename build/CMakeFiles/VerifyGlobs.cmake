@@ -45,6 +45,7 @@ set(OLD_GLOB
   "/Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.cpp"
   "/Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp"
   "/Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp"
+  "/Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -107,7 +108,9 @@ set(OLD_GLOB
   "/Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp"
   "/Users/ranpin/code/mirix-cpp/src/test_long_term_memory.cpp"
   "/Users/ranpin/code/mirix-cpp/src/test_memory_managers.cpp"
+  "/Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp"
   "/Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp"
+  "/Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

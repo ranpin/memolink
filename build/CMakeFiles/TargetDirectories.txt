@@ -5,5 +5,6 @@
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/real_multimodal_demo.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/initialize_memories.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_embedding.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_vector_serializer.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/edit_cache.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/rebuild_cache.dir

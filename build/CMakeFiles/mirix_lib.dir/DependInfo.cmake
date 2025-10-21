@@ -56,6 +56,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp" "CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/real_multimodal_demo.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp" "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.cpp" "CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o.d"
+  "/Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.cpp" "CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

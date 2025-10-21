@@ -95,6 +95,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o.d"
   "CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o"
   "CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o.d"
+  "CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o"
+  "CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o.d"
   "libmirix_lib.a"
   "libmirix_lib.pdb"
 )

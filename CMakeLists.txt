@@ -141,6 +141,9 @@ target_link_libraries(initialize_memories mirix_lib)
 add_executable(test_embedding src/test_embedding_functionality.cpp)
 target_link_libraries(test_embedding mirix_lib)
 
+add_executable(test_vector_serializer src/test_vector_serializer.cpp)
+target_link_libraries(test_vector_serializer mirix_lib)
+
 # GUI 可执行文件
 if(Qt5_FOUND)
     add_executable(mirix_gui src/gui_main.cpp)
