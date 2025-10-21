@@ -96,6 +96,9 @@ real_multimodal_demo_EXTERNAL_OBJECTS =
 real_multimodal_demo: CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o
 real_multimodal_demo: CMakeFiles/real_multimodal_demo.dir/build.make
 real_multimodal_demo: libmirix_lib.a
+real_multimodal_demo: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
+real_multimodal_demo: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
+real_multimodal_demo: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd
 real_multimodal_demo: /opt/homebrew/lib/libopencv_gapi.4.12.0.dylib
 real_multimodal_demo: /opt/homebrew/lib/libopencv_stitching.4.12.0.dylib
 real_multimodal_demo: /opt/homebrew/lib/libopencv_alphamat.4.12.0.dylib
@@ -152,7 +155,6 @@ real_multimodal_demo: /opt/homebrew/lib/libopencv_xphoto.4.12.0.dylib
 real_multimodal_demo: /opt/homebrew/lib/libopencv_photo.4.12.0.dylib
 real_multimodal_demo: /opt/homebrew/lib/libopencv_imgproc.4.12.0.dylib
 real_multimodal_demo: /opt/homebrew/lib/libopencv_core.4.12.0.dylib
-real_multimodal_demo: /usr/local/lib/libfaiss.dylib
 real_multimodal_demo: CMakeFiles/real_multimodal_demo.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable real_multimodal_demo"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/real_multimodal_demo.dir/link.txt --verbose=$(VERBOSE)

@@ -37,6 +37,133 @@ if(NOT DEFINED CMAKE_OBJDUMP)
   set(CMAKE_OBJDUMP "/usr/bin/objdump")
 endif()
 
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/ranpin/code/mirix-cpp/build/mirix_main")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/mirix_main" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/mirix_main")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/jsoncpp/1.9.6/lib"
+      -delete_rpath "/opt/homebrew/Cellar/portaudio/19.7.0/lib"
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/mirix_main")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/mirix_main")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/ranpin/code/mirix-cpp/build/cli_main")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cli_main" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cli_main")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/jsoncpp/1.9.6/lib"
+      -delete_rpath "/opt/homebrew/Cellar/portaudio/19.7.0/lib"
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cli_main")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/cli_main")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/ranpin/code/mirix-cpp/build/real_multimodal_demo")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/real_multimodal_demo" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/real_multimodal_demo")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/jsoncpp/1.9.6/lib"
+      -delete_rpath "/opt/homebrew/Cellar/portaudio/19.7.0/lib"
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/real_multimodal_demo")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/real_multimodal_demo")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/ranpin/code/mirix-cpp/build/initialize_memories")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/initialize_memories" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/initialize_memories")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/jsoncpp/1.9.6/lib"
+      -delete_rpath "/opt/homebrew/Cellar/portaudio/19.7.0/lib"
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/initialize_memories")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/initialize_memories")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/ranpin/code/mirix-cpp/build/test_embedding")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_embedding" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_embedding")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/jsoncpp/1.9.6/lib"
+      -delete_rpath "/opt/homebrew/Cellar/portaudio/19.7.0/lib"
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_embedding")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_embedding")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/ranpin/code/mirix-cpp/build/test_vector_serializer")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_vector_serializer" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_vector_serializer")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/jsoncpp/1.9.6/lib"
+      -delete_rpath "/opt/homebrew/Cellar/portaudio/19.7.0/lib"
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_vector_serializer")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_vector_serializer")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/ranpin/code/mirix-cpp/build/test_embedding_comprehensive")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_embedding_comprehensive" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_embedding_comprehensive")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/jsoncpp/1.9.6/lib"
+      -delete_rpath "/opt/homebrew/Cellar/portaudio/19.7.0/lib"
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_embedding_comprehensive")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_embedding_comprehensive")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/mirix" TYPE DIRECTORY FILES "/Users/ranpin/code/mirix-cpp/src/" FILES_MATCHING REGEX "/[^/]*\\.h$")
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/etc" TYPE FILE FILES "/Users/ranpin/code/mirix-cpp/config.ini")
+endif()
+
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)

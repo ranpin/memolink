@@ -1,10 +1,15 @@
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/mirix_lib.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/mirix_main.dir
-/Users/ranpin/code/mirix-cpp/build/CMakeFiles/comprehensive_demo.dir
-/Users/ranpin/code/mirix-cpp/build/CMakeFiles/enhanced_comprehensive_demo.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/cli_main.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/real_multimodal_demo.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/initialize_memories.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_embedding.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_vector_serializer.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_embedding_comprehensive.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/test.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/edit_cache.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/rebuild_cache.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/list_install_components.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/install.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/install/local.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/install/strip.dir
