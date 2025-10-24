@@ -1,227 +1,248 @@
 #include "CLIPProcessor.h"
 #include <iostream>
+#include <vector>
+#include <string>
+#include <memory>
+#include <stdexcept>
+#include <sstream>
 #include <cmath>
-#include <random>
-#include <filesystem>
+#include <cstdlib>
+#include <cstring>
 
 CLIPProcessor::CLIPProcessor() : embedding_dimension_(512) {
-    // CLIP模型通常输出512维向量
-    // 简化实现，避免复杂的模型加载
-    std::cout << "CLIP处理器初始化完成（简化版）" << std::endl;
+    std::cout << "[CLIPProcessor] 初始化CLIP处理器..." << std::endl;
+    std::cout << "[CLIPProcessor] CLIP处理器初始化完成（简化版）" << std::endl;
 }
 
-CLIPProcessor::~CLIPProcessor() = default;
-
-std::vector<float> CLIPProcessor::encodeImage(const std::string& imagePath) {
-    // 检查图像文件是否存在
-    if (imagePath.empty()) {
-        std::cerr << "错误: 图像路径为空" << std::endl;
-        return std::vector<float>(embedding_dimension_, 0.0f);
-    }
-    
-    // 生成基于图像内容的伪embedding（简化版真实实现）
-    std::vector<float> embedding = generateImageEmbedding(imagePath);
-    
-    // 如果生成失败，回退到模拟实现
-    if (embedding.empty()) {
-        std::cerr << "使用模拟实现生成图像embedding" << std::endl;
-        embedding = std::vector<float>(embedding_dimension_, 0.0f);
-        
-        // 使用文件路径的哈希值作为特征
-        std::hash<std::string> hasher;
-        size_t hash = hasher(imagePath);
-        
-        // 使用哈希值生成伪随机embedding
-        std::mt19937 gen(static_cast<unsigned int>(hash));
-        std::normal_distribution<float> dis(0.0f, 1.0f);
-        
-        for (int i = 0; i < embedding_dimension_; ++i) {
-            embedding[i] = dis(gen);
-        }
-        
-        // 归一化向量
-        normalizeVector(embedding);
-    }
-    
-    return embedding;
-}
-
-std::vector<float> CLIPProcessor::encodeText(const std::string& text) {
-    // 生成基于文本内容的伪embedding（简化版真实实现）
-    std::vector<float> embedding = generateTextEmbedding(text);
-    
-    // 如果生成失败，回退到模拟实现
-    if (embedding.empty()) {
-        std::cerr << "使用模拟实现生成文本embedding" << std::endl;
-        embedding = std::vector<float>(embedding_dimension_, 0.0f);
-        
-        // 使用文本的哈希值作为特征
-        std::hash<std::string> hasher;
-        size_t hash = hasher(text);
-        
-        // 使用哈希值生成伪随机embedding
-        std::mt19937 gen(static_cast<unsigned int>(hash));
-        std::normal_distribution<float> dis(0.0f, 1.0f);
-        
-        for (int i = 0; i < embedding_dimension_; ++i) {
-            embedding[i] = dis(gen);
-        }
-        
-        // 归一化向量
-        normalizeVector(embedding);
-    }
-    
-    return embedding;
+CLIPProcessor::~CLIPProcessor() {
+    // 析构函数
 }
 
 int CLIPProcessor::getEmbeddingDimension() const {
     return embedding_dimension_;
 }
 
-std::vector<float> CLIPProcessor::generateImageEmbedding(const std::string& imagePath) {
-    try {
-        // 检查文件是否存在
-        if (!std::filesystem::exists(imagePath)) {
-            std::cerr << "图像文件不存在: " << imagePath << std::endl;
-            return std::vector<float>();
-        }
-        
-        // 尝试加载图像
-        cv::Mat image = cv::imread(imagePath);
-        if (image.empty()) {
-            std::cerr << "无法加载图像: " << imagePath << std::endl;
-            return std::vector<float>();
-        }
-        
-        // 简化的图像特征提取
-        // 计算图像的一些基本统计特征作为embedding的基础
-        std::vector<float> features;
-        
-        // 计算平均颜色值
-        cv::Scalar meanColor = cv::mean(image);
-        features.push_back(static_cast<float>(meanColor[0]) / 255.0f); // Blue
-        features.push_back(static_cast<float>(meanColor[1]) / 255.0f); // Green
-        features.push_back(static_cast<float>(meanColor[2]) / 255.0f); // Red
-        
-        // 计算图像梯度
-        cv::Mat gray, gradX, gradY;
-        cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
-        cv::Sobel(gray, gradX, CV_32F, 1, 0);
-        cv::Sobel(gray, gradY, CV_32F, 0, 1);
-        
-        cv::Scalar meanGradX = cv::mean(gradX);
-        cv::Scalar meanGradY = cv::mean(gradY);
-        features.push_back(static_cast<float>(meanGradX[0]) / 255.0f);
-        features.push_back(static_cast<float>(meanGradY[0]) / 255.0f);
-        
-        // 生成完整的embedding向量
-        std::vector<float> embedding(embedding_dimension_, 0.0f);
-        
-        // 使用特征值填充embedding的一部分
-        for (size_t i = 0; i < std::min(features.size(), static_cast<size_t>(embedding_dimension_)); ++i) {
-            embedding[i] = features[i];
-        }
-        
-        // 使用文件路径的哈希值填充剩余部分
-        std::hash<std::string> hasher;
-        size_t hash = hasher(imagePath);
-        std::mt19937 gen(static_cast<unsigned int>(hash));
-        std::normal_distribution<float> dis(0.0f, 1.0f);
-        
-        for (int i = static_cast<int>(features.size()); i < embedding_dimension_; ++i) {
-            embedding[i] = dis(gen);
-        }
-        
-        // 归一化向量
-        normalizeVector(embedding);
-        
-        return embedding;
-    } catch (const std::exception& e) {
-        std::cerr << "图像编码异常: " << e.what() << std::endl;
-        return std::vector<float>();
+std::vector<float> CLIPProcessor::encodeText(const std::string& text) {
+    std::cout << "[CLIPProcessor] 文本编码开始..." << std::endl;
+    std::cout << "[CLIPProcessor] 输入文本长度: " << text.length() << " 字符" << std::endl;
+    
+    // 转义文本中的双引号
+    std::string escapedText = text;
+    size_t pos = 0;
+    while ((pos = escapedText.find("\"", pos)) != std::string::npos) {
+        escapedText.replace(pos, 1, "\\\"");
+        pos += 2;
     }
+    
+    // 构造命令
+    std::string command = "cd /Users/ranpin/code/mirix-cpp && /Users/ranpin/code/MIRIX/mirix_env/bin/python scripts/clip_processor.py text \"" + 
+                         escapedText + "\" 2>/dev/null";
+    
+    std::cout << "[CLIPProcessor] 执行命令: " << command.substr(0, 60) << "..." << std::endl;
+    
+    // 执行Python脚本
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
+    if (!pipe) {
+        std::cerr << "[CLIPProcessor] 错误: 无法执行Python脚本" << std::endl;
+        // 不直接返回模拟实现，而是抛出异常让调用者处理
+        throw std::runtime_error("无法执行Python脚本");
+    }
+    
+    // 读取结果
+    char buffer[1024];
+    std::string result;
+    while (fgets(buffer, sizeof buffer, pipe.get()) != nullptr) {
+        result += buffer;
+    }
+    
+    // 检查Python脚本是否执行成功
+    int exitCode = pclose(pipe.release());
+    if (exitCode != 0) {
+        std::cerr << "[CLIPProcessor] Python脚本执行失败，退出码: " << exitCode << std::endl;
+        std::cerr << "[CLIPProcessor] 返回结果: " << result << std::endl;
+        // 不直接返回模拟实现，而是抛出异常让调用者处理
+        throw std::runtime_error("Python脚本执行失败");
+    }
+    
+    std::cout << "[CLIPProcessor] Python脚本执行成功" << std::endl;
+    
+    // 简单解析JSON结果（实际项目中应该使用JSON库）
+    // 查找embedding数组
+    size_t embeddingPos = result.find("\"embedding\":");
+    if (embeddingPos == std::string::npos) {
+        std::cerr << "[CLIPProcessor] 无法找到embedding字段" << std::endl;
+        // 不直接返回模拟实现，而是抛出异常让调用者处理
+        throw std::runtime_error("无法找到embedding字段");
+    }
+    
+    size_t arrayStart = result.find('[', embeddingPos);
+    size_t arrayEnd = result.find(']', embeddingPos);
+    if (arrayStart == std::string::npos || arrayEnd == std::string::npos) {
+        std::cerr << "[CLIPProcessor] 无法解析embedding数组" << std::endl;
+        // 不直接返回模拟实现，而是抛出异常让调用者处理
+        throw std::runtime_error("无法解析embedding数组");
+    }
+    
+    std::string arrayContent = result.substr(arrayStart + 1, arrayEnd - arrayStart - 1);
+    
+    // 解析数组内容
+    std::vector<float> embedding;
+    std::stringstream ss(arrayContent);
+    std::string value;
+    
+    while (std::getline(ss, value, ',')) {
+        // 去除空格
+        value.erase(0, value.find_first_not_of(" \t"));
+        value.erase(value.find_last_not_of(" \t") + 1);
+        
+        try {
+            embedding.push_back(std::stof(value));
+        } catch (const std::exception& e) {
+            std::cerr << "[CLIPProcessor] 解析数值时出错: " << value << std::endl;
+            // 不直接返回模拟实现，而是抛出异常让调用者处理
+            throw std::runtime_error("解析数值时出错");
+        }
+    }
+    
+    std::cout << "[CLIPProcessor] 文本编码完成，维度: " << embedding.size() << std::endl;
+    return embedding;
 }
 
-std::vector<float> CLIPProcessor::generateTextEmbedding(const std::string& text) {
-    try {
-        if (text.empty()) {
-            std::cerr << "文本为空" << std::endl;
-            return std::vector<float>();
-        }
-        
-        // 简化的文本特征提取
-        std::vector<float> features;
-        
-        // 文本长度特征
-        features.push_back(static_cast<float>(text.length()) / 100.0f);
-        
-        // 字符频率特征
-        int vowelCount = 0;
-        int consonantCount = 0;
-        int digitCount = 0;
-        int spaceCount = 0;
-        
-        for (char c : text) {
-            if (std::isalpha(c)) {
-                char lower = std::tolower(c);
-                if (lower == 'a' || lower == 'e' || lower == 'i' || lower == 'o' || lower == 'u') {
-                    vowelCount++;
-                } else {
-                    consonantCount++;
-                }
-            } else if (std::isdigit(c)) {
-                digitCount++;
-            } else if (std::isspace(c)) {
-                spaceCount++;
-            }
-        }
-        
-        features.push_back(static_cast<float>(vowelCount) / text.length());
-        features.push_back(static_cast<float>(consonantCount) / text.length());
-        features.push_back(static_cast<float>(digitCount) / text.length());
-        features.push_back(static_cast<float>(spaceCount) / text.length());
-        
-        // 生成完整的embedding向量
-        std::vector<float> embedding(embedding_dimension_, 0.0f);
-        
-        // 使用特征值填充embedding的一部分
-        for (size_t i = 0; i < std::min(features.size(), static_cast<size_t>(embedding_dimension_)); ++i) {
-            embedding[i] = features[i];
-        }
-        
-        // 使用文本的哈希值填充剩余部分
-        std::hash<std::string> hasher;
-        size_t hash = hasher(text);
-        std::mt19937 gen(static_cast<unsigned int>(hash));
-        std::normal_distribution<float> dis(0.0f, 1.0f);
-        
-        for (int i = static_cast<int>(features.size()); i < embedding_dimension_; ++i) {
-            embedding[i] = dis(gen);
-        }
-        
-        // 归一化向量
-        normalizeVector(embedding);
-        
-        return embedding;
-    } catch (const std::exception& e) {
-        std::cerr << "文本编码异常: " << e.what() << std::endl;
-        return std::vector<float>();
+std::vector<float> CLIPProcessor::encodeImage(const std::string& imagePath) {
+    std::cout << "[CLIPProcessor] 图像编码开始..." << std::endl;
+    std::cout << "[CLIPProcessor] 图像路径: " << imagePath << std::endl;
+    
+    // 转义路径中的双引号
+    std::string escapedPath = imagePath;
+    size_t pos = 0;
+    while ((pos = escapedPath.find("\"", pos)) != std::string::npos) {
+        escapedPath.replace(pos, 1, "\\\"");
+        pos += 2;
     }
+    
+    // 构造命令
+    std::string command = "cd /Users/ranpin/code/mirix-cpp && /Users/ranpin/code/MIRIX/mirix_env/bin/python scripts/clip_processor.py image \"" + 
+                         escapedPath + "\" 2>/dev/null";
+    
+    std::cout << "[CLIPProcessor] 执行命令: " << command.substr(0, 60) << "..." << std::endl;
+    
+    // 执行Python脚本
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
+    if (!pipe) {
+        std::cerr << "[CLIPProcessor] 错误: 无法执行Python脚本" << std::endl;
+        // 不直接返回模拟实现，而是抛出异常让调用者处理
+        throw std::runtime_error("无法执行Python脚本");
+    }
+    
+    // 读取结果
+    char buffer[1024];
+    std::string result;
+    while (fgets(buffer, sizeof buffer, pipe.get()) != nullptr) {
+        result += buffer;
+    }
+    
+    // 检查Python脚本是否执行成功
+    int exitCode = pclose(pipe.release());
+    if (exitCode != 0) {
+        std::cerr << "[CLIPProcessor] Python脚本执行失败，退出码: " << exitCode << std::endl;
+        // 不直接返回模拟实现，而是抛出异常让调用者处理
+        throw std::runtime_error("Python脚本执行失败");
+    }
+    
+    std::cout << "[CLIPProcessor] Python脚本执行成功" << std::endl;
+    
+    // 简单解析JSON结果（实际项目中应该使用JSON库）
+    // 查找embedding数组
+    size_t embeddingPos = result.find("\"embedding\":");
+    if (embeddingPos == std::string::npos) {
+        std::cerr << "[CLIPProcessor] 无法找到embedding字段" << std::endl;
+        // 不直接返回模拟实现，而是抛出异常让调用者处理
+        throw std::runtime_error("无法找到embedding字段");
+    }
+    
+    size_t arrayStart = result.find('[', embeddingPos);
+    size_t arrayEnd = result.find(']', embeddingPos);
+    if (arrayStart == std::string::npos || arrayEnd == std::string::npos) {
+        std::cerr << "[CLIPProcessor] 无法解析embedding数组" << std::endl;
+        // 不直接返回模拟实现，而是抛出异常让调用者处理
+        throw std::runtime_error("无法解析embedding数组");
+    }
+    
+    std::string arrayContent = result.substr(arrayStart + 1, arrayEnd - arrayStart - 1);
+    
+    // 解析数组内容
+    std::vector<float> embedding;
+    std::stringstream ss(arrayContent);
+    std::string value;
+    
+    while (std::getline(ss, value, ',')) {
+        // 去除空格
+        value.erase(0, value.find_first_not_of(" \t"));
+        value.erase(value.find_last_not_of(" \t") + 1);
+        
+        try {
+            embedding.push_back(std::stof(value));
+        } catch (const std::exception& e) {
+            std::cerr << "[CLIPProcessor] 解析数值时出错: " << value << std::endl;
+            // 不直接返回模拟实现，而是抛出异常让调用者处理
+            throw std::runtime_error("解析数值时出错");
+        }
+    }
+    
+    std::cout << "[CLIPProcessor] 图像编码完成，维度: " << embedding.size() << std::endl;
+    return embedding;
 }
 
-
-void CLIPProcessor::normalizeVector(std::vector<float>& vec) {
-    // 计算向量的模长
+std::vector<float> CLIPProcessor::simulateTextEncoding(const std::string& text) {
+    std::cout << "[CLIPProcessor] 使用模拟实现生成文本embedding..." << std::endl;
+    // 模拟实现：基于文本生成伪随机embedding
+    std::vector<float> embedding(512, 0.0f);
+    size_t hash = std::hash<std::string>{}(text);
+    for (size_t i = 0; i < embedding.size(); ++i) {
+        // 使用哈希值生成伪随机数
+        size_t value = (hash + i) * 2654435761ULL; // 使用一个大质数
+        embedding[i] = static_cast<float>(value % 2000 - 1000) / 1000.0f; // 转换到[-1, 1]范围
+    }
+    
+    // 归一化向量
     float norm = 0.0f;
-    for (float val : vec) {
+    for (float val : embedding) {
         norm += val * val;
     }
     norm = std::sqrt(norm);
-    
-    // 归一化向量
     if (norm > 0) {
-        for (float& val : vec) {
+        for (float& val : embedding) {
             val /= norm;
         }
     }
+    
+    std::cout << "[CLIPProcessor] 模拟文本编码完成，维度: " << embedding.size() << std::endl;
+    return embedding;
+}
+
+std::vector<float> CLIPProcessor::simulateImageEncoding(const std::string& imagePath) {
+    std::cout << "[CLIPProcessor] 使用模拟实现生成图像embedding..." << std::endl;
+    // 模拟实现：基于图像路径生成伪随机embedding
+    std::vector<float> embedding(512, 0.0f);
+    size_t hash = std::hash<std::string>{}(imagePath);
+    for (size_t i = 0; i < embedding.size(); ++i) {
+        // 使用哈希值生成伪随机数
+        size_t value = (hash + i * 3) * 2654435761ULL; // 使用一个大质数
+        embedding[i] = static_cast<float>(value % 2000 - 1000) / 1000.0f; // 转换到[-1, 1]范围
+    }
+    
+    // 归一化向量
+    float norm = 0.0f;
+    for (float val : embedding) {
+        norm += val * val;
+    }
+    norm = std::sqrt(norm);
+    if (norm > 0) {
+        for (float& val : embedding) {
+            val /= norm;
+        }
+    }
+    
+    std::cout << "[CLIPProcessor] 模拟图像编码完成，维度: " << embedding.size() << std::endl;
+    return embedding;
 }

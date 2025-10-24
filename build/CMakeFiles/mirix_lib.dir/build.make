@@ -744,10 +744,24 @@ CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_clip_processor.cpp -o CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.s
 
+CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o: CMakeFiles/mirix_lib.dir/flags.make
+CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp
+CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o -MF CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o.d -o CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp
+
+CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp > CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.i
+
+CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp -o CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.s
+
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: CMakeFiles/mirix_lib.dir/flags.make
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: /Users/ranpin/code/mirix-cpp/src/capture/mac/ScreenCaptureHelper.mm
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o: CMakeFiles/mirix_lib.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o -MF CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o.d -o CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o -c /Users/ranpin/code/mirix-cpp/src/capture/mac/ScreenCaptureHelper.mm
 
 CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.i: cmake_force
@@ -808,6 +822,7 @@ mirix_lib_OBJECTS = \
 "CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.o" \
+"CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o" \
 "CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o"
 
 # External object files for target mirix_lib
@@ -861,10 +876,11 @@ libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.o
+libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/build.make
 libmirix_lib.a: CMakeFiles/mirix_lib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Linking CXX static library libmirix_lib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Linking CXX static library libmirix_lib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/mirix_lib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mirix_lib.dir/link.txt --verbose=$(VERBOSE)
 

@@ -17,6 +17,18 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::stri
 
 // 将文件转换为base64编码
 std::string file_to_base64(const std::string& file_path) {
+    // 检查是否已经是base64数据URL格式
+    if (file_path.substr(0, 5) == "data:") {
+        // 如果已经是data URL格式，直接提取base64部分
+        size_t comma_pos = file_path.find(',');
+        if (comma_pos != std::string::npos) {
+            // 返回逗号后的base64数据部分
+            return file_path.substr(comma_pos + 1);
+        }
+        std::cerr << "无效的data URL格式: " << file_path << std::endl;
+        return "";
+    }
+    
     std::ifstream file(file_path, std::ios::binary);
     if (!file.is_open()) {
         std::cerr << "无法打开文件进行base64编码: " << file_path << std::endl;
@@ -34,9 +46,9 @@ std::string file_to_base64(const std::string& file_path) {
     
     // 简单的base64编码实现
     static const char* base64_chars = 
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "abcdefghijklmnopqrstuvwxyz"
-        "0123456789+/";
+             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+             "abcdefghijklmnopqrstuvwxyz"
+             "0123456789+/";
     
     std::string ret;
     int i = 0;
@@ -44,8 +56,8 @@ std::string file_to_base64(const std::string& file_path) {
     unsigned char char_array_3[3];
     unsigned char char_array_4[4];
     
-    for (size_t n = 0; n < buffer.size(); n++) {
-        char_array_3[i++] = buffer[n];
+    for (unsigned char c : buffer) {
+        char_array_3[i++] = c;
         if (i == 3) {
             char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
             char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
@@ -78,17 +90,7 @@ std::string file_to_base64(const std::string& file_path) {
         }
     }
     
-    // 根据文件类型返回正确的MIME类型
-    std::string mime_type = "application/octet-stream";
-    if (file_path.find(".jpg") != std::string::npos || file_path.find(".jpeg") != std::string::npos) {
-        mime_type = "image/jpeg";
-    } else if (file_path.find(".png") != std::string::npos) {
-        mime_type = "image/png";
-    } else if (file_path.find(".wav") != std::string::npos) {
-        mime_type = "audio/wav";
-    }
-    
-    return "data:" + mime_type + ";base64," + ret;
+    return ret;
 }
 
 QwenAPI::QwenAPI() : base_url_("https://dashscope.aliyuncs.com") {
@@ -130,34 +132,34 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
                 Json::Value contents(Json::arrayValue);
                 for (const auto& content : msg.contents) {
                     Json::Value c;
-                    if (content.type == "image") {
+                    if (content.type == "image_url") {
                         // 将图像文件转换为base64
-                        std::string base64_data = file_to_base64(content.image);
+                        std::string base64_data = file_to_base64(content.image_url);
                         if (!base64_data.empty()) {
                             // 使用DashScope支持的格式
                             Json::Value image_url;
-                            image_url["url"] = base64_data;
+                            image_url["url"] = "data:image/jpeg;base64," + base64_data;
                             c["type"] = "image_url";
                             c["image_url"] = image_url;
                         } else {
-                            std::cerr << "图像文件base64编码失败: " << content.image << std::endl;
+                            std::cerr << "图像文件base64编码失败: " << content.image_url << std::endl;
                             c["type"] = "text";
-                            c["text"] = "[图像文件不可用: " + content.image + "]";
+                            c["text"] = "[图像文件不可用: " + content.image_url + "]";
                         }
                     } else if (content.type == "text") {
                         c["type"] = "text";
                         c["text"] = content.text;
-                    } else if (content.type == "audio") {
+                    } else if (content.type == "audio_url") {
                         // 将音频文件转换为base64
-                        std::string base64_data = file_to_base64(content.audio);
+                        std::string base64_data = file_to_base64(content.audio_url);
                         if (!base64_data.empty()) {
                             // 使用text类型包含音频数据描述
                             c["type"] = "text";
                             c["text"] = "[音频数据已提供，但当前API不直接支持音频输入]";
                         } else {
-                            std::cerr << "音频文件base64编码失败: " << content.audio << std::endl;
+                            std::cerr << "音频文件base64编码失败: " << content.audio_url << std::endl;
                             c["type"] = "text";
-                            c["text"] = "[音频文件不可用: " + content.audio + "]";
+                            c["text"] = "[音频文件不可用: " + content.audio_url + "]";
                         }
                     } else {
                         // 默认处理

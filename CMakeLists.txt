@@ -103,6 +103,19 @@ set(SOURCES
     src/test_vector_serializer.cpp
     src/test_embedding_comprehensive.cpp
     src/test_clip_processor.cpp
+    src/test_chat_with_model.cpp
+)
+
+# 移除重复的测试源文件
+list(REMOVE_ITEM SOURCES 
+    src/test_comprehensive.cpp
+    src/test_multimodal_integration.cpp
+    src/test_real_embedding.cpp
+    src/test_real_model_integration.cpp
+    src/test_system_comprehensive.cpp
+    src/test_text_embedding_generator.cpp
+    src/test_vector_search_manager.cpp
+    src/test_vector_search_real_model.cpp
 )
 
 # 处理Objective-C++源文件（如果存在）
@@ -160,6 +173,34 @@ target_link_libraries(test_embedding_comprehensive mirix_lib)
 add_executable(test_clip_processor src/test_clip_processor.cpp)
 target_link_libraries(test_clip_processor mirix_lib)
 
+add_executable(test_chat_with_model src/test_chat_with_model.cpp)
+target_link_libraries(test_chat_with_model mirix_lib)
+
+# 移除重复的可执行文件目标
+# add_executable(test_comprehensive src/test_comprehensive.cpp)
+# target_link_libraries(test_comprehensive mirix_lib)
+
+# add_executable(test_multimodal_integration src/test_multimodal_integration.cpp)
+# target_link_libraries(test_multimodal_integration mirix_lib)
+
+# add_executable(test_real_embedding src/test_real_embedding.cpp)
+# target_link_libraries(test_real_embedding mirix_lib)
+
+# add_executable(test_real_model_integration src/test_real_model_integration.cpp)
+# target_link_libraries(test_real_model_integration mirix_lib)
+
+# add_executable(test_system_comprehensive src/test_system_comprehensive.cpp)
+# target_link_libraries(test_system_comprehensive mirix_lib)
+
+# add_executable(test_text_embedding_generator src/test_text_embedding_generator.cpp)
+# target_link_libraries(test_text_embedding_generator mirix_lib)
+
+# add_executable(test_vector_search_manager src/test_vector_search_manager.cpp)
+# target_link_libraries(test_vector_search_manager mirix_lib)
+
+# add_executable(test_vector_search_real_model src/test_vector_search_real_model.cpp)
+# target_link_libraries(test_vector_search_real_model mirix_lib)
+
 # GUI 可执行文件
 if(Qt5_FOUND)
     add_executable(mirix_gui WIN32 src/gui_main.cpp)
@@ -173,6 +214,18 @@ if(Qt5_FOUND)
     endif()
 endif()
 
+# 安装规则
+install(TARGETS mirix_main cli_main real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive test_clip_processor test_chat_with_model
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
+# 移除重复的安装目标
+# install(TARGETS test_comprehensive test_multimodal_integration test_real_embedding test_real_model_integration test_system_comprehensive test_text_embedding_generator test_vector_search_manager test_vector_search_real_model
+#     RUNTIME DESTINATION bin
+# )
+
 # 添加测试
 enable_testing()
 
@@ -180,13 +233,17 @@ add_test(NAME test_embedding_comprehensive COMMAND test_embedding_comprehensive)
 add_test(NAME test_embedding COMMAND test_embedding)
 add_test(NAME test_vector_serializer COMMAND test_vector_serializer)
 add_test(NAME test_clip_processor COMMAND test_clip_processor)
+add_test(NAME test_chat_with_model COMMAND test_chat_with_model)
 
-# 安装规则
-install(TARGETS mirix_main cli_main real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive test_clip_processor
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-)
+# 移除重复的测试
+# add_test(NAME test_comprehensive COMMAND test_comprehensive)
+# add_test(NAME test_multimodal_integration COMMAND test_multimodal_integration)
+# add_test(NAME test_real_embedding COMMAND test_real_embedding)
+# add_test(NAME test_real_model_integration COMMAND test_real_model_integration)
+# add_test(NAME test_system_comprehensive COMMAND test_system_comprehensive)
+# add_test(NAME test_text_embedding_generator COMMAND test_text_embedding_generator)
+# add_test(NAME test_vector_search_manager COMMAND test_vector_search_manager)
+# add_test(NAME test_vector_search_real_model COMMAND test_vector_search_real_model)
 
 # 安装头文件
 install(DIRECTORY src/ 

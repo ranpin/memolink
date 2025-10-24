@@ -7,6 +7,7 @@
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_vector_serializer.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_embedding_comprehensive.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_clip_processor.dir
+/Users/ranpin/code/mirix-cpp/build/CMakeFiles/test_chat_with_model.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/test.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/edit_cache.dir
 /Users/ranpin/code/mirix-cpp/build/CMakeFiles/rebuild_cache.dir

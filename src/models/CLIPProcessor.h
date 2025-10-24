@@ -25,6 +25,10 @@ private:
     std::vector<float> generateImageEmbedding(const std::string& imagePath);
     std::vector<float> generateTextEmbedding(const std::string& text);
     
+    // 模拟的CLIP处理函数
+    std::vector<float> simulateTextEncoding(const std::string& text);
+    std::vector<float> simulateImageEncoding(const std::string& imagePath);
+    
     // 对向量进行归一化
     void normalizeVector(std::vector<float>& vec);
 };

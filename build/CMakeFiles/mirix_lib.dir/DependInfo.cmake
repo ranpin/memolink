@@ -51,6 +51,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.cpp" "CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.cpp" "CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/storage/StorageManager.cpp" "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o.d"
+  "/Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp" "CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/test_clip_processor.cpp" "CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp" "CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o.d"
   "/Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp" "CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o" "gcc" "CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o.d"

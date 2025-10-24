@@ -85,6 +85,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o.d"
   "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o"
   "CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o.d"
+  "CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o"
+  "CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o.d"
   "CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.o"
   "CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.o.d"
   "CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o"

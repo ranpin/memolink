@@ -8,9 +8,17 @@
 
 // 修复add_recall_memory方法
 bool RecallMemoryManager::add_recall_memory(const RecallMemoryItem& item) {
+    std::cout << "\n=== 添加回忆记忆开始 ===" << std::endl;
+    std::cout << "用户ID: " << item.user_id << std::endl;
+    std::cout << "Agent ID: " << item.agent_id << std::endl;
+    std::cout << "会话ID: " << item.session_id << std::endl;
+    std::cout << "消息类型: " << item.message_type << std::endl;
+    std::cout << "内容: " << item.content << std::endl;
+    
     // 确保数据库连接有效
     if (!storage_.getDatabase()) {
         std::cerr << "Database not initialized" << std::endl;
+        std::cout << "=== 添加回忆记忆结束(失败) ===" << std::endl;
         return false;
     }
     
@@ -19,6 +27,7 @@ bool RecallMemoryManager::add_recall_memory(const RecallMemoryItem& item) {
     std::string query = "INSERT INTO recall_memory (user_id, agent_id, session_id, message_type, content, metadata, created_at) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
     if (!storage_.executeQuery(query, stmt)) {
+        std::cout << "=== 添加回忆记忆结束(失败) ===" << std::endl;
         return false;
     }
 
@@ -35,11 +44,14 @@ bool RecallMemoryManager::add_recall_memory(const RecallMemoryItem& item) {
 
     if (rc != SQLITE_DONE) {
         std::cerr << "Failed to execute statement: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
+        std::cout << "=== 添加回忆记忆结束(失败) ===" << std::endl;
         return false;
     }
 
     // 获取插入的记录ID
     const_cast<RecallMemoryItem&>(item).id = sqlite3_last_insert_rowid(storage_.getDatabase());
+    std::cout << "插入记录ID: " << item.id << std::endl;
+    std::cout << "=== 添加回忆记忆结束(成功) ===" << std::endl;
     return true;
 }
 
@@ -97,8 +109,11 @@ bool RecallMemoryManager::delete_recall_memory(int id) {
 
 // 修复list_recall_memories方法
 std::vector<RecallMemoryManager::RecallMemoryItem> RecallMemoryManager::list_recall_memories(int user_id, int limit) {
+    std::cout << "[RecallMemoryManager] list_recall_memories 开始执行..." << std::endl;
+    std::cout << "[RecallMemoryManager] user_id: " << user_id << ", limit: " << limit << std::endl;
+    
     std::vector<RecallMemoryItem> messages;
-
+    
     sqlite3_stmt* stmt;
     std::string query;
     
@@ -108,10 +123,15 @@ std::vector<RecallMemoryManager::RecallMemoryItem> RecallMemoryManager::list_rec
     } else {
         query = "SELECT id, user_id, agent_id, session_id, message_type, content, metadata, embedding, created_at, updated_at FROM recall_memory WHERE user_id = ? ORDER BY created_at DESC LIMIT ?;";
     }
+    
+    std::cout << "[RecallMemoryManager] 准备SQL查询: " << query << std::endl;
 
     if (!storage_.executeQuery(query, stmt)) {
+        std::cout << "[RecallMemoryManager] SQL查询准备失败" << std::endl;
         return messages;
     }
+    
+    std::cout << "[RecallMemoryManager] SQL查询准备成功，绑定参数..." << std::endl;
 
     sqlite3_bind_int(stmt, 1, user_id);
     
@@ -119,28 +139,52 @@ std::vector<RecallMemoryManager::RecallMemoryItem> RecallMemoryManager::list_rec
     if (limit > 0) {
         sqlite3_bind_int(stmt, 2, limit);
     }
+    
+    std::cout << "[RecallMemoryManager] 参数绑定完成，开始执行查询..." << std::endl;
 
     int stepResult;
+    int recordCount = 0;
     while ((stepResult = sqlite3_step(stmt)) == SQLITE_ROW) {
+        recordCount++;
+        std::cout << "[RecallMemoryManager] 处理第 " << recordCount << " 条记录..." << std::endl;
+        
         RecallMemoryItem item;
         item.id = sqlite3_column_int(stmt, 0);
         item.user_id = sqlite3_column_int(stmt, 1);
         item.agent_id = sqlite3_column_int(stmt, 2);
         item.session_id = sqlite3_column_int(stmt, 3);
-        item.message_type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-        item.content = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-        item.metadata = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
-        item.embedding = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
-        item.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
-        item.updated_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
+        
+        // 安全地处理文本字段
+        const char* message_type_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        item.message_type = message_type_text ? message_type_text : "";
+        
+        const char* content_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+        item.content = content_text ? content_text : "";
+        
+        const char* metadata_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+        item.metadata = metadata_text ? metadata_text : "";
+        
+        const char* embedding_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
+        item.embedding = embedding_text ? embedding_text : "";
+        
+        const char* created_at_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
+        item.created_at = created_at_text ? created_at_text : "";
+        
+        const char* updated_at_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
+        item.updated_at = updated_at_text ? updated_at_text : "";
+        
         messages.push_back(item);
+        std::cout << "[RecallMemoryManager] 第 " << recordCount << " 条记录处理完成" << std::endl;
     }
 
     if (stepResult != SQLITE_DONE) {
         std::cout << "SQLite step error: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
     }
+    
+    std::cout << "[RecallMemoryManager] 查询执行完成，共处理 " << recordCount << " 条记录" << std::endl;
 
     sqlite3_finalize(stmt);
+    std::cout << "[RecallMemoryManager] list_recall_memories 执行完成，返回 " << messages.size() << " 条记录" << std::endl;
     return messages;
 }
 

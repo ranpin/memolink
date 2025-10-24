@@ -174,6 +174,23 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/Users/ranpin/code/mirix-cpp/build/test_chat_with_model")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_chat_with_model" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_chat_with_model")
+    execute_process(COMMAND /usr/bin/install_name_tool
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib"
+      -delete_rpath "/opt/homebrew/Cellar/jsoncpp/1.9.6/lib"
+      -delete_rpath "/opt/homebrew/Cellar/portaudio/19.7.0/lib"
+      -delete_rpath "/opt/homebrew/lib"
+      "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_chat_with_model")
+    if(CMAKE_INSTALL_DO_STRIP)
+      execute_process(COMMAND "/usr/bin/strip" -u -r "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/test_chat_with_model")
+    endif()
+  endif()
+endif()
+
+if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/mirix" TYPE DIRECTORY FILES "/Users/ranpin/code/mirix-cpp/src/" FILES_MATCHING REGEX "/[^/]*\\.h$")
 endif()
 

@@ -288,6 +288,19 @@ test_clip_processor/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/build
 .PHONY : test_clip_processor/fast
 
+#=============================================================================
+# Target rules for targets named test_chat_with_model
+
+# Build rule for target.
+test_chat_with_model: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_chat_with_model
+.PHONY : test_chat_with_model
+
+# fast build rule for target.
+test_chat_with_model/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/build
+.PHONY : test_chat_with_model/fast
+
 src/agents/AgentManager.o: src/agents/AgentManager.cpp.o
 .PHONY : src/agents/AgentManager.o
 
@@ -1416,6 +1429,33 @@ src/storage/StorageManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s
 .PHONY : src/storage/StorageManager.cpp.s
 
+src/test_chat_with_model.o: src/test_chat_with_model.cpp.o
+.PHONY : src/test_chat_with_model.o
+
+# target to build an object file
+src/test_chat_with_model.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o
+.PHONY : src/test_chat_with_model.cpp.o
+
+src/test_chat_with_model.i: src/test_chat_with_model.cpp.i
+.PHONY : src/test_chat_with_model.i
+
+# target to preprocess a source file
+src/test_chat_with_model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.i
+.PHONY : src/test_chat_with_model.cpp.i
+
+src/test_chat_with_model.s: src/test_chat_with_model.cpp.s
+.PHONY : src/test_chat_with_model.s
+
+# target to generate assembly for a file
+src/test_chat_with_model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.s
+.PHONY : src/test_chat_with_model.cpp.s
+
 src/test_clip_processor.o: src/test_clip_processor.cpp.o
 .PHONY : src/test_clip_processor.o
 
@@ -1590,6 +1630,7 @@ help:
 	@echo "... mirix_lib"
 	@echo "... mirix_main"
 	@echo "... real_multimodal_demo"
+	@echo "... test_chat_with_model"
 	@echo "... test_clip_processor"
 	@echo "... test_embedding"
 	@echo "... test_embedding_comprehensive"
@@ -1735,6 +1776,9 @@ help:
 	@echo "... src/storage/StorageManager.o"
 	@echo "... src/storage/StorageManager.i"
 	@echo "... src/storage/StorageManager.s"
+	@echo "... src/test_chat_with_model.o"
+	@echo "... src/test_chat_with_model.i"
+	@echo "... src/test_chat_with_model.s"
 	@echo "... src/test_clip_processor.o"
 	@echo "... src/test_clip_processor.i"
 	@echo "... src/test_clip_processor.s"

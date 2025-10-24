@@ -3,6 +3,8 @@
 #include "database/core/StorageManager.h"
 #include "database/initialization/InitDB.h"
 #include "models/TextEmbeddingGenerator.h"
+#include "models/ModelManager.h"
+#include "capture/MultimodalDataManager.h"
 #include "utils/VectorSerializer.h"
 #include <iostream>
 #include <vector>
@@ -11,23 +13,34 @@
 #include <filesystem>
 #include <cmath>
 
-void testEmbeddingFunctionality() {
+void printSeparatorEmbedding() {
+    std::cout << "\n" << std::string(50, '=') << "\n" << std::endl;
+}
+
+void printSubSeparatorEmbedding() {
+    std::cout << "\n" << std::string(30, '-') << "\n" << std::endl;
+}
+
+void testEmbeddingFunctionalityMain() {
+    printSeparatorEmbedding();
     std::cout << "=== 测试Embedding功能 ===" << std::endl;
+    printSeparatorEmbedding();
     
     // 删除可能存在的旧数据库文件
+    std::cout << "清理旧的测试数据库文件..." << std::endl;
     std::filesystem::remove("test_embedding.db");
     
     // 初始化数据库
     std::cout << "创建数据库表..." << std::endl;
     bool tablesCreated = InitDB::createTables("test_embedding.db");
-    std::cout << "数据库表创建: " << (tablesCreated ? "成功" : "失败") << std::endl;
+    std::cout << "数据库表创建结果: " << (tablesCreated ? "成功" : "失败") << std::endl;
     assert(tablesCreated);
     
     // 初始化存储管理器
     std::cout << "初始化存储管理器..." << std::endl;
     StorageManager storage("test_embedding.db");
     bool initialized = storage.initialize();
-    std::cout << "存储管理器初始化: " << (initialized ? "成功" : "失败") << std::endl;
+    std::cout << "存储管理器初始化结果: " << (initialized ? "成功" : "失败") << std::endl;
     assert(initialized);
     
     // 确保数据库连接已建立
@@ -35,6 +48,7 @@ void testEmbeddingFunctionality() {
     std::cout << "数据库连接建立成功" << std::endl;
     
     // 创建测试用户
+    std::cout << "创建测试用户..." << std::endl;
     sqlite3_stmt* stmt;
     std::string insertUserQuery = "INSERT INTO user (name, email) VALUES (?, ?);";
     if (storage.executeQuery(insertUserQuery, stmt)) {
@@ -50,6 +64,7 @@ void testEmbeddingFunctionality() {
     }
     
     // 创建测试agent
+    std::cout << "创建测试Agent..." << std::endl;
     std::string insertAgentQuery = "INSERT INTO agent (name, type, status) VALUES (?, ?, ?);";
     if (storage.executeQuery(insertAgentQuery, stmt)) {
         sqlite3_bind_text(stmt, 1, "Test Agent", -1, SQLITE_STATIC);
@@ -65,6 +80,7 @@ void testEmbeddingFunctionality() {
     }
     
     // 创建测试session
+    std::cout << "创建测试Session..." << std::endl;
     std::string insertSessionQuery = "INSERT INTO session (user_id, agent_id, status) VALUES (?, ?, ?);";
     if (storage.executeQuery(insertSessionQuery, stmt)) {
         sqlite3_bind_int(stmt, 1, 1); // user_id
@@ -80,10 +96,13 @@ void testEmbeddingFunctionality() {
     }
     
     // 初始化管理器
+    std::cout << "初始化记忆管理器..." << std::endl;
     RecallMemoryManager recallManager(storage);
     ResourceMemoryManager resourceManager(storage);
+    MultimodalDataManager multimodalDataManager("test_embedding.db");
     
     // 测试添加回忆记忆
+    std::cout << "添加回忆记忆..." << std::endl;
     RecallMemoryManager::RecallMemoryItem recallItem;
     recallItem.user_id = 1;
     recallItem.agent_id = 1;
@@ -97,6 +116,7 @@ void testEmbeddingFunctionality() {
     std::cout << "添加回忆记忆成功，ID: " << recallId << std::endl;
     
     // 测试添加资源记忆
+    std::cout << "添加资源记忆..." << std::endl;
     ResourceMemoryManager::ResourceMemoryItem resourceItem;
     resourceItem.user_id = 1;
     resourceItem.agent_id = 1;
@@ -114,63 +134,71 @@ void testEmbeddingFunctionality() {
     assert(resourceId > 0);
     std::cout << "添加资源记忆成功，ID: " << resourceId << std::endl;
     
-    // 使用真实的文本embedding生成器
-    TextEmbeddingGenerator textEmbeddingGenerator;
+    // 使用CLIP处理器生成embedding
+    std::cout << "初始化CLIP处理器..." << std::endl;
+    TextEmbeddingGenerator clipProcessor;
     
-    // 生成真实的文本embedding
-    std::vector<float> textEmbedding = textEmbeddingGenerator.generateEmbedding("这是一个测试消息，用于验证embedding存储方案");
-    std::vector<float> imageEmbedding = textEmbeddingGenerator.generateEmbedding("这是一张测试图像的描述");
+    // 生成文本和图像embedding
+    std::cout << "生成文本embedding..." << std::endl;
+    std::vector<float> textEmbedding = clipProcessor.generateEmbedding("这是一个测试消息，用于验证embedding存储方案");
+    std::cout << "生成图像embedding..." << std::endl;
+    // 修复：使用正确的图像文件路径
+    std::vector<float> imageEmbedding = multimodalDataManager.generateImageEmbedding("test_images/sample_image.png");
     
-    std::cout << "生成文本embedding，维度: " << textEmbedding.size() << std::endl;
-    std::cout << "生成图像embedding，维度: " << imageEmbedding.size() << std::endl;
+    std::cout << "文本embedding维度: " << textEmbedding.size() << std::endl;
+    std::cout << "图像embedding维度: " << imageEmbedding.size() << std::endl;
     
-    // 测试保存embedding到回忆记忆
+    // 测试保存embedding
+    std::cout << "保存文本embedding到回忆记忆..." << std::endl;
     assert(recallManager.saveEmbedding(recallId, textEmbedding));
     std::cout << "保存文本embedding成功" << std::endl;
     
-    // 测试保存embedding到资源记忆
+    std::cout << "保存图像embedding到资源记忆..." << std::endl;
     assert(resourceManager.saveEmbedding(resourceId, imageEmbedding));
     std::cout << "保存图像embedding成功" << std::endl;
     
     // 测试检索embedding
+    std::cout << "从回忆记忆检索文本embedding..." << std::endl;
     auto retrievedTextEmbedding = recallManager.getEmbedding(recallId);
     assert(retrievedTextEmbedding.size() == textEmbedding.size());
+    // 验证embedding值的准确性
     for (size_t i = 0; i < textEmbedding.size(); ++i) {
         assert(std::abs(retrievedTextEmbedding[i] - textEmbedding[i]) < 1e-6);
     }
     std::cout << "检索文本embedding成功" << std::endl;
     
+    std::cout << "从资源记忆检索图像embedding..." << std::endl;
     auto retrievedImageEmbedding = resourceManager.getEmbedding(resourceId);
     assert(retrievedImageEmbedding.size() == imageEmbedding.size());
+    // 验证embedding值的准确性
     for (size_t i = 0; i < imageEmbedding.size(); ++i) {
         assert(std::abs(retrievedImageEmbedding[i] - imageEmbedding[i]) < 1e-6);
     }
     std::cout << "检索图像embedding成功" << std::endl;
     
     // 测试基于embedding的搜索
-    std::vector<float> queryEmbedding = textEmbeddingGenerator.generateEmbedding("测试消息");
+    std::cout << "测试基于embedding的搜索..." << std::endl;
+    std::vector<float> queryEmbedding = clipProcessor.generateEmbedding("测试消息");
     auto recallResults = recallManager.searchByEmbedding(1, queryEmbedding, 5);
     std::cout << "基于embedding搜索到 " << recallResults.size() << " 个回忆记忆" << std::endl;
     
     auto resourceResults = resourceManager.searchByEmbedding(1, queryEmbedding, 5);
     std::cout << "基于embedding搜索到 " << resourceResults.size() << " 个资源记忆" << std::endl;
     
-    std::cout << "=== Embedding功能测试通过 ===" << std::endl;
+    std::cout << "\n✓ Embedding功能测试通过" << std::endl;
     
     // 清理测试数据库文件
+    std::cout << "清理测试数据库文件..." << std::endl;
     std::filesystem::remove("test_embedding.db");
 }
 
 int main() {
-    std::cout << "=== Embedding功能测试 ===" << std::endl;
-    
     try {
-        testEmbeddingFunctionality();
+        testEmbeddingFunctionalityMain();
         std::cout << "\n=== 所有测试通过 ===" << std::endl;
+        return 0;
     } catch (const std::exception& e) {
-        std::cerr << "测试失败: " << e.what() << std::endl;
+        std::cerr << "测试过程中发生错误: " << e.what() << std::endl;
         return 1;
     }
-    
-    return 0;
 }
