@@ -141,14 +141,8 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
     }
 
     // 创建资源记忆表
-    std::string dropResourceMemoryTable = "DROP TABLE IF EXISTS resource_memory;";
-    if (!storage.executeNonQuery(dropResourceMemoryTable)) {
-        std::cerr << "Failed to drop resource_memory table" << std::endl;
-        return false;
-    }
-    
     std::string createResourceMemoryTable = R"(
-        CREATE TABLE resource_memory (
+        CREATE TABLE IF NOT EXISTS resource_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
@@ -219,14 +213,8 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
     }
 
     // 创建回忆记忆表
-    std::string dropRecallMemoryTable = "DROP TABLE IF EXISTS recall_memory;";
-    if (!storage.executeNonQuery(dropRecallMemoryTable)) {
-        std::cerr << "Failed to drop recall_memory table" << std::endl;
-        return false;
-    }
-    
     std::string createRecallMemoryTable = R"(
-        CREATE TABLE recall_memory (
+        CREATE TABLE IF NOT EXISTS recall_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
@@ -384,14 +372,8 @@ bool InitDB::createTables(const std::string& dbPath) {
     }
 
     // 创建recall_memory表
-    std::string dropRecallMemoryTable = "DROP TABLE IF EXISTS recall_memory;";
-    if (!storage.executeNonQuery(dropRecallMemoryTable)) {
-        std::cerr << "Failed to drop recall_memory table" << std::endl;
-        return false;
-    }
-    
     std::string createRecallMemoryTable = R"(
-        CREATE TABLE recall_memory (
+        CREATE TABLE IF NOT EXISTS recall_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
@@ -540,14 +522,8 @@ bool InitDB::createTables(const std::string& dbPath) {
     }
 
     // 创建resource_memory表
-    std::string dropResourceMemoryTable = "DROP TABLE IF EXISTS resource_memory;";
-    if (!storage.executeNonQuery(dropResourceMemoryTable)) {
-        std::cerr << "Failed to drop resource_memory table" << std::endl;
-        return false;
-    }
-    
     std::string createResourceMemoryTable = R"(
-        CREATE TABLE resource_memory (
+        CREATE TABLE IF NOT EXISTS resource_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
