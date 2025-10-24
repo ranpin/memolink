@@ -1,18 +1,20 @@
-#pragma once
+#ifndef TEXT_EMBEDDING_GENERATOR_H
+#define TEXT_EMBEDDING_GENERATOR_H
 
-#include <string>
 #include <vector>
+#include <string>
+#include <memory>
+#include "CLIPProcessor.h"
 
 class TextEmbeddingGenerator {
-public:
-    TextEmbeddingGenerator();
-    
-    // 生成文本的embedding向量
-    std::vector<float> generateEmbedding(const std::string& text);
-    
-    // 获取embedding维度
-    int getEmbeddingDimension() const;
-    
 private:
     int embedding_dimension_;
+    std::unique_ptr<CLIPProcessor> clipProcessor_;
+
+public:
+    TextEmbeddingGenerator();
+    std::vector<float> generateEmbedding(const std::string& text);
+    int getEmbeddingDimension() const;
 };
+
+#endif // TEXT_EMBEDDING_GENERATOR_H

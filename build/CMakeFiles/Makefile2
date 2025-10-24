@@ -72,6 +72,7 @@ all: CMakeFiles/test_embedding.dir/all
 all: CMakeFiles/test_vector_serializer.dir/all
 all: CMakeFiles/test_embedding_comprehensive.dir/all
 all: CMakeFiles/test_clip_processor.dir/all
+all: CMakeFiles/test_chat_with_model.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
@@ -84,6 +85,7 @@ codegen: CMakeFiles/test_embedding.dir/codegen
 codegen: CMakeFiles/test_vector_serializer.dir/codegen
 codegen: CMakeFiles/test_embedding_comprehensive.dir/codegen
 codegen: CMakeFiles/test_clip_processor.dir/codegen
+codegen: CMakeFiles/test_chat_with_model.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -100,6 +102,7 @@ clean: CMakeFiles/test_embedding.dir/clean
 clean: CMakeFiles/test_vector_serializer.dir/clean
 clean: CMakeFiles/test_embedding_comprehensive.dir/clean
 clean: CMakeFiles/test_clip_processor.dir/clean
+clean: CMakeFiles/test_chat_with_model.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -109,12 +112,12 @@ clean: CMakeFiles/test_clip_processor.dir/clean
 CMakeFiles/mirix_lib.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54 "Built target mirix_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55 "Built target mirix_lib"
 .PHONY : CMakeFiles/mirix_lib.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/mirix_lib.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 50
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 51
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mirix_lib.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/mirix_lib.dir/rule
@@ -126,7 +129,7 @@ mirix_lib: CMakeFiles/mirix_lib.dir/rule
 # codegen rule for target.
 CMakeFiles/mirix_lib.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54 "Finished codegen for target mirix_lib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55 "Finished codegen for target mirix_lib"
 .PHONY : CMakeFiles/mirix_lib.dir/codegen
 
 # clean rule for target.
@@ -141,12 +144,12 @@ CMakeFiles/mirix_lib.dir/clean:
 CMakeFiles/mirix_main.dir/all: CMakeFiles/mirix_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_main.dir/build.make CMakeFiles/mirix_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_main.dir/build.make CMakeFiles/mirix_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=55,56 "Built target mirix_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=56,57 "Built target mirix_main"
 .PHONY : CMakeFiles/mirix_main.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/mirix_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mirix_main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/mirix_main.dir/rule
@@ -158,7 +161,7 @@ mirix_main: CMakeFiles/mirix_main.dir/rule
 # codegen rule for target.
 CMakeFiles/mirix_main.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_main.dir/build.make CMakeFiles/mirix_main.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=55,56 "Finished codegen for target mirix_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=56,57 "Finished codegen for target mirix_main"
 .PHONY : CMakeFiles/mirix_main.dir/codegen
 
 # clean rule for target.
@@ -178,7 +181,7 @@ CMakeFiles/cli_main.dir/all: CMakeFiles/mirix_lib.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/cli_main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/cli_main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/cli_main.dir/rule
@@ -205,12 +208,12 @@ CMakeFiles/cli_main.dir/clean:
 CMakeFiles/real_multimodal_demo.dir/all: CMakeFiles/mirix_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=57,58 "Built target real_multimodal_demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=58,59 "Built target real_multimodal_demo"
 .PHONY : CMakeFiles/real_multimodal_demo.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/real_multimodal_demo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/real_multimodal_demo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/real_multimodal_demo.dir/rule
@@ -222,7 +225,7 @@ real_multimodal_demo: CMakeFiles/real_multimodal_demo.dir/rule
 # codegen rule for target.
 CMakeFiles/real_multimodal_demo.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=57,58 "Finished codegen for target real_multimodal_demo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=58,59 "Finished codegen for target real_multimodal_demo"
 .PHONY : CMakeFiles/real_multimodal_demo.dir/codegen
 
 # clean rule for target.
@@ -242,7 +245,7 @@ CMakeFiles/initialize_memories.dir/all: CMakeFiles/mirix_lib.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/initialize_memories.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/initialize_memories.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/initialize_memories.dir/rule
@@ -269,12 +272,12 @@ CMakeFiles/initialize_memories.dir/clean:
 CMakeFiles/test_embedding.dir/all: CMakeFiles/mirix_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=61,62 "Built target test_embedding"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=64,65 "Built target test_embedding"
 .PHONY : CMakeFiles/test_embedding.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_embedding.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_embedding.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/test_embedding.dir/rule
@@ -286,7 +289,7 @@ test_embedding: CMakeFiles/test_embedding.dir/rule
 # codegen rule for target.
 CMakeFiles/test_embedding.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=61,62 "Finished codegen for target test_embedding"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=64,65 "Finished codegen for target test_embedding"
 .PHONY : CMakeFiles/test_embedding.dir/codegen
 
 # clean rule for target.
@@ -301,12 +304,12 @@ CMakeFiles/test_embedding.dir/clean:
 CMakeFiles/test_vector_serializer.dir/all: CMakeFiles/mirix_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=65,66 "Built target test_vector_serializer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=68,69 "Built target test_vector_serializer"
 .PHONY : CMakeFiles/test_vector_serializer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_vector_serializer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_vector_serializer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/test_vector_serializer.dir/rule
@@ -318,7 +321,7 @@ test_vector_serializer: CMakeFiles/test_vector_serializer.dir/rule
 # codegen rule for target.
 CMakeFiles/test_vector_serializer.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=65,66 "Finished codegen for target test_vector_serializer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=68,69 "Finished codegen for target test_vector_serializer"
 .PHONY : CMakeFiles/test_vector_serializer.dir/codegen
 
 # clean rule for target.
@@ -333,12 +336,12 @@ CMakeFiles/test_vector_serializer.dir/clean:
 CMakeFiles/test_embedding_comprehensive.dir/all: CMakeFiles/mirix_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=63,64 "Built target test_embedding_comprehensive"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=66,67 "Built target test_embedding_comprehensive"
 .PHONY : CMakeFiles/test_embedding_comprehensive.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_embedding_comprehensive.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_embedding_comprehensive.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/test_embedding_comprehensive.dir/rule
@@ -350,7 +353,7 @@ test_embedding_comprehensive: CMakeFiles/test_embedding_comprehensive.dir/rule
 # codegen rule for target.
 CMakeFiles/test_embedding_comprehensive.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=63,64 "Finished codegen for target test_embedding_comprehensive"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=66,67 "Finished codegen for target test_embedding_comprehensive"
 .PHONY : CMakeFiles/test_embedding_comprehensive.dir/codegen
 
 # clean rule for target.
@@ -365,12 +368,12 @@ CMakeFiles/test_embedding_comprehensive.dir/clean:
 CMakeFiles/test_clip_processor.dir/all: CMakeFiles/mirix_lib.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=59,60 "Built target test_clip_processor"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=62,63 "Built target test_clip_processor"
 .PHONY : CMakeFiles/test_clip_processor.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_clip_processor.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 52
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_clip_processor.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
 .PHONY : CMakeFiles/test_clip_processor.dir/rule
@@ -382,13 +385,45 @@ test_clip_processor: CMakeFiles/test_clip_processor.dir/rule
 # codegen rule for target.
 CMakeFiles/test_clip_processor.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=59,60 "Finished codegen for target test_clip_processor"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=62,63 "Finished codegen for target test_clip_processor"
 .PHONY : CMakeFiles/test_clip_processor.dir/codegen
 
 # clean rule for target.
 CMakeFiles/test_clip_processor.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/clean
 .PHONY : CMakeFiles/test_clip_processor.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/test_chat_with_model.dir
+
+# All Build rule for target.
+CMakeFiles/test_chat_with_model.dir/all: CMakeFiles/mirix_lib.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=60,61 "Built target test_chat_with_model"
+.PHONY : CMakeFiles/test_chat_with_model.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/test_chat_with_model.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 53
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_chat_with_model.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ranpin/code/mirix-cpp/build/CMakeFiles 0
+.PHONY : CMakeFiles/test_chat_with_model.dir/rule
+
+# Convenience name for target.
+test_chat_with_model: CMakeFiles/test_chat_with_model.dir/rule
+.PHONY : test_chat_with_model
+
+# codegen rule for target.
+CMakeFiles/test_chat_with_model.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=60,61 "Finished codegen for target test_chat_with_model"
+.PHONY : CMakeFiles/test_chat_with_model.dir/codegen
+
+# clean rule for target.
+CMakeFiles/test_chat_with_model.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/clean
+.PHONY : CMakeFiles/test_chat_with_model.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

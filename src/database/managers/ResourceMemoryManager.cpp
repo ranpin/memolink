@@ -6,11 +6,22 @@
 #include "../../utils/TimeUtils.h"
 
 bool ResourceMemoryManager::add_resource_memory(const ResourceMemoryItem& item) {
+    std::cout << "\n=== 添加资源记忆开始 ===" << std::endl;
+    std::cout << "用户ID: " << item.user_id << std::endl;
+    std::cout << "Agent ID: " << item.agent_id << std::endl;
+    std::cout << "文件名: " << item.filename << std::endl;
+    std::cout << "标题: " << item.title << std::endl;
+    std::cout << "资源类型: " << item.resource_type << std::endl;
+    std::cout << "摘要: " << item.summary << std::endl;
+    std::cout << "大小: " << item.size << std::endl;
+    std::cout << "路径: " << item.path << std::endl;
+    
     sqlite3_stmt* stmt;
     std::string currentTime = TimeUtils::getCurrentTimestamp();
     std::string query = "INSERT INTO resource_memory (user_id, agent_id, filename, title, content, resource_type, summary, size, tree_path, path, metadata, last_accessed, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     if (!storage_.executeQuery(query, stmt)) {
+        std::cout << "=== 添加资源记忆结束(失败) ===" << std::endl;
         return false;
     }
 
@@ -33,9 +44,11 @@ bool ResourceMemoryManager::add_resource_memory(const ResourceMemoryItem& item) 
 
     if (rc != SQLITE_DONE) {
         std::cerr << "Failed to add resource memory: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
+        std::cout << "=== 添加资源记忆结束(失败) ===" << std::endl;
         return false;
     }
-
+    
+    std::cout << "=== 添加资源记忆结束(成功) ===" << std::endl;
     return true;
 }
 

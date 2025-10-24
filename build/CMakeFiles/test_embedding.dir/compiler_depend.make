@@ -437,6 +437,12 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__ranges/view_interface.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__split_buffer \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__std_mbstate_t.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/atomic_unique_lock.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/intrusive_list_view.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/intrusive_shared_ptr.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_source.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_state.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_token.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__string/char_traits.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__string/constexpr_c_functions.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__string/extern_template_lists.h \
@@ -445,10 +451,15 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/error_code.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/error_condition.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/system_error.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/formatter.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/id.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/jthread.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/poll_with_backoff.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/support.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/support/pthread.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/this_thread.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/thread.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tree \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/find_index.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/ignore.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/make_tuple_types.h \
@@ -607,10 +618,13 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cassert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cctype \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cerrno \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cfloat \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/chrono \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/climits \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/clocale \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cmath \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/compare \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/complex \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/concepts \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cstdarg \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cstddef \
@@ -626,7 +640,10 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/errno.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/exception \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/filesystem \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/float.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/format \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/forward_list \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/fstream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/functional \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/initializer_list \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iomanip \
@@ -636,8 +653,10 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/istream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iterator \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/limits \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/list \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/locale \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/locale.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/map \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/math.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/memory \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/mutex \
@@ -647,6 +666,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/queue \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/ratio \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/set \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stack \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stddef.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/stdexcept \
@@ -658,6 +679,7 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/string_view \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/system_error \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/thread \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/tuple \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/typeinfo \
@@ -670,6 +692,7 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/wctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ctype.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/errno.h \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/float.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libkern/arm/_OSByteOrder.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/limits.h \
@@ -814,27 +837,307 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_rsize_t.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_size_t.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_wchar_t.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/17/include/arm_bf16.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/17/include/arm_neon.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/17/include/arm_vector_types.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/17/include/float.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/limits.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/ptrcheck.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h \
   /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
+  /Users/ranpin/code/mirix-cpp/src/database/managers/EpisodicMemoryManager.h \
+  /Users/ranpin/code/mirix-cpp/src/models/CLIPProcessor.h \
+  /Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.h \
+  /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.h \
+  /Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.h \
+  /Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.h \
+  /Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.h \
+  /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/initialization/InitDB.h \
   /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.h \
+  /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
+  /Users/ranpin/code/mirix-cpp/src/models/CLIPProcessor.h \
+  /Users/ranpin/code/mirix-cpp/src/models/ModelManager.h \
+  /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.h \
   /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h \
-  /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h
+  /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/affine.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/async.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/base.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/bufferpool.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/check.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cuda.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cuda.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cuda_types.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cv_cpu_dispatch.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvdef.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvstd.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvstd.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvstd_wrapper.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/fast_math.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/hal/interface.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/mat.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/mat.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/matx.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/matx.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/neon_utils.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/operations.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/optim.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/ovx.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/persistence.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/saturate.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/traits.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/types.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/utility.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/utils/logger.defines.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/utils/logger.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/utils/logtag.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/version.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/vsx_utils.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/version.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/dict.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/dnn.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/layer.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/dnn.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/utils/inference_engine.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/features2d.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/all_indices.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/allocator.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/any.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/autotuned_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/composite_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/config.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/defines.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/dist.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/dynamic_bitset.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/flann_base.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/general.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/ground_truth.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/heap.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/hierarchical_clustering_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/index_testing.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/kdtree_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/kdtree_single_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/kmeans_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/linear_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/logger.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/lsh_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/lsh_table.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/matrix.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/miniflann.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/nn_index.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/params.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/random.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/result_set.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/sampling.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/saving.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/timer.h \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/highgui.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgcodecs.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/ml.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/ml/ml.inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/aruco_board.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/aruco_detector.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/aruco_dictionary.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/barcode.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/charuco_detector.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/detection_based_tracker.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/face.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/graphical_code_detector.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/opencv.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/opencv_modules.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/photo.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/blenders.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/camera.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/exposure_compensate.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/matchers.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/motion_estimators.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/seam_finders.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/util.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/util_inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/warpers.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/warpers_inl.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/warpers.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/video.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/video/background_segm.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/video/tracking.hpp \
+  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/videoio.hpp
 
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/video/tracking.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/video/background_segm.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/video.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/warpers.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/warpers_inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/videoio.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/util_inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/util.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/motion_estimators.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/camera.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/blenders.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/opencv.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/detection_based_tracker.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/barcode.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/aruco_detector.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/aruco_board.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/ml/ml.inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/ml.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgcodecs.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/timer.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/random.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/matrix.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/lsh_table.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/lsh_index.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/linear_index.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/index_testing.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/hierarchical_clustering_index.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/general.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/dynamic_bitset.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/dist.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/saving.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/config.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/autotuned_index.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/any.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/allocator.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/all_indices.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/dnn.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/dict.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/version.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/vsx_utils.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/version.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/utils/logger.defines.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/utility.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/types.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/saturate.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/persistence.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/ovx.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/operations.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/neon_utils.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/matx.inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/matx.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/mat.inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/mat.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/hal/interface.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/fast_math.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvstd_wrapper.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvstd.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cv_cpu_dispatch.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cuda_types.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cuda.inl.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cuda.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/check.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/bufferpool.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/async.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/affine.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp:
 
 /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h:
 
 /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h:
 
+/Users/ranpin/code/mirix-cpp/src/models/QwenAPI.h:
+
+/Users/ranpin/code/mirix-cpp/src/models/ModelManager.h:
+
 /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.h:
 
 /Users/ranpin/code/mirix-cpp/src/database/initialization/InitDB.h:
+
+/Users/ranpin/code/mirix-cpp/src/capture/ScreenActivityTracker.h:
+
+/Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.h:
+
+/Users/ranpin/code/mirix-cpp/src/capture/AudioCaptureManager.h:
+
+/Users/ranpin/code/mirix-cpp/src/database/managers/EpisodicMemoryManager.h:
 
 /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h:
 
@@ -845,6 +1148,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/usr/lib/clang/17/include/ptrcheck.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/17/include/limits.h:
+
+/Library/Developer/CommandLineTools/usr/lib/clang/17/include/arm_vector_types.h:
 
 /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stddef_wchar_t.h:
 
@@ -862,37 +1167,47 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/_wchar.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/_string.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/_stdlib.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/_stdio.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/_ctype.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/is_valid_range.h:
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/sampling.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/wchar.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/___wctype.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/file_status.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/wctype.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/default_searcher.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/time.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/syslimits.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/stdio.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/qos.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/errno.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/cdefs.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/hyperbolic_functions.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/hypot.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h:
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/result_set.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_wchar_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_va_list.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/highgui.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/mem_fun_ref.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_uid_t.h:
+
+/Library/Developer/CommandLineTools/usr/lib/clang/17/include/arm_bf16.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_in_addr_t.h:
 
@@ -954,7 +1269,7 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_id_t.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_gid_t.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/float.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_fsfilcnt_t.h:
 
@@ -986,13 +1301,13 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_blkcnt_t.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_state.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdlib.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/ios:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stddef.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/malloc/_ptrcheck.h:
 
@@ -1010,6 +1325,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libkern/_OSByteOrder.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/float.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/find_if.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__ranges/movable_box.h:
@@ -1019,6 +1336,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/version:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_set.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/aruco_dictionary.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/ranges_transform.h:
 
@@ -1034,6 +1353,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/type_traits:
 
+/Users/ranpin/code/mirix-cpp/src/capture/SystemEventManager.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/operations.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/auto_cast.h:
@@ -1043,6 +1364,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_enum.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/tuple:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/thread:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/types.h:
 
@@ -1080,7 +1403,11 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/optional:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/optim.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/locale.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/list:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iostream:
 
@@ -1089,6 +1416,20 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/unwrap_range.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/functional:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/set:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/math.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/ostream.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/fstream:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_gid_t.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/signal.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/forward_list:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/format:
 
@@ -1152,6 +1493,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/integer_sequence.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/exposure_compensate.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/exception_guard.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/declval.h:
@@ -1162,17 +1505,15 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/void_t.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/qos.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/underlying_type.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/face.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/ranges_fill_n.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/iterator:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/type_list.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/_stdio.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__node_handle:
 
@@ -1232,6 +1573,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_trivially_lexicographically_comparable.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/miniflann.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/iterator.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_trivially_copyable.h:
@@ -1249,6 +1592,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_same.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_referenceable.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/dnn.inl.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__mutex/once_flag.h:
 
@@ -1268,6 +1613,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_pointer.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/base.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__concepts/regular.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_pod.h:
@@ -1282,13 +1629,13 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_member_pointer.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/utils/logtag.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_equality_comparable.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_integral.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_fundamental.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/time.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_function.h:
 
@@ -1319,6 +1666,10 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cstdarg:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_const.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/wchar.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/is_valid_range.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/byte.h:
 
@@ -1362,6 +1713,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__format/enable_insertable.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/this_thread.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/min_max.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/disjunction.h:
@@ -1385,8 +1738,6 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_static_assert.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/common_reference.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/alignment_of.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__atomic/atomic_flag.h:
 
@@ -1442,6 +1793,10 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/find_index.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tree:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/features2d.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_useconds_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h:
@@ -1454,13 +1809,23 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/id.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/error_category.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/errc.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_source.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/alignment_of.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_standard_layout.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/intrusive_list_view.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_empty.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/error_condition.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/error_category.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__system_error/errc.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/atomic_unique_lock.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__split_buffer:
 
@@ -1522,7 +1887,11 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/log2.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/graphical_code_detector.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_rune_t.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/chrono:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__mutex/lock_guard.h:
 
@@ -1558,9 +1927,15 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/pointer_traits.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/heap.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/traits.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/seam_finders.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/errno.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/matchers.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/rounding_functions.h:
 
@@ -1573,6 +1948,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/remainder.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/directory_options.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/file_time_type.h:
 
@@ -1608,6 +1985,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/exponential_functions.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/complex:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uintmax_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/error_functions.h:
@@ -1619,6 +1998,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__atomic/atomic.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/rank.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/kdtree_single_index.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/insert_iterator.h:
 
@@ -1682,6 +2063,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/default_sentinel.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/map:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/data.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/concepts.h:
@@ -1693,6 +2076,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/___wctype.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/aliasing_iterator.h:
+
+/Users/ranpin/code/mirix-cpp/src/capture/MultimodalDataManager.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__hash_table:
 
@@ -1722,13 +2107,13 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__string/constexpr_c_functions.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/ostream.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_bounded_array.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/hash.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__atomic/cxx_atomic_impl.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/flann_base.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/istream.h:
 
@@ -1744,6 +2129,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/search_n.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/formatter.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/reverse_access.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__concepts/totally_ordered.h:
@@ -1753,6 +2140,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/complex.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/unary_function.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvdef.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/ranges_operations.h:
 
@@ -1784,6 +2173,10 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/pthread/qos.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/wait.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/default_searcher.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/construct_at.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/incrementable_traits.h:
@@ -1800,11 +2193,21 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/find_end.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/params.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/appleapiopts.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/hyperbolic_functions.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/hypot.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/bind.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/set_symmetric_difference.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/pop_heap.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/nn_index.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/partition_point.h:
 
@@ -1818,6 +2221,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__format/formatter.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/utils/inference_engine.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__concepts/arithmetic.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__format/format_parse_context.h:
@@ -1827,6 +2232,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__format/format_error.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__format/concepts.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/kmeans_index.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_unbounded_array.h:
 
@@ -1850,6 +2257,10 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/file_type.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/file_status.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_int16_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__atomic/atomic_init.h:
@@ -1864,13 +2275,19 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/size.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/intrusive_shared_ptr.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/copy_options.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/kdtree_index.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/replace_copy_if.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__configuration/compiler.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/dnn/layer.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__exception/operations.h:
 
@@ -1912,7 +2329,7 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__configuration/platform.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_standard_layout.h:
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/logger.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_off_t.h:
 
@@ -1944,8 +2361,6 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__concepts/different_from.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/stdio.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_mcontext.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__format/indic_conjunct_break_table.h:
@@ -1962,11 +2377,15 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__concepts/class_or_enum.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/photo.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/move.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_intmax_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_trivially_destructible.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/count_if.h:
 
@@ -1984,6 +2403,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/ignore.h:
 
+/Library/Developer/CommandLineTools/usr/lib/clang/17/include/float.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__chrono/steady_clock.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__charconv/to_chars_integral.h:
@@ -1994,13 +2415,17 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__fwd/bit_reference.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/composite_index.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__atomic/is_always_lock_free.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bit_reference:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/three_way_comp_ref_type.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/wctype.h:
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__stop_token/stop_token.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/three_way_comp_ref_type.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bit/popcount.h:
 
@@ -2016,7 +2441,13 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__mbstate_t.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/includes.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/defines.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cfloat:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__concepts/boolean_testable.h:
 
@@ -2080,8 +2511,6 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__ostream/basic_ostream.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/_string.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__compare/synth_three_way.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/binary_negate.h:
@@ -2128,6 +2557,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bit/invert_if.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/utils/logger.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__compare/common_comparison_category.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/remove_copy_if.h:
@@ -2139,8 +2570,6 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/tuple_size.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/find.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/_stdlib.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/ranges_iterator_concept.h:
 
@@ -2188,6 +2617,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h:
 
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvstd.inl.hpp:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/pstl.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__mutex/unique_lock.h:
@@ -2195,8 +2626,6 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/partition.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__memory/destruct_n.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale/___wctype.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/cerrno:
 
@@ -2215,6 +2644,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__format/width_estimation_table.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/nth_element.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/charuco_detector.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/compare:
 
@@ -2274,6 +2705,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/generate_n.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/jthread.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/mismatch.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/pair.h:
@@ -2324,8 +2757,6 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_printf.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_ctype.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/binary_search.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/new:
@@ -2338,7 +2769,7 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/none_of.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/xlocale.h:
+/Users/ranpin/code/mirix-cpp/src/models/CLIPProcessor.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/copy_move_common.h:
 
@@ -2352,7 +2783,7 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/advance.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/syslimits.h:
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/traits.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_xlocale.h:
 
@@ -2376,8 +2807,6 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/make_unsigned.h:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/signal.h:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/Availability.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/is_volatile.h:
@@ -2385,6 +2814,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/usr/lib/clang/17/include/__stdarg_va_list.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/tuple_like_ext.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/opencv_modules.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_time.h:
 
@@ -2420,6 +2851,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_abort.h:
 
+/Library/Developer/CommandLineTools/usr/lib/clang/17/include/arm_neon.h:
+
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/_types/_uint8_t.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__algorithm/adjacent_find.h:
@@ -2429,6 +2862,10 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_fd_zero.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__functional/pointer_to_unary_function.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__thread/thread.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/stitching/detail/warpers.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/arm/_limits.h:
 
@@ -2467,6 +2904,8 @@ CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ran
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/private_constructor_tag.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__bit/rotate.h:
+
+/opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/flann/ground_truth.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/remove_volatile.h:
 

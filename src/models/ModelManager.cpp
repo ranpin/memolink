@@ -6,6 +6,90 @@
 #include <json/json.h>
 #include "../database/initialization/ConfigManager/ConfigManager.h"
 #include <filesystem>
+#include <algorithm>
+
+// Base64编码函数
+static const std::string base64_chars = 
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz"
+    "0123456789+/";
+
+static std::string base64_encode(const std::vector<unsigned char>& data) {
+    std::string ret;
+    int i = 0;
+    int j = 0;
+    unsigned char char_array_3[3];
+    unsigned char char_array_4[4];
+
+    auto it = data.begin();
+    while (it != data.end()) {
+        char_array_3[i++] = *(it++);
+        if (i == 3) {
+            char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+            char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+            char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+            char_array_4[3] = char_array_3[2] & 0x3f;
+
+            for (i = 0; (i < 4); i++)
+                ret += base64_chars[char_array_4[i]];
+            i = 0;
+        }
+    }
+
+    if (i) {
+        for (j = i; j < 3; j++)
+            char_array_3[j] = '\0';
+
+        char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+        char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+        char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+        char_array_4[3] = char_array_3[2] & 0x3f;
+
+        for (j = 0; (j < i + 1); j++)
+            ret += base64_chars[char_array_4[j]];
+
+        while ((i++ < 3))
+            ret += '=';
+    }
+
+    return ret;
+}
+
+static std::string file_to_base64(const std::string& file_path) {
+    std::cout << "[Base64编码] 开始处理文件: " << file_path << std::endl;
+    
+    std::ifstream file(file_path, std::ios::binary);
+    if (!file.is_open()) {
+        std::cerr << "[Base64编码] 无法打开文件: " << file_path << std::endl;
+        throw std::runtime_error("无法打开文件: " + file_path);
+    }
+    
+    std::cout << "[Base64编码] 文件打开成功" << std::endl;
+    
+    // 读取文件内容
+    std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(file), {});
+    file.close();
+    
+    std::cout << "[Base64编码] 文件读取成功，大小: " << buffer.size() << " 字节" << std::endl;
+    
+    if (buffer.empty()) {
+        std::cerr << "[Base64编码] 文件为空: " << file_path << std::endl;
+        throw std::runtime_error("文件为空: " + file_path);
+    }
+    
+    // 进行Base64编码
+    std::string base64_data = base64_encode(buffer);
+    std::cout << "[Base64编码] 编码完成，编码后长度: " << base64_data.length() << std::endl;
+    
+    // 打印Base64编码数据的前100个字符用于调试
+    if (base64_data.length() > 100) {
+        std::cout << "[Base64编码] 编码数据(前100字符): " << base64_data.substr(0, 100) << "..." << std::endl;
+    } else {
+        std::cout << "[Base64编码] 编码数据: " << base64_data << std::endl;
+    }
+    
+    return base64_data;
+}
 
 ModelManager::ModelManager(StorageManager& storage) : storage_(storage), qwen_api() {
     // 从配置管理器获取API密钥
@@ -140,6 +224,12 @@ std::vector<float> ModelManager::call_embedding_model(const std::string& text) {
 std::string ModelManager::call_multimodal_model(const std::string& text,
                                               const std::string& image_path,
                                               const std::string& audio_path) {
+    std::cout << "\n=== 多模态模型调用开始 ===" << std::endl;
+    std::cout << "使用模型: qwen2.5-omni-7b" << std::endl;
+    std::cout << "文本输入: " << text << std::endl;
+    std::cout << "图片路径: " << image_path << std::endl;
+    std::cout << "音频路径: " << audio_path << std::endl;
+    
     QwenChatCompletionRequest request;
     request.model = "qwen2.5-omni-7b";
     request.temperature = 0.7;
@@ -151,37 +241,46 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
     
     // 构建多模态内容
     if (!image_path.empty() || !audio_path.empty()) {
+        std::cout << "构建多模态内容..." << std::endl;
+        
         // 使用多模态内容
         if (!image_path.empty()) {
             // 添加图像内容
-            QwenContent image_content;
-            image_content.type = "image";
-            
-            // 读取图像文件并转换为base64编码
-            std::ifstream image_file(image_path, std::ios::binary);
-            if (image_file.is_open()) {
-                std::ostringstream buffer;
-                buffer << image_file.rdbuf();
-                std::string image_data = buffer.str();
+            try {
+                std::cout << "处理图像文件: " << image_path << std::endl;
+                QwenContent image_content;
+                image_content.type = "image_url";
                 
-                // 这里应该实现base64编码
-                // 为简化起见，我们直接使用文件路径
-                image_content.image = "file://" + image_path;
+                // 读取图像文件并转换为base64编码
+                std::string base64_data = file_to_base64(image_path);
+                image_content.image_url = "data:image/jpeg;base64," + base64_data;
                 user_msg.contents.push_back(image_content);
+                std::cout << "图像内容添加成功" << std::endl;
+            } catch (const std::exception& e) {
+                std::cerr << "图像文件base64编码失败: " << image_path << ", 错误: " << e.what() << std::endl;
+                // 即使图像处理失败，也要继续处理文本
             }
         }
         
         if (!audio_path.empty()) {
             // 添加音频内容
-            QwenContent audio_content;
-            audio_content.type = "audio";
-            // 为简化起见，我们直接使用文件路径
-            audio_content.image = "file://" + audio_path;
-            user_msg.contents.push_back(audio_content);
+            try {
+                std::cout << "处理音频文件: " << audio_path << std::endl;
+                QwenContent audio_content;
+                audio_content.type = "audio_url";
+                // 读取音频文件并转换为base64编码
+                std::string base64_data = file_to_base64(audio_path);
+                audio_content.audio_url = "data:audio/wav;base64," + base64_data;
+                user_msg.contents.push_back(audio_content);
+                std::cout << "音频内容添加成功" << std::endl;
+            } catch (const std::exception& e) {
+                std::cerr << "音频文件base64编码失败: " << audio_path << ", 错误: " << e.what() << std::endl;
+            }
         }
         
         // 添加文本内容
         if (!text.empty()) {
+            std::cout << "添加文本内容: " << text << std::endl;
             QwenContent text_content;
             text_content.type = "text";
             text_content.text = text;
@@ -189,12 +288,52 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
         }
     } else {
         // 只有文本内容
+        std::cout << "只有文本内容: " << text << std::endl;
         user_msg.content = text;
     }
     
     request.messages.push_back(user_msg);
     
+    // 打印完整的请求信息用于调试
+    std::cout << "请求消息数量: " << request.messages.size() << std::endl;
+    for (size_t i = 0; i < request.messages.size(); ++i) {
+        const auto& msg = request.messages[i];
+        std::cout << "消息 " << i << " - 角色: " << msg.role << std::endl;
+        if (!msg.content.empty()) {
+            std::cout << "  纯文本内容: " << msg.content << std::endl;
+        }
+        if (!msg.contents.empty()) {
+            std::cout << "  多模态内容数量: " << msg.contents.size() << std::endl;
+            for (size_t j = 0; j < msg.contents.size(); ++j) {
+                const auto& content = msg.contents[j];
+                std::cout << "    内容 " << j << " - 类型: " << content.type << std::endl;
+                if (content.type == "text" && !content.text.empty()) {
+                    std::cout << "      文本: " << content.text << std::endl;
+                } else if (content.type == "image_url" && !content.image_url.empty()) {
+                    std::cout << "      图像URL长度: " << content.image_url.length() << std::endl;
+                    if (content.image_url.length() > 50) {
+                        std::cout << "      图像URL(前50字符): " << content.image_url.substr(0, 50) << "..." << std::endl;
+                    } else {
+                        std::cout << "      图像URL: " << content.image_url << std::endl;
+                    }
+                } else if (content.type == "audio_url" && !content.audio_url.empty()) {
+                    std::cout << "      音频URL长度: " << content.audio_url.length() << std::endl;
+                    if (content.audio_url.length() > 50) {
+                        std::cout << "      音频URL(前50字符): " << content.audio_url.substr(0, 50) << "..." << std::endl;
+                    } else {
+                        std::cout << "      音频URL: " << content.audio_url << std::endl;
+                    }
+                }
+            }
+        }
+    }
+    
+    std::cout << "=== 调用Qwen API ===" << std::endl;
+    
     // 调用Qwen API
     QwenChatCompletionResponse response = qwen_api.chat_completion(request);
+    
+    std::cout << "=== 多模态模型调用结束 ===" << std::endl;
+    
     return response.content;
 }
