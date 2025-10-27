@@ -10290,7 +10290,13 @@ CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o
  /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h
  /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h
  /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.h
+ /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h
+ /Users/ranpin/code/mirix-cpp/src/models/CLIPProcessor.h
+ /Users/ranpin/code/mirix-cpp/src/models/ModelManager.h
+ /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.h
+ /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h
  /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.h
+ /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h
  /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.h
  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp
  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp
@@ -36946,6 +36952,8 @@ CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o
  /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.h
  /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.h
  /Users/ranpin/code/mirix-cpp/src/models/CLIPProcessor.h
+ /Users/ranpin/code/mirix-cpp/src/models/ModelManager.h
+ /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.h
  /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h
  /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.h
  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp
@@ -38710,6 +38718,7 @@ CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o
  /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h
  /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.h
  /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.h
+ /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h
  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp
  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp
  /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core.hpp

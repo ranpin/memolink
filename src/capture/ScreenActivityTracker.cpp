@@ -129,32 +129,33 @@ bool ScreenActivityTracker::store_activity_in_memory(int user_id, const Activity
 
 bool ScreenActivityTracker::store_screenshot_in_memory(int user_id, const std::string& file_path, const std::string& summary) {
     std::cout << "在记忆中存储屏幕截图: " << file_path << std::endl;
-    
+
     // 获取文件大小
     std::ifstream in_file(file_path, std::ifstream::ate | std::ifstream::binary);
-    
+
     if (!in_file.is_open()) {
         std::cerr << "无法打开文件: " << file_path << std::endl;
         return false;
     }
-    
+
     int file_size = static_cast<int>(in_file.tellg());
     in_file.close();
-    
+
     // 使用ResourceMemoryManager存储截图数据
     StorageManager storage("mirix.db");
     ResourceMemoryManager manager(storage);
-    
+
     ResourceMemoryManager::ResourceMemoryItem item;
     item.user_id = user_id;
     item.agent_id = 1; // 默认agent_id
-    item.title = file_path;
-    item.content = "Captured screen content";
+    item.description = "Captured screen content: " + file_path;  // 合并title和content为description
     item.resource_type = "screenshot";
-    item.path = "/capture/screen";
+    item.path = file_path;  // 使用文件路径作为path
     item.metadata = "{}";
-    
-    return manager.add_resource_memory(item);
+    item.size = file_size;  // 正确设置文件大小
+
+    bool result = manager.add_resource_memory(item);
+    return result;
 }
 
 void ScreenActivityTracker::track_loop() {
@@ -250,11 +251,11 @@ int ScreenActivityTracker::saveScreenshotToResourceMemory(
     ResourceMemoryManager::ResourceMemoryItem item;
     item.user_id = user_id;
     item.agent_id = 1; // 默认agent_id
-    item.title = file_path;
-    item.content = "Captured screen content";
+    item.description = "Captured screen content: " + file_path;  // 合并title和content为description
     item.resource_type = "screenshot";
-    item.path = "/capture/screen";
+    item.path = file_path;  // 使用文件路径作为path
     item.metadata = "{}";
+    item.size = 0;  // 默认大小为0
     
     bool result = manager.add_resource_memory(item);
     return result ? 1 : -1; // 简化处理，实际应该返回插入记录的ID

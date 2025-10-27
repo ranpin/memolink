@@ -120,19 +120,21 @@ void testEmbeddingFunctionalityMain() {
     ResourceMemoryManager::ResourceMemoryItem resourceItem;
     resourceItem.user_id = 1;
     resourceItem.agent_id = 1;
-    resourceItem.filename = "test_image.jpg";
-    resourceItem.title = "测试图像";
-    resourceItem.content = "这是一张测试图像的描述";
+    resourceItem.session_id = 1;  // 使用创建的session ID
+    resourceItem.description = "测试图像: 这是一张测试图像的描述";  // 合并title和content为description
     resourceItem.resource_type = "image";
-    resourceItem.summary = "图像摘要";
     resourceItem.size = 1024;
-    resourceItem.tree_path = "/";
     resourceItem.path = "/path/to/test/image.jpg";
     resourceItem.metadata = "{}";
     
-    int resourceId = resourceManager.add_resource_memory(resourceItem);
+    bool result = resourceManager.add_resource_memory(resourceItem);
+    assert(result);
+    std::cout << "添加资源记忆成功" << std::endl;
+    
+    // 获取刚添加的资源记忆ID
+    auto lastResource = resourceManager.get_last_resource_memory(1);
+    int resourceId = lastResource.id;
     assert(resourceId > 0);
-    std::cout << "添加资源记忆成功，ID: " << resourceId << std::endl;
     
     // 使用CLIP处理器生成embedding
     std::cout << "初始化CLIP处理器..." << std::endl;

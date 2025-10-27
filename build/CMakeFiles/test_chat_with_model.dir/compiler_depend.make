@@ -853,6 +853,7 @@ CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o: /Users/ranpi
   /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h \
   /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.h \
   /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.h \
+  /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core.hpp \
@@ -1106,6 +1107,8 @@ CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o: /Users/ranpi
 /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp:
 
 /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp:
+
+/Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h:
 
 /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.h:
 
