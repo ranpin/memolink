@@ -226,11 +226,11 @@ int AudioCaptureManager::saveAudioToResourceMemory(const std::string& filePath, 
     ResourceMemoryManager::ResourceMemoryItem item;
     item.user_id = 1;
     item.agent_id = 1;
-    item.title = filePath;
-    item.content = description.empty() ? "Captured audio" : description;
+    item.description = description.empty() ? "Captured audio: " + filePath : description;
     item.resource_type = "audio";
     item.path = filePath;
     item.metadata = "{}";
+    item.size = 0;  // 默认大小为0
     item.embedding = "";
     item.created_at = "";
     

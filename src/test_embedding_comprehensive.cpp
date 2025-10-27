@@ -277,17 +277,19 @@ void testEmbeddingFunctionalityComprehensive() {
     ResourceMemoryManager::ResourceMemoryItem resourceItem;
     resourceItem.user_id = 1;
     resourceItem.agent_id = 1;
-    resourceItem.filename = "test_image.jpg";
-    resourceItem.title = "测试图像";
-    resourceItem.content = "这是一张测试图像的描述";
+    resourceItem.session_id = 1;
+    resourceItem.description = "测试图像: 这是一张测试图像的描述";  // 合并title和content为description
     resourceItem.resource_type = "image";
-    resourceItem.summary = "图像摘要";
     resourceItem.size = 1024;
-    resourceItem.tree_path = "/";
     resourceItem.path = "/path/to/test/image.jpg";
     resourceItem.metadata = "{}";
     
-    int resourceId = resourceManager.add_resource_memory(resourceItem);
+    bool result = resourceManager.add_resource_memory(resourceItem);
+    assert(result);
+    
+    // 获取刚添加的资源记忆ID
+    auto lastResource = resourceManager.get_last_resource_memory(1);
+    int resourceId = lastResource.id;
     assert(resourceId > 0);
     std::cout << "  添加资源记忆成功，ID: " << resourceId << std::endl;
     
@@ -344,7 +346,7 @@ void testEmbeddingFunctionalityComprehensive() {
     auto resourceResults = resourceManager.searchByEmbedding(1, queryEmbedding, 5);
     std::cout << "  基于embedding搜索到 " << resourceResults.size() << " 个资源记忆" << std::endl;
     for (const auto& result : resourceResults) {
-        std::cout << "    - ID: " << result.id << ", 标题: \"" << result.title << "\", 内容: \"" << result.content << "\"" << std::endl;
+        std::cout << "    - ID: " << result.id << ", 路径: \"" << result.path << "\", 描述: \"" << result.description << "\"" << std::endl;
     }
     
     std::cout << "\n✓ 完整的Embedding功能流程测试通过" << std::endl;

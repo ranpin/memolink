@@ -193,6 +193,76 @@ std::vector<float> CLIPProcessor::encodeImage(const std::string& imagePath) {
     return embedding;
 }
 
+std::string CLIPProcessor::generateImageDescription(const std::string& imagePath) {
+    std::cout << "[CLIPProcessor] 图像描述生成开始..." << std::endl;
+    std::cout << "[CLIPProcessor] 输入图像路径: " << imagePath << std::endl;
+    
+    // 转义路径中的双引号
+    std::string escapedPath = imagePath;
+    size_t pos = 0;
+    while ((pos = escapedPath.find("\"", pos)) != std::string::npos) {
+        escapedPath.replace(pos, 1, "\\\"");
+        pos += 2;
+    }
+    
+    // 构造命令
+    std::string command = "cd /Users/ranpin/code/mirix-cpp && /Users/ranpin/code/MIRIX/mirix_env/bin/python scripts/clip_processor.py image_desc \"" + 
+                         escapedPath + "\" 2>/dev/null";
+    
+    std::cout << "[CLIPProcessor] 执行命令: " << command.substr(0, 60) << "..." << std::endl;
+    
+    // 执行Python脚本
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(command.c_str(), "r"), pclose);
+    if (!pipe) {
+        std::cerr << "[CLIPProcessor] 错误: 无法执行Python脚本" << std::endl;
+        throw std::runtime_error("无法执行Python脚本");
+    }
+    
+    // 读取结果
+    char buffer[4096];
+    std::string result;
+    while (fgets(buffer, sizeof buffer, pipe.get()) != nullptr) {
+        result += buffer;
+    }
+    
+    // 检查Python脚本是否执行成功
+    int exitCode = pclose(pipe.release());
+    if (exitCode != 0) {
+        std::cerr << "[CLIPProcessor] Python脚本执行失败，退出码: " << exitCode << std::endl;
+        std::cerr << "[CLIPProcessor] 返回结果: " << result << std::endl;
+        throw std::runtime_error("Python脚本执行失败");
+    }
+    
+    std::cout << "[CLIPProcessor] Python脚本执行成功" << std::endl;
+    
+    // 简单解析JSON结果（实际项目中应该使用JSON库）
+    // 查找description字段
+    size_t descPos = result.find("\"description\":");
+    if (descPos == std::string::npos) {
+        std::cerr << "[CLIPProcessor] 无法找到description字段" << std::endl;
+        throw std::runtime_error("无法找到description字段");
+    }
+    
+    size_t quoteStart = result.find('"', descPos + 15); // 跳过"description":
+    size_t quoteEnd = result.find('"', quoteStart + 1);
+    if (quoteStart == std::string::npos || quoteEnd == std::string::npos) {
+        std::cerr << "[CLIPProcessor] 无法解析description字符串" << std::endl;
+        throw std::runtime_error("无法解析description字符串");
+    }
+    
+    std::string description = result.substr(quoteStart + 1, quoteEnd - quoteStart - 1);
+    
+    // 处理转义字符
+    size_t escapePos = 0;
+    while ((escapePos = description.find("\\\"", escapePos)) != std::string::npos) {
+        description.replace(escapePos, 2, "\"");
+        escapePos += 1;
+    }
+    
+    std::cout << "[CLIPProcessor] 图像描述生成完成，描述长度: " << description.length() << " 字符" << std::endl;
+    return description;
+}
+
 std::vector<float> CLIPProcessor::simulateTextEncoding(const std::string& text) {
     std::cout << "[CLIPProcessor] 使用模拟实现生成文本embedding..." << std::endl;
     // 模拟实现：基于文本生成伪随机embedding

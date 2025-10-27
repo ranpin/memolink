@@ -19,11 +19,11 @@ bool ResourceMemoryAgent::addResourceMemory(const std::string& title, const std:
     ResourceMemoryManager::ResourceMemoryItem item;
     item.user_id = user_id_;
     item.agent_id = agent_id_;
-    item.title = title;
-    item.content = content;
+    item.description = title + ": " + content;  // 合并title和content为description
     item.resource_type = resourceType;
     item.path = path;
     item.metadata = metadata;
+    item.size = 0;  // 默认大小为0
     return manager.add_resource_memory(item);
 }
 
@@ -34,11 +34,11 @@ bool ResourceMemoryAgent::updateResourceMemory(int memoryId, const std::string& 
     ResourceMemoryManager::ResourceMemoryItem item;
     item.user_id = user_id_;
     item.agent_id = agent_id_;
-    item.title = title;
-    item.content = content;
+    item.description = title + ": " + content;  // 合并title和content为description
     item.resource_type = resourceType;
     item.path = path;
     item.metadata = metadata;
+    item.size = 0;  // 默认大小为0
     return manager.update_resource_memory(memoryId, item);
 }
 
@@ -65,7 +65,7 @@ std::string ResourceMemoryAgent::get_resource_memory_summary(int limit) {
     
     std::string summary = "Resource memory summary for user " + std::to_string(user_id_) + ":\n";
     for (const auto& memory : memories) {
-        summary += "- " + memory.title + ": " + memory.content + "\n";
+        summary += "- " + memory.path + ": " + memory.description + "\n";
     }
     return summary;
 }

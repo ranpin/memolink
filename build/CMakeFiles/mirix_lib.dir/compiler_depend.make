@@ -10278,7 +10278,13 @@ CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o: /Users/ranpin/c
   /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.h \
+  /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
+  /Users/ranpin/code/mirix-cpp/src/models/CLIPProcessor.h \
+  /Users/ranpin/code/mirix-cpp/src/models/ModelManager.h \
+  /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.h \
+  /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h \
   /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.h \
+  /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h \
   /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.h \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp \
@@ -36904,6 +36910,8 @@ CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o: /Users/ranpin/cod
   /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.h \
   /Users/ranpin/code/mirix-cpp/src/models/CLIPProcessor.h \
+  /Users/ranpin/code/mirix-cpp/src/models/ModelManager.h \
+  /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.h \
   /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h \
   /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.h \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp \
@@ -38666,6 +38674,7 @@ CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o: /Users/ranpin/code/miri
   /Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h \
   /Users/ranpin/code/mirix-cpp/src/models/VectorSearchManager.h \
   /Users/ranpin/code/mirix-cpp/src/utils/TimeUtils.h \
+  /Users/ranpin/code/mirix-cpp/src/utils/VectorSerializer.h \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/imgproc/segmentation.hpp \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp \
   /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core.hpp \
@@ -45049,12 +45058,6 @@ CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o: /Users/ranpin/code/mi
 
 /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cuda.inl.hpp:
 
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/no_destroy.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/version:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/random:
-
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__type_traits/rank.h:
 
 /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/core/cvstd_wrapper.hpp:
@@ -45078,6 +45081,10 @@ CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o: /Users/ranpin/code/mi
 /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/calib3d.hpp:
 
 /Users/ranpin/code/mirix-cpp/src/capture/CameraCaptureManager.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libDER/DERItem.h:
+
+/Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/sys/_types/_seek_set.h:
 
@@ -46689,6 +46696,12 @@ CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o: /Users/ranpin/code/mi
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/exponential_functions.h:
 
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/random:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/no_destroy.h:
+
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/version:
+
 /opt/homebrew/Cellar/opencv/4.12.0_11/include/opencv4/opencv2/objdetect/aruco_dictionary.hpp:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGPDFDocument.h:
@@ -47288,10 +47301,6 @@ CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o: /Users/ranpin/code/mi
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__tuple/tuple_indices.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__utility/forward.h:
-
-/Users/ranpin/code/mirix-cpp/src/models/TextEmbeddingGenerator.h:
-
-/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/libDER/DERItem.h:
 
 /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__iterator/erase_if_container.h:
 

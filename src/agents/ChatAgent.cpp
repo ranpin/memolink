@@ -33,7 +33,7 @@ std::string ChatAgent::buildContext(int user_id, int agent_id, int session_id, c
     auto recent_resources = resource_manager.list_resource_memories(user_id, 5); // 获取最近5个多模态资源
     
     for (const auto& resource : recent_resources) {
-        context << "[" << resource.resource_type << "] " << resource.title 
+        context << "[" << resource.resource_type << "] " << resource.path 
                 << " (Created: " << resource.created_at << ")\n";
     }
     

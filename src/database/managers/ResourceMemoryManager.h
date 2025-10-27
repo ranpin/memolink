@@ -5,22 +5,6 @@
 #include <string>
 #include <vector>
 
-struct ResourceMemoryRecord {
-    int id;
-    int user_id;
-    int agent_id;
-    std::string filename;
-    std::string resource_type;
-    std::string summary;
-    std::string content;
-    int size;
-    std::string tree_path;
-    std::string metadata;
-    std::string last_accessed;
-    std::string created_at;
-    std::string updated_at;
-};
-
 class ResourceMemoryManager {
 private:
     StorageManager& storage_;
@@ -32,17 +16,13 @@ public:
         int id;
         int user_id;
         int agent_id;
-        std::string filename;
-        std::string title;
-        std::string content;
-        std::string resource_type;
-        std::string summary;
-        int size;
-        std::string tree_path;
+        int session_id;
         std::string path;
+        std::string description;
+        std::string resource_type;
+        int size;
         std::string metadata;
         std::string embedding;
-        std::string last_accessed;
         std::string created_at;
         std::string updated_at;
     };
@@ -50,15 +30,13 @@ public:
     bool add_resource_memory(const ResourceMemoryItem& item);
     bool update_resource_memory(int id, const ResourceMemoryItem& item);
     bool delete_resource_memory(int id);
-    std::vector<ResourceMemoryItem> list_resource_memories(int user_id, int limit = 100);
-    std::vector<ResourceMemoryItem> search_resource_memories(int user_id, const std::string& query);
-    std::vector<ResourceMemoryItem> getResourcesByType(int user_id, const std::string& resourceType);
-    ResourceMemoryItem getResourceById(int id);
-    
-    // 添加处理embedding的方法
-    bool saveEmbedding(int resourceId, const std::vector<float>& embedding);
+    ResourceMemoryItem get_last_resource_memory(int user_id);
+    std::vector<ResourceMemoryItem> list_resource_memories(int user_id, int limit = 10);
+    std::vector<ResourceMemoryItem> search_resource_memories(int user_id, const std::string& query, int limit = 5);
+    ResourceMemoryItem get_resource_memory(int id);
+    bool saveEmbedding(int memory_id, const std::vector<float>& embedding);
     std::vector<float> getEmbedding(int resourceId);
-    std::vector<ResourceMemoryItem> searchByEmbedding(int user_id, const std::vector<float>& queryEmbedding, int topK = 10);
+    std::vector<ResourceMemoryItem> searchByEmbedding(int user_id, const std::vector<float>& queryEmbedding, int topK = 5);
 };
 
 #endif // RESOURCE_MEMORY_MANAGER_H

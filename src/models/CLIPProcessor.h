@@ -15,6 +15,9 @@ public:
     // 生成文本的embedding向量
     std::vector<float> encodeText(const std::string& text);
     
+    // 生成图像描述
+    std::string generateImageDescription(const std::string& imagePath);
+    
     // 获取embedding维度
     int getEmbeddingDimension() const;
     

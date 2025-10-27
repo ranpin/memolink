@@ -105,11 +105,12 @@ void initializeMemories(int userId, const std::string& dbPath) {
     ResourceMemoryManager::ResourceMemoryItem item1;
     item1.user_id = userId;
     item1.agent_id = 1;
-    item1.title = "system_manual.pdf";
-    item1.content = "Detailed introduction to the usage methods and feature descriptions of the MIRIX system";
+    item1.session_id = 1;
+    item1.description = "system_manual.pdf: Detailed introduction to the usage methods and feature descriptions of the MIRIX system";  // 合并title和content为description
     item1.resource_type = "application/pdf";
+    item1.size = 1024;
     item1.path = "/resources/system_manual.pdf";
-    item1.metadata = "{\"size\": 1024}";
+    item1.metadata = "{}";
     
     bool resource1_added = resourceMemoryManager.add_resource_memory(item1);
     if (resource1_added) {
@@ -197,7 +198,7 @@ void initializeMemories(int userId, const std::string& dbPath) {
     std::vector<ResourceMemoryManager::ResourceMemoryItem> resourceMemories = resourceMemoryManager.list_resource_memories(userId);
     std::cout << "Resource memories count: " << resourceMemories.size() << std::endl;
     if (!resourceMemories.empty()) {
-        std::cout << "First resource memory: " << resourceMemories[0].title << std::endl;
+        std::cout << "First resource memory: " << resourceMemories[0].path << " - " << resourceMemories[0].description << std::endl;
     }
     
     // 测试知识库查询

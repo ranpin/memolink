@@ -1,6 +1,8 @@
 #include "CameraCaptureManager.h"
 #include "../database/managers/ResourceMemoryManager.h"
 #include "../utils/TimeUtils.h"
+#include "../models/TextEmbeddingGenerator.h"
+#include "../utils/VectorSerializer.h"
 #include <iostream>
 #include <fstream>
 #include <opencv2/opencv.hpp>
@@ -120,11 +122,11 @@ int CameraCaptureManager::saveCaptureToResourceMemory(
     ResourceMemoryManager::ResourceMemoryItem item;
     item.user_id = user_id;
     item.agent_id = 1; // 默认agent_id
-    item.title = file_path;
-    item.content = "Captured camera content";
+    item.description = "Captured camera content: " + file_path;  // 将title和content合并为description
     item.resource_type = capture_type;
-    item.path = "/capture/camera";
+    item.path = file_path;  // 使用文件路径作为path
     item.metadata = "{}";
+    item.size = 0;  // 默认大小为0
     
     bool result = manager.add_resource_memory(item);
     return result ? 1 : -1; // 简化处理，实际应该返回插入记录的ID
@@ -136,17 +138,46 @@ bool CameraCaptureManager::store_capture_in_memory(int user_id, const std::strin
     // 创建ResourceMemoryManager实例
     ResourceMemoryManager resourceMemoryManager(storage_);
     
+    // 使用TextEmbeddingGenerator生成图像描述
+    std::string description = summary; // 默认使用摘要作为描述
+    try {
+        TextEmbeddingGenerator textEmbeddingGenerator(&storage_);
+        description = textEmbeddingGenerator.generateImageDescription(file_path);
+        std::cout << "[摄像头捕获] 图像描述生成成功: " << description << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "[摄像头捕获] 图像描述生成失败: " << e.what() << std::endl;
+        std::cout << "[摄像头捕获] 使用默认摘要作为描述" << std::endl;
+    }
+    
     // 使用ResourceMemoryManager存储捕获的图像数据
     ResourceMemoryManager::ResourceMemoryItem item;
     item.user_id = user_id;
     item.agent_id = 0; // 默认agent_id为0
-    item.title = file_path; // 使用文件路径作为标题
-    item.content = summary; // 使用摘要作为内容
+    item.session_id = 0; // 默认session_id为0
+    item.description = description; // 使用生成的描述
     item.resource_type = capture_type;
     item.path = file_path;
     item.metadata = "{}"; // 空的元数据
-    item.embedding = ""; // 空的embedding
+    item.embedding = ""; // 默认空的embedding
+    item.size = 0; // 默认大小为0
     item.created_at = TimeUtils::getCurrentTimestamp(); // 获取当前时间戳
+    
+    // 为图像描述生成embedding并存储到资源记忆中
+    try {
+        TextEmbeddingGenerator textEmbeddingGenerator(&storage_);
+        std::vector<float> descriptionEmbedding = textEmbeddingGenerator.generateEmbedding(description);
+        if (!descriptionEmbedding.empty()) {
+            // 将embedding序列化并存储到item中
+            item.embedding = VectorSerializer::serialize(descriptionEmbedding);
+            std::cout << "[摄像头捕获] 图像描述embedding生成成功，维度: " << descriptionEmbedding.size() << std::endl;
+        } else {
+            std::cout << "[摄像头捕获] 图像描述embedding生成失败，返回空向量" << std::endl;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "[摄像头捕获] 图像描述embedding生成异常: " << e.what() << std::endl;
+    }
+    
+    std::cout << "[摄像头捕获] 准备存储的embedding大小: " << item.embedding.size() << " 字节" << std::endl;
     
     return resourceMemoryManager.add_resource_memory(item);
 }
