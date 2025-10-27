@@ -102,11 +102,12 @@ ModelManager::ModelManager(StorageManager& storage) : storage_(storage), qwen_ap
 }
 
 std::string ModelManager::generateResponse(const std::vector<std::string>& context, const std::string& query) {
-    // 检查是否有有效的API密钥
+    // 检查是否有有效的API密钥或配置了本地API URL
     ConfigManager& config_manager = ConfigManager::getInstance();
     std::string api_key = config_manager.getApiKey();
+    std::string local_api_url = config_manager.getLocalApiUrl();
     
-    if (!api_key.empty()) {
+    if (!api_key.empty() || !local_api_url.empty()) {
         return call_text_model_with_context(context, query); // 实际调用真实模型
     } else {
         return "这是一个模拟响应。在配置有效的API密钥后，我将能够提供真实的AI响应。";
@@ -114,11 +115,12 @@ std::string ModelManager::generateResponse(const std::vector<std::string>& conte
 }
 
 std::vector<float> ModelManager::generateEmbedding(const std::string& text) {
-    // 检查是否有有效的API密钥
+    // 检查是否有有效的API密钥或配置了本地API URL
     ConfigManager& config_manager = ConfigManager::getInstance();
     std::string api_key = config_manager.getApiKey();
+    std::string local_api_url = config_manager.getLocalApiUrl();
     
-    if (!api_key.empty()) {
+    if (!api_key.empty() || !local_api_url.empty()) {
         return call_embedding_model(text); // 实际调用真实模型
     } else {
         // 生成模拟的嵌入向量（128维）
@@ -136,11 +138,12 @@ std::vector<float> ModelManager::generateEmbedding(const std::string& text) {
 std::string ModelManager::process_multimodal(const std::string& text, 
                                            const std::string& image_path,
                                            const std::string& audio_path) {
-    // 检查是否有有效的API密钥
+    // 检查是否有有效的API密钥或配置了本地API URL
     ConfigManager& config_manager = ConfigManager::getInstance();
     std::string api_key = config_manager.getApiKey();
+    std::string local_api_url = config_manager.getLocalApiUrl();
     
-    if (!api_key.empty()) {
+    if (!api_key.empty() || !local_api_url.empty()) {
         // 实际调用多模态模型
         return call_multimodal_model(text, image_path, audio_path);
     } else {
@@ -153,7 +156,11 @@ std::string ModelManager::process_multimodal(const std::string& text,
 std::string ModelManager::call_text_model_with_context(const std::vector<std::string>& context, const std::string& prompt) {
     // 构建完整的对话历史
     QwenChatCompletionRequest request;
-    request.model = "qwen2.5-omni-7b";
+    
+    // 从配置文件中读取模型名称
+    ConfigManager& config_manager = ConfigManager::getInstance();
+    request.model = config_manager.getTextModelName();
+    
     request.temperature = 0.7;
     request.top_p = 0.9;
     request.max_tokens = 2000;

@@ -9,6 +9,7 @@
 #include "database/managers/UserManager.h"
 #include "database/managers/SessionManager.h"
 #include "utils/VectorSerializer.h"
+#include "database/initialization/ConfigManager/ConfigManager.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -62,9 +63,24 @@ public:
     }
     
     void initialize_user_and_session() {
+        // 初始化用户和会话
         std::cout << "初始化用户和会话..." << std::endl;
         
-        // 检查用户是否已存在，如果不存在则创建
+        // 检查配置信息
+        ConfigManager& config_manager = ConfigManager::getInstance();
+        std::string api_key = config_manager.getApiKey();
+        std::string local_url = config_manager.getLocalApiUrl();
+        std::string db_path = config_manager.getDatabasePath();
+        
+        std::cout << "配置信息检查:" << std::endl;
+        std::cout << "  API密钥: " << (api_key.empty() ? "未配置" : "已配置") << std::endl;
+        if (!api_key.empty()) {
+            std::cout << "  API密钥预览: " << api_key.substr(0, std::min(15, (int)api_key.length())) << "..." << std::endl;
+        }
+        std::cout << "  本地API URL: " << (local_url.empty() ? "未配置" : local_url) << std::endl;
+        std::cout << "  数据库路径: " << db_path << std::endl;
+        
+        // 创建测试用户
         user_id_ = UserManager::getUserIdByName("TestChatUser", storage_.getDatabasePath());
         if (user_id_ <= 0) {
             if (UserManager::addUser("TestChatUser", "testchat@example.com", "", storage_.getDatabasePath())) {

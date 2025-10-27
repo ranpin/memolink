@@ -35147,6 +35147,7 @@ CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o: /Users/ranpin/code/mirix-cpp/
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdarg.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stddef.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/17/include/stdint.h \
+  /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.h \
   /Users/ranpin/code/mirix-cpp/src/models/QwenAPI.h \
   /opt/homebrew/Cellar/jsoncpp/1.9.6/include/json/allocator.h \
   /opt/homebrew/Cellar/jsoncpp/1.9.6/include/json/config.h \
@@ -38659,6 +38660,7 @@ CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o: /Users/ranpin/code/miri
   /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.h \
   /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.h \
   /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
+  /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/initialization/InitDB.h \
   /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.h \

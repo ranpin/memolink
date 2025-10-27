@@ -838,6 +838,7 @@ CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o: /Users/ranpi
   /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.h \
   /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.h \
   /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
+  /Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/initialization/InitDB.h \
   /Users/ranpin/code/mirix-cpp/src/database/core/StorageManager.h \
   /Users/ranpin/code/mirix-cpp/src/database/managers/RecallMemoryManager.h \
@@ -1125,6 +1126,8 @@ CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o: /Users/ranpi
 /Users/ranpin/code/mirix-cpp/src/database/managers/ResourceMemoryManager.h:
 
 /Users/ranpin/code/mirix-cpp/src/database/initialization/InitDB.h:
+
+/Users/ranpin/code/mirix-cpp/src/database/initialization/ConfigManager/ConfigManager.h:
 
 /Users/ranpin/code/mirix-cpp/src/agents/ChatAgent.h:
 

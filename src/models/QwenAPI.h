@@ -60,4 +60,8 @@ public:
 private:
     std::string api_key_;
     std::string base_url_;
+    bool use_local_api_;
+    
+    // 辅助方法，用于判断是否使用本地API
+    bool shouldUseLocalAPI() const;
 };

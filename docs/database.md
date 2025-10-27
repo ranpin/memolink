@@ -111,7 +111,7 @@ MIRIX系统使用SQLite作为后端数据库，采用关系型数据模型设计
 - message_type (TEXT NOT NULL): 消息类型（user_message/ai_response）
 - content (TEXT NOT NULL): 消息内容
 - metadata (TEXT): 元数据
-- embedding (BLOB): 向量表示（CLIP生成的512维向量）
+- embedding (BLOB): 向量表示（CLIP生成的向量，默认1024维）
 - created_at (TIMESTAMP DEFAULT CURRENT_TIMESTAMP): 创建时间
 - updated_at (TIMESTAMP DEFAULT CURRENT_TIMESTAMP): 更新时间
 - FOREIGN KEY (user_id) REFERENCES user(id)
@@ -286,7 +286,7 @@ LIMIT ?;
 
 ### 6.1 向量字段设计
 - 使用BLOB类型存储二进制向量数据
-- 支持CLIP模型生成的512维向量
+- 支持CLIP模型生成的向量（默认1024维）
 - 在recall_memory和resource_memory表中都有embedding字段
 
 ### 6.2 向量序列化

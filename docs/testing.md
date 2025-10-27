@@ -208,6 +208,12 @@ void test_cross_session_history() {
 - 验证能够查询这些会话中的回忆记忆
 - 验证查询结果的正确性和完整性
 
+#### 4.1.5 API调用测试
+- 验证本地API调用功能
+- 验证云端API调用功能
+- 验证模拟响应功能
+- 验证API调用优先级：本地API > 云端API > 模拟响应
+
 ### 4.2 多模态演示测试 (real_multimodal_demo.cpp)
 
 #### 4.2.1 测试功能
