@@ -7,6 +7,29 @@
 ConfigManager* ConfigManager::instance = nullptr;
 
 ConfigManager::ConfigManager(const std::string& configFile) : configFile(configFile) {
+    // 尝试多个可能的配置文件路径
+    std::vector<std::string> configPaths = {
+        configFile,                    // 默认路径
+        "../" + configFile,           // 上级目录
+        "../../" + configFile,        // 上上级目录
+        "config/" + configFile        // config子目录
+    };
+    
+    std::string actualConfigFile = configFile;
+    for (const auto& path : configPaths) {
+        std::ifstream file(path);
+        if (file.is_open()) {
+            file.close();
+            actualConfigFile = path;
+            break;
+        }
+    }
+    
+    // 重新赋值 configFile 成员变量
+    // 注意：由于 configFile 是 const 成员变量，我们不能直接修改它
+    // 所以我们使用 const_cast 来修改它，但这只在构造函数中是安全的
+    const_cast<std::string&>(this->configFile) = actualConfigFile;
+    
     loadConfig();
 }
 
@@ -115,6 +138,15 @@ std::string ConfigManager::getApiKey() const {
 
 void ConfigManager::setApiKey(const std::string& apiKey) {
     setConfig("api.key", apiKey);
+}
+
+// 本地API配置
+std::string ConfigManager::getLocalApiUrl() const {
+    return getConfig("api.local_url", "");
+}
+
+void ConfigManager::setLocalApiUrl(const std::string& localApiUrl) {
+    setConfig("api.local_url", localApiUrl);
 }
 
 // 数据库配置
