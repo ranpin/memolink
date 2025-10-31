@@ -1,4 +1,5 @@
 #include "QwenAPI.h"
+#include "../database/initialization/ConfigManager/ConfigManager.h"
 #include <curl/curl.h>
 #include <json/json.h>
 #include <iostream>
@@ -15,86 +16,112 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::stri
     return total_size;
 }
 
-// 将文件转换为base64编码
-std::string file_to_base64(const std::string& file_path) {
-    std::ifstream file(file_path, std::ios::binary);
-    if (!file.is_open()) {
-        std::cerr << "无法打开文件进行base64编码: " << file_path << std::endl;
-        return "";
-    }
-    
-    // 读取文件内容
-    std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(file), {});
-    file.close();
-    
-    if (buffer.empty()) {
-        std::cerr << "文件为空: " << file_path << std::endl;
-        return "";
-    }
-    
-    // 简单的base64编码实现
-    static const char* base64_chars = 
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "abcdefghijklmnopqrstuvwxyz"
-        "0123456789+/";
-    
+// Base64编码字符表
+static const std::string base64_chars = 
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz"
+    "0123456789+/";
+
+// Base64编码函数
+std::string base64_encode(const std::vector<unsigned char>& data) {
     std::string ret;
     int i = 0;
     int j = 0;
     unsigned char char_array_3[3];
     unsigned char char_array_4[4];
-    
-    for (size_t n = 0; n < buffer.size(); n++) {
-        char_array_3[i++] = buffer[n];
+
+    auto it = data.begin();
+    while (it != data.end()) {
+        char_array_3[i++] = *(it++);
         if (i == 3) {
             char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
             char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
             char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
             char_array_4[3] = char_array_3[2] & 0x3f;
-            
-            for (i = 0; i < 4; i++) {
+
+            for (i = 0; (i < 4); i++)
                 ret += base64_chars[char_array_4[i]];
-            }
             i = 0;
         }
     }
-    
+
     if (i) {
-        for (j = i; j < 3; j++) {
+        for (j = i; j < 3; j++)
             char_array_3[j] = '\0';
-        }
-        
+
         char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
         char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
         char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
         char_array_4[3] = char_array_3[2] & 0x3f;
-        
-        for (j = 0; j < i + 1; j++) {
+
+        for (j = 0; (j < i + 1); j++)
             ret += base64_chars[char_array_4[j]];
-        }
-        
-        while (i++ < 3) {
+
+        while ((i++ < 3))
             ret += '=';
-        }
     }
-    
-    // 根据文件类型返回正确的MIME类型
-    std::string mime_type = "application/octet-stream";
-    if (file_path.find(".jpg") != std::string::npos || file_path.find(".jpeg") != std::string::npos) {
-        mime_type = "image/jpeg";
-    } else if (file_path.find(".png") != std::string::npos) {
-        mime_type = "image/png";
-    } else if (file_path.find(".wav") != std::string::npos) {
-        mime_type = "audio/wav";
-    }
-    
-    return "data:" + mime_type + ";base64," + ret;
+
+    return ret;
 }
 
-QwenAPI::QwenAPI() : base_url_("https://dashscope.aliyuncs.com") {
+// 将文件转换为base64编码
+std::string file_to_base64(const std::string& file_path) {
+    std::cout << "[Base64编码] 开始处理文件: " << file_path << std::endl;
+    
+    std::ifstream file(file_path, std::ios::binary);
+    if (!file.is_open()) {
+        throw std::runtime_error("无法打开文件: " + file_path);
+    }
+    
+    // 检查文件大小
+    file.seekg(0, std::ios::end);
+    size_t file_size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    
+    // 限制文件大小为10MB
+    if (file_size > 10 * 1024 * 1024) {
+        file.close();
+        throw std::runtime_error("文件过大: " + std::to_string(file_size) + " 字节，超过10MB限制");
+    }
+    
+    std::cout << "[Base64编码] 文件打开成功" << std::endl;
+    std::cout << "[Base64编码] 文件大小: " << file_size << " 字节" << std::endl;
+    
+    std::vector<unsigned char> buffer(file_size);
+    file.read(reinterpret_cast<char*>(buffer.data()), file_size);
+    
+    // 检查读取是否成功
+    if (file.gcount() != static_cast<std::streamsize>(file_size)) {
+        file.close();
+        throw std::runtime_error("文件读取不完整: 期望读取 " + std::to_string(file_size) + 
+                                " 字节，实际读取 " + std::to_string(file.gcount()) + " 字节");
+    }
+    
+    file.close();
+    
+    std::cout << "[Base64编码] 文件读取成功，大小: " << file_size << " 字节" << std::endl;
+    
+    std::string encoded_data = base64_encode(buffer);
+    std::cout << "[Base64编码] 编码完成，编码后长度: " << encoded_data.length() << std::endl;
+    // 只输出前100个字符，避免日志过长
+    std::cout << "[Base64编码] 编码数据(前100字符): " << encoded_data.substr(0, 100) << std::endl;
+    
+    return encoded_data;
+}
+
+QwenAPI::QwenAPI() : base_url_("https://dashscope.aliyuncs.com"), use_local_api_(false) {
 }
 
 QwenAPI::~QwenAPI() {
+}
+
+bool QwenAPI::shouldUseLocalAPI() const {
+    // 检查是否配置了本地API URL
+    ConfigManager& config_manager = ConfigManager::getInstance();
+    std::string local_api_url = config_manager.getLocalApiUrl();
+    
+    // 如果配置了本地API URL且不为空，则使用本地API
+    return !local_api_url.empty();
 }
 
 void QwenAPI::set_api_key(const std::string& api_key) {
@@ -110,11 +137,20 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
     QwenChatCompletionResponse response;
     
     if (curl) {
-        // 构建请求URL - 使用DashScope兼容模式端点
-        std::string url = base_url_ + "/compatible-mode/v1/chat/completions";
+        // 确定使用的API端点
+        std::string url;
+        if (shouldUseLocalAPI()) {
+            // 使用本地API
+            ConfigManager& config_manager = ConfigManager::getInstance();
+            url = config_manager.getLocalApiUrl() + "/v1/chat/completions";
+        } else {
+            // 使用阿里云DashScope API
+            url = base_url_ + "/compatible-mode/v1/chat/completions";
+        }
         
         // 检查是否使用需要流式传输的模型
-        bool needs_streaming = (request.model == "qwen2.5-omni-7b");
+        // 修复：不再写死模型名称，而是检查模型名称是否包含"omni"关键词
+        bool needs_streaming = (request.model.find("omni") != std::string::npos);
         
         // 构建JSON请求体
         Json::Value root;
@@ -130,34 +166,26 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
                 Json::Value contents(Json::arrayValue);
                 for (const auto& content : msg.contents) {
                     Json::Value c;
-                    if (content.type == "image") {
-                        // 将图像文件转换为base64
-                        std::string base64_data = file_to_base64(content.image);
-                        if (!base64_data.empty()) {
-                            // 使用DashScope支持的格式
-                            Json::Value image_url;
-                            image_url["url"] = base64_data;
-                            c["type"] = "image_url";
-                            c["image_url"] = image_url;
-                        } else {
-                            std::cerr << "图像文件base64编码失败: " << content.image << std::endl;
-                            c["type"] = "text";
-                            c["text"] = "[图像文件不可用: " + content.image + "]";
-                        }
+                    if (content.type == "image_url") {
+                        // 直接使用已构造的base64数据URL，不再重复处理
+                        c["type"] = "image_url";
+                        Json::Value image_url_obj;
+                        image_url_obj["url"] = content.image_url;  // 这里已经是完整的data:image/...;base64,...格式
+                        c["image_url"] = image_url_obj;
                     } else if (content.type == "text") {
                         c["type"] = "text";
                         c["text"] = content.text;
-                    } else if (content.type == "audio") {
+                    } else if (content.type == "audio_url") {
                         // 将音频文件转换为base64
-                        std::string base64_data = file_to_base64(content.audio);
+                        std::string base64_data = file_to_base64(content.audio_url);
                         if (!base64_data.empty()) {
                             // 使用text类型包含音频数据描述
                             c["type"] = "text";
                             c["text"] = "[音频数据已提供，但当前API不直接支持音频输入]";
                         } else {
-                            std::cerr << "音频文件base64编码失败: " << content.audio << std::endl;
+                            std::cerr << "音频文件base64编码失败: " << content.audio_url << std::endl;
                             c["type"] = "text";
-                            c["text"] = "[音频文件不可用: " + content.audio + "]";
+                            c["text"] = "[音频文件不可用: " + content.audio_url + "]";
                         }
                     } else {
                         // 默认处理
@@ -191,9 +219,17 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
         
         // 设置HTTP头
         struct curl_slist* headers = nullptr;
-        headers = curl_slist_append(headers, ("Authorization: Bearer " + api_key_).c_str());
+        if (shouldUseLocalAPI()) {
+            // 本地API可能不需要特定的认证头，或者使用简单的Bearer token
+            if (!api_key_.empty()) {
+                headers = curl_slist_append(headers, ("Authorization: Bearer " + api_key_).c_str());
+            }
+        } else {
+            // 阿里云DashScope需要特定的认证头
+            headers = curl_slist_append(headers, ("Authorization: Bearer " + api_key_).c_str());
+            headers = curl_slist_append(headers, "X-DashScope-SSE: disable");
+        }
         headers = curl_slist_append(headers, "Content-Type: application/json");
-        headers = curl_slist_append(headers, "X-DashScope-SSE: disable");
         
         // 设置curl选项
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -214,7 +250,7 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
         
         if (res != CURLE_OK) {
             std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-            response.content = "Error: Failed to call Qwen API: " + std::string(curl_easy_strerror(res));
+            response.content = "Error: Failed to call API: " + std::string(curl_easy_strerror(res));
         } else {
             long response_code;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
@@ -271,16 +307,36 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
                                                      &response_json, &errs);
                 
                 if (parsingSuccessful) {
-                    if (response_json.isMember("choices") && response_json["choices"].isArray() && 
-                        response_json["choices"].size() > 0) {
-                        response.content = response_json["choices"][0]["message"]["content"].asString();
-                    } else if (response_json.isMember("error") && response_json["error"].isMember("message")) {
-                        response.content = "Error: " + response_json["error"]["message"].asString();
+                    // 添加类型检查
+                    if (response_json.isObject()) {
+                        if (response_json.isMember("choices") && response_json["choices"].isArray() && 
+                            response_json["choices"].size() > 0) {
+                            Json::Value choice = response_json["choices"][0];
+                            // 确保choice是对象类型
+                            if (choice.isObject()) {
+                                if (choice.isMember("message") && choice["message"].isMember("content")) {
+                                    response.content = choice["message"]["content"].asString();
+                                } else if (choice.isMember("delta") && choice["delta"].isMember("content")) {
+                                    response.content = choice["delta"]["content"].asString();
+                                }
+                            }
+                        } else if (response_json.isMember("error")) {
+                            // 确保error是对象类型
+                            if (response_json["error"].isObject() && response_json["error"].isMember("message")) {
+                                response.content = "Error: " + response_json["error"]["message"].asString();
+                            } else {
+                                response.content = "Error: " + response_json["error"].asString();
+                            }
+                        } else {
+                            response.content = "Error: Invalid response format";
+                        }
                     } else {
-                        response.content = "Error: Invalid response format";
+                        response.content = "Error: Response is not a JSON object";
                     }
                 } else {
                     response.content = "Error: Failed to parse API response: " + errs;
+                    // 添加响应内容以便调试
+                    std::cerr << "Response content: " << response_string << std::endl;
                 }
             }
         }
@@ -302,8 +358,16 @@ QwenEmbeddingResponse QwenAPI::generate_embeddings(const QwenEmbeddingRequest& r
     QwenEmbeddingResponse response;
     
     if (curl) {
-        // 构建请求URL
-        std::string url = base_url_ + "/compatible-mode/v1/embeddings";
+        // 确定使用的API端点
+        std::string url;
+        if (shouldUseLocalAPI()) {
+            // 使用本地API
+            ConfigManager& config_manager = ConfigManager::getInstance();
+            url = config_manager.getLocalApiUrl() + "/v1/embeddings";
+        } else {
+            // 使用阿里云DashScope API
+            url = base_url_ + "/compatible-mode/v1/embeddings";
+        }
         
         // 构建JSON请求体
         Json::Value root;
@@ -322,7 +386,15 @@ QwenEmbeddingResponse QwenAPI::generate_embeddings(const QwenEmbeddingRequest& r
         
         // 设置HTTP头
         struct curl_slist* headers = nullptr;
-        headers = curl_slist_append(headers, ("Authorization: Bearer " + api_key_).c_str());
+        if (shouldUseLocalAPI()) {
+            // 本地API可能不需要特定的认证头，或者使用简单的Bearer token
+            if (!api_key_.empty()) {
+                headers = curl_slist_append(headers, ("Authorization: Bearer " + api_key_).c_str());
+            }
+        } else {
+            // 阿里云DashScope需要特定的认证头
+            headers = curl_slist_append(headers, ("Authorization: Bearer " + api_key_).c_str());
+        }
         headers = curl_slist_append(headers, "Content-Type: application/json");
         
         // 设置curl选项
@@ -344,7 +416,7 @@ QwenEmbeddingResponse QwenAPI::generate_embeddings(const QwenEmbeddingRequest& r
         
         if (res != CURLE_OK) {
             std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-            response.message = "Error: Failed to call Qwen Embedding API: " + std::string(curl_easy_strerror(res));
+            response.message = "Error: Failed to call Embedding API: " + std::string(curl_easy_strerror(res));
         } else {
             long response_code;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
@@ -360,27 +432,42 @@ QwenEmbeddingResponse QwenAPI::generate_embeddings(const QwenEmbeddingRequest& r
                                                  &response_json, &errs);
             
             if (parsingSuccessful) {
-                if (response_json.isMember("data") && response_json["data"].isArray()) {
-                    for (const auto& item : response_json["data"]) {
-                        QwenEmbeddingData data;
-                        data.index = item["index"].asInt();
-                        
-                        Json::Value embedding = item["embedding"];
-                        if (embedding.isArray()) {
-                            for (const auto& val : embedding) {
-                                data.embedding.push_back(val.asFloat());
+                // 添加类型检查
+                if (response_json.isObject()) {
+                    if (response_json.isMember("data") && response_json["data"].isArray()) {
+                        for (const auto& item : response_json["data"]) {
+                            // 确保item是对象类型
+                            if (item.isObject()) {
+                                QwenEmbeddingData data;
+                                data.index = item.isMember("index") ? item["index"].asInt() : 0;
+                                
+                                Json::Value embedding = item["embedding"];
+                                if (embedding.isArray()) {
+                                    for (const auto& val : embedding) {
+                                        data.embedding.push_back(val.asFloat());
+                                    }
+                                }
+                                
+                                response.data.push_back(data);
                             }
                         }
-                        
-                        response.data.push_back(data);
+                    } else if (response_json.isMember("error")) {
+                        // 确保error是对象类型
+                        if (response_json["error"].isObject() && response_json["error"].isMember("message")) {
+                            response.message = "Error: " + response_json["error"]["message"].asString();
+                        } else {
+                            response.message = "Error: " + response_json["error"].asString();
+                        }
+                    } else {
+                        response.message = "Error: Invalid response format";
                     }
-                } else if (response_json.isMember("error") && response_json["error"].isMember("message")) {
-                    response.message = "Error: " + response_json["error"]["message"].asString();
                 } else {
-                    response.message = "Error: Invalid response format";
+                    response.message = "Error: Response is not a JSON object";
                 }
             } else {
                 response.message = "Error: Failed to parse API response: " + errs;
+                // 添加响应内容以便调试
+                std::cerr << "Response content: " << response_string << std::endl;
             }
         }
         

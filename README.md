@@ -25,6 +25,7 @@ MIRIX是一个仿人类记忆系统的多模态数据处理框架，能够捕获
 - **通义千问API**：集成Qwen大模型进行文本处理
 - **向量检索**：支持基于向量的相似性搜索
 - **多模态处理**：支持图像、音频和文本的联合处理
+- **本地API支持**：支持OpenAI兼容的本地服务调用
 
 ### 数据管理
 - **SQLite数据库**：使用SQLite进行数据持久化存储
@@ -40,8 +41,8 @@ MIRIX是一个仿人类记忆系统的多模态数据处理框架，能够捕获
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
-│                       模型与AI层                            │
-│  模型管理器  QwenAPI接口  嵌入索引管理器                    │
+│                    模型与AI管理层                          │
+│  模型管理器  QwenAPI接口  嵌入索引管理器  CLIP处理器        │
 └─────────────────────────┬───────────────────────────────────┘
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
@@ -56,260 +57,140 @@ MIRIX是一个仿人类记忆系统的多模态数据处理框架，能够捕获
                           │
 ┌─────────────────────────▼───────────────────────────────────┐
 │                      数据采集层                             │
-│  摄像头 音频 屏幕活动 剪贴板 系统事件                       │
+│  摄像头 音频 屏幕活动 系统事件                              │
 └─────────────────────────────────────────────────────────────┘
 ```
-
-## 安装与构建
-
-### 系统要求
-- macOS 10.15+ / Ubuntu 18.04+ / Windows 10+
-- CMake 3.10+
-- GCC 7.0+ / Clang 6.0+ / MSVC 2017+
-- OpenCV 4.0+
-- PortAudio
-- SQLite3
-
-### 依赖安装
-
-#### macOS
-```bash
-# 使用Homebrew安装依赖
-brew install cmake opencv portaudio sqlite3
-```
-
-#### Ubuntu
-```bash
-# 使用apt安装依赖
-sudo apt update
-sudo apt install cmake libopencv-dev portaudio19-dev libsqlite3-dev
-```
-
-### 构建项目
-```bash
-# 克隆项目
-git clone <repository-url>
-cd mirix-cpp
-
-# 创建构建目录
-mkdir build
-cd build
-
-# 配置和构建
-cmake ..
-make
-```
-
-## 使用方法
-
-### 运行演示程序
-构建完成后，可以运行以下演示程序：
-
-1. **多模态演示**：
-   ```bash
-   ./multimodal_demo
-   ```
-
-2. **简单多模态演示**：
-   ```bash
-   ./simple_multimodal_demo
-   ```
-
-3. **真实多模态演示**：
-   ```bash
-   ./real_multimodal_demo
-   ```
-
-### 运行测试程序
-```bash
-# 运行各类测试
-./test_memory_managers
-./test_agents
-./test_multimodal
-./test_long_term_memory
-./test_content_metadata
-```
-
-## 文档
-
-详细的系统文档可以在`docs`目录中找到：
-
-- [架构设计文档](docs/architecture.md) - 系统整体架构和模块设计
-- [数据库设计文档](docs/database.md) - 数据库表结构和管理机制
-- [多模态处理文档](docs/multimodal.md) - 多模态数据处理机制
-- [记忆系统文档](docs/memory.md) - 记忆系统设计和实现
-- [测试文档](docs/testing.md) - 测试策略和方法
-- [改进建议文档](docs/improvements.md) - 系统改进建议和规划
 
 ## 项目结构
 
 ```
 mirix-cpp/
-├── src/                    # 源代码目录
-│   ├── agents/            # 代理模块
-│   ├── capture/           # 数据采集模块
-│   ├── database/          # 数据库模块
-│   ├── models/            # AI模型模块
-│   ├── utils/             # 工具模块
-│   └── ...                # 其他源文件
-├── docs/                  # 文档目录
-├── build/                 # 构建目录
-├── CMakeLists.txt         # CMake构建配置
-└── README.md             # 项目说明文件
+├── CMakeLists.txt              # 构建配置文件
+├── README.md                   # 项目说明文档
+├── DETAILS.md                  # 详细设计文档
+├── config.ini                  # 配置文件
+├── init.sql                    # 数据库初始化脚本
+├── docs/                       # 详细文档目录
+│   ├── architecture.md         # 系统架构文档
+│   ├── database.md             # 数据库设计文档
+│   ├── memory.md               # 记忆系统文档
+│   ├── multimodal.md           # 多模态处理文档
+│   ├── testing.md              # 测试文档
+│   └── improvements.md         # 改进建议文档
+├── src/                        # 源代码目录
+│   ├── agents/                 # 代理相关代码
+│   ├── api/                    # API接口代码
+│   ├── capture/                # 数据捕获代码
+│   ├── cli/                    # 命令行界面代码
+│   ├── database/               # 数据库相关代码
+│   │   ├── core/               # 核心数据库功能
+│   │   ├── initialization/     # 数据库初始化
+│   │   └── managers/           # 数据库管理器
+│   ├── gui/                    # 图形界面代码
+│   ├── models/                 # AI模型相关代码
+│   ├── storage/                # 存储管理代码
+│   └── utils/                  # 工具类代码
+├── test/                       # 测试代码目录
+│   ├── test_embedding_functionality.cpp      # 基础嵌入功能测试
+│   ├── test_embedding_comprehensive.cpp      # 综合嵌入功能测试
+│   ├── test_vector_serializer.cpp            # 向量序列化测试
+│   ├── test_clip_processor.cpp               # CLIP处理器测试
+│   ├── test_chat_with_model.cpp              # 模型对话测试
+│   ├── test_chat_with_auto_capture.cpp       # 自动捕获功能测试
+│   ├── test_real_multimodal_demo.cpp         # 多模态演示测试
+│   ├── test_initialize_memories.cpp          # 初始化记忆测试
+│   └── test_system_initialization.cpp        # 系统初始化测试
+├── database/                   # 数据库文件目录
+├── captures/                   # 捕获数据存储目录
+└── test_images/                # 测试图像目录
 ```
 
-## 贡献
+## 安装与构建
 
-欢迎提交Issue和Pull Request来改进MIRIX系统。
+### 系统要求
+- C++17 或更高版本
+- CMake 3.10 或更高版本
+- SQLite3
+- OpenSSL
+- cURL
+- PortAudio
+- OpenCV
+- FAISS (Facebook AI Similarity Search)
 
-## 许可证
+### 构建步骤
 
-[待定]
-
-## 联系方式
-
-如有问题，请联系项目维护者。
-# MIRIX - 智能记忆系统
-
-MIRIX是一个先进的记忆管理人工智能系统，旨在提供全面的记忆存储、检索和管理功能。
-
-## 功能特性
-
-- 多种记忆类型管理（核心记忆、情景记忆、语义记忆、程序性记忆、资源记忆、知识库等）
-- 数据库存储和管理
-- AI模型集成（支持真实API和模拟模式）
-- 命令行界面和API服务
-- 多模态数据处理（文本、图像等）
-
-## 配置说明
-
-系统通过`config.ini`文件进行配置:
-
-```ini
-# MIRIX配置文件
-
-[api]
-key=your_api_key_here
-
-[model]
-text_model_name=qwen-plus
-embedding_model_name=text-embedding-v1
-multimodal_model_name=qwen-vl-plus
-
-[database]
-db_path=mirix.db
-```
-
-### 获取API密钥
-
-1. 访问阿里云百炼平台 (https://help.aliyun.com/zh/bailian)
-2. 创建应用并获取API密钥
-3. 将密钥填入config.ini文件的`key`字段
-
-### 配置模型参数
-
-系统支持三种类型的模型:
-- 文本模型: 用于文本生成任务
-- 嵌入模型: 用于文本嵌入向量生成
-- 多模态模型: 用于图像和文本混合处理
-
-## 编译项目
-
+1. 克隆项目仓库：
 ```bash
+git clone <repository_url>
 cd mirix-cpp
+```
+
+2. 创建构建目录并进入：
+```bash
 mkdir build
 cd build
+```
+
+3. 运行CMake配置：
+```bash
 cmake ..
+```
+
+4. 编译项目：
+```bash
 make
 ```
 
-## 运行方式
+## 使用方法
 
-### 1. 交互式模式
+构建完成后，可以在build目录下找到以下可执行文件：
 
-这是主要的用户交互方式，支持实时对话:
+- `real_multimodal_demo` - 多模态演示程序
+- `initialize_memories` - 初始化记忆系统
+- `test_embedding` - 基础嵌入功能测试
+- `test_vector_serializer` - 向量序列化测试
+- `test_embedding_comprehensive` - 综合嵌入功能测试
+- `test_clip_processor` - CLIP处理器测试
+- `test_chat_with_model` - 模型对话测试
+- `test_chat_with_auto_capture` - 自动捕获功能测试
+- `test_initialize_memories` - 初始化记忆测试
+- `test_system_initialization` - 系统初始化测试
 
+运行任一程序：
 ```bash
-./mirix_interactive
+./<executable_name>
 ```
 
-在交互式模式中，您可以:
-- 输入文本与系统对话
-- 使用命令控制程序行为
-- 实时查看系统响应
+## 配置说明
 
-### 2. 命令行界面模式
+项目使用 `config.ini` 文件进行配置，主要配置项包括：
 
-提供完整的命令行管理功能:
+- API密钥设置
+- 模型名称配置
+- 数据库路径设置
 
-```bash
-./mirix_cli
-```
+确保在运行程序前正确配置该文件。
 
-可用命令:
-- `help` - 显示帮助信息
-- `status` - 显示系统状态
-- `set_api_key <key>` - 设置API密钥
-- `quit`/`exit` - 退出程序
+## 文档
 
-### 3. 演示程序
+详细的系统文档可以在 `docs/` 目录中找到：
 
-展示系统核心功能:
+- [架构文档](docs/architecture.md)
+- [数据库设计](docs/database.md)
+- [记忆系统](docs/memory.md)
+- [多模态处理](docs/multimodal.md)
+- [测试说明](docs/testing.md)
+- [改进建议](docs/improvements.md)
 
-```bash
-./demo
-```
+## 测试
 
-### 4. API服务模式
-
-启动RESTful API服务:
+项目包含完整的测试套件，可以使用以下命令运行测试：
 
 ```bash
-./mirix_main
+make test
 ```
 
-默认端口为8080，可通过代码修改。
-
-## 测试程序
-
-项目包含多个测试程序:
-
-- `test_mirix` - 综合测试
-- `test_database` - 数据库测试
-- `test_memory_managers` - 记忆管理器测试
-- `test_agents` - 代理测试
-- `test_multimodal` - 多模态测试
-- `test_long_term_memory` - 长期记忆测试
-- `test_content_metadata` - 内容元数据测试
-
-运行任一测试程序:
+或者单独运行某个测试程序：
 ```bash
-./test_*
+./<test_executable_name>
 ```
-
-## 开发说明
-
-### 项目结构
-
-- `src/` - 源代码目录
-- `src/database/` - 数据库相关代码
-- `src/models/` - 模型管理代码
-- `src/agents/` - 各类代理实现
-- `src/memory/` - 记忆管理代码
-- `src/capture/` - 数据采集模块
-- `src/api/` - API服务代码
-- `src/cli/` - 命令行界面代码
-
-### 依赖项
-
-- C++17或更高版本
-- SQLite3
-- cURL
-- JSONCPP
-- CMake 3.10或更高版本
-
-## 注意事项
-
-1. 首次运行时系统会自动创建数据库
-2. 在未配置API密钥的情况下，系统将使用模拟响应
-3. 配置API密钥后，系统将自动切换到真实模型调用

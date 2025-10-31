@@ -141,29 +141,18 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
     }
 
     // 创建资源记忆表
-    std::string dropResourceMemoryTable = "DROP TABLE IF EXISTS resource_memory;";
-    if (!storage.executeNonQuery(dropResourceMemoryTable)) {
-        std::cerr << "Failed to drop resource_memory table" << std::endl;
-        return false;
-    }
-    
     std::string createResourceMemoryTable = R"(
-        CREATE TABLE resource_memory (
+        CREATE TABLE IF NOT EXISTS resource_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
             session_id INTEGER,
-            filename TEXT NOT NULL,
-            title TEXT NOT NULL,
+            path TEXT NOT NULL,
+            description TEXT,
             resource_type TEXT NOT NULL,
-            summary TEXT,
-            content TEXT,
             size INTEGER,
-            tree_path TEXT,
-            path TEXT,
             metadata TEXT,
             embedding BLOB,
-            last_accessed TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES user(id),
@@ -219,14 +208,8 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
     }
 
     // 创建回忆记忆表
-    std::string dropRecallMemoryTable = "DROP TABLE IF EXISTS recall_memory;";
-    if (!storage.executeNonQuery(dropRecallMemoryTable)) {
-        std::cerr << "Failed to drop recall_memory table" << std::endl;
-        return false;
-    }
-    
     std::string createRecallMemoryTable = R"(
-        CREATE TABLE recall_memory (
+        CREATE TABLE IF NOT EXISTS recall_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
@@ -384,14 +367,8 @@ bool InitDB::createTables(const std::string& dbPath) {
     }
 
     // 创建recall_memory表
-    std::string dropRecallMemoryTable = "DROP TABLE IF EXISTS recall_memory;";
-    if (!storage.executeNonQuery(dropRecallMemoryTable)) {
-        std::cerr << "Failed to drop recall_memory table" << std::endl;
-        return false;
-    }
-    
     std::string createRecallMemoryTable = R"(
-        CREATE TABLE recall_memory (
+        CREATE TABLE IF NOT EXISTS recall_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
@@ -409,7 +386,34 @@ bool InitDB::createTables(const std::string& dbPath) {
     )";
 
     if (!storage.executeNonQuery(createRecallMemoryTable)) {
-        std::cerr << "Failed to create recall_memory table" << std::endl;
+        return false;
+    }
+
+    // 为recall_memory表添加索引以优化查询性能
+    std::string indexRecallMemoryUserId = R"(
+        CREATE INDEX IF NOT EXISTS idx_recall_memory_user_id ON recall_memory (user_id);
+    )";
+    
+    if (!storage.executeNonQuery(indexRecallMemoryUserId)) {
+        std::cerr << "Failed to create index on recall_memory.user_id" << std::endl;
+        return false;
+    }
+    
+    std::string indexRecallMemoryCreatedAt = R"(
+        CREATE INDEX IF NOT EXISTS idx_recall_memory_created_at ON recall_memory (created_at);
+    )";
+    
+    if (!storage.executeNonQuery(indexRecallMemoryCreatedAt)) {
+        std::cerr << "Failed to create index on recall_memory.created_at" << std::endl;
+        return false;
+    }
+    
+    std::string indexRecallMemoryMessageType = R"(
+        CREATE INDEX IF NOT EXISTS idx_recall_memory_message_type ON recall_memory (message_type);
+    )";
+    
+    if (!storage.executeNonQuery(indexRecallMemoryMessageType)) {
+        std::cerr << "Failed to create index on recall_memory.message_type" << std::endl;
         return false;
     }
 
@@ -513,29 +517,18 @@ bool InitDB::createTables(const std::string& dbPath) {
     }
 
     // 创建resource_memory表
-    std::string dropResourceMemoryTable = "DROP TABLE IF EXISTS resource_memory;";
-    if (!storage.executeNonQuery(dropResourceMemoryTable)) {
-        std::cerr << "Failed to drop resource_memory table" << std::endl;
-        return false;
-    }
-    
     std::string createResourceMemoryTable = R"(
-        CREATE TABLE resource_memory (
+        CREATE TABLE IF NOT EXISTS resource_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
             session_id INTEGER,
-            filename TEXT NOT NULL,
-            title TEXT NOT NULL,
+            path TEXT NOT NULL,
+            description TEXT,
             resource_type TEXT NOT NULL,
-            summary TEXT,
-            content TEXT,
             size INTEGER,
-            tree_path TEXT,
-            path TEXT,
             metadata TEXT,
             embedding BLOB,
-            last_accessed TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES user(id),
@@ -546,6 +539,34 @@ bool InitDB::createTables(const std::string& dbPath) {
 
     if (!storage.executeNonQuery(createResourceMemoryTable)) {
         std::cerr << "Failed to create resource_memory table" << std::endl;
+        return false;
+    }
+
+    // 为resource_memory表添加索引以优化查询性能
+    std::string indexResourceMemoryUserId = R"(
+        CREATE INDEX IF NOT EXISTS idx_resource_memory_user_id ON resource_memory (user_id);
+    )";
+    
+    if (!storage.executeNonQuery(indexResourceMemoryUserId)) {
+        std::cerr << "Failed to create index on resource_memory.user_id" << std::endl;
+        return false;
+    }
+    
+    std::string indexResourceMemoryCreatedAt = R"(
+        CREATE INDEX IF NOT EXISTS idx_resource_memory_created_at ON resource_memory (created_at);
+    )";
+    
+    if (!storage.executeNonQuery(indexResourceMemoryCreatedAt)) {
+        std::cerr << "Failed to create index on resource_memory.created_at" << std::endl;
+        return false;
+    }
+    
+    std::string indexResourceMemoryResourceType = R"(
+        CREATE INDEX IF NOT EXISTS idx_resource_memory_resource_type ON resource_memory (resource_type);
+    )";
+    
+    if (!storage.executeNonQuery(indexResourceMemoryResourceType)) {
+        std::cerr << "Failed to create index on resource_memory.resource_type" << std::endl;
         return false;
     }
 
@@ -637,6 +658,34 @@ bool InitDB::createTables(const std::string& dbPath) {
 
     if (!storage.executeNonQuery(createAuditLogTable)) {
         std::cerr << "Failed to create audit_log table" << std::endl;
+        return false;
+    }
+
+    // 为其他表也添加用户ID索引
+    std::string indexCoreMemoryUserId = R"(
+        CREATE INDEX IF NOT EXISTS idx_core_memory_user_id ON core_memory_block (user_id);
+    )";
+    
+    if (!storage.executeNonQuery(indexCoreMemoryUserId)) {
+        std::cerr << "Failed to create index on core_memory_block.user_id" << std::endl;
+        return false;
+    }
+    
+    std::string indexEpisodicMemoryUserId = R"(
+        CREATE INDEX IF NOT EXISTS idx_episodic_memory_user_id ON episodic_memory (user_id);
+    )";
+    
+    if (!storage.executeNonQuery(indexEpisodicMemoryUserId)) {
+        std::cerr << "Failed to create index on episodic_memory.user_id" << std::endl;
+        return false;
+    }
+    
+    std::string indexSemanticMemoryUserId = R"(
+        CREATE INDEX IF NOT EXISTS idx_semantic_memory_user_id ON semantic_memory (user_id);
+    )";
+    
+    if (!storage.executeNonQuery(indexSemanticMemoryUserId)) {
+        std::cerr << "Failed to create index on semantic_memory.user_id" << std::endl;
         return false;
     }
 

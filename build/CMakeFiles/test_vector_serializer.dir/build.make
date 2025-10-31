@@ -72,30 +72,31 @@ include CMakeFiles/test_vector_serializer.dir/flags.make
 CMakeFiles/test_vector_serializer.dir/codegen:
 .PHONY : CMakeFiles/test_vector_serializer.dir/codegen
 
-CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o: CMakeFiles/test_vector_serializer.dir/flags.make
-CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp
-CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o: CMakeFiles/test_vector_serializer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o -MF CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o.d -o CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp
+CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o: CMakeFiles/test_vector_serializer.dir/flags.make
+CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o: /Users/ranpin/code/mirix-cpp/test/test_vector_serializer.cpp
+CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o: CMakeFiles/test_vector_serializer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o -MF CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o.d -o CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o -c /Users/ranpin/code/mirix-cpp/test/test_vector_serializer.cpp
 
-CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp > CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.i
+CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/test/test_vector_serializer.cpp > CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.i
 
-CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_vector_serializer.cpp -o CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.s
+CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/test/test_vector_serializer.cpp -o CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.s
 
 # Object files for target test_vector_serializer
 test_vector_serializer_OBJECTS = \
-"CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o"
+"CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o"
 
 # External object files for target test_vector_serializer
 test_vector_serializer_EXTERNAL_OBJECTS =
 
-test_vector_serializer: CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o
+test_vector_serializer: CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o
 test_vector_serializer: CMakeFiles/test_vector_serializer.dir/build.make
 test_vector_serializer: libmirix_lib.a
+test_vector_serializer: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
 test_vector_serializer: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
 test_vector_serializer: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
 test_vector_serializer: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd

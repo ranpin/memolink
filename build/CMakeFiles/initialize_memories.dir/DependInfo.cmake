@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp" "CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o" "gcc" "CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o.d"
+  "/Users/ranpin/code/mirix-cpp/test/test_initialize_memories.cpp" "CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o" "gcc" "CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

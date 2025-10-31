@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o"
-  "CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o.d"
+  "CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o"
+  "CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o.d"
   "initialize_memories"
   "initialize_memories.pdb"
 )

@@ -1,250 +1,175 @@
-# MIRIX记忆系统设计文档
+# 记忆系统文档
+
+## 概述
+
+MIRIX系统实现了仿人类的完整记忆系统，包括8种不同类型的记忆。每种记忆类型都有专门的数据表和管理器，用于存储和管理不同类型的信息。
+
+所有记忆数据统一存储在项目根目录下的[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中，确保数据持久化且不会因构建目录清理而丢失。
+
+## 记忆类型详解
+
+### 1. 回忆记忆 (Recall Memory)
+存储对话历史和记忆检索过程，是系统中最活跃的记忆类型。
+
+**用途**：
+- 存储用户与AI的对话历史
+- 记录记忆检索过程和结果
+- 提供上下文信息用于对话生成
+
+**数据表**：recall_memory
+**管理器**：RecallMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- session_id：会话ID
+- message_type：消息类型(user_message, ai_response)
+- content：消息内容
+- embedding：消息内容的向量表示
+
+### 2. 资源记忆 (Resource Memory)
+存储多媒体资源文件的元信息，包括图像、音频、屏幕截图等。
+
+**用途**：
+- 存储图像、音频等多媒体资源的元信息
+- 为多模态处理提供资源索引
+- 支持跨模态搜索和检索
+
+**数据表**：resource_memory
+**管理器**：ResourceMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- session_id：会话ID
+- path：资源文件路径
+- resource_type：资源类型(image, audio, screenshot)
+- description：资源描述
+- embedding：资源描述的向量表示
+
+### 3. 核心记忆 (Core Memory)
+存储最基本和重要的信息块。
+
+**用途**：
+- 存储用户的核心个人信息
+- 存储系统配置信息
+- 提供快速访问的关键信息
+
+**数据表**：core_memory_block
+**管理器**：CoreMemoryBlockManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- label：信息块标签
+- value：信息块值
+
+### 4. 事件记忆 (Episodic Memory)
+存储个人经历和事件相关信息。
+
+**用途**：
+- 存储用户的个人经历
+- 记录重要事件和时间点
+- 支持基于时间的回忆和检索
+
+**数据表**：episodic_memory
+**管理器**：EpisodicMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- timestamp：事件时间戳
+- summary：事件摘要
+- details：事件详细信息
+- event_type：事件类型
+
+### 5. 语义记忆 (Semantic Memory)
+存储概念性知识和事实信息。
+
+**用途**：
+- 存储概念性知识
+- 存储事实信息
+- 支持知识推理和检索
+
+**数据表**：semantic_memory
+**管理器**：SemanticMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- name：知识名称
+- summary：知识摘要
+- details：知识详细信息
+
+### 6. 程序记忆 (Procedural Memory)
+存储技能和过程性知识。
+
+**用途**：
+- 存储技能信息
+- 存储过程性知识
+- 支持技能学习和执行
 
-## 1. 概述
+**数据表**：procedural_memory
+**管理器**：ProceduralMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- title：技能标题
+- summary：技能摘要
+- steps：执行步骤
 
-MIRIX记忆系统基于人类记忆模型设计，包含多种类型的记忆存储，用于存储和管理不同类型的信息。系统通过模拟人类记忆的工作方式，实现信息的存储、检索和管理。
+### 7. 知识库 (Knowledge Vault)
+存储结构化知识和信息。
 
-## 2. 记忆系统架构
+**用途**：
+- 存储结构化知识
+- 存储敏感信息（加密存储）
+- 支持知识分类和检索
 
-### 2.1 记忆类型
+**数据表**：knowledge_vault
+**管理器**：KnowledgeVaultManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- caption：知识标题
+- entry_type：条目类型
+- source：来源
+- sensitivity：敏感性级别
+- encrypted_value：加密值
 
-#### 2.1.1 核心记忆 (Core Memory)
-存储最基本和重要的信息块，是系统运行的核心数据。
+### 8. 归档记忆 (Archival Memory)
+存储长期保存的历史数据。
 
-**管理器**: CoreMemoryBlockManager
-**存储表**: core_memory_block
+**用途**：
+- 存储历史数据
+- 支持长期数据保存
+- 减轻活跃记忆系统的负担
 
-**特征**:
-- 高优先级存储
-- 不易丢失
-- 快速访问
+**数据表**：archival_memory
+**管理器**：ArchivalMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- content：归档内容
+- archive_date：归档日期
 
-#### 2.1.2 事件记忆 (Episodic Memory)
-存储个人经历和事件相关信息，包含时间、地点、参与者等上下文信息。
+## 记忆管理器
 
-**管理器**: EpisodicMemoryManager
-**存储表**: episodic_memory
+每种记忆类型都有对应的管理器类，负责对该类型记忆的增删改查操作。所有管理器都通过StorageManager与数据库进行交互，确保数据的一致性和完整性。
 
-**特征**:
-- 时间序列化存储
-- 包含丰富上下文
-- 支持情感标记
+## 向量表示
 
-#### 2.1.3 语义记忆 (Semantic Memory)
-存储概念性知识和事实信息，如词汇、概念、规则等。
+为了支持向量检索功能，系统为回忆记忆和资源记忆添加了向量表示(embedding字段)。这些向量通过以下方式生成：
 
-**管理器**: SemanticMemoryManager
-**存储表**: semantic_memory
+1. **文本向量**：使用TextEmbeddingGenerator生成
+2. **图像向量**：通过CLIPProcessor生成图像描述，再基于描述生成向量
 
-**特征**:
-- 结构化知识存储
-- 概念关联网络
-- 分类管理
+所有向量都统一为1024维，并通过VectorSerializer进行序列化存储。
 
-#### 2.1.4 程序记忆 (Procedural Memory)
-存储技能和过程性知识，如如何执行特定任务。
+## 记忆检索
 
-**管理器**: ProceduralMemoryManager
-**存储表**: procedural_memory
+系统支持多种记忆检索方式：
 
-**特征**:
-- 步骤化存储
-- 熟练度跟踪
-- 条件触发
+1. **基于内容的检索**：直接查询记忆内容
+2. **基于向量的检索**：使用向量相似性搜索
+3. **基于时间的检索**：根据时间范围检索记忆
+4. **跨模态检索**：支持文本到图像、图像到文本的检索
 
-#### 2.1.5 资源记忆 (Resource Memory)
-存储多媒体资源文件的元信息，包括图像、音频、视频等。
+## 记忆持久化
 
-**管理器**: ResourceMemoryManager
-**存储表**: resource_memory
-
-**特征**:
-- 文件元信息管理
-- 多媒体类型支持
-- 路径索引
-
-#### 2.1.6 知识库 (Knowledge Vault)
-存储结构化知识和信息，如文档、文章等。
-
-**管理器**: KnowledgeVaultManager
-**存储表**: knowledge_vault
-
-**特征**:
-- 结构化存储
-- 来源追踪
-- 可靠性评估
-
-#### 2.1.7 归档记忆 (Archival Memory)
-存储长期保存的历史数据，用于备份和历史查询。
-
-**管理器**: ArchivalMemoryManager
-**存储表**: archival_memory
-
-**特征**:
-- 长期存储
-- 压缩优化
-- 策略管理
-
-#### 2.1.8 回忆记忆 (Recall Memory)
-存储记忆检索过程和结果，用于优化检索算法。
-
-**管理器**: RecallMemoryManager
-**存储表**: recall_memory
-
-**特征**:
-- 检索过程记录
-- 相关性评分
-- 性能监控
-
-## 3. 记忆管理器设计
-
-### 3.1 通用接口
-所有记忆管理器都实现以下通用接口：
-
-```cpp
-class MemoryManager {
-public:
-    virtual bool add(...) = 0;
-    virtual bool update(...) = 0;
-    virtual bool delete(...) = 0;
-    virtual MemoryRecord get(...) = 0;
-    virtual std::vector<MemoryRecord> search(...) = 0;
-};
-```
-
-### 3.2 核心方法
-
-#### 3.2.1 添加记忆 (add)
-将新的记忆信息添加到系统中。
-
-参数：
-- userId: 用户ID
-- 相关内容数据
-- 元数据
-
-返回值：
-- bool: 操作是否成功
-
-#### 3.2.2 更新记忆 (update)
-更新已存在的记忆信息。
-
-参数：
-- memoryId: 记忆ID
-- 更新的内容数据
-- 元数据
-
-返回值：
-- bool: 操作是否成功
-
-#### 3.2.3 删除记忆 (delete)
-从系统中删除记忆信息。
-
-参数：
-- memoryId: 记忆ID
-
-返回值：
-- bool: 操作是否成功
-
-#### 3.2.4 获取记忆 (get)
-根据ID获取特定的记忆信息。
-
-参数：
-- memoryId: 记忆ID
-
-返回值：
-- MemoryRecord: 记忆记录
-
-#### 3.2.5 搜索记忆 (search)
-根据关键词搜索相关的记忆信息。
-
-参数：
-- userId: 用户ID
-- keyword: 搜索关键词
-
-返回值：
-- std::vector<MemoryRecord>: 匹配的记忆记录列表
-
-## 4. 记忆存储策略
-
-### 4.1 存储优先级
-1. 核心记忆：最高优先级，持久化存储
-2. 事件记忆：高优先级，长期存储
-3. 语义记忆：中等优先级，长期存储
-4. 程序记忆：中等优先级，长期存储
-5. 资源记忆：根据资源重要性分级存储
-6. 知识库：高优先级，长期存储
-7. 归档记忆：低优先级，压缩存储
-8. 回忆记忆：中等优先级，定期清理
-
-### 4.2 存储优化
-- 使用索引提高检索速度
-- 定期清理过期数据
-- 压缩存储大文件元信息
-- 分区存储不同类型记忆
-
-## 5. 记忆检索机制
-
-### 5.1 检索方式
-1. 精确匹配检索
-2. 模糊匹配检索
-3. 向量相似性检索
-4. 时间范围检索
-5. 分类标签检索
-
-### 5.2 检索优化
-- 使用嵌入向量进行语义检索
-- 建立多级索引提高检索效率
-- 缓存常用检索结果
-- 并行处理多个检索请求
-
-## 6. 记忆安全机制
-
-### 6.1 访问控制
-- 用户权限验证
-- 记忆所有权检查
-- 敏感信息过滤
-
-### 6.2 数据保护
-- 数据加密存储
-- 访问日志记录
-- 备份恢复机制
-
-## 7. 记忆生命周期管理
-
-### 7.1 创建阶段
-1. 数据采集
-2. 数据处理
-3. 元数据生成
-4. 存储到相应记忆表
-
-### 7.2 使用阶段
-1. 记忆检索
-2. 记忆更新
-3. 记忆关联
-
-### 7.3 维护阶段
-1. 定期清理
-2. 数据备份
-3. 性能优化
-
-### 7.4 归档阶段
-1. 数据迁移
-2. 压缩存储
-3. 长期保存
-
-## 8. 记忆系统扩展
-
-### 8.1 新记忆类型添加
-1. 创建新的记忆表
-2. 实现对应的管理器
-3. 集成到系统中
-
-### 8.2 检索算法优化
-1. 改进向量嵌入算法
-2. 优化索引结构
-3. 引入机器学习模型
-
-### 8.3 存储扩展
-1. 支持分布式存储
-2. 集成云存储服务
-3. 实现存储分层策略
+所有记忆数据都持久化存储在SQLite数据库中，确保系统重启后数据不会丢失。数据库文件统一存储在项目根目录下的[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中。

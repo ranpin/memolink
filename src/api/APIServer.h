@@ -106,7 +106,7 @@ public:
                                const std::string& content, const std::string& resource_type, 
                                const std::string& path, const std::string& metadata);
     bool delete_resource_memory(int memory_id);
-    std::vector<ResourceMemoryRecord> list_resource_memories(int user_id);
+    std::vector<ResourceMemoryManager::ResourceMemoryItem> list_resource_memories(int user_id);
     
     // 知识库API
     int add_knowledge_vault_entry(int user_id, int agent_id, const std::string& title, 

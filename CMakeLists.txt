@@ -37,15 +37,15 @@ include_directories(${SQLITE3_INCLUDE_DIRS})
 include_directories(${OPENSSL_INCLUDE_DIR})
 include_directories(${CURL_INCLUDE_DIRS})
 include_directories(${JSONCPP_INCLUDE_DIRS})
+include_directories(/opt/homebrew/Cellar/jsoncpp/1.9.6/include)
 include_directories(${PORTAUDIO_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${FAISS_INCLUDE_DIRS})
 
 # 链接目录
-link_directories(${SQLITE3_LIBRARY_DIRS})
-link_directories(${OPENSSL_LIBRARIES})
 link_directories(${CURL_LIBRARY_DIRS})
 link_directories(${JSONCPP_LIBRARY_DIRS})
+link_directories(/opt/homebrew/Cellar/jsoncpp/1.9.6/lib)
 link_directories(${PORTAUDIO_LIBRARY_DIRS})
 link_directories(${OpenCV_LIBRARY_DIRS})
 link_directories(${FAISS_LIBRARY_DIRS})
@@ -76,6 +76,7 @@ set(SOURCES
     src/models/TextEmbeddingGenerator.cpp
     src/models/VectorSearchManager.cpp
     src/models/EmbeddingIndexManager.cpp
+    src/models/CLIPProcessor.cpp
     src/agents/AgentManager.cpp
     src/agents/AgentWrapper.cpp
     src/agents/ChatAgent.cpp
@@ -98,9 +99,25 @@ set(SOURCES
     src/storage/StorageManager.cpp
     
     # 测试程序
-    src/test_embedding_functionality.cpp
-    src/test_vector_serializer.cpp
-    src/test_embedding_comprehensive.cpp
+    test/test_embedding_functionality.cpp
+    test/test_vector_serializer.cpp
+    test/test_embedding_comprehensive.cpp
+    test/test_clip_processor.cpp
+    test/test_chat_with_model.cpp
+    test/test_chat_with_auto_capture.cpp
+    test/test_system_initialization.cpp
+)
+
+# 移除重复的测试源文件
+list(REMOVE_ITEM SOURCES 
+    src/test_comprehensive.cpp
+    src/test_multimodal_integration.cpp
+    src/test_real_embedding.cpp
+    src/test_real_model_integration.cpp
+    src/test_system_comprehensive.cpp
+    src/test_text_embedding_generator.cpp
+    src/test_vector_search_manager.cpp
+    src/test_vector_search_real_model.cpp
 )
 
 # 处理Objective-C++源文件（如果存在）
@@ -115,10 +132,11 @@ endif()
 # 创建静态库
 add_library(mirix_lib STATIC ${SOURCES})
 target_link_libraries(mirix_lib 
-    ${SQLITE3_LIBRARIES}
+    SQLite::SQLite3
     ${OPENSSL_LIBRARIES}
     ${CURL_LIBRARIES}
     ${JSONCPP_LIBRARIES}
+    jsoncpp  # 添加这一行以确保正确链接JsonCPP库
     ${PORTAUDIO_LIBRARIES}
     ${OpenCV_LIBS}
     ${FAISS_LIBRARIES}
@@ -134,26 +152,37 @@ if(APPLE)
 endif()
 
 # 创建可执行文件并链接
-add_executable(mirix_main src/main.cpp)
-target_link_libraries(mirix_main mirix_lib)
 
-add_executable(cli_main src/cli_main.cpp)
-target_link_libraries(cli_main mirix_lib)
-
-add_executable(real_multimodal_demo src/real_multimodal_demo.cpp)
+add_executable(real_multimodal_demo test/test_real_multimodal_demo.cpp)
 target_link_libraries(real_multimodal_demo mirix_lib)
 
-add_executable(initialize_memories src/initialize_memories.cpp)
+add_executable(initialize_memories test/test_initialize_memories.cpp)
 target_link_libraries(initialize_memories mirix_lib)
 
-add_executable(test_embedding src/test_embedding_functionality.cpp)
+add_executable(test_embedding test/test_embedding_functionality.cpp)
 target_link_libraries(test_embedding mirix_lib)
 
-add_executable(test_vector_serializer src/test_vector_serializer.cpp)
+add_executable(test_vector_serializer test/test_vector_serializer.cpp)
 target_link_libraries(test_vector_serializer mirix_lib)
 
-add_executable(test_embedding_comprehensive src/test_embedding_comprehensive.cpp)
+add_executable(test_embedding_comprehensive test/test_embedding_comprehensive.cpp)
 target_link_libraries(test_embedding_comprehensive mirix_lib)
+
+add_executable(test_clip_processor test/test_clip_processor.cpp)
+target_link_libraries(test_clip_processor mirix_lib)
+
+add_executable(test_chat_with_model test/test_chat_with_model.cpp)
+target_link_libraries(test_chat_with_model mirix_lib)
+
+add_executable(test_chat_with_auto_capture test/test_chat_with_auto_capture.cpp)
+target_link_libraries(test_chat_with_auto_capture mirix_lib)
+
+add_executable(test_initialize_memories test/test_initialize_memories.cpp)
+target_link_libraries(test_initialize_memories mirix_lib)
+
+# 添加新的测试可执行文件
+add_executable(test_system_initialization test/test_system_initialization.cpp)
+target_link_libraries(test_system_initialization mirix_lib)
 
 # GUI 可执行文件
 if(Qt5_FOUND)
@@ -168,19 +197,29 @@ if(Qt5_FOUND)
     endif()
 endif()
 
+# 安装规则
+install(TARGETS real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive test_clip_processor test_chat_with_model test_chat_with_auto_capture test_initialize_memories test_system_initialization
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)
+
 # 添加测试
 enable_testing()
 
 add_test(NAME test_embedding_comprehensive COMMAND test_embedding_comprehensive)
 add_test(NAME test_embedding COMMAND test_embedding)
 add_test(NAME test_vector_serializer COMMAND test_vector_serializer)
+add_test(NAME test_clip_processor COMMAND test_clip_processor)
+add_test(NAME test_chat_with_model COMMAND test_chat_with_model)
+add_test(NAME test_chat_with_auto_capture COMMAND test_chat_with_auto_capture)
+add_test(NAME test_system_initialization COMMAND test_system_initialization)
+add_test(NAME test_cli_main COMMAND test_cli_main)
+add_test(NAME test_initialize_memories COMMAND test_initialize_memories)
+add_test(NAME test_interactive_main COMMAND test_interactive_main)
+add_test(NAME test_main COMMAND test_main)
+add_test(NAME test_real_multimodal_demo COMMAND test_real_multimodal_demo)
 
-# 安装规则
-install(TARGETS mirix_main cli_main real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-)
 
 # 安装头文件
 install(DIRECTORY src/ 

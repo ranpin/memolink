@@ -25,6 +25,10 @@ public:
     std::string getApiKey() const;
     void setApiKey(const std::string& apiKey);
     
+    // 本地API配置
+    std::string getLocalApiUrl() const;
+    void setLocalApiUrl(const std::string& localApiUrl);
+    
     // 数据库配置
     std::string getDatabasePath() const;
     void setDatabasePath(const std::string& dbPath);

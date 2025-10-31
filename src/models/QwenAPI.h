@@ -7,10 +7,10 @@
 
 // 多模态内容支持
 struct QwenContent {
-    std::string type;   // "text"、"image" 或 "audio"
+    std::string type;   // "text"、"image_url" 或 "audio_url"
     std::string text;   // 文本内容（当type为"text"时）
-    std::string image;  // 图像路径或URL（当type为"image"时）
-    std::string audio;  // 音频路径或URL（当type为"audio"时）
+    std::string image_url;  // Base64编码的图像数据URL（当type为"image_url"时）
+    std::string audio_url;  // Base64编码的音频数据URL（当type为"audio_url"时）
 };
 
 struct QwenMessage {
@@ -24,7 +24,7 @@ struct QwenChatCompletionRequest {
     std::vector<QwenMessage> messages;
     float temperature = 0.8;
     float top_p = 0.9;
-    int max_tokens = 1500;
+    int max_tokens = 16384;
 };
 
 struct QwenChatCompletionResponse {
@@ -60,4 +60,8 @@ public:
 private:
     std::string api_key_;
     std::string base_url_;
+    bool use_local_api_;
+    
+    // 辅助方法，用于判断是否使用本地API
+    bool shouldUseLocalAPI() const;
 };

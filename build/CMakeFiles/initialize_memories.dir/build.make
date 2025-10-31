@@ -72,30 +72,31 @@ include CMakeFiles/initialize_memories.dir/flags.make
 CMakeFiles/initialize_memories.dir/codegen:
 .PHONY : CMakeFiles/initialize_memories.dir/codegen
 
-CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o: CMakeFiles/initialize_memories.dir/flags.make
-CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o: /Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp
-CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o: CMakeFiles/initialize_memories.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o -MF CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o.d -o CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o -c /Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp
+CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o: CMakeFiles/initialize_memories.dir/flags.make
+CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o: /Users/ranpin/code/mirix-cpp/test/test_initialize_memories.cpp
+CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o: CMakeFiles/initialize_memories.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o -MF CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o.d -o CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o -c /Users/ranpin/code/mirix-cpp/test/test_initialize_memories.cpp
 
-CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp > CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.i
+CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/test/test_initialize_memories.cpp > CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.i
 
-CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/initialize_memories.cpp -o CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.s
+CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/test/test_initialize_memories.cpp -o CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.s
 
 # Object files for target initialize_memories
 initialize_memories_OBJECTS = \
-"CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o"
+"CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o"
 
 # External object files for target initialize_memories
 initialize_memories_EXTERNAL_OBJECTS =
 
-initialize_memories: CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o
+initialize_memories: CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o
 initialize_memories: CMakeFiles/initialize_memories.dir/build.make
 initialize_memories: libmirix_lib.a
+initialize_memories: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
 initialize_memories: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
 initialize_memories: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
 initialize_memories: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd
