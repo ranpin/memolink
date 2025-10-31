@@ -16,82 +16,97 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::stri
     return total_size;
 }
 
-// 将文件转换为base64编码
-std::string file_to_base64(const std::string& file_path) {
-    // 检查是否已经是base64数据URL格式
-    if (file_path.substr(0, 5) == "data:") {
-        // 如果已经是data URL格式，直接提取base64部分
-        size_t comma_pos = file_path.find(',');
-        if (comma_pos != std::string::npos) {
-            // 返回逗号后的base64数据部分
-            return file_path.substr(comma_pos + 1);
-        }
-        std::cerr << "无效的data URL格式: " << file_path << std::endl;
-        return "";
-    }
-    
-    std::ifstream file(file_path, std::ios::binary);
-    if (!file.is_open()) {
-        std::cerr << "无法打开文件进行base64编码: " << file_path << std::endl;
-        return "";
-    }
-    
-    // 读取文件内容
-    std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(file), {});
-    file.close();
-    
-    if (buffer.empty()) {
-        std::cerr << "文件为空: " << file_path << std::endl;
-        return "";
-    }
-    
-    // 简单的base64编码实现
-    static const char* base64_chars = 
-             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-             "abcdefghijklmnopqrstuvwxyz"
-             "0123456789+/";
-    
+// Base64编码字符表
+static const std::string base64_chars = 
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    "abcdefghijklmnopqrstuvwxyz"
+    "0123456789+/";
+
+// Base64编码函数
+std::string base64_encode(const std::vector<unsigned char>& data) {
     std::string ret;
     int i = 0;
     int j = 0;
     unsigned char char_array_3[3];
     unsigned char char_array_4[4];
-    
-    for (unsigned char c : buffer) {
-        char_array_3[i++] = c;
+
+    auto it = data.begin();
+    while (it != data.end()) {
+        char_array_3[i++] = *(it++);
         if (i == 3) {
             char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
             char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
             char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
             char_array_4[3] = char_array_3[2] & 0x3f;
-            
-            for (i = 0; i < 4; i++) {
+
+            for (i = 0; (i < 4); i++)
                 ret += base64_chars[char_array_4[i]];
-            }
             i = 0;
         }
     }
-    
+
     if (i) {
-        for (j = i; j < 3; j++) {
+        for (j = i; j < 3; j++)
             char_array_3[j] = '\0';
-        }
-        
+
         char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
         char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
         char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
         char_array_4[3] = char_array_3[2] & 0x3f;
-        
-        for (j = 0; j < i + 1; j++) {
+
+        for (j = 0; (j < i + 1); j++)
             ret += base64_chars[char_array_4[j]];
-        }
-        
-        while (i++ < 3) {
+
+        while ((i++ < 3))
             ret += '=';
-        }
+    }
+
+    return ret;
+}
+
+// 将文件转换为base64编码
+std::string file_to_base64(const std::string& file_path) {
+    std::cout << "[Base64编码] 开始处理文件: " << file_path << std::endl;
+    
+    std::ifstream file(file_path, std::ios::binary);
+    if (!file.is_open()) {
+        throw std::runtime_error("无法打开文件: " + file_path);
     }
     
-    return ret;
+    // 检查文件大小
+    file.seekg(0, std::ios::end);
+    size_t file_size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    
+    // 限制文件大小为10MB
+    if (file_size > 10 * 1024 * 1024) {
+        file.close();
+        throw std::runtime_error("文件过大: " + std::to_string(file_size) + " 字节，超过10MB限制");
+    }
+    
+    std::cout << "[Base64编码] 文件打开成功" << std::endl;
+    std::cout << "[Base64编码] 文件大小: " << file_size << " 字节" << std::endl;
+    
+    std::vector<unsigned char> buffer(file_size);
+    file.read(reinterpret_cast<char*>(buffer.data()), file_size);
+    
+    // 检查读取是否成功
+    if (file.gcount() != static_cast<std::streamsize>(file_size)) {
+        file.close();
+        throw std::runtime_error("文件读取不完整: 期望读取 " + std::to_string(file_size) + 
+                                " 字节，实际读取 " + std::to_string(file.gcount()) + " 字节");
+    }
+    
+    file.close();
+    
+    std::cout << "[Base64编码] 文件读取成功，大小: " << file_size << " 字节" << std::endl;
+    
+    std::string encoded_data = base64_encode(buffer);
+    std::cout << "[Base64编码] 编码完成，编码后长度: " << encoded_data.length() << std::endl;
+    // 只输出前100个字符，避免日志过长
+    std::cout << "[Base64编码] 编码数据(前100字符): " << encoded_data.substr(0, 100) << std::endl;
+    
+    return encoded_data;
 }
 
 QwenAPI::QwenAPI() : base_url_("https://dashscope.aliyuncs.com"), use_local_api_(false) {
@@ -134,7 +149,8 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
         }
         
         // 检查是否使用需要流式传输的模型
-        bool needs_streaming = (request.model == "qwen2.5-omni-7b");
+        // 修复：不再写死模型名称，而是检查模型名称是否包含"omni"关键词
+        bool needs_streaming = (request.model.find("omni") != std::string::npos);
         
         // 构建JSON请求体
         Json::Value root;
@@ -151,27 +167,11 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
                 for (const auto& content : msg.contents) {
                     Json::Value c;
                     if (content.type == "image_url") {
-                        // 将图像文件转换为base64
-                        std::string base64_data = file_to_base64(content.image_url);
-                        if (!base64_data.empty()) {
-                            if (shouldUseLocalAPI()) {
-                                // 本地API使用标准OpenAI格式
-                                Json::Value image_url;
-                                image_url["url"] = "data:image/jpeg;base64," + base64_data;
-                                c["type"] = "image_url";
-                                c["image_url"] = image_url;
-                            } else {
-                                // 阿里云DashScope格式
-                                Json::Value image_url;
-                                image_url["url"] = "data:image/jpeg;base64," + base64_data;
-                                c["type"] = "image_url";
-                                c["image_url"] = image_url;
-                            }
-                        } else {
-                            std::cerr << "图像文件base64编码失败: " << content.image_url << std::endl;
-                            c["type"] = "text";
-                            c["text"] = "[图像文件不可用: " + content.image_url + "]";
-                        }
+                        // 直接使用已构造的base64数据URL，不再重复处理
+                        c["type"] = "image_url";
+                        Json::Value image_url_obj;
+                        image_url_obj["url"] = content.image_url;  // 这里已经是完整的data:image/...;base64,...格式
+                        c["image_url"] = image_url_obj;
                     } else if (content.type == "text") {
                         c["type"] = "text";
                         c["text"] = content.text;
@@ -216,9 +216,6 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
         builder["indentation"] = ""; // 紧凑格式
         std::string json_body = Json::writeString(builder, root);
         
-        // 打印请求信息用于调试
-        std::cout << "[QwenAPI] Sending request to: " << url << std::endl;
-        std::cout << "[QwenAPI] Request body: " << json_body << std::endl;
         
         // 设置HTTP头
         struct curl_slist* headers = nullptr;
@@ -257,8 +254,6 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
         } else {
             long response_code;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
-            std::cout << "[QwenAPI] Response code: " << response_code << std::endl;
-            std::cout << "[QwenAPI] Raw response: " << response_string << std::endl;
             
             // 如果是流式响应，需要特殊处理
             if (needs_streaming) {
@@ -312,48 +307,36 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
                                                      &response_json, &errs);
                 
                 if (parsingSuccessful) {
-                    // 添加类型检查和调试信息
-                    std::cout << "[QwenAPI] Chat completion response JSON type: " << response_json.type() << std::endl;
+                    // 添加类型检查
                     if (response_json.isObject()) {
-                        std::cout << "[QwenAPI] Chat completion response is JSON object" << std::endl;
                         if (response_json.isMember("choices") && response_json["choices"].isArray() && 
                             response_json["choices"].size() > 0) {
                             Json::Value choice = response_json["choices"][0];
                             // 确保choice是对象类型
                             if (choice.isObject()) {
-                                std::cout << "[QwenAPI] Found valid choice object" << std::endl;
                                 if (choice.isMember("message") && choice["message"].isMember("content")) {
                                     response.content = choice["message"]["content"].asString();
                                 } else if (choice.isMember("delta") && choice["delta"].isMember("content")) {
                                     response.content = choice["delta"]["content"].asString();
                                 }
-                                std::cout << "[QwenAPI] Extracted content: " << response.content << std::endl;
-                            } else {
-                                std::cerr << "[QwenAPI] Choice is not a JSON object" << std::endl;
                             }
                         } else if (response_json.isMember("error")) {
-                            std::cout << "[QwenAPI] Found error in chat completion response" << std::endl;
                             // 确保error是对象类型
                             if (response_json["error"].isObject() && response_json["error"].isMember("message")) {
                                 response.content = "Error: " + response_json["error"]["message"].asString();
                             } else {
                                 response.content = "Error: " + response_json["error"].asString();
                             }
-                            std::cerr << "[QwenAPI] Error message: " << response.content << std::endl;
                         } else {
                             response.content = "Error: Invalid response format";
-                            std::cerr << "[QwenAPI] Invalid chat completion response format. Response content: " << response_string << std::endl;
                         }
                     } else {
                         response.content = "Error: Response is not a JSON object";
-                        std::cerr << "[QwenAPI] Chat completion response is not a JSON object. Actual type: " << response_json.type() 
-                                  << ", Content: " << response_string << std::endl;
                     }
                 } else {
                     response.content = "Error: Failed to parse API response: " + errs;
                     // 添加响应内容以便调试
-                    std::cerr << "[QwenAPI] Failed to parse chat completion API response. Error: " << errs 
-                              << ", Response content: " << response_string << std::endl;
+                    std::cerr << "Response content: " << response_string << std::endl;
                 }
             }
         }
@@ -449,12 +432,9 @@ QwenEmbeddingResponse QwenAPI::generate_embeddings(const QwenEmbeddingRequest& r
                                                  &response_json, &errs);
             
             if (parsingSuccessful) {
-                // 添加类型检查和调试信息
-                std::cout << "[QwenAPI] Response JSON type: " << response_json.type() << std::endl;
+                // 添加类型检查
                 if (response_json.isObject()) {
-                    std::cout << "[QwenAPI] Response is JSON object" << std::endl;
                     if (response_json.isMember("data") && response_json["data"].isArray()) {
-                        std::cout << "[QwenAPI] Found data array with " << response_json["data"].size() << " items" << std::endl;
                         for (const auto& item : response_json["data"]) {
                             // 确保item是对象类型
                             if (item.isObject()) {
@@ -466,37 +446,28 @@ QwenEmbeddingResponse QwenAPI::generate_embeddings(const QwenEmbeddingRequest& r
                                     for (const auto& val : embedding) {
                                         data.embedding.push_back(val.asFloat());
                                     }
-                                    std::cout << "[QwenAPI] Parsed embedding with " << data.embedding.size() << " dimensions" << std::endl;
                                 }
                                 
                                 response.data.push_back(data);
-                            } else {
-                                std::cerr << "[QwenAPI] Item is not a JSON object" << std::endl;
                             }
                         }
                     } else if (response_json.isMember("error")) {
-                        std::cout << "[QwenAPI] Found error in response" << std::endl;
                         // 确保error是对象类型
                         if (response_json["error"].isObject() && response_json["error"].isMember("message")) {
                             response.message = "Error: " + response_json["error"]["message"].asString();
                         } else {
                             response.message = "Error: " + response_json["error"].asString();
                         }
-                        std::cerr << "[QwenAPI] Error message: " << response.message << std::endl;
                     } else {
                         response.message = "Error: Invalid response format";
-                        std::cerr << "[QwenAPI] Invalid response format. Response content: " << response_string << std::endl;
                     }
                 } else {
                     response.message = "Error: Response is not a JSON object";
-                    std::cerr << "[QwenAPI] Response is not a JSON object. Actual type: " << response_json.type() 
-                              << ", Content: " << response_string << std::endl;
                 }
             } else {
                 response.message = "Error: Failed to parse API response: " + errs;
                 // 添加响应内容以便调试
-                std::cerr << "[QwenAPI] Failed to parse API response. Error: " << errs 
-                          << ", Response content: " << response_string << std::endl;
+                std::cerr << "Response content: " << response_string << std::endl;
             }
         }
         

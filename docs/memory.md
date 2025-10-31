@@ -1,242 +1,175 @@
-# MIRIX记忆系统设计文档
+# 记忆系统文档
 
-## 1. 概述
+## 概述
 
-MIRIX记忆系统基于人类记忆模型设计，包含多种类型的记忆存储，用于存储和管理不同类型的信息。系统通过模拟人类记忆的工作方式，实现信息的存储、检索和管理。
+MIRIX系统实现了仿人类的完整记忆系统，包括8种不同类型的记忆。每种记忆类型都有专门的数据表和管理器，用于存储和管理不同类型的信息。
 
-## 2. 记忆系统架构
+所有记忆数据统一存储在项目根目录下的[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中，确保数据持久化且不会因构建目录清理而丢失。
 
-### 2.1 记忆类型
+## 记忆类型详解
 
-#### 2.1.1 核心记忆 (Core Memory)
-存储最基本和重要的信息块，是系统运行的核心数据。
+### 1. 回忆记忆 (Recall Memory)
+存储对话历史和记忆检索过程，是系统中最活跃的记忆类型。
 
-**管理器**: CoreMemoryBlockManager
-**存储表**: core_memory_block
+**用途**：
+- 存储用户与AI的对话历史
+- 记录记忆检索过程和结果
+- 提供上下文信息用于对话生成
 
-**特征**:
-- 高优先级存储
-- 不易丢失
-- 快速访问
+**数据表**：recall_memory
+**管理器**：RecallMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- session_id：会话ID
+- message_type：消息类型(user_message, ai_response)
+- content：消息内容
+- embedding：消息内容的向量表示
 
-#### 2.1.2 事件记忆 (Episodic Memory)
-存储个人经历和事件相关信息，包含时间、地点、参与者等上下文信息。
+### 2. 资源记忆 (Resource Memory)
+存储多媒体资源文件的元信息，包括图像、音频、屏幕截图等。
 
-**管理器**: EpisodicMemoryManager
-**存储表**: episodic_memory
+**用途**：
+- 存储图像、音频等多媒体资源的元信息
+- 为多模态处理提供资源索引
+- 支持跨模态搜索和检索
 
-**特征**:
-- 时间序列化存储
-- 包含丰富上下文
-- 支持情感标记
+**数据表**：resource_memory
+**管理器**：ResourceMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- session_id：会话ID
+- path：资源文件路径
+- resource_type：资源类型(image, audio, screenshot)
+- description：资源描述
+- embedding：资源描述的向量表示
 
-#### 2.1.3 语义记忆 (Semantic Memory)
-存储概念性知识和事实信息，如词汇、概念、规则等。
+### 3. 核心记忆 (Core Memory)
+存储最基本和重要的信息块。
 
-**管理器**: SemanticMemoryManager
-**存储表**: semantic_memory
+**用途**：
+- 存储用户的核心个人信息
+- 存储系统配置信息
+- 提供快速访问的关键信息
 
-**特征**:
-- 结构化知识存储
-- 概念关联网络
-- 分类管理
+**数据表**：core_memory_block
+**管理器**：CoreMemoryBlockManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- label：信息块标签
+- value：信息块值
 
-#### 2.1.4 程序记忆 (Procedural Memory)
-存储技能和过程性知识，如如何执行特定任务。
+### 4. 事件记忆 (Episodic Memory)
+存储个人经历和事件相关信息。
 
-**管理器**: ProceduralMemoryManager
-**存储表**: procedural_memory
+**用途**：
+- 存储用户的个人经历
+- 记录重要事件和时间点
+- 支持基于时间的回忆和检索
 
-**特征**:
-- 步骤化存储
-- 熟练度跟踪
-- 条件触发
+**数据表**：episodic_memory
+**管理器**：EpisodicMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- timestamp：事件时间戳
+- summary：事件摘要
+- details：事件详细信息
+- event_type：事件类型
 
-#### 2.1.5 资源记忆 (Resource Memory)
-存储多媒体资源文件的元信息，包括图像、音频、视频等。
+### 5. 语义记忆 (Semantic Memory)
+存储概念性知识和事实信息。
 
-**管理器**: ResourceMemoryManager
-**存储表**: resource_memory
+**用途**：
+- 存储概念性知识
+- 存储事实信息
+- 支持知识推理和检索
 
-**特征**:
-- 文件元信息管理
-- 多媒体类型支持
-- 路径索引
-- 向量化检索支持
+**数据表**：semantic_memory
+**管理器**：SemanticMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- name：知识名称
+- summary：知识摘要
+- details：知识详细信息
 
-#### 2.1.6 知识库 (Knowledge Vault)
-存储结构化知识和信息，如文档、文章等。
+### 6. 程序记忆 (Procedural Memory)
+存储技能和过程性知识。
 
-**管理器**: KnowledgeVaultManager
-**存储表**: knowledge_vault
+**用途**：
+- 存储技能信息
+- 存储过程性知识
+- 支持技能学习和执行
 
-**特征**:
-- 结构化存储
-- 来源追踪
-- 可靠性评估
+**数据表**：procedural_memory
+**管理器**：ProceduralMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- title：技能标题
+- summary：技能摘要
+- steps：执行步骤
 
-#### 2.1.7 归档记忆 (Archival Memory)
-存储长期保存的历史数据，用于备份和历史查询。
+### 7. 知识库 (Knowledge Vault)
+存储结构化知识和信息。
 
-**管理器**: ArchivalMemoryManager
-**存储表**: archival_memory
+**用途**：
+- 存储结构化知识
+- 存储敏感信息（加密存储）
+- 支持知识分类和检索
 
-**特征**:
-- 长期存储
-- 压缩优化
-- 策略管理
+**数据表**：knowledge_vault
+**管理器**：KnowledgeVaultManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- caption：知识标题
+- entry_type：条目类型
+- source：来源
+- sensitivity：敏感性级别
+- encrypted_value：加密值
 
-#### 2.1.8 回忆记忆 (Recall Memory)
-存储记忆检索过程和结果，用于优化检索算法。
+### 8. 归档记忆 (Archival Memory)
+存储长期保存的历史数据。
 
-**管理器**: RecallMemoryManager
-**存储表**: recall_memory
+**用途**：
+- 存储历史数据
+- 支持长期数据保存
+- 减轻活跃记忆系统的负担
 
-**特征**:
-- 检索过程记录
-- 相关性评分
-- 性能监控
-- 对话历史存储
-- 跨会话历史查询支持
+**数据表**：archival_memory
+**管理器**：ArchivalMemoryManager
+**主要字段**：
+- user_id：用户ID
+- agent_id：代理ID
+- content：归档内容
+- archive_date：归档日期
 
-## 3. 记忆管理器设计
+## 记忆管理器
 
-### 3.1 通用接口
+每种记忆类型都有对应的管理器类，负责对该类型记忆的增删改查操作。所有管理器都通过StorageManager与数据库进行交互，确保数据的一致性和完整性。
 
-所有记忆管理器都遵循统一的设计模式，提供以下通用接口：
+## 向量表示
 
-```cpp
-class MemoryManager {
-public:
-    // 添加记忆
-    virtual bool add_memory(const MemoryItem& item) = 0;
-    
-    // 更新记忆
-    virtual bool update_memory(int id, const MemoryItem& item) = 0;
-    
-    // 删除记忆
-    virtual bool delete_memory(int id) = 0;
-    
-    // 查询记忆
-    virtual std::vector<MemoryItem> search_memories(const SearchCriteria& criteria) = 0;
-    
-    // 向量搜索记忆
-    virtual std::vector<MemoryItem> vector_search(const std::vector<float>& query_vector, int limit) = 0;
-};
-```
+为了支持向量检索功能，系统为回忆记忆和资源记忆添加了向量表示(embedding字段)。这些向量通过以下方式生成：
 
-### 3.2 多模态数据支持
+1. **文本向量**：使用TextEmbeddingGenerator生成
+2. **图像向量**：通过CLIPProcessor生成图像描述，再基于描述生成向量
 
-#### 3.2.1 文本数据处理
-- 文本内容直接存储在content字段中
-- 使用CLIP模型生成1024维向量表示
-- 向量存储在embedding字段中（BLOB类型）
+所有向量都统一为1024维，并通过VectorSerializer进行序列化存储。
 
-#### 3.2.2 图像数据处理
-- 图像文件存储在文件系统中
-- 文件路径存储在path字段中
-- 图像元数据存储在metadata字段中（JSON格式）
-- 使用CLIP模型生成1024维向量表示
-- 向量存储在embedding字段中（BLOB类型）
+## 记忆检索
 
-#### 3.2.3 音频数据处理
-- 音频文件存储在文件系统中
-- 文件路径存储在path字段中
-- 音频元数据存储在metadata字段中（JSON格式）
-- 音频内容摘要存储在summary字段中
-- 可选：使用音频处理模型生成向量表示
+系统支持多种记忆检索方式：
 
-### 3.3 跨会话历史查询
+1. **基于内容的检索**：直接查询记忆内容
+2. **基于向量的检索**：使用向量相似性搜索
+3. **基于时间的检索**：根据时间范围检索记忆
+4. **跨模态检索**：支持文本到图像、图像到文本的检索
 
-#### 3.3.1 设计原理
-- 每次用户交互创建新的会话记录
-- 会话数据通过session_id关联
-- 支持查询用户最近N次会话的历史记录
-- 保持会话间的数据隔离性
+## 记忆持久化
 
-#### 3.3.2 实现机制
-- 使用`list_recent_sessions_memories`方法实现跨会话查询
-- 先获取用户最近的会话ID列表
-- 再查询这些会话中的回忆记忆
-- 支持限制返回的消息数量
-
-#### 3.3.3 查询示例
-```sql
--- 获取用户最近几次会话的ID
-SELECT id FROM session WHERE user_id = ? ORDER BY id DESC LIMIT ?;
-
--- 查询这些会话中的回忆记忆
-SELECT * FROM recall_memory 
-WHERE user_id = ? AND session_id IN (?, ?, ?) 
-ORDER BY created_at DESC LIMIT ?;
-```
-
-## 4. 向量化检索设计
-
-### 4.1 向量生成
-- 使用CLIP模型为文本和图像生成1024维向量
-- 向量存储在各记忆表的embedding字段中
-- 支持实时向量生成和批量处理
-
-### 4.2 向量存储
-- 向量以BLOB格式存储在SQLite数据库中
-- 支持二进制向量数据的读写操作
-- 建立索引优化向量检索性能
-
-### 4.3 相似性搜索
-- 支持余弦相似度计算
-- 支持欧氏距离计算
-- 支持混合排序算法
-
-## 5. 数据持久化策略
-
-### 5.1 数据库设计
-- 使用SQLite作为后端存储
-- 采用关系型数据模型设计
-- 建立适当的索引提高查询性能
-
-### 5.2 事务管理
-- 使用事务确保数据一致性
-- 支持批量操作的原子性
-- 提供错误回滚机制
-
-### 5.3 备份策略
-- 定期备份数据库文件
-- 支持增量备份和全量备份
-- 提供数据恢复机制
-
-## 6. 性能优化
-
-### 6.1 查询优化
-- 建立合适的数据库索引
-- 优化SQL查询语句
-- 使用分页机制处理大量数据
-
-### 6.2 向量检索优化
-- 使用FAISS库进行向量索引管理
-- 支持近似最近邻搜索
-- 优化向量存储和检索性能
-
-### 6.3 内存管理
-- 合理使用缓存机制
-- 及时释放不需要的资源
-- 优化数据结构减少内存占用
-
-## 7. AI模型集成
-
-### 7.1 云端模型支持
-- 集成阿里云通义千问API
-- 支持文本生成和对话功能
-- 需要配置API密钥
-
-### 7.2 本地模型支持
-- 支持OpenAI兼容的本地服务
-- 通过配置local_url使用本地API
-- 优先级高于云端API
-
-### 7.3 模拟模型支持
-- 在无API配置时提供模拟响应
-- 用于开发和测试环境
-- 最低优先级
-
-调用优先级：本地API > 云端API > 模拟响应
+所有记忆数据都持久化存储在SQLite数据库中，确保系统重启后数据不会丢失。数据库文件统一存储在项目根目录下的[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中。

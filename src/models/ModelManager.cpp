@@ -163,7 +163,7 @@ std::string ModelManager::call_text_model_with_context(const std::vector<std::st
     
     request.temperature = 0.7;
     request.top_p = 0.9;
-    request.max_tokens = 2000;
+    request.max_tokens = 2000;  // 修复：将32768改为2000，确保在允许范围内[10, 2048]
     
     // 添加系统消息（上下文）
     if (!context.empty()) {
@@ -195,7 +195,8 @@ std::string ModelManager::call_text_model_with_context(const std::vector<std::st
 std::string ModelManager::call_text_model(const std::string& prompt) {
     // 构建完整的对话历史
     QwenChatCompletionRequest request;
-    request.model = "qwen2.5-omni-7b";
+    // 使用配置文件中的模型名称
+    request.model = ConfigManager::getInstance().getMultimodalModelName();
     request.temperature = 0.7;
     request.top_p = 0.9;
     request.max_tokens = 2000;
@@ -232,16 +233,55 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
                                               const std::string& image_path,
                                               const std::string& audio_path) {
     std::cout << "\n=== 多模态模型调用开始 ===" << std::endl;
-    std::cout << "使用模型: qwen2.5-omni-7b" << std::endl;
+    // 使用配置文件中的模型名称
+    std::string model_name = ConfigManager::getInstance().getMultimodalModelName();
+    std::cout << "使用模型: " << model_name << std::endl;
     std::cout << "文本输入: " << text << std::endl;
     std::cout << "图片路径: " << image_path << std::endl;
     std::cout << "音频路径: " << audio_path << std::endl;
     
+    // 检查文件大小，如果文件存在但超过限制则直接返回错误信息
+    if (!image_path.empty()) {
+        std::ifstream image_file(image_path, std::ios::binary | std::ios::ate);
+        if (image_file.is_open()) {
+            size_t image_size = image_file.tellg();
+            image_file.close();
+            
+            if (image_size > 10 * 1024 * 1024) {  // 10MB限制
+                std::string error_msg = "图像文件过大(" + std::to_string(image_size) + "字节)，超过10MB限制，无法处理";
+                std::cerr << error_msg << std::endl;
+                return error_msg;
+            }
+        } else {
+            std::string error_msg = "无法打开图像文件: " + image_path;
+            std::cerr << error_msg << std::endl;
+            return error_msg;
+        }
+    }
+    
+    if (!audio_path.empty()) {
+        std::ifstream audio_file(audio_path, std::ios::binary | std::ios::ate);
+        if (audio_file.is_open()) {
+            size_t audio_size = audio_file.tellg();
+            audio_file.close();
+            
+            if (audio_size > 10 * 1024 * 1024) {  // 10MB限制
+                std::string error_msg = "音频文件过大(" + std::to_string(audio_size) + "字节)，超过10MB限制，无法处理";
+                std::cerr << error_msg << std::endl;
+                return error_msg;
+            }
+        } else {
+            std::string error_msg = "无法打开音频文件: " + audio_path;
+            std::cerr << error_msg << std::endl;
+            return error_msg;
+        }
+    }
+
     QwenChatCompletionRequest request;
-    request.model = "qwen2.5-omni-7b";
+    request.model = model_name;
     request.temperature = 0.7;
     request.top_p = 0.9;
-    request.max_tokens = 2000;
+    request.max_tokens = 2000;  // 修复：将16384改为2000，确保在允许范围内[10, 2048]
     
     QwenMessage user_msg;
     user_msg.role = "user";
@@ -260,7 +300,16 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
                 
                 // 读取图像文件并转换为base64编码
                 std::string base64_data = file_to_base64(image_path);
-                image_content.image_url = "data:image/jpeg;base64," + base64_data;
+                // 根据文件扩展名确定MIME类型
+                std::string mime_type = "image/jpeg";
+                if (image_path.find(".png") != std::string::npos || image_path.find(".PNG") != std::string::npos) {
+                    mime_type = "image/png";
+                } else if (image_path.find(".gif") != std::string::npos || image_path.find(".GIF") != std::string::npos) {
+                    mime_type = "image/gif";
+                } else if (image_path.find(".webp") != std::string::npos || image_path.find(".WEBP") != std::string::npos) {
+                    mime_type = "image/webp";
+                }
+                image_content.image_url = "data:" + mime_type + ";base64," + base64_data;
                 user_msg.contents.push_back(image_content);
                 std::cout << "图像内容添加成功" << std::endl;
             } catch (const std::exception& e) {
@@ -283,6 +332,15 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
             } catch (const std::exception& e) {
                 std::cerr << "音频文件base64编码失败: " << audio_path << ", 错误: " << e.what() << std::endl;
             }
+        }
+        
+        // 检查多模态内容数量，避免超过模型限制
+        if (user_msg.contents.size() > 10) {  // 限制最多10个多模态内容项
+            std::string warning_msg = "警告: 多模态内容数量(" + std::to_string(user_msg.contents.size()) + ")超过限制(10)，可能会导致API调用失败";
+            std::cerr << warning_msg << std::endl;
+            // 超过限制时，只保留前10个内容项
+            user_msg.contents.resize(10);
+            std::cout << "已将多模态内容数量限制为10个" << std::endl;
         }
         
         // 添加文本内容

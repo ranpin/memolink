@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/ranpin/code/mirix-cpp/src/test_clip_processor.cpp" "CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o" "gcc" "CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o.d"
+  "/Users/ranpin/code/mirix-cpp/test/test_clip_processor.cpp" "CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o" "gcc" "CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

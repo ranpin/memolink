@@ -72,30 +72,31 @@ include CMakeFiles/test_embedding_comprehensive.dir/flags.make
 CMakeFiles/test_embedding_comprehensive.dir/codegen:
 .PHONY : CMakeFiles/test_embedding_comprehensive.dir/codegen
 
-CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o: CMakeFiles/test_embedding_comprehensive.dir/flags.make
-CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp
-CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o: CMakeFiles/test_embedding_comprehensive.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o -MF CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o.d -o CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp
+CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o: CMakeFiles/test_embedding_comprehensive.dir/flags.make
+CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o: /Users/ranpin/code/mirix-cpp/test/test_embedding_comprehensive.cpp
+CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o: CMakeFiles/test_embedding_comprehensive.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o -MF CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o.d -o CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o -c /Users/ranpin/code/mirix-cpp/test/test_embedding_comprehensive.cpp
 
-CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp > CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.i
+CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/test/test_embedding_comprehensive.cpp > CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.i
 
-CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_embedding_comprehensive.cpp -o CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.s
+CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/test/test_embedding_comprehensive.cpp -o CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.s
 
 # Object files for target test_embedding_comprehensive
 test_embedding_comprehensive_OBJECTS = \
-"CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o"
+"CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o"
 
 # External object files for target test_embedding_comprehensive
 test_embedding_comprehensive_EXTERNAL_OBJECTS =
 
-test_embedding_comprehensive: CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o
+test_embedding_comprehensive: CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o
 test_embedding_comprehensive: CMakeFiles/test_embedding_comprehensive.dir/build.make
 test_embedding_comprehensive: libmirix_lib.a
+test_embedding_comprehensive: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
 test_embedding_comprehensive: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
 test_embedding_comprehensive: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
 test_embedding_comprehensive: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd

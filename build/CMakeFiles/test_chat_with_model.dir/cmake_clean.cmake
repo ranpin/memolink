@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o"
-  "CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o.d"
+  "CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o"
+  "CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o.d"
   "test_chat_with_model"
   "test_chat_with_model.pdb"
 )

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o"
-  "CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o.d"
+  "CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o"
+  "CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o.d"
   "test_clip_processor"
   "test_clip_processor.pdb"
 )

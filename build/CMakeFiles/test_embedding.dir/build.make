@@ -72,30 +72,31 @@ include CMakeFiles/test_embedding.dir/flags.make
 CMakeFiles/test_embedding.dir/codegen:
 .PHONY : CMakeFiles/test_embedding.dir/codegen
 
-CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: CMakeFiles/test_embedding.dir/flags.make
-CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp
-CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o: CMakeFiles/test_embedding.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o -MF CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o.d -o CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp
+CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o: CMakeFiles/test_embedding.dir/flags.make
+CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o: /Users/ranpin/code/mirix-cpp/test/test_embedding_functionality.cpp
+CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o: CMakeFiles/test_embedding.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o -MF CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o.d -o CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o -c /Users/ranpin/code/mirix-cpp/test/test_embedding_functionality.cpp
 
-CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp > CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.i
+CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/test/test_embedding_functionality.cpp > CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.i
 
-CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_embedding_functionality.cpp -o CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.s
+CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/test/test_embedding_functionality.cpp -o CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.s
 
 # Object files for target test_embedding
 test_embedding_OBJECTS = \
-"CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o"
+"CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o"
 
 # External object files for target test_embedding
 test_embedding_EXTERNAL_OBJECTS =
 
-test_embedding: CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o
+test_embedding: CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o
 test_embedding: CMakeFiles/test_embedding.dir/build.make
 test_embedding: libmirix_lib.a
+test_embedding: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
 test_embedding: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
 test_embedding: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
 test_embedding: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd

@@ -165,7 +165,7 @@ bool CameraCaptureManager::store_capture_in_memory(int user_id, const std::strin
     // 为图像描述生成embedding并存储到资源记忆中
     try {
         TextEmbeddingGenerator textEmbeddingGenerator(&storage_);
-        std::vector<float> descriptionEmbedding = textEmbeddingGenerator.generateEmbedding(description);
+        std::vector<float> descriptionEmbedding = textEmbeddingGenerator.generateTextEmbedding(description);
         if (!descriptionEmbedding.empty()) {
             // 将embedding序列化并存储到item中
             item.embedding = VectorSerializer::serialize(descriptionEmbedding);
@@ -177,9 +177,9 @@ bool CameraCaptureManager::store_capture_in_memory(int user_id, const std::strin
         std::cerr << "[摄像头捕获] 图像描述embedding生成异常: " << e.what() << std::endl;
     }
     
-    std::cout << "[摄像头捕获] 准备存储的embedding大小: " << item.embedding.size() << " 字节" << std::endl;
-    
-    return resourceMemoryManager.add_resource_memory(item);
+    // 将捕获的图像信息存储到资源记忆中
+    resourceMemoryManager.add_resource_memory(item);
+    std::cout << "[摄像头捕获] 图像信息已存储到资源记忆中" << std::endl;
 }
 
 void CameraCaptureManager::start_continuous_capture(int interval_seconds) {

@@ -72,30 +72,31 @@ include CMakeFiles/test_chat_with_model.dir/flags.make
 CMakeFiles/test_chat_with_model.dir/codegen:
 .PHONY : CMakeFiles/test_chat_with_model.dir/codegen
 
-CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o: CMakeFiles/test_chat_with_model.dir/flags.make
-CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp
-CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o: CMakeFiles/test_chat_with_model.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o -MF CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o.d -o CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp
+CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o: CMakeFiles/test_chat_with_model.dir/flags.make
+CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o: /Users/ranpin/code/mirix-cpp/test/test_chat_with_model.cpp
+CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o: CMakeFiles/test_chat_with_model.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o -MF CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o.d -o CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o -c /Users/ranpin/code/mirix-cpp/test/test_chat_with_model.cpp
 
-CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp > CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.i
+CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/test/test_chat_with_model.cpp > CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.i
 
-CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp -o CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.s
+CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/test/test_chat_with_model.cpp -o CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.s
 
 # Object files for target test_chat_with_model
 test_chat_with_model_OBJECTS = \
-"CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o"
+"CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o"
 
 # External object files for target test_chat_with_model
 test_chat_with_model_EXTERNAL_OBJECTS =
 
-test_chat_with_model: CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o
+test_chat_with_model: CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o
 test_chat_with_model: CMakeFiles/test_chat_with_model.dir/build.make
 test_chat_with_model: libmirix_lib.a
+test_chat_with_model: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
 test_chat_with_model: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
 test_chat_with_model: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
 test_chat_with_model: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o"
-  "CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o.d"
+  "CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o"
+  "CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o.d"
   "real_multimodal_demo"
   "real_multimodal_demo.pdb"
 )

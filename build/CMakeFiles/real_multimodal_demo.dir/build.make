@@ -72,30 +72,31 @@ include CMakeFiles/real_multimodal_demo.dir/flags.make
 CMakeFiles/real_multimodal_demo.dir/codegen:
 .PHONY : CMakeFiles/real_multimodal_demo.dir/codegen
 
-CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o: CMakeFiles/real_multimodal_demo.dir/flags.make
-CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o: /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp
-CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o: CMakeFiles/real_multimodal_demo.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o -MF CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o.d -o CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o -c /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp
+CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o: CMakeFiles/real_multimodal_demo.dir/flags.make
+CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o: /Users/ranpin/code/mirix-cpp/test/test_real_multimodal_demo.cpp
+CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o: CMakeFiles/real_multimodal_demo.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o -MF CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o.d -o CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o -c /Users/ranpin/code/mirix-cpp/test/test_real_multimodal_demo.cpp
 
-CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp > CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.i
+CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/test/test_real_multimodal_demo.cpp > CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.i
 
-CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp -o CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.s
+CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/test/test_real_multimodal_demo.cpp -o CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.s
 
 # Object files for target real_multimodal_demo
 real_multimodal_demo_OBJECTS = \
-"CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o"
+"CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o"
 
 # External object files for target real_multimodal_demo
 real_multimodal_demo_EXTERNAL_OBJECTS =
 
-real_multimodal_demo: CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o
+real_multimodal_demo: CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o
 real_multimodal_demo: CMakeFiles/real_multimodal_demo.dir/build.make
 real_multimodal_demo: libmirix_lib.a
+real_multimodal_demo: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
 real_multimodal_demo: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
 real_multimodal_demo: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
 real_multimodal_demo: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd
