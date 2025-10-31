@@ -185,32 +185,6 @@ mirix_lib/fast:
 .PHONY : mirix_lib/fast
 
 #=============================================================================
-# Target rules for targets named mirix_main
-
-# Build rule for target.
-mirix_main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mirix_main
-.PHONY : mirix_main
-
-# fast build rule for target.
-mirix_main/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_main.dir/build.make CMakeFiles/mirix_main.dir/build
-.PHONY : mirix_main/fast
-
-#=============================================================================
-# Target rules for targets named cli_main
-
-# Build rule for target.
-cli_main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cli_main
-.PHONY : cli_main
-
-# fast build rule for target.
-cli_main/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cli_main.dir/build.make CMakeFiles/cli_main.dir/build
-.PHONY : cli_main/fast
-
-#=============================================================================
 # Target rules for targets named real_multimodal_demo
 
 # Build rule for target.
@@ -300,6 +274,45 @@ test_chat_with_model: cmake_check_build_system
 test_chat_with_model/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/build
 .PHONY : test_chat_with_model/fast
+
+#=============================================================================
+# Target rules for targets named test_chat_with_auto_capture
+
+# Build rule for target.
+test_chat_with_auto_capture: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_chat_with_auto_capture
+.PHONY : test_chat_with_auto_capture
+
+# fast build rule for target.
+test_chat_with_auto_capture/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_auto_capture.dir/build.make CMakeFiles/test_chat_with_auto_capture.dir/build
+.PHONY : test_chat_with_auto_capture/fast
+
+#=============================================================================
+# Target rules for targets named test_initialize_memories
+
+# Build rule for target.
+test_initialize_memories: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_initialize_memories
+.PHONY : test_initialize_memories
+
+# fast build rule for target.
+test_initialize_memories/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_initialize_memories.dir/build.make CMakeFiles/test_initialize_memories.dir/build
+.PHONY : test_initialize_memories/fast
+
+#=============================================================================
+# Target rules for targets named test_system_initialization
+
+# Build rule for target.
+test_system_initialization: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_system_initialization
+.PHONY : test_system_initialization
+
+# fast build rule for target.
+test_system_initialization/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/build
+.PHONY : test_system_initialization/fast
 
 src/agents/AgentManager.o: src/agents/AgentManager.cpp.o
 .PHONY : src/agents/AgentManager.o
@@ -708,30 +721,6 @@ src/cli/CommandLineInterface.s: src/cli/CommandLineInterface.cpp.s
 src/cli/CommandLineInterface.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.s
 .PHONY : src/cli/CommandLineInterface.cpp.s
-
-src/cli_main.o: src/cli_main.cpp.o
-.PHONY : src/cli_main.o
-
-# target to build an object file
-src/cli_main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cli_main.dir/build.make CMakeFiles/cli_main.dir/src/cli_main.cpp.o
-.PHONY : src/cli_main.cpp.o
-
-src/cli_main.i: src/cli_main.cpp.i
-.PHONY : src/cli_main.i
-
-# target to preprocess a source file
-src/cli_main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cli_main.dir/build.make CMakeFiles/cli_main.dir/src/cli_main.cpp.i
-.PHONY : src/cli_main.cpp.i
-
-src/cli_main.s: src/cli_main.cpp.s
-.PHONY : src/cli_main.s
-
-# target to generate assembly for a file
-src/cli_main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/cli_main.dir/build.make CMakeFiles/cli_main.dir/src/cli_main.cpp.s
-.PHONY : src/cli_main.cpp.s
 
 src/database/core/StorageManager.o: src/database/core/StorageManager.cpp.o
 .PHONY : src/database/core/StorageManager.o
@@ -1189,54 +1178,6 @@ src/gui/GUIManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.s
 .PHONY : src/gui/GUIManager.cpp.s
 
-src/initialize_memories.o: src/initialize_memories.cpp.o
-.PHONY : src/initialize_memories.o
-
-# target to build an object file
-src/initialize_memories.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.o
-.PHONY : src/initialize_memories.cpp.o
-
-src/initialize_memories.i: src/initialize_memories.cpp.i
-.PHONY : src/initialize_memories.i
-
-# target to preprocess a source file
-src/initialize_memories.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.i
-.PHONY : src/initialize_memories.cpp.i
-
-src/initialize_memories.s: src/initialize_memories.cpp.s
-.PHONY : src/initialize_memories.s
-
-# target to generate assembly for a file
-src/initialize_memories.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/src/initialize_memories.cpp.s
-.PHONY : src/initialize_memories.cpp.s
-
-src/main.o: src/main.cpp.o
-.PHONY : src/main.o
-
-# target to build an object file
-src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_main.dir/build.make CMakeFiles/mirix_main.dir/src/main.cpp.o
-.PHONY : src/main.cpp.o
-
-src/main.i: src/main.cpp.i
-.PHONY : src/main.i
-
-# target to preprocess a source file
-src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_main.dir/build.make CMakeFiles/mirix_main.dir/src/main.cpp.i
-.PHONY : src/main.cpp.i
-
-src/main.s: src/main.cpp.s
-.PHONY : src/main.s
-
-# target to generate assembly for a file
-src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_main.dir/build.make CMakeFiles/mirix_main.dir/src/main.cpp.s
-.PHONY : src/main.cpp.s
-
 src/models/CLIPProcessor.o: src/models/CLIPProcessor.cpp.o
 .PHONY : src/models/CLIPProcessor.o
 
@@ -1381,30 +1322,6 @@ src/models/VectorSearchManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s
 .PHONY : src/models/VectorSearchManager.cpp.s
 
-src/real_multimodal_demo.o: src/real_multimodal_demo.cpp.o
-.PHONY : src/real_multimodal_demo.o
-
-# target to build an object file
-src/real_multimodal_demo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o
-.PHONY : src/real_multimodal_demo.cpp.o
-
-src/real_multimodal_demo.i: src/real_multimodal_demo.cpp.i
-.PHONY : src/real_multimodal_demo.i
-
-# target to preprocess a source file
-src/real_multimodal_demo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.i
-.PHONY : src/real_multimodal_demo.cpp.i
-
-src/real_multimodal_demo.s: src/real_multimodal_demo.cpp.s
-.PHONY : src/real_multimodal_demo.s
-
-# target to generate assembly for a file
-src/real_multimodal_demo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.s
-.PHONY : src/real_multimodal_demo.cpp.s
-
 src/storage/StorageManager.o: src/storage/StorageManager.cpp.o
 .PHONY : src/storage/StorageManager.o
 
@@ -1428,141 +1345,6 @@ src/storage/StorageManager.s: src/storage/StorageManager.cpp.s
 src/storage/StorageManager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s
 .PHONY : src/storage/StorageManager.cpp.s
-
-src/test_chat_with_model.o: src/test_chat_with_model.cpp.o
-.PHONY : src/test_chat_with_model.o
-
-# target to build an object file
-src/test_chat_with_model.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o
-.PHONY : src/test_chat_with_model.cpp.o
-
-src/test_chat_with_model.i: src/test_chat_with_model.cpp.i
-.PHONY : src/test_chat_with_model.i
-
-# target to preprocess a source file
-src/test_chat_with_model.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.i
-.PHONY : src/test_chat_with_model.cpp.i
-
-src/test_chat_with_model.s: src/test_chat_with_model.cpp.s
-.PHONY : src/test_chat_with_model.s
-
-# target to generate assembly for a file
-src/test_chat_with_model.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_chat_with_model.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.s
-.PHONY : src/test_chat_with_model.cpp.s
-
-src/test_clip_processor.o: src/test_clip_processor.cpp.o
-.PHONY : src/test_clip_processor.o
-
-# target to build an object file
-src/test_clip_processor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o
-.PHONY : src/test_clip_processor.cpp.o
-
-src/test_clip_processor.i: src/test_clip_processor.cpp.i
-.PHONY : src/test_clip_processor.i
-
-# target to preprocess a source file
-src/test_clip_processor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.i
-.PHONY : src/test_clip_processor.cpp.i
-
-src/test_clip_processor.s: src/test_clip_processor.cpp.s
-.PHONY : src/test_clip_processor.s
-
-# target to generate assembly for a file
-src/test_clip_processor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_clip_processor.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.s
-.PHONY : src/test_clip_processor.cpp.s
-
-src/test_embedding_comprehensive.o: src/test_embedding_comprehensive.cpp.o
-.PHONY : src/test_embedding_comprehensive.o
-
-# target to build an object file
-src/test_embedding_comprehensive.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.o
-.PHONY : src/test_embedding_comprehensive.cpp.o
-
-src/test_embedding_comprehensive.i: src/test_embedding_comprehensive.cpp.i
-.PHONY : src/test_embedding_comprehensive.i
-
-# target to preprocess a source file
-src/test_embedding_comprehensive.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.i
-.PHONY : src/test_embedding_comprehensive.cpp.i
-
-src/test_embedding_comprehensive.s: src/test_embedding_comprehensive.cpp.s
-.PHONY : src/test_embedding_comprehensive.s
-
-# target to generate assembly for a file
-src/test_embedding_comprehensive.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_embedding_comprehensive.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/src/test_embedding_comprehensive.cpp.s
-.PHONY : src/test_embedding_comprehensive.cpp.s
-
-src/test_embedding_functionality.o: src/test_embedding_functionality.cpp.o
-.PHONY : src/test_embedding_functionality.o
-
-# target to build an object file
-src/test_embedding_functionality.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.o
-.PHONY : src/test_embedding_functionality.cpp.o
-
-src/test_embedding_functionality.i: src/test_embedding_functionality.cpp.i
-.PHONY : src/test_embedding_functionality.i
-
-# target to preprocess a source file
-src/test_embedding_functionality.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.i
-.PHONY : src/test_embedding_functionality.cpp.i
-
-src/test_embedding_functionality.s: src/test_embedding_functionality.cpp.s
-.PHONY : src/test_embedding_functionality.s
-
-# target to generate assembly for a file
-src/test_embedding_functionality.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_embedding_functionality.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/src/test_embedding_functionality.cpp.s
-.PHONY : src/test_embedding_functionality.cpp.s
-
-src/test_vector_serializer.o: src/test_vector_serializer.cpp.o
-.PHONY : src/test_vector_serializer.o
-
-# target to build an object file
-src/test_vector_serializer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.o
-.PHONY : src/test_vector_serializer.cpp.o
-
-src/test_vector_serializer.i: src/test_vector_serializer.cpp.i
-.PHONY : src/test_vector_serializer.i
-
-# target to preprocess a source file
-src/test_vector_serializer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.i
-.PHONY : src/test_vector_serializer.cpp.i
-
-src/test_vector_serializer.s: src/test_vector_serializer.cpp.s
-.PHONY : src/test_vector_serializer.s
-
-# target to generate assembly for a file
-src/test_vector_serializer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/test_vector_serializer.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/src/test_vector_serializer.cpp.s
-.PHONY : src/test_vector_serializer.cpp.s
 
 src/utils/TimeUtils.o: src/utils/TimeUtils.cpp.o
 .PHONY : src/utils/TimeUtils.o
@@ -1612,6 +1394,246 @@ src/utils/VectorSerializer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.s
 .PHONY : src/utils/VectorSerializer.cpp.s
 
+test/test_chat_with_auto_capture.o: test/test_chat_with_auto_capture.cpp.o
+.PHONY : test/test_chat_with_auto_capture.o
+
+# target to build an object file
+test/test_chat_with_auto_capture.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_auto_capture.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_auto_capture.dir/build.make CMakeFiles/test_chat_with_auto_capture.dir/test/test_chat_with_auto_capture.cpp.o
+.PHONY : test/test_chat_with_auto_capture.cpp.o
+
+test/test_chat_with_auto_capture.i: test/test_chat_with_auto_capture.cpp.i
+.PHONY : test/test_chat_with_auto_capture.i
+
+# target to preprocess a source file
+test/test_chat_with_auto_capture.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_auto_capture.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_auto_capture.dir/build.make CMakeFiles/test_chat_with_auto_capture.dir/test/test_chat_with_auto_capture.cpp.i
+.PHONY : test/test_chat_with_auto_capture.cpp.i
+
+test/test_chat_with_auto_capture.s: test/test_chat_with_auto_capture.cpp.s
+.PHONY : test/test_chat_with_auto_capture.s
+
+# target to generate assembly for a file
+test/test_chat_with_auto_capture.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_auto_capture.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_auto_capture.dir/build.make CMakeFiles/test_chat_with_auto_capture.dir/test/test_chat_with_auto_capture.cpp.s
+.PHONY : test/test_chat_with_auto_capture.cpp.s
+
+test/test_chat_with_model.o: test/test_chat_with_model.cpp.o
+.PHONY : test/test_chat_with_model.o
+
+# target to build an object file
+test/test_chat_with_model.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_model.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o
+.PHONY : test/test_chat_with_model.cpp.o
+
+test/test_chat_with_model.i: test/test_chat_with_model.cpp.i
+.PHONY : test/test_chat_with_model.i
+
+# target to preprocess a source file
+test/test_chat_with_model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_model.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.i
+.PHONY : test/test_chat_with_model.cpp.i
+
+test/test_chat_with_model.s: test/test_chat_with_model.cpp.s
+.PHONY : test/test_chat_with_model.s
+
+# target to generate assembly for a file
+test/test_chat_with_model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_model.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.s
+.PHONY : test/test_chat_with_model.cpp.s
+
+test/test_clip_processor.o: test/test_clip_processor.cpp.o
+.PHONY : test/test_clip_processor.o
+
+# target to build an object file
+test/test_clip_processor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_clip_processor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o
+.PHONY : test/test_clip_processor.cpp.o
+
+test/test_clip_processor.i: test/test_clip_processor.cpp.i
+.PHONY : test/test_clip_processor.i
+
+# target to preprocess a source file
+test/test_clip_processor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_clip_processor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.i
+.PHONY : test/test_clip_processor.cpp.i
+
+test/test_clip_processor.s: test/test_clip_processor.cpp.s
+.PHONY : test/test_clip_processor.s
+
+# target to generate assembly for a file
+test/test_clip_processor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_clip_processor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.s
+.PHONY : test/test_clip_processor.cpp.s
+
+test/test_embedding_comprehensive.o: test/test_embedding_comprehensive.cpp.o
+.PHONY : test/test_embedding_comprehensive.o
+
+# target to build an object file
+test/test_embedding_comprehensive.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_comprehensive.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o
+.PHONY : test/test_embedding_comprehensive.cpp.o
+
+test/test_embedding_comprehensive.i: test/test_embedding_comprehensive.cpp.i
+.PHONY : test/test_embedding_comprehensive.i
+
+# target to preprocess a source file
+test/test_embedding_comprehensive.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_comprehensive.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.i
+.PHONY : test/test_embedding_comprehensive.cpp.i
+
+test/test_embedding_comprehensive.s: test/test_embedding_comprehensive.cpp.s
+.PHONY : test/test_embedding_comprehensive.s
+
+# target to generate assembly for a file
+test/test_embedding_comprehensive.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_comprehensive.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.s
+.PHONY : test/test_embedding_comprehensive.cpp.s
+
+test/test_embedding_functionality.o: test/test_embedding_functionality.cpp.o
+.PHONY : test/test_embedding_functionality.o
+
+# target to build an object file
+test/test_embedding_functionality.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_functionality.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o
+.PHONY : test/test_embedding_functionality.cpp.o
+
+test/test_embedding_functionality.i: test/test_embedding_functionality.cpp.i
+.PHONY : test/test_embedding_functionality.i
+
+# target to preprocess a source file
+test/test_embedding_functionality.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_functionality.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.i
+.PHONY : test/test_embedding_functionality.cpp.i
+
+test/test_embedding_functionality.s: test/test_embedding_functionality.cpp.s
+.PHONY : test/test_embedding_functionality.s
+
+# target to generate assembly for a file
+test/test_embedding_functionality.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_functionality.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.s
+.PHONY : test/test_embedding_functionality.cpp.s
+
+test/test_initialize_memories.o: test/test_initialize_memories.cpp.o
+.PHONY : test/test_initialize_memories.o
+
+# target to build an object file
+test/test_initialize_memories.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_initialize_memories.dir/build.make CMakeFiles/test_initialize_memories.dir/test/test_initialize_memories.cpp.o
+.PHONY : test/test_initialize_memories.cpp.o
+
+test/test_initialize_memories.i: test/test_initialize_memories.cpp.i
+.PHONY : test/test_initialize_memories.i
+
+# target to preprocess a source file
+test/test_initialize_memories.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_initialize_memories.dir/build.make CMakeFiles/test_initialize_memories.dir/test/test_initialize_memories.cpp.i
+.PHONY : test/test_initialize_memories.cpp.i
+
+test/test_initialize_memories.s: test/test_initialize_memories.cpp.s
+.PHONY : test/test_initialize_memories.s
+
+# target to generate assembly for a file
+test/test_initialize_memories.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_initialize_memories.dir/build.make CMakeFiles/test_initialize_memories.dir/test/test_initialize_memories.cpp.s
+.PHONY : test/test_initialize_memories.cpp.s
+
+test/test_real_multimodal_demo.o: test/test_real_multimodal_demo.cpp.o
+.PHONY : test/test_real_multimodal_demo.o
+
+# target to build an object file
+test/test_real_multimodal_demo.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o
+.PHONY : test/test_real_multimodal_demo.cpp.o
+
+test/test_real_multimodal_demo.i: test/test_real_multimodal_demo.cpp.i
+.PHONY : test/test_real_multimodal_demo.i
+
+# target to preprocess a source file
+test/test_real_multimodal_demo.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.i
+.PHONY : test/test_real_multimodal_demo.cpp.i
+
+test/test_real_multimodal_demo.s: test/test_real_multimodal_demo.cpp.s
+.PHONY : test/test_real_multimodal_demo.s
+
+# target to generate assembly for a file
+test/test_real_multimodal_demo.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.s
+.PHONY : test/test_real_multimodal_demo.cpp.s
+
+test/test_system_initialization.o: test/test_system_initialization.cpp.o
+.PHONY : test/test_system_initialization.o
+
+# target to build an object file
+test/test_system_initialization.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_system_initialization.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/test/test_system_initialization.cpp.o
+.PHONY : test/test_system_initialization.cpp.o
+
+test/test_system_initialization.i: test/test_system_initialization.cpp.i
+.PHONY : test/test_system_initialization.i
+
+# target to preprocess a source file
+test/test_system_initialization.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_system_initialization.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/test/test_system_initialization.cpp.i
+.PHONY : test/test_system_initialization.cpp.i
+
+test/test_system_initialization.s: test/test_system_initialization.cpp.s
+.PHONY : test/test_system_initialization.s
+
+# target to generate assembly for a file
+test/test_system_initialization.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_system_initialization.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/test/test_system_initialization.cpp.s
+.PHONY : test/test_system_initialization.cpp.s
+
+test/test_vector_serializer.o: test/test_vector_serializer.cpp.o
+.PHONY : test/test_vector_serializer.o
+
+# target to build an object file
+test/test_vector_serializer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_vector_serializer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o
+.PHONY : test/test_vector_serializer.cpp.o
+
+test/test_vector_serializer.i: test/test_vector_serializer.cpp.i
+.PHONY : test/test_vector_serializer.i
+
+# target to preprocess a source file
+test/test_vector_serializer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_vector_serializer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.i
+.PHONY : test/test_vector_serializer.cpp.i
+
+test/test_vector_serializer.s: test/test_vector_serializer.cpp.s
+.PHONY : test/test_vector_serializer.s
+
+# target to generate assembly for a file
+test/test_vector_serializer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_vector_serializer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.s
+.PHONY : test/test_vector_serializer.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1625,15 +1647,16 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... test"
-	@echo "... cli_main"
 	@echo "... initialize_memories"
 	@echo "... mirix_lib"
-	@echo "... mirix_main"
 	@echo "... real_multimodal_demo"
+	@echo "... test_chat_with_auto_capture"
 	@echo "... test_chat_with_model"
 	@echo "... test_clip_processor"
 	@echo "... test_embedding"
 	@echo "... test_embedding_comprehensive"
+	@echo "... test_initialize_memories"
+	@echo "... test_system_initialization"
 	@echo "... test_vector_serializer"
 	@echo "... src/agents/AgentManager.o"
 	@echo "... src/agents/AgentManager.i"
@@ -1686,9 +1709,6 @@ help:
 	@echo "... src/cli/CommandLineInterface.o"
 	@echo "... src/cli/CommandLineInterface.i"
 	@echo "... src/cli/CommandLineInterface.s"
-	@echo "... src/cli_main.o"
-	@echo "... src/cli_main.i"
-	@echo "... src/cli_main.s"
 	@echo "... src/database/core/StorageManager.o"
 	@echo "... src/database/core/StorageManager.i"
 	@echo "... src/database/core/StorageManager.s"
@@ -1746,12 +1766,6 @@ help:
 	@echo "... src/gui/GUIManager.o"
 	@echo "... src/gui/GUIManager.i"
 	@echo "... src/gui/GUIManager.s"
-	@echo "... src/initialize_memories.o"
-	@echo "... src/initialize_memories.i"
-	@echo "... src/initialize_memories.s"
-	@echo "... src/main.o"
-	@echo "... src/main.i"
-	@echo "... src/main.s"
 	@echo "... src/models/CLIPProcessor.o"
 	@echo "... src/models/CLIPProcessor.i"
 	@echo "... src/models/CLIPProcessor.s"
@@ -1770,33 +1784,42 @@ help:
 	@echo "... src/models/VectorSearchManager.o"
 	@echo "... src/models/VectorSearchManager.i"
 	@echo "... src/models/VectorSearchManager.s"
-	@echo "... src/real_multimodal_demo.o"
-	@echo "... src/real_multimodal_demo.i"
-	@echo "... src/real_multimodal_demo.s"
 	@echo "... src/storage/StorageManager.o"
 	@echo "... src/storage/StorageManager.i"
 	@echo "... src/storage/StorageManager.s"
-	@echo "... src/test_chat_with_model.o"
-	@echo "... src/test_chat_with_model.i"
-	@echo "... src/test_chat_with_model.s"
-	@echo "... src/test_clip_processor.o"
-	@echo "... src/test_clip_processor.i"
-	@echo "... src/test_clip_processor.s"
-	@echo "... src/test_embedding_comprehensive.o"
-	@echo "... src/test_embedding_comprehensive.i"
-	@echo "... src/test_embedding_comprehensive.s"
-	@echo "... src/test_embedding_functionality.o"
-	@echo "... src/test_embedding_functionality.i"
-	@echo "... src/test_embedding_functionality.s"
-	@echo "... src/test_vector_serializer.o"
-	@echo "... src/test_vector_serializer.i"
-	@echo "... src/test_vector_serializer.s"
 	@echo "... src/utils/TimeUtils.o"
 	@echo "... src/utils/TimeUtils.i"
 	@echo "... src/utils/TimeUtils.s"
 	@echo "... src/utils/VectorSerializer.o"
 	@echo "... src/utils/VectorSerializer.i"
 	@echo "... src/utils/VectorSerializer.s"
+	@echo "... test/test_chat_with_auto_capture.o"
+	@echo "... test/test_chat_with_auto_capture.i"
+	@echo "... test/test_chat_with_auto_capture.s"
+	@echo "... test/test_chat_with_model.o"
+	@echo "... test/test_chat_with_model.i"
+	@echo "... test/test_chat_with_model.s"
+	@echo "... test/test_clip_processor.o"
+	@echo "... test/test_clip_processor.i"
+	@echo "... test/test_clip_processor.s"
+	@echo "... test/test_embedding_comprehensive.o"
+	@echo "... test/test_embedding_comprehensive.i"
+	@echo "... test/test_embedding_comprehensive.s"
+	@echo "... test/test_embedding_functionality.o"
+	@echo "... test/test_embedding_functionality.i"
+	@echo "... test/test_embedding_functionality.s"
+	@echo "... test/test_initialize_memories.o"
+	@echo "... test/test_initialize_memories.i"
+	@echo "... test/test_initialize_memories.s"
+	@echo "... test/test_real_multimodal_demo.o"
+	@echo "... test/test_real_multimodal_demo.i"
+	@echo "... test/test_real_multimodal_demo.s"
+	@echo "... test/test_system_initialization.o"
+	@echo "... test/test_system_initialization.i"
+	@echo "... test/test_system_initialization.s"
+	@echo "... test/test_vector_serializer.o"
+	@echo "... test/test_vector_serializer.i"
+	@echo "... test/test_vector_serializer.s"
 .PHONY : help
 
 

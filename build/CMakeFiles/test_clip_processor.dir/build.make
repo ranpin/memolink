@@ -72,30 +72,31 @@ include CMakeFiles/test_clip_processor.dir/flags.make
 CMakeFiles/test_clip_processor.dir/codegen:
 .PHONY : CMakeFiles/test_clip_processor.dir/codegen
 
-CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o: CMakeFiles/test_clip_processor.dir/flags.make
-CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o: /Users/ranpin/code/mirix-cpp/src/test_clip_processor.cpp
-CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o: CMakeFiles/test_clip_processor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o -MF CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o.d -o CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o -c /Users/ranpin/code/mirix-cpp/src/test_clip_processor.cpp
+CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o: CMakeFiles/test_clip_processor.dir/flags.make
+CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o: /Users/ranpin/code/mirix-cpp/test/test_clip_processor.cpp
+CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o: CMakeFiles/test_clip_processor.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/ranpin/code/mirix-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o -MF CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o.d -o CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o -c /Users/ranpin/code/mirix-cpp/test/test_clip_processor.cpp
 
-CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/src/test_clip_processor.cpp > CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.i
+CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/ranpin/code/mirix-cpp/test/test_clip_processor.cpp > CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.i
 
-CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/src/test_clip_processor.cpp -o CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.s
+CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/ranpin/code/mirix-cpp/test/test_clip_processor.cpp -o CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.s
 
 # Object files for target test_clip_processor
 test_clip_processor_OBJECTS = \
-"CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o"
+"CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o"
 
 # External object files for target test_clip_processor
 test_clip_processor_EXTERNAL_OBJECTS =
 
-test_clip_processor: CMakeFiles/test_clip_processor.dir/src/test_clip_processor.cpp.o
+test_clip_processor: CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o
 test_clip_processor: CMakeFiles/test_clip_processor.dir/build.make
 test_clip_processor: libmirix_lib.a
+test_clip_processor: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
 test_clip_processor: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
 test_clip_processor: /opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
 test_clip_processor: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd

@@ -1,5 +1,6 @@
 #include "VectorSearchManager.h"
 #include "CLIPProcessor.h"
+#include "TextEmbeddingGenerator.h"
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -12,7 +13,7 @@ VectorSearchManager::VectorSearchManager(StorageManager& storage)
     : storage_(storage), 
       recallMemoryManager_(storage),
       resourceMemoryManager_(storage),
-      textEmbeddingGenerator_() {
+      textEmbeddingGenerator_(&storage) {
     std::cout << "[VectorSearchManager] 初始化..." << std::endl;
     
     // 初始化CLIP处理器
@@ -29,7 +30,7 @@ std::vector<float> VectorSearchManager::generateTextEmbedding(const std::string&
     
     // 优先使用TextEmbeddingGenerator生成文本embedding
     std::cout << "[VectorSearchManager] 使用TextEmbeddingGenerator生成查询文本embedding..." << std::endl;
-    std::vector<float> embedding = textEmbeddingGenerator_.generateEmbedding(text);
+    std::vector<float> embedding = textEmbeddingGenerator_.generateTextEmbedding(text);
     if (!embedding.empty()) {
         std::cout << "[VectorSearchManager] TextEmbeddingGenerator生成查询文本embedding完成，维度: " << embedding.size() << std::endl;
         return embedding;

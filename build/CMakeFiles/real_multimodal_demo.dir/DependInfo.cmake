@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/ranpin/code/mirix-cpp/src/real_multimodal_demo.cpp" "CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o" "gcc" "CMakeFiles/real_multimodal_demo.dir/src/real_multimodal_demo.cpp.o.d"
+  "/Users/ranpin/code/mirix-cpp/test/test_real_multimodal_demo.cpp" "CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o" "gcc" "CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

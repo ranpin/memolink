@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/ranpin/code/mirix-cpp/src/test_chat_with_model.cpp" "CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o" "gcc" "CMakeFiles/test_chat_with_model.dir/src/test_chat_with_model.cpp.o.d"
+  "/Users/ranpin/code/mirix-cpp/test/test_chat_with_model.cpp" "CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o" "gcc" "CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
