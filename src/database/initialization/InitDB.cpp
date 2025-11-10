@@ -27,10 +27,12 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
     std::string agentTable = R"(
         CREATE TABLE IF NOT EXISTS agent (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
             name TEXT NOT NULL,
             description TEXT,
             capabilities TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES user(id)
         );
     )";
     
@@ -63,12 +65,15 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
         CREATE TABLE IF NOT EXISTS core_memory_block (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
-            key TEXT NOT NULL,
+            agent_id INTEGER,
+            label TEXT NOT NULL,
             value TEXT NOT NULL,
-            description TEXT,
+            encrypted_value TEXT,
+            last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (user_id) REFERENCES user(id)
+            FOREIGN KEY (user_id) REFERENCES user(id),
+            FOREIGN KEY (agent_id) REFERENCES agent(id)
         );
     )";
     
@@ -81,6 +86,7 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
         CREATE TABLE IF NOT EXISTS episodic_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
+            agent_id INTEGER,
             session_id INTEGER,
             timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
             event TEXT NOT NULL,
@@ -89,7 +95,9 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
             path TEXT,
             metadata TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES user(id),
+            FOREIGN KEY (agent_id) REFERENCES agent(id),
             FOREIGN KEY (session_id) REFERENCES session(id)
         );
     )";
@@ -99,23 +107,28 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
     }
 
     // 创建语义记忆表
-    std::string semanticMemoryTable = R"(
+    std::string createSemanticMemoryTable = R"(
         CREATE TABLE IF NOT EXISTS semantic_memory (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             agent_id INTEGER,
+            session_id INTEGER,
+            name TEXT NOT NULL,
             title TEXT NOT NULL,
             content TEXT NOT NULL,
             description TEXT,
             path TEXT,
             metadata TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES user(id),
-            FOREIGN KEY (agent_id) REFERENCES agent(id)
+            FOREIGN KEY (agent_id) REFERENCES agent(id),
+            FOREIGN KEY (session_id) REFERENCES session(id)
         );
     )";
-    
-    if (!storage.executeNonQuery(semanticMemoryTable)) {
+
+    if (!storage.executeNonQuery(createSemanticMemoryTable)) {
+        std::cerr << "Failed to create semantic_memory table" << std::endl;
         return false;
     }
 
@@ -225,8 +238,9 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
             FOREIGN KEY (session_id) REFERENCES session(id)
         );
     )";
-    
+
     if (!storage.executeNonQuery(createRecallMemoryTable)) {
+        std::cerr << "Failed to create recall_memory table" << std::endl;
         return false;
     }
 
@@ -254,7 +268,7 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
         return false;
     }
 
-    // 创建索引
+    // 为其他表也添加用户ID索引
     std::vector<std::string> indexStatements = {
         "CREATE INDEX IF NOT EXISTS idx_resource_memory_user_id ON resource_memory(user_id);",
         "CREATE INDEX IF NOT EXISTS idx_resource_memory_agent_id ON resource_memory(agent_id);",
@@ -264,31 +278,85 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
         "CREATE INDEX IF NOT EXISTS idx_recall_memory_session_id ON recall_memory(session_id);",
         "CREATE INDEX IF NOT EXISTS idx_recall_memory_created_at ON recall_memory(created_at);",
         "CREATE INDEX IF NOT EXISTS idx_episodic_memory_user_id ON episodic_memory(user_id);",
-        "CREATE INDEX IF NOT EXISTS idx_episodic_memory_agent_id ON episodic_memory(agent_id);",
         "CREATE INDEX IF NOT EXISTS idx_episodic_memory_timestamp ON episodic_memory(timestamp);",
         "CREATE INDEX IF NOT EXISTS idx_semantic_memory_user_id ON semantic_memory(user_id);",
         "CREATE INDEX IF NOT EXISTS idx_semantic_memory_agent_id ON semantic_memory(agent_id);",
-        "CREATE INDEX IF NOT EXISTS idx_semantic_memory_name ON semantic_memory(name);",
         "CREATE INDEX IF NOT EXISTS idx_procedural_memory_user_id ON procedural_memory(user_id);",
         "CREATE INDEX IF NOT EXISTS idx_procedural_memory_agent_id ON procedural_memory(agent_id);",
         "CREATE INDEX IF NOT EXISTS idx_procedural_memory_title ON procedural_memory(title);",
         "CREATE INDEX IF NOT EXISTS idx_core_memory_block_user_id ON core_memory_block(user_id);",
-        "CREATE INDEX IF NOT EXISTS idx_core_memory_block_agent_id ON core_memory_block(agent_id);",
-        "CREATE INDEX IF NOT EXISTS idx_core_memory_block_label ON core_memory_block(label);",
         "CREATE INDEX IF NOT EXISTS idx_knowledge_vault_user_id ON knowledge_vault(user_id);",
         "CREATE INDEX IF NOT EXISTS idx_knowledge_vault_agent_id ON knowledge_vault(agent_id);",
         "CREATE INDEX IF NOT EXISTS idx_archival_memory_user_id ON archival_memory(user_id);",
-        "CREATE INDEX IF NOT EXISTS idx_archival_memory_agent_id ON archival_memory(agent_id);",
-        "CREATE INDEX IF NOT EXISTS idx_agent_user_id ON agent(user_id);",
-        "CREATE INDEX IF NOT EXISTS idx_embedding_index_memory_id ON embedding_index(memory_id);",
-        "CREATE INDEX IF NOT EXISTS idx_embedding_index_memory_type ON embedding_index(memory_type);"
+        "CREATE INDEX IF NOT EXISTS idx_archival_memory_agent_id ON archival_memory(agent_id);"
     };
 
-    for (const auto& indexStatement : indexStatements) {
-        if (!storage.executeNonQuery(indexStatement)) {
-            std::cerr << "Warning: Failed to create index with statement: " << indexStatement << std::endl;
-            // 不返回false，因为索引创建失败不应该导致整个初始化失败
+    for (const auto& statement : indexStatements) {
+        if (!storage.executeNonQuery(statement)) {
+            std::cerr << "Warning: Failed to create index with statement: " << statement << std::endl;
         }
+    }
+
+    // 条件创建特定字段的索引（仅当字段存在时）
+    // 检查episodic_memory表是否有agent_id字段
+    std::string checkEpisodicAgentId = "SELECT COUNT(*) FROM pragma_table_info('episodic_memory') WHERE name='agent_id';";
+    sqlite3_stmt* stmt;
+    if (storage.executeQuery(checkEpisodicAgentId, stmt)) {
+        if (sqlite3_step(stmt) == SQLITE_ROW && sqlite3_column_int(stmt, 0) > 0) {
+            std::string createIndex = "CREATE INDEX IF NOT EXISTS idx_episodic_memory_agent_id ON episodic_memory(agent_id);";
+            if (!storage.executeNonQuery(createIndex)) {
+                // 忽略错误
+            }
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    // 检查semantic_memory表是否有name字段
+    std::string checkSemanticName = "SELECT COUNT(*) FROM pragma_table_info('semantic_memory') WHERE name='name';";
+    if (storage.executeQuery(checkSemanticName, stmt)) {
+        if (sqlite3_step(stmt) == SQLITE_ROW && sqlite3_column_int(stmt, 0) > 0) {
+            std::string createIndex = "CREATE INDEX IF NOT EXISTS idx_semantic_memory_name ON semantic_memory(name);";
+            if (!storage.executeNonQuery(createIndex)) {
+                // 忽略错误
+            }
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    // 检查core_memory_block表是否有agent_id字段
+    std::string checkCoreMemoryAgentId = "SELECT COUNT(*) FROM pragma_table_info('core_memory_block') WHERE name='agent_id';";
+    if (storage.executeQuery(checkCoreMemoryAgentId, stmt)) {
+        if (sqlite3_step(stmt) == SQLITE_ROW && sqlite3_column_int(stmt, 0) > 0) {
+            std::string createIndex = "CREATE INDEX IF NOT EXISTS idx_core_memory_block_agent_id ON core_memory_block(agent_id);";
+            if (!storage.executeNonQuery(createIndex)) {
+                // 忽略错误
+            }
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    // 检查core_memory_block表是否有label字段
+    std::string checkCoreMemoryLabel = "SELECT COUNT(*) FROM pragma_table_info('core_memory_block') WHERE name='label';";
+    if (storage.executeQuery(checkCoreMemoryLabel, stmt)) {
+        if (sqlite3_step(stmt) == SQLITE_ROW && sqlite3_column_int(stmt, 0) > 0) {
+            std::string createIndex = "CREATE INDEX IF NOT EXISTS idx_core_memory_block_label ON core_memory_block(label);";
+            if (!storage.executeNonQuery(createIndex)) {
+                // 忽略错误
+            }
+        }
+        sqlite3_finalize(stmt);
+    }
+
+    // 检查agent表是否有user_id字段
+    std::string checkAgentUserId = "SELECT COUNT(*) FROM pragma_table_info('agent') WHERE name='user_id';";
+    if (storage.executeQuery(checkAgentUserId, stmt)) {
+        if (sqlite3_step(stmt) == SQLITE_ROW && sqlite3_column_int(stmt, 0) > 0) {
+            std::string createIndex = "CREATE INDEX IF NOT EXISTS idx_agent_user_id ON agent(user_id);";
+            if (!storage.executeNonQuery(createIndex)) {
+                // 忽略错误
+            }
+        }
+        sqlite3_finalize(stmt);
     }
 
     return true;
@@ -688,8 +756,71 @@ bool InitDB::createTables(const std::string& dbPath) {
         std::cerr << "Failed to create index on semantic_memory.user_id" << std::endl;
         return false;
     }
-
-    // 创建索引
+    
+    // 创建触发器以自动更新updated_at字段
+    std::vector<std::string> updateTriggers = {
+        R"(CREATE TRIGGER IF NOT EXISTS update_recall_memory_updated_at 
+           AFTER UPDATE ON recall_memory FOR EACH ROW
+           WHEN NEW.updated_at != CURRENT_TIMESTAMP
+           BEGIN
+               UPDATE recall_memory SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+           END;)",
+           
+        R"(CREATE TRIGGER IF NOT EXISTS update_resource_memory_updated_at 
+           AFTER UPDATE ON resource_memory FOR EACH ROW
+           WHEN NEW.updated_at != CURRENT_TIMESTAMP
+           BEGIN
+               UPDATE resource_memory SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+           END;)",
+           
+        R"(CREATE TRIGGER IF NOT EXISTS update_core_memory_block_updated_at 
+           AFTER UPDATE ON core_memory_block FOR EACH ROW
+           WHEN NEW.updated_at != CURRENT_TIMESTAMP
+           BEGIN
+               UPDATE core_memory_block SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+           END;)",
+           
+        R"(CREATE TRIGGER IF NOT EXISTS update_episodic_memory_updated_at 
+           AFTER UPDATE ON episodic_memory FOR EACH ROW
+           WHEN NEW.updated_at != CURRENT_TIMESTAMP
+           BEGIN
+               UPDATE episodic_memory SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+           END;)",
+           
+        R"(CREATE TRIGGER IF NOT EXISTS update_semantic_memory_updated_at 
+           AFTER UPDATE ON semantic_memory FOR EACH ROW
+           WHEN NEW.updated_at != CURRENT_TIMESTAMP
+           BEGIN
+               UPDATE semantic_memory SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+           END;)",
+           
+        R"(CREATE TRIGGER IF NOT EXISTS update_procedural_memory_updated_at 
+           AFTER UPDATE ON procedural_memory FOR EACH ROW
+           WHEN NEW.updated_at != CURRENT_TIMESTAMP
+           BEGIN
+               UPDATE procedural_memory SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+           END;)",
+           
+        R"(CREATE TRIGGER IF NOT EXISTS update_knowledge_vault_updated_at 
+           AFTER UPDATE ON knowledge_vault FOR EACH ROW
+           WHEN NEW.updated_at != CURRENT_TIMESTAMP
+           BEGIN
+               UPDATE knowledge_vault SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+           END;)",
+           
+        R"(CREATE TRIGGER IF NOT EXISTS update_archival_memory_updated_at 
+           AFTER UPDATE ON archival_memory FOR EACH ROW
+           WHEN NEW.updated_at != CURRENT_TIMESTAMP
+           BEGIN
+               UPDATE archival_memory SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+           END;)"
+    };
+    
+    for (const auto& trigger : updateTriggers) {
+        if (!storage.executeNonQuery(trigger)) {
+            std::cerr << "Warning: Failed to create update trigger: " << trigger << std::endl;
+        }
+    }
 
     return true;
 }
