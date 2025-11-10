@@ -11,6 +11,7 @@ struct SemanticMemoryRecord {
     std::string name;
     std::string summary;
     std::string details;
+    std::string description;  // 添加description字段
     std::string tree_path;
     std::string metadata;
     std::string created_at;
