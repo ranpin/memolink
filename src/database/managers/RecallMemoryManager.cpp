@@ -112,8 +112,15 @@ std::vector<RecallMemoryManager::RecallMemoryItem> RecallMemoryManager::list_rec
         const char* metadata_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
         item.metadata = metadata_text ? metadata_text : "";
         
-        const char* embedding_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
-        item.embedding = embedding_text ? embedding_text : "";
+        // 处理BLOB类型的embedding字段
+        const void* blobData = sqlite3_column_blob(stmt, 7);
+        int blobSize = sqlite3_column_bytes(stmt, 7);
+        if (blobData && blobSize > 0) {
+            std::string serializedData(static_cast<const char*>(blobData), blobSize);
+            item.embedding = serializedData;
+        } else {
+            item.embedding = "";
+        }
         
         const char* created_at_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
         item.created_at = created_at_text ? created_at_text : "";
@@ -239,8 +246,15 @@ std::vector<RecallMemoryManager::RecallMemoryItem> RecallMemoryManager::list_rec
         const char* metadata_text = reinterpret_cast<const char*>(sqlite3_column_text(memory_stmt, 6));
         item.metadata = metadata_text ? metadata_text : "";
         
-        const char* embedding_text = reinterpret_cast<const char*>(sqlite3_column_text(memory_stmt, 7));
-        item.embedding = embedding_text ? embedding_text : "";
+        // 处理BLOB类型的embedding字段
+        const void* blobData = sqlite3_column_blob(memory_stmt, 7);
+        int blobSize = sqlite3_column_bytes(memory_stmt, 7);
+        if (blobData && blobSize > 0) {
+            std::string serializedData(static_cast<const char*>(blobData), blobSize);
+            item.embedding = serializedData;
+        } else {
+            item.embedding = "";
+        }
         
         const char* created_at_text = reinterpret_cast<const char*>(sqlite3_column_text(memory_stmt, 8));
         item.created_at = created_at_text ? created_at_text : "";
@@ -296,8 +310,15 @@ std::vector<RecallMemoryManager::RecallMemoryItem> RecallMemoryManager::search_r
         const char* metadata_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
         item.metadata = metadata_text ? metadata_text : "";
         
-        const char* embedding_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
-        item.embedding = embedding_text ? embedding_text : "";
+        // 处理BLOB类型的embedding字段
+        const void* blobData = sqlite3_column_blob(stmt, 7);
+        int blobSize = sqlite3_column_bytes(stmt, 7);
+        if (blobData && blobSize > 0) {
+            std::string serializedData(static_cast<const char*>(blobData), blobSize);
+            item.embedding = serializedData;
+        } else {
+            item.embedding = "";
+        }
         
         const char* created_at_text = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
         item.created_at = created_at_text ? created_at_text : "";
@@ -321,62 +342,54 @@ bool RecallMemoryManager::saveEmbedding(int memoryId, const std::vector<float>& 
     }
     
     sqlite3_stmt* stmt;
-    std::string query = "UPDATE recall_memory SET embedding = ? WHERE id = ?;";
-
+    // 使用BLOB类型存储embedding
+    std::string query = "UPDATE recall_memory SET embedding = ?, updated_at = datetime('now') WHERE id = ?;";
+    
     if (!storage_.executeQuery(query, stmt)) {
         return false;
     }
-
-    // 使用VectorSerializer序列化向量
-    std::string serializedEmbedding = VectorSerializer::serialize(embedding);
-
-    // 绑定BLOB数据
-    sqlite3_bind_blob(stmt, 1, serializedEmbedding.data(), serializedEmbedding.size(), SQLITE_STATIC);
+    
+    // 将vector<float>序列化为二进制数据
+    if (!embedding.empty()) {
+        std::string serializedEmbedding(reinterpret_cast<const char*>(embedding.data()), 
+                                       embedding.size() * sizeof(float));
+        sqlite3_bind_blob(stmt, 1, serializedEmbedding.data(), serializedEmbedding.size(), SQLITE_TRANSIENT);
+    } else {
+        sqlite3_bind_null(stmt, 1);
+    }
+    
     sqlite3_bind_int(stmt, 2, memoryId);
-
+    
     int rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
-
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to update embedding: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-
-    return true;
+    
+    return (rc == SQLITE_DONE);
 }
 
-// 修复getEmbedding方法
 std::vector<float> RecallMemoryManager::getEmbedding(int memoryId) {
-    std::vector<float> embedding;
-    
-    // 确保数据库连接有效
-    if (!storage_.getDatabase()) {
-        std::cerr << "Database not initialized" << std::endl;
-        return embedding;
-    }
-
     sqlite3_stmt* stmt;
     std::string query = "SELECT embedding FROM recall_memory WHERE id = ?;";
-
+    
     if (!storage_.executeQuery(query, stmt)) {
-        return embedding;
+        return std::vector<float>();
     }
-
+    
     sqlite3_bind_int(stmt, 1, memoryId);
-
+    
+    std::vector<float> embedding;
     if (sqlite3_step(stmt) == SQLITE_ROW) {
-        // 从BLOB字段读取数据
+        // 从BLOB字段读取embedding数据
         const void* blobData = sqlite3_column_blob(stmt, 0);
         int blobSize = sqlite3_column_bytes(stmt, 0);
         
         if (blobData && blobSize > 0) {
-            // 将BLOB数据转换为字符串
-            std::string serializedData(static_cast<const char*>(blobData), blobSize);
-            // 使用VectorSerializer反序列化向量
-            embedding = VectorSerializer::deserialize(serializedData);
+            // 将二进制数据转换回vector<float>
+            const float* floatData = static_cast<const float*>(blobData);
+            size_t floatCount = blobSize / sizeof(float);
+            embedding = std::vector<float>(floatData, floatData + floatCount);
         }
     }
-
+    
     sqlite3_finalize(stmt);
     return embedding;
 }

@@ -20,7 +20,7 @@ bool ResourceMemoryManager::add_resource_memory(const ResourceMemoryItem& item) 
     
     sqlite3_stmt* stmt;
     std::string currentTime = TimeUtils::getCurrentTimestamp();
-    std::string query = "INSERT INTO resource_memory (user_id, agent_id, session_id, path, description, resource_type, size, metadata, embedding, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    std::string query = "INSERT INTO resource_memory (user_id, agent_id, session_id, path, description, resource_type, size, metadata, embedding, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     if (!storage_.executeQuery(query, stmt)) {
         std::cout << "=== 添加资源记忆结束(失败) ===" << std::endl;
@@ -46,6 +46,7 @@ bool ResourceMemoryManager::add_resource_memory(const ResourceMemoryItem& item) 
     }
     
     sqlite3_bind_text(stmt, 10, currentTime.c_str(), -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 11, currentTime.c_str(), -1, SQLITE_STATIC);
 
     int rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
@@ -287,69 +288,59 @@ ResourceMemoryManager::ResourceMemoryItem ResourceMemoryManager::get_resource_me
     return item;
 }
 
-bool ResourceMemoryManager::saveEmbedding(int resourceId, const std::vector<float>& embedding) {
-    // 确保数据库连接有效
-    if (!storage_.getDatabase()) {
-        std::cerr << "Database not initialized" << std::endl;
-        return false;
-    }
-    
+bool ResourceMemoryManager::save_resource_memory_embedding(int memory_id, const std::vector<float>& embedding) {
     sqlite3_stmt* stmt;
-    std::string query = "UPDATE resource_memory SET embedding = ? WHERE id = ?;";
-
+    std::string query = "UPDATE resource_memory SET embedding = ?, updated_at = datetime('now') WHERE id = ?;";
+    
     if (!storage_.executeQuery(query, stmt)) {
         return false;
     }
-
-    // 使用VectorSerializer序列化向量
-    std::string serializedEmbedding = VectorSerializer::serialize(embedding);
-
-    // 绑定BLOB数据
-    sqlite3_bind_blob(stmt, 1, serializedEmbedding.data(), serializedEmbedding.size(), SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 2, resourceId);
-
+    
+    // 将vector<float>序列化为二进制数据
+    if (!embedding.empty()) {
+        std::string serializedEmbedding(reinterpret_cast<const char*>(embedding.data()), 
+                                       embedding.size() * sizeof(float));
+        sqlite3_bind_blob(stmt, 1, serializedEmbedding.data(), serializedEmbedding.size(), SQLITE_TRANSIENT);
+    } else {
+        sqlite3_bind_null(stmt, 1);
+    }
+    
+    sqlite3_bind_int(stmt, 2, memory_id);
+    
     int rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
+    
+    return (rc == SQLITE_DONE);
+}
 
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to update embedding: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-
-    return true;
+bool ResourceMemoryManager::saveEmbedding(int memory_id, const std::vector<float>& embedding) {
+    return save_resource_memory_embedding(memory_id, embedding);
 }
 
 std::vector<float> ResourceMemoryManager::getEmbedding(int resourceId) {
-    std::vector<float> embedding;
-    
-    // 确保数据库连接有效
-    if (!storage_.getDatabase()) {
-        std::cerr << "Database not initialized" << std::endl;
-        return embedding;
-    }
-
     sqlite3_stmt* stmt;
     std::string query = "SELECT embedding FROM resource_memory WHERE id = ?;";
-
+    
     if (!storage_.executeQuery(query, stmt)) {
-        return embedding;
+        return std::vector<float>();
     }
-
+    
     sqlite3_bind_int(stmt, 1, resourceId);
-
+    
+    std::vector<float> embedding;
     if (sqlite3_step(stmt) == SQLITE_ROW) {
-        // 从BLOB字段读取数据
+        // 从BLOB字段读取embedding数据
         const void* blobData = sqlite3_column_blob(stmt, 0);
         int blobSize = sqlite3_column_bytes(stmt, 0);
         
         if (blobData && blobSize > 0) {
-            // 将BLOB数据转换为字符串
-            std::string serializedData(static_cast<const char*>(blobData), blobSize);
-            // 使用VectorSerializer反序列化向量
-            embedding = VectorSerializer::deserialize(serializedData);
+            // 将二进制数据转换回vector<float>
+            const float* floatData = static_cast<const float*>(blobData);
+            size_t floatCount = blobSize / sizeof(float);
+            embedding = std::vector<float>(floatData, floatData + floatCount);
         }
     }
-
+    
     sqlite3_finalize(stmt);
     return embedding;
 }
