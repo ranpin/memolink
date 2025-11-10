@@ -2,20 +2,19 @@
 #include "../core/StorageManager.h"
 #include <sqlite3.h>
 #include <iostream>
-#include <sstream>
 
 bool EpisodicMemoryManager::addEpisodicMemory(int userId, int agentId, const std::string& timestamp,
-                                             const std::string& event, const std::string& details,
-                                             const std::string& eventType, const std::string& treePath,
-                                             const std::string& metadata, const std::string& dbPath) {
+                                            const std::string& event, const std::string& details,
+                                            const std::string& eventType, const std::string& treePath,
+                                            const std::string& metadata, const std::string& dbPath) {
     StorageManager storage(dbPath);
     if (!storage.initialize()) {
-        std::cerr << "Failed to initialize database" << std::endl;
+        std::cerr << "Failed to initialize storage manager" << std::endl;
         return false;
     }
-
+    
     sqlite3_stmt* stmt;
-    std::string query = "INSERT INTO episodic_memory (user_id, agent_id, timestamp, event, details, event_type, tree_path, metadata) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+    std::string query = "INSERT INTO episodic_memory (user_id, agent_id, timestamp, event, content, event_type, path, metadata, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'));";
     
     if (!storage.executeQuery(query, stmt)) {
         return false;
@@ -46,12 +45,12 @@ bool EpisodicMemoryManager::updateEpisodicMemory(int memoryId, const std::string
                                                const std::string& dbPath) {
     StorageManager storage(dbPath);
     if (!storage.initialize()) {
-        std::cerr << "Failed to initialize database" << std::endl;
+        std::cerr << "Failed to initialize storage manager" << std::endl;
         return false;
     }
-
+    
     sqlite3_stmt* stmt;
-    std::string query = "UPDATE episodic_memory SET event = ?, details = ?, metadata = ? WHERE id = ?;";
+    std::string query = "UPDATE episodic_memory SET event = ?, content = ?, metadata = ?, updated_at = datetime('now') WHERE id = ?;";
     
     if (!storage.executeQuery(query, stmt)) {
         return false;
@@ -76,10 +75,10 @@ bool EpisodicMemoryManager::updateEpisodicMemory(int memoryId, const std::string
 bool EpisodicMemoryManager::deleteEpisodicMemory(int memoryId, const std::string& dbPath) {
     StorageManager storage(dbPath);
     if (!storage.initialize()) {
-        std::cerr << "Failed to initialize database" << std::endl;
+        std::cerr << "Failed to initialize storage manager" << std::endl;
         return false;
     }
-
+    
     sqlite3_stmt* stmt;
     std::string query = "DELETE FROM episodic_memory WHERE id = ?;";
     
@@ -101,19 +100,19 @@ bool EpisodicMemoryManager::deleteEpisodicMemory(int memoryId, const std::string
 }
 
 std::vector<EpisodicMemoryRecord> EpisodicMemoryManager::getAllEpisodicMemories(int userId, const std::string& dbPath) {
-    std::vector<EpisodicMemoryRecord> records;
-    
     StorageManager storage(dbPath);
     if (!storage.initialize()) {
-        std::cerr << "Failed to initialize database" << std::endl;
-        return records;
+        std::cerr << "Failed to initialize storage manager" << std::endl;
+        return std::vector<EpisodicMemoryRecord>();
     }
     
+    std::vector<EpisodicMemoryRecord> memories;
+    
     sqlite3_stmt* stmt;
-    std::string query = "SELECT id, user_id, agent_id, timestamp, event, details, event_type, tree_path, metadata, created_at, updated_at FROM episodic_memory WHERE user_id = ? ORDER BY timestamp DESC;";
+    std::string query = "SELECT id, user_id, agent_id, timestamp, event, content, event_type, path, metadata, created_at FROM episodic_memory WHERE user_id = ? ORDER BY timestamp DESC;";
     
     if (!storage.executeQuery(query, stmt)) {
-        return records;
+        return memories;
     }
     
     sqlite3_bind_int(stmt, 1, userId);
@@ -130,25 +129,24 @@ std::vector<EpisodicMemoryRecord> EpisodicMemoryManager::getAllEpisodicMemories(
         record.tree_path = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
         record.metadata = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
         record.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
-        record.updated_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 10));
-        records.push_back(record);
+        memories.push_back(record);
     }
     
     sqlite3_finalize(stmt);
-    return records;
+    return memories;
 }
 
 EpisodicMemoryRecord EpisodicMemoryManager::getEpisodicMemoryById(int memoryId, const std::string& dbPath) {
-    EpisodicMemoryRecord record;
-    
     StorageManager storage(dbPath);
     if (!storage.initialize()) {
-        std::cerr << "Failed to initialize database" << std::endl;
-        return record;
+        std::cerr << "Failed to initialize storage manager" << std::endl;
+        return EpisodicMemoryRecord();
     }
     
+    EpisodicMemoryRecord record;
+    
     sqlite3_stmt* stmt;
-    std::string query = "SELECT id, user_id, agent_id, timestamp, event, details, event_type, tree_path, metadata, created_at, updated_at FROM episodic_memory WHERE id = ?;";
+    std::string query = "SELECT id, user_id, agent_id, timestamp, event, content, event_type, path, metadata, created_at FROM episodic_memory WHERE id = ?;";
     
     if (!storage.executeQuery(query, stmt)) {
         return record;
@@ -167,7 +165,6 @@ EpisodicMemoryRecord EpisodicMemoryManager::getEpisodicMemoryById(int memoryId, 
         record.tree_path = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
         record.metadata = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
         record.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
-        record.updated_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 10));
     }
     
     sqlite3_finalize(stmt);
@@ -175,26 +172,25 @@ EpisodicMemoryRecord EpisodicMemoryManager::getEpisodicMemoryById(int memoryId, 
 }
 
 std::vector<EpisodicMemoryRecord> EpisodicMemoryManager::searchEpisodicMemories(int userId, const std::string& keyword, const std::string& dbPath) {
-    std::vector<EpisodicMemoryRecord> records;
-    
     StorageManager storage(dbPath);
     if (!storage.initialize()) {
-        std::cerr << "Failed to initialize database" << std::endl;
-        return records;
+        std::cerr << "Failed to initialize storage manager" << std::endl;
+        return std::vector<EpisodicMemoryRecord>();
     }
     
+    std::vector<EpisodicMemoryRecord> memories;
+    
     sqlite3_stmt* stmt;
-    std::string query = "SELECT id, user_id, agent_id, timestamp, event, details, event_type, tree_path, metadata, created_at, updated_at FROM episodic_memory WHERE user_id = ? AND (event LIKE ? OR details LIKE ? OR metadata LIKE ?) ORDER BY timestamp DESC;";
+    std::string query = "SELECT id, user_id, agent_id, timestamp, event, content, event_type, path, metadata, created_at FROM episodic_memory WHERE user_id = ? AND (event LIKE ? OR content LIKE ?) ORDER BY timestamp DESC;";
     
     if (!storage.executeQuery(query, stmt)) {
-        return records;
+        return memories;
     }
     
     std::string searchKeyword = "%" + keyword + "%";
     sqlite3_bind_int(stmt, 1, userId);
     sqlite3_bind_text(stmt, 2, searchKeyword.c_str(), -1, SQLITE_STATIC);
     sqlite3_bind_text(stmt, 3, searchKeyword.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, searchKeyword.c_str(), -1, SQLITE_STATIC);
     
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         EpisodicMemoryRecord record;
@@ -208,10 +204,9 @@ std::vector<EpisodicMemoryRecord> EpisodicMemoryManager::searchEpisodicMemories(
         record.tree_path = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 7));
         record.metadata = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
         record.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
-        record.updated_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 10));
-        records.push_back(record);
+        memories.push_back(record);
     }
     
     sqlite3_finalize(stmt);
-    return records;
+    return memories;
 }
