@@ -35,6 +35,7 @@ public:
     std::vector<ResourceMemoryItem> search_resource_memories(int user_id, const std::string& query, int limit = 5);
     ResourceMemoryItem get_resource_memory(int id);
     bool saveEmbedding(int memory_id, const std::vector<float>& embedding);
+    bool save_resource_memory_embedding(int memory_id, const std::vector<float>& embedding); // 添加声明
     std::vector<float> getEmbedding(int resourceId);
     std::vector<ResourceMemoryItem> searchByEmbedding(int user_id, const std::vector<float>& queryEmbedding, int topK = 5);
 };

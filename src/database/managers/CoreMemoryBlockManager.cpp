@@ -8,7 +8,7 @@ CoreMemoryBlockManager::CoreMemoryBlockManager(StorageManager& storage) : storag
 bool CoreMemoryBlockManager::addCoreMemoryBlock(int userId, const std::string& label, 
                                                const std::string& value, const std::string& encryptedValue) {
     sqlite3_stmt* stmt;
-    std::string query = "INSERT INTO core_memory_block (user_id, key, value, description) VALUES (?, ?, ?, ?);";
+    std::string query = "INSERT INTO core_memory_block (user_id, label, value, encrypted_value) VALUES (?, ?, ?, ?);";
     
     if (!storage.executeQuery(query, stmt)) {
         return false;
@@ -34,7 +34,7 @@ std::vector<std::pair<std::string, std::string>> CoreMemoryBlockManager::listCor
     std::vector<std::pair<std::string, std::string>> blocks;
     
     sqlite3_stmt* stmt;
-    std::string query = "SELECT key, value FROM core_memory_block WHERE user_id = ?;";
+    std::string query = "SELECT label, value FROM core_memory_block WHERE user_id = ?;";
     
     if (!storage.executeQuery(query, stmt)) {
         return blocks;
@@ -56,7 +56,7 @@ std::vector<std::pair<std::string, std::string>> CoreMemoryBlockManager::listCor
 bool CoreMemoryBlockManager::updateCoreMemoryBlock(int userId, const std::string& label, 
                                                   const std::string& value, const std::string& encryptedValue) {
     sqlite3_stmt* stmt;
-    std::string query = "UPDATE core_memory_block SET value = ?, description = ? WHERE user_id = ? AND key = ?;";
+    std::string query = "UPDATE core_memory_block SET value = ?, encrypted_value = ?, updated_at = CURRENT_TIMESTAMP WHERE user_id = ? AND label = ?;";
     
     if (!storage.executeQuery(query, stmt)) {
         return false;
@@ -80,7 +80,7 @@ bool CoreMemoryBlockManager::updateCoreMemoryBlock(int userId, const std::string
 
 bool CoreMemoryBlockManager::deleteCoreMemoryBlock(int userId, const std::string& label) {
     sqlite3_stmt* stmt;
-    std::string query = "DELETE FROM core_memory_block WHERE user_id = ? AND key = ?;";
+    std::string query = "DELETE FROM core_memory_block WHERE user_id = ? AND label = ?;";
     
     if (!storage.executeQuery(query, stmt)) {
         return false;
@@ -104,7 +104,7 @@ std::vector<CoreMemoryBlockRecord> CoreMemoryBlockManager::getAllCoreMemoryBlock
     std::vector<CoreMemoryBlockRecord> blocks;
     
     sqlite3_stmt* stmt;
-    std::string query = "SELECT id, user_id, label, value, encrypted_value FROM core_memory_block WHERE user_id = ?;";
+    std::string query = "SELECT id, user_id, label, value, encrypted_value, created_at, updated_at FROM core_memory_block WHERE user_id = ? ORDER BY created_at DESC;";
     
     if (!storage.executeQuery(query, stmt)) {
         return blocks;
@@ -118,11 +118,18 @@ std::vector<CoreMemoryBlockRecord> CoreMemoryBlockManager::getAllCoreMemoryBlock
         record.user_id = sqlite3_column_int(stmt, 1);
         record.label = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
         record.value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-        record.encrypted_value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        
+        const char* encryptedValue = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        record.encrypted_value = encryptedValue ? encryptedValue : "";
+        
+        record.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+        record.last_updated = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+        
         blocks.push_back(record);
     }
     
     sqlite3_finalize(stmt);
+    
     return blocks;
 }
 
@@ -130,7 +137,7 @@ CoreMemoryBlockRecord CoreMemoryBlockManager::getCoreMemoryBlockById(int id) {
     CoreMemoryBlockRecord record;
     
     sqlite3_stmt* stmt;
-    std::string query = "SELECT id, user_id, label, value, encrypted_value FROM core_memory_block WHERE id = ?;";
+    std::string query = "SELECT id, user_id, label, value, encrypted_value, created_at, updated_at FROM core_memory_block WHERE id = ?;";
     
     if (!storage.executeQuery(query, stmt)) {
         return record;
@@ -143,10 +150,16 @@ CoreMemoryBlockRecord CoreMemoryBlockManager::getCoreMemoryBlockById(int id) {
         record.user_id = sqlite3_column_int(stmt, 1);
         record.label = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
         record.value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-        record.encrypted_value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        
+        const char* encryptedValue = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        record.encrypted_value = encryptedValue ? encryptedValue : "";
+        
+        record.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+        record.last_updated = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
     }
     
     sqlite3_finalize(stmt);
+    
     return record;
 }
 
@@ -154,7 +167,7 @@ std::vector<CoreMemoryBlockRecord> CoreMemoryBlockManager::searchCoreMemoryBlock
     std::vector<CoreMemoryBlockRecord> blocks;
     
     sqlite3_stmt* stmt;
-    std::string query = "SELECT id, user_id, label, value, encrypted_value FROM core_memory_block WHERE user_id = ? AND (label LIKE ? OR value LIKE ?);";
+    std::string query = "SELECT id, user_id, label, value, encrypted_value, created_at, updated_at FROM core_memory_block WHERE user_id = ? AND (label LIKE ? OR value LIKE ?) ORDER BY created_at DESC;";
     
     if (!storage.executeQuery(query, stmt)) {
         return blocks;
@@ -171,10 +184,17 @@ std::vector<CoreMemoryBlockRecord> CoreMemoryBlockManager::searchCoreMemoryBlock
         record.user_id = sqlite3_column_int(stmt, 1);
         record.label = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
         record.value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-        record.encrypted_value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        
+        const char* encryptedValue = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
+        record.encrypted_value = encryptedValue ? encryptedValue : "";
+        
+        record.created_at = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+        record.last_updated = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 6));
+        
         blocks.push_back(record);
     }
     
     sqlite3_finalize(stmt);
+    
     return blocks;
 }
