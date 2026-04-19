@@ -17,11 +17,6 @@
 # Debugger Files
 *.pdb
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
 # Fortran module files
 *.mod
 *.smod
@@ -41,7 +36,7 @@
 *.dwo
 
 # Build directories
-build/
+build/*
 cmake-build-debug/
 cmake-build-release/
 
@@ -72,3 +67,5 @@ Thumbs.db
 # Temporary files
 *.tmp
 *~
+
+libs/*

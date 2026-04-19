@@ -1,39 +1,26 @@
-#ifndef PROCEDURAL_MEMORY_MANAGER_H
-#define PROCEDURAL_MEMORY_MANAGER_H
+#pragma once
 
-#include <string>
-#include <vector>
+#include "../core/MemoryManager.h"
+#include "../models/MemoryModels.h"
+#include "../../models/EmbeddingIndexManager.h"
+#include "../initialization/ConfigManager.h"
 
-struct ProceduralMemoryRecord {
-    int id;
-    int user_id;
-    int agent_id;
-    std::string title;
-    std::string summary;
-    std::string steps;
-    std::string tree_path;
-    std::string metadata;
-    std::string created_at;
-    std::string updated_at;
-};
-
-class ProceduralMemoryManager {
+// 程序记忆管理器类
+class ProceduralMemoryManager : public MemoryManager<ProceduralMemory> {
 public:
-    static bool addProceduralMemory(int userId, int agentId, const std::string& title,
-                                  const std::string& summary, const std::string& steps,
-                                  const std::string& treePath, const std::string& metadata,
-                                  const std::string& dbPath);
+    explicit ProceduralMemoryManager(ORMWrapper& orm) 
+        : MemoryManager<ProceduralMemory>(orm) {}
     
-    static bool updateProceduralMemory(int memoryId, const std::string& title,
-                                     const std::string& summary, const std::string& steps,
-                                     const std::string& metadata, const std::string& dbPath);
-    
-    static bool deleteProceduralMemory(int memoryId, const std::string& dbPath);
-    
-    // 添加查询功能
-    static std::vector<ProceduralMemoryRecord> getAllProceduralMemories(int userId, const std::string& dbPath);
-    static ProceduralMemoryRecord getProceduralMemoryById(int memoryId, const std::string& dbPath);
-    static std::vector<ProceduralMemoryRecord> searchProceduralMemories(int userId, const std::string& keyword, const std::string& dbPath);
+    // 覆盖 remove 方法以实现级联删除
+    void remove(int64_t id) {
+        orm_.remove<ProceduralMemory>(id);
+        EmbeddingIndexManager embeddingMgr;
+        std::string db_path = ConfigManager::getInstance().getDatabasePath();
+        embeddingMgr.deleteEmbeddingByMemory(static_cast<int>(id), "procedural", db_path);
+    }
+        
+    // 根据名称查询程序记忆
+    std::vector<ProceduralMemory> getByName(const std::string& name) {
+        return find(sqlite_orm::where(sqlite_orm::c(&ProceduralMemory::name) == name));
+    }
 };
-
-#endif // PROCEDURAL_MEMORY_MANAGER_H

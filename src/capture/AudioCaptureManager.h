@@ -33,9 +33,6 @@ public:
     bool isCapturing() const;
     std::string getCurrentAudioFile() const;
     
-    // 新增函数声明
-    int saveAudioToResourceMemory(const std::string& filePath, const std::string& description, const std::string& dbPath);
-    
     // 静态方法
     static std::string generateFilename();
     static bool fileExists(const std::string& filename);

@@ -1,5 +1,6 @@
 #include "UserManager.h"
 #include "../core/StorageManager.h"
+#include "../core/ORMWrapper.h"
 #include <iostream>
 #include <sqlite3.h>
 #include <sstream>
@@ -10,56 +11,33 @@ std::string UserManager::hashPassword(const std::string& password) {
 
 bool UserManager::addUser(const std::string& name, const std::string& email, 
                          const std::string& passwordHash, const std::string& dbPath) {
-    StorageManager storage(dbPath);
-    if (!storage.initialize()) {
-        std::cerr << "Failed to initialize database" << std::endl;
+    try {
+        ORMWrapper ormWrapper(dbPath);
+        
+        User user;
+        user.name = name;
+        user.email = email;
+        user.password_hash = passwordHash;
+        
+        int userId = ormWrapper.insertUser(user);
+        return userId > 0;
+    } catch (const std::exception& e) {
+        std::cerr << "Failed to add user: " << e.what() << std::endl;
         return false;
     }
-
-    sqlite3_stmt* stmt;
-    std::string query = "INSERT INTO user (name, email) VALUES (?, ?);";
-    
-    if (!storage.executeQuery(query, stmt)) {
-        return false;
-    }
-    
-    sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, email.c_str(), -1, SQLITE_STATIC);
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(storage.getDatabase()) << std::endl;
-        return false;
-    }
-    
-    return true;
 }
 
 int UserManager::getUserIdByName(const std::string& name, const std::string& dbPath) {
-    StorageManager storage(dbPath);
-    if (!storage.initialize()) {
-        std::cerr << "Failed to initialize database" << std::endl;
+    try {
+        ORMWrapper ormWrapper(dbPath);
+        
+        auto user = ormWrapper.getUserByName(name);
+        if (user.has_value()) {
+            return user.value().id;
+        }
         return -1;
-    }
-
-    sqlite3_stmt* stmt;
-    std::string query = "SELECT id FROM user WHERE name = ?;";
-    
-    if (!storage.executeQuery(query, stmt)) {
-        return -1;
-    }
-    
-    sqlite3_bind_text(stmt, 1, name.c_str(), -1, SQLITE_STATIC);
-    
-    int rc = sqlite3_step(stmt);
-    if (rc == SQLITE_ROW) {
-        int userId = sqlite3_column_int(stmt, 0);
-        sqlite3_finalize(stmt);
-        return userId;
-    } else {
-        sqlite3_finalize(stmt);
+    } catch (const std::exception& e) {
+        std::cerr << "Failed to get user by name: " << e.what() << std::endl;
         return -1;
     }
 }

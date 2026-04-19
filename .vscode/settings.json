@@ -39,7 +39,14 @@
         "istream": "cpp",
         "print": "cpp",
         "sstream": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "iostream": "cpp"
     },
     "Lingma.aI Chat.mcpToolsInAgentMode": true
 }

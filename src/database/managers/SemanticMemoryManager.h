@@ -1,40 +1,32 @@
-#ifndef SEMANTIC_MEMORY_MANAGER_H
-#define SEMANTIC_MEMORY_MANAGER_H
+#pragma once
 
-#include <string>
-#include <vector>
+#include "../core/MemoryManager.h"
+#include "../models/MemoryModels.h"
+#include "../../models/EmbeddingIndexManager.h"
+#include "../initialization/ConfigManager.h"
 
-struct SemanticMemoryRecord {
-    int id;
-    int user_id;
-    int agent_id;
-    std::string name;
-    std::string summary;
-    std::string details;
-    std::string description;  // 添加description字段
-    std::string tree_path;
-    std::string metadata;
-    std::string created_at;
-    std::string updated_at;
-};
-
-class SemanticMemoryManager {
+// 语义记忆管理器类
+class SemanticMemoryManager : public MemoryManager<SemanticMemory> {
 public:
-    static bool addSemanticMemory(int userId, int agentId, const std::string& name,
-                                const std::string& summary, const std::string& details,
-                                const std::string& treePath, const std::string& metadata,
-                                const std::string& dbPath);
+    explicit SemanticMemoryManager(ORMWrapper& orm) 
+        : MemoryManager<SemanticMemory>(orm) {}
     
-    static bool updateSemanticMemory(int memoryId, const std::string& name,
-                                   const std::string& summary, const std::string& details,
-                                   const std::string& metadata, const std::string& dbPath);
+    // 覆盖 remove 方法以实现级联删除
+    void remove(int64_t id) {
+        orm_.remove<SemanticMemory>(id);
+        EmbeddingIndexManager embeddingMgr;
+        std::string db_path = ConfigManager::getInstance().getDatabasePath();
+        embeddingMgr.deleteEmbeddingByMemory(static_cast<int>(id), "semantic", db_path);
+    }
+        
+    // 根据类别查询语义记忆
+    std::vector<SemanticMemory> getByCategory(const std::string& category) {
+        return find(sqlite_orm::where(sqlite_orm::c(&SemanticMemory::category) == category));
+    }
     
-    static bool deleteSemanticMemory(int memoryId, const std::string& dbPath);
-    
-    // 添加查询功能
-    static std::vector<SemanticMemoryRecord> getAllSemanticMemories(int userId, const std::string& dbPath);
-    static SemanticMemoryRecord getSemanticMemoryById(int memoryId, const std::string& dbPath);
-    static std::vector<SemanticMemoryRecord> searchSemanticMemories(int userId, const std::string& keyword, const std::string& dbPath);
+    // 根据置信度范围查询语义记忆
+    std::vector<SemanticMemory> getByConfidenceRange(float minConfidence, float maxConfidence) {
+        return find(sqlite_orm::where(sqlite_orm::c(&SemanticMemory::confidence) >= minConfidence and
+                                     sqlite_orm::c(&SemanticMemory::confidence) <= maxConfidence));
+    }
 };
-
-#endif // SEMANTIC_MEMORY_MANAGER_H

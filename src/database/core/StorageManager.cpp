@@ -2,96 +2,53 @@
 #include <iostream>
 #include <sqlite3.h>
 
-StorageManager::StorageManager(const std::string& path) : dbPath(path), db(nullptr) {
-}
+StorageManager::StorageManager(const std::string& path) 
+    : dbPath(path), db(nullptr), ormWrapper(nullptr) {}
 
 StorageManager::~StorageManager() {
     if (db) {
         sqlite3_close(db);
-        db = nullptr; // 防止悬空指针
     }
 }
 
 bool StorageManager::initialize() {
-    // 如果已经初始化，先关闭现有连接
-    if (db) {
-        sqlite3_close(db);
-        db = nullptr;
-    }
+    // 设置SQLite线程安全模式
+    sqlite3_config(SQLITE_CONFIG_MULTITHREAD);
     
     int rc = sqlite3_open(dbPath.c_str(), &db);
     if (rc) {
         std::cerr << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
-        db = nullptr; // 确保db指针被设置为nullptr
         return false;
     }
     
-    // 启用外键约束
-    enableForeignKeys();
+    // 设置数据库连接选项以支持并发访问
+    sqlite3_exec(db, "PRAGMA journal_mode=WAL;", NULL, NULL, NULL);
+    sqlite3_exec(db, "PRAGMA synchronous=NORMAL;", NULL, NULL, NULL);
+    sqlite3_exec(db, "PRAGMA locking_mode=NORMAL;", NULL, NULL, NULL);
     
-    return true;
-}
-
-bool StorageManager::enableForeignKeys() {
-    char* errMsg = 0;
-    int rc = sqlite3_exec(db, "PRAGMA foreign_keys = ON;", 0, 0, &errMsg);
+    // 初始化ORMWrapper并传递数据库连接
+    ormWrapper = std::make_unique<ORMWrapper>(dbPath, db);
+    
+    // 初始化 embedding_index 表
+    const char* createEmbeddingIndexSQL = R"(
+        CREATE TABLE IF NOT EXISTS embedding_index (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            memory_id INTEGER NOT NULL,
+            memory_type TEXT NOT NULL,
+            embedding BLOB NOT NULL,
+            metadata TEXT,
+            created_at TEXT NOT NULL
+        )
+    )";
+    
+    char* errMsg = nullptr;
+    rc = sqlite3_exec(db, createEmbeddingIndexSQL, nullptr, nullptr, &errMsg);
     if (rc != SQLITE_OK) {
-        std::cerr << "Failed to enable foreign keys: " << errMsg << std::endl;
+        std::cerr << "Failed to create embedding_index table: " << errMsg << std::endl;
         sqlite3_free(errMsg);
         return false;
     }
-    return true;
-}
-
-bool StorageManager::executeQuery(const std::string& query) {
-    // 确保数据库连接有效
-    if (!db) {
-        std::cerr << "Database not initialized" << std::endl;
-        return false;
-    }
     
-    // 确保外键约束已启用
-    enableForeignKeys();
-    
-    char* errMsg = 0;
-    int rc = sqlite3_exec(db, query.c_str(), 0, 0, &errMsg);
-    if (rc != SQLITE_OK) {
-        std::cerr << "SQL error: " << errMsg << std::endl;
-        sqlite3_free(errMsg);
-        return false;
-    }
-    return true;
-}
-
-bool StorageManager::executeQuery(const std::string& query, sqlite3_stmt*& stmt) {
-    // 确保数据库连接有效
-    if (!db) {
-        std::cerr << "Database not initialized" << std::endl;
-        return false;
-    }
-    
-    int rc = sqlite3_prepare_v2(db, query.c_str(), -1, &stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        std::cerr << "SQL prepare error: " << sqlite3_errmsg(db) << std::endl;
-        return false;
-    }
-    return true;
-}
-
-// 添加executeNonQuery函数实现
-bool StorageManager::executeNonQuery(const std::string& query) {
-    sqlite3_stmt* stmt;
-    if (!executeQuery(query, stmt)) {
-        return false;
-    }
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE && rc != SQLITE_ROW) {
-        std::cerr << "SQL execute error: " << sqlite3_errmsg(db) << std::endl;
-        return false;
-    }
-    
+    std::cout << "StorageManager initialized successfully" << std::endl;
     return true;
 }

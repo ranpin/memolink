@@ -1,5 +1,4 @@
 #include "CameraCaptureManager.h"
-#include "../database/managers/ResourceMemoryManager.h"
 #include "../utils/TimeUtils.h"
 #include "../models/TextEmbeddingGenerator.h"
 #include "../utils/VectorSerializer.h"
@@ -29,19 +28,63 @@ CameraCaptureManager::~CameraCaptureManager() {
 }
 
 bool CameraCaptureManager::capture_image(const std::string& file_path) {
+    std::lock_guard<std::mutex> lock(g_camera_mutex);
+    
     // 确保目录存在
     std::filesystem::path path(file_path);
     std::filesystem::create_directories(path.parent_path());
     
-    // 使用系统命令捕获图像（模拟）
-    std::string command = "screencapture -x -o " + file_path + " 2>/dev/null";
-    int result = system(command.c_str());
+    std::cout << "[CameraCaptureManager] 尝试打开摄像头..." << std::endl;
     
-    if (result == 0 && std::filesystem::exists(file_path)) {
-        std::cout << "成功捕获并保存图像: " << file_path << std::endl;
+    // 使用OpenCV打开摄像头（默认摄像头ID为0）
+    cv::VideoCapture camera(0);
+    
+    if (!camera.isOpened()) {
+        std::cerr << "[CameraCaptureManager] 无法打开摄像头，尝试备用方案" << std::endl;
+        
+        // 备用方案：使用屏幕截图
+        std::string command = "screencapture -x -o " + file_path + " 2>/dev/null";
+        int result = system(command.c_str());
+        
+        if (result == 0 && std::filesystem::exists(file_path)) {
+            std::cout << "[CameraCaptureManager] 使用屏幕截图作为备用，保存成功: " << file_path << std::endl;
+            return true;
+        } else {
+            std::cerr << "[CameraCaptureManager] 保存图像失败: " << file_path << std::endl;
+            return false;
+        }
+    }
+    
+    // 设置摄像头分辨率
+    camera.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
+    camera.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
+    
+    // 等待摄像头稳定
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    
+    cv::Mat frame;
+    bool success = camera.read(frame);
+    
+    if (!success || frame.empty()) {
+        std::cerr << "[CameraCaptureManager] 读取摄像头帧失败" << std::endl;
+        camera.release();
+        return false;
+    }
+    
+    // 保存为JPEG格式
+    std::vector<int> compression_params;
+    compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
+    compression_params.push_back(90);
+    
+    success = cv::imwrite(file_path, frame, compression_params);
+    camera.release();
+    
+    if (success) {
+        std::cout << "[CameraCaptureManager] ✓ 成功从摄像头捕获并保存图像: " << file_path 
+                  << " (" << frame.cols << "x" << frame.rows << ")" << std::endl;
         return true;
     } else {
-        std::cerr << "保存图像失败: " << file_path << std::endl;
+        std::cerr << "[CameraCaptureManager] 保存摄像头图像失败: " << file_path << std::endl;
         return false;
     }
 }
@@ -71,6 +114,20 @@ void CameraCaptureManager::stop_capture() {
 }
 
 void CameraCaptureManager::capture_loop(const std::string& file_path) {
+    std::cout << "[CameraCaptureManager] 开始摄像头捕获循环..." << std::endl;
+    
+    // 打开摄像头
+    cv::VideoCapture camera(0);
+    
+    if (!camera.isOpened()) {
+        std::cerr << "[CameraCaptureManager] 无法打开摄像头，视频捕获循环终止" << std::endl;
+        is_capturing_.store(false);
+        return;
+    }
+    
+    camera.set(cv::CAP_PROP_FRAME_WIDTH, 1280);
+    camera.set(cv::CAP_PROP_FRAME_HEIGHT, 720);
+    
     int frame_count = 0;
     while (is_capturing_) {
         // 生成带时间戳的文件名
@@ -89,97 +146,28 @@ void CameraCaptureManager::capture_loop(const std::string& file_path) {
         std::filesystem::path path(image_path);
         std::filesystem::create_directories(path.parent_path());
         
-        // 捕获图像
-        std::string command = "screencapture -x -o " + image_path + " 2>/dev/null";
-        int result = system(command.c_str());
-        
-        if (result == 0 && std::filesystem::exists(image_path)) {
-            std::cout << "成功捕获并保存图像: " << image_path << std::endl;
+        cv::Mat frame;
+        if (camera.read(frame) && !frame.empty()) {
+            std::vector<int> compression_params;
+            compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
+            compression_params.push_back(90);
+            
+            if (cv::imwrite(image_path, frame, compression_params)) {
+                std::cout << "[CameraCaptureManager] 成功捕获帧 #" << frame_count 
+                          << ": " << image_path << std::endl;
+            } else {
+                std::cerr << "[CameraCaptureManager] 保存帧失败: " << image_path << std::endl;
+            }
         } else {
-            std::cerr << "图像捕获失败: " << image_path << std::endl;
+            std::cerr << "[CameraCaptureManager] 读取摄像头帧失败" << std::endl;
         }
         
         frame_count++;
         std::this_thread::sleep_for(std::chrono::seconds(1)); // 每秒捕获一帧
     }
-}
-
-int CameraCaptureManager::saveCaptureToResourceMemory(
-    int user_id, 
-    const std::string& file_path, 
-    const std::string& capture_type, 
-    const std::string& summary,
-    const std::string& db_path) {
     
-    // 获取文件大小
-    std::ifstream in(file_path, std::ifstream::ate | std::ifstream::binary);
-    int file_size = in.tellg();
-    in.close();
-    
-    // 使用已有的StorageManager存储捕获数据，而不是创建新的实例
-    ResourceMemoryManager manager(storage_);
-    
-    ResourceMemoryManager::ResourceMemoryItem item;
-    item.user_id = user_id;
-    item.agent_id = 1; // 默认agent_id
-    item.description = "Captured camera content: " + file_path;  // 将title和content合并为description
-    item.resource_type = capture_type;
-    item.path = file_path;  // 使用文件路径作为path
-    item.metadata = "{}";
-    item.size = 0;  // 默认大小为0
-    
-    bool result = manager.add_resource_memory(item);
-    return result ? 1 : -1; // 简化处理，实际应该返回插入记录的ID
-}
-
-bool CameraCaptureManager::store_capture_in_memory(int user_id, const std::string& file_path, 
-                                                  const std::string& capture_type, 
-                                                  const std::string& summary) {
-    // 创建ResourceMemoryManager实例
-    ResourceMemoryManager resourceMemoryManager(storage_);
-    
-    // 使用TextEmbeddingGenerator生成图像描述
-    std::string description = summary; // 默认使用摘要作为描述
-    try {
-        TextEmbeddingGenerator textEmbeddingGenerator(&storage_);
-        description = textEmbeddingGenerator.generateImageDescription(file_path);
-        std::cout << "[摄像头捕获] 图像描述生成成功: " << description << std::endl;
-    } catch (const std::exception& e) {
-        std::cerr << "[摄像头捕获] 图像描述生成失败: " << e.what() << std::endl;
-        std::cout << "[摄像头捕获] 使用默认摘要作为描述" << std::endl;
-    }
-    
-    // 使用ResourceMemoryManager存储捕获的图像数据
-    ResourceMemoryManager::ResourceMemoryItem item;
-    item.user_id = user_id;
-    item.agent_id = 0; // 默认agent_id为0
-    item.session_id = 0; // 默认session_id为0
-    item.description = description; // 使用生成的描述
-    item.resource_type = capture_type;
-    item.path = file_path;
-    item.metadata = "{}"; // 空的元数据
-    item.embedding = ""; // 默认空的embedding
-    item.size = 0; // 默认大小为0
-    item.created_at = TimeUtils::getCurrentTimestamp(); // 获取当前时间戳
-    
-    // 为图像描述生成embedding并存储到资源记忆中
-    try {
-        TextEmbeddingGenerator textEmbeddingGenerator(&storage_);
-        std::vector<float> descriptionEmbedding = textEmbeddingGenerator.generateTextEmbedding(description);
-        if (!descriptionEmbedding.empty()) {
-            // 将embedding序列化并存储到item中
-            item.embedding = VectorSerializer::serialize(descriptionEmbedding);
-            std::cout << "[摄像头捕获] 图像描述embedding生成成功，维度: " << descriptionEmbedding.size() << std::endl;
-        } else {
-            std::cout << "[摄像头捕获] 图像描述embedding生成失败，返回空向量" << std::endl;
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "[摄像头捕获] 图像描述embedding生成异常: " << e.what() << std::endl;
-    }
-    
-    // 将捕获的图像信息存储到资源记忆中
-    resourceMemoryManager.add_resource_memory(item);
-    std::cout << "[摄像头捕获] 图像信息已存储到资源记忆中" << std::endl;
+    camera.release();
+    std::cout << "[CameraCaptureManager] 摄像头捕获循环结束，共捕获 " << frame_count << " 帧" << std::endl;
 }
 
 void CameraCaptureManager::start_continuous_capture(int interval_seconds) {
@@ -231,4 +219,16 @@ void CameraCaptureManager::continuous_capture_loop(int interval_seconds) {
     }
     
     std::cout << "持续摄像头捕获循环已停止" << std::endl;
+}
+
+bool CameraCaptureManager::store_capture_in_memory(int user_id, 
+                                const std::string& file_path,
+                                const std::string& capture_type,
+                                const std::string& summary) {
+    // 这里不再写入ResourceMemory，仅打印日志，实际的多模态存储由MultimodalDataManager完成
+    std::cout << "[CameraCaptureManager] store_capture_in_memory stub - user "
+              << user_id << ", type " << capture_type
+              << ", file " << file_path << std::endl;
+    (void)summary;
+    return true;
 }

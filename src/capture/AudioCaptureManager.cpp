@@ -1,5 +1,4 @@
 #include "AudioCaptureManager.h"
-#include "../database/managers/ResourceMemoryManager.h"
 #include "../utils/TimeUtils.h"
 #include <iostream>
 #include <fstream>
@@ -202,43 +201,6 @@ bool AudioCaptureManager::isCapturing() const {
 
 std::string AudioCaptureManager::getCurrentAudioFile() const {
     return current_audio_file_;
-}
-
-int AudioCaptureManager::saveAudioToResourceMemory(const std::string& filePath, const std::string& description, const std::string& dbPath) {
-    // 获取文件大小
-    std::ifstream in_file(filePath, std::ios::binary | std::ios::ate);
-    if (!in_file.is_open()) {
-        std::cerr << "无法打开文件: " << filePath << std::endl;
-        return -1;
-    }
-    
-    int file_size = static_cast<int>(in_file.tellg());
-    in_file.close();
-    
-    // 使用ResourceMemoryManager存储音频数据
-    StorageManager storage(dbPath);
-    if (!storage.initialize()) {
-        std::cerr << "无法初始化数据库: " << dbPath << std::endl;
-        return -1;
-    }
-    
-    ResourceMemoryManager resourceManager(storage);
-    ResourceMemoryManager::ResourceMemoryItem item;
-    item.user_id = 1;
-    item.agent_id = 1;
-    item.description = description.empty() ? "Captured audio: " + filePath : description;
-    item.resource_type = "audio";
-    item.path = filePath;
-    item.metadata = "{}";
-    item.size = 0;  // 默认大小为0
-    item.embedding = "";
-    item.created_at = "";
-    
-    if (resourceManager.add_resource_memory(item)) {
-        return item.id;
-    }
-    
-    return -1;
 }
 
 // 静态方法实现

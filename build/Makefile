@@ -65,16 +65,6 @@ CMAKE_BINARY_DIR = /Users/ranpin/code/mirix-cpp/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running tests..."
-	/opt/homebrew/bin/ctest $(ARGS)
-.PHONY : test
-
-# Special rule for the target test
-test/fast: test
-.PHONY : test/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Running CMake cache editor..."
@@ -94,51 +84,6 @@ rebuild_cache:
 # Special rule for the target rebuild_cache
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-.PHONY : list_install_components/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
-	/opt/homebrew/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
-	/opt/homebrew/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
-
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
-	/opt/homebrew/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
-
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
-	/opt/homebrew/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
-	/opt/homebrew/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
-	/opt/homebrew/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -172,56 +117,147 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named mirix_lib
+# Target rules for targets named mirix
 
 # Build rule for target.
-mirix_lib: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mirix_lib
-.PHONY : mirix_lib
+mirix: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mirix
+.PHONY : mirix
 
 # fast build rule for target.
-mirix_lib/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/build
-.PHONY : mirix_lib/fast
+mirix/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/build
+.PHONY : mirix/fast
 
 #=============================================================================
-# Target rules for targets named real_multimodal_demo
+# Target rules for targets named agents
 
 # Build rule for target.
-real_multimodal_demo: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 real_multimodal_demo
-.PHONY : real_multimodal_demo
+agents: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 agents
+.PHONY : agents
 
 # fast build rule for target.
-real_multimodal_demo/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/build
-.PHONY : real_multimodal_demo/fast
+agents/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/agents.dir/build.make CMakeFiles/agents.dir/build
+.PHONY : agents/fast
 
 #=============================================================================
-# Target rules for targets named initialize_memories
+# Target rules for targets named capture
 
 # Build rule for target.
-initialize_memories: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 initialize_memories
-.PHONY : initialize_memories
+capture: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 capture
+.PHONY : capture
 
 # fast build rule for target.
-initialize_memories/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/build
-.PHONY : initialize_memories/fast
+capture/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/build
+.PHONY : capture/fast
 
 #=============================================================================
-# Target rules for targets named test_embedding
+# Target rules for targets named database
 
 # Build rule for target.
-test_embedding: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_embedding
-.PHONY : test_embedding
+database: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 database
+.PHONY : database
 
 # fast build rule for target.
-test_embedding/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/build
-.PHONY : test_embedding/fast
+database/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/build
+.PHONY : database/fast
+
+#=============================================================================
+# Target rules for targets named memory
+
+# Build rule for target.
+memory: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 memory
+.PHONY : memory
+
+# fast build rule for target.
+memory/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/build
+.PHONY : memory/fast
+
+#=============================================================================
+# Target rules for targets named models
+
+# Build rule for target.
+models: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 models
+.PHONY : models
+
+# fast build rule for target.
+models/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/build
+.PHONY : models/fast
+
+#=============================================================================
+# Target rules for targets named utils
+
+# Build rule for target.
+utils: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 utils
+.PHONY : utils
+
+# fast build rule for target.
+utils/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/build
+.PHONY : utils/fast
+
+#=============================================================================
+# Target rules for targets named cli
+
+# Build rule for target.
+cli: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 cli
+.PHONY : cli
+
+# fast build rule for target.
+cli/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cli.dir/build.make CMakeFiles/cli.dir/build
+.PHONY : cli/fast
+
+#=============================================================================
+# Target rules for targets named test_system_initialization
+
+# Build rule for target.
+test_system_initialization: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_system_initialization
+.PHONY : test_system_initialization
+
+# fast build rule for target.
+test_system_initialization/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/build
+.PHONY : test_system_initialization/fast
+
+#=============================================================================
+# Target rules for targets named test_memory_generation
+
+# Build rule for target.
+test_memory_generation: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_memory_generation
+.PHONY : test_memory_generation
+
+# fast build rule for target.
+test_memory_generation/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_memory_generation.dir/build.make CMakeFiles/test_memory_generation.dir/build
+.PHONY : test_memory_generation/fast
+
+#=============================================================================
+# Target rules for targets named test_context_builder
+
+# Build rule for target.
+test_context_builder: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_context_builder
+.PHONY : test_context_builder
+
+# fast build rule for target.
+test_context_builder/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_context_builder.dir/build.make CMakeFiles/test_context_builder.dir/build
+.PHONY : test_context_builder/fast
 
 #=============================================================================
 # Target rules for targets named test_vector_serializer
@@ -237,137 +273,25 @@ test_vector_serializer/fast:
 .PHONY : test_vector_serializer/fast
 
 #=============================================================================
-# Target rules for targets named test_embedding_comprehensive
+# Target rules for targets named test_real_multimodal_demo
 
 # Build rule for target.
-test_embedding_comprehensive: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_embedding_comprehensive
-.PHONY : test_embedding_comprehensive
+test_real_multimodal_demo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_real_multimodal_demo
+.PHONY : test_real_multimodal_demo
 
 # fast build rule for target.
-test_embedding_comprehensive/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/build
-.PHONY : test_embedding_comprehensive/fast
-
-#=============================================================================
-# Target rules for targets named test_clip_processor
-
-# Build rule for target.
-test_clip_processor: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_clip_processor
-.PHONY : test_clip_processor
-
-# fast build rule for target.
-test_clip_processor/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/build
-.PHONY : test_clip_processor/fast
-
-#=============================================================================
-# Target rules for targets named test_chat_with_model
-
-# Build rule for target.
-test_chat_with_model: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_chat_with_model
-.PHONY : test_chat_with_model
-
-# fast build rule for target.
-test_chat_with_model/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/build
-.PHONY : test_chat_with_model/fast
-
-#=============================================================================
-# Target rules for targets named test_chat_with_auto_capture
-
-# Build rule for target.
-test_chat_with_auto_capture: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_chat_with_auto_capture
-.PHONY : test_chat_with_auto_capture
-
-# fast build rule for target.
-test_chat_with_auto_capture/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_auto_capture.dir/build.make CMakeFiles/test_chat_with_auto_capture.dir/build
-.PHONY : test_chat_with_auto_capture/fast
-
-#=============================================================================
-# Target rules for targets named test_initialize_memories
-
-# Build rule for target.
-test_initialize_memories: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_initialize_memories
-.PHONY : test_initialize_memories
-
-# fast build rule for target.
-test_initialize_memories/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_initialize_memories.dir/build.make CMakeFiles/test_initialize_memories.dir/build
-.PHONY : test_initialize_memories/fast
-
-#=============================================================================
-# Target rules for targets named test_system_initialization
-
-# Build rule for target.
-test_system_initialization: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_system_initialization
-.PHONY : test_system_initialization
-
-# fast build rule for target.
-test_system_initialization/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/build
-.PHONY : test_system_initialization/fast
-
-src/agents/AgentManager.o: src/agents/AgentManager.cpp.o
-.PHONY : src/agents/AgentManager.o
-
-# target to build an object file
-src/agents/AgentManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.o
-.PHONY : src/agents/AgentManager.cpp.o
-
-src/agents/AgentManager.i: src/agents/AgentManager.cpp.i
-.PHONY : src/agents/AgentManager.i
-
-# target to preprocess a source file
-src/agents/AgentManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.i
-.PHONY : src/agents/AgentManager.cpp.i
-
-src/agents/AgentManager.s: src/agents/AgentManager.cpp.s
-.PHONY : src/agents/AgentManager.s
-
-# target to generate assembly for a file
-src/agents/AgentManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/AgentManager.cpp.s
-.PHONY : src/agents/AgentManager.cpp.s
-
-src/agents/AgentWrapper.o: src/agents/AgentWrapper.cpp.o
-.PHONY : src/agents/AgentWrapper.o
-
-# target to build an object file
-src/agents/AgentWrapper.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.o
-.PHONY : src/agents/AgentWrapper.cpp.o
-
-src/agents/AgentWrapper.i: src/agents/AgentWrapper.cpp.i
-.PHONY : src/agents/AgentWrapper.i
-
-# target to preprocess a source file
-src/agents/AgentWrapper.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.i
-.PHONY : src/agents/AgentWrapper.cpp.i
-
-src/agents/AgentWrapper.s: src/agents/AgentWrapper.cpp.s
-.PHONY : src/agents/AgentWrapper.s
-
-# target to generate assembly for a file
-src/agents/AgentWrapper.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/AgentWrapper.cpp.s
-.PHONY : src/agents/AgentWrapper.cpp.s
+test_real_multimodal_demo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/build
+.PHONY : test_real_multimodal_demo/fast
 
 src/agents/ChatAgent.o: src/agents/ChatAgent.cpp.o
 .PHONY : src/agents/ChatAgent.o
 
 # target to build an object file
 src/agents/ChatAgent.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/agents/ChatAgent.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/agents.dir/build.make CMakeFiles/agents.dir/src/agents/ChatAgent.cpp.o
 .PHONY : src/agents/ChatAgent.cpp.o
 
 src/agents/ChatAgent.i: src/agents/ChatAgent.cpp.i
@@ -375,7 +299,8 @@ src/agents/ChatAgent.i: src/agents/ChatAgent.cpp.i
 
 # target to preprocess a source file
 src/agents/ChatAgent.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/agents/ChatAgent.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/agents.dir/build.make CMakeFiles/agents.dir/src/agents/ChatAgent.cpp.i
 .PHONY : src/agents/ChatAgent.cpp.i
 
 src/agents/ChatAgent.s: src/agents/ChatAgent.cpp.s
@@ -383,183 +308,44 @@ src/agents/ChatAgent.s: src/agents/ChatAgent.cpp.s
 
 # target to generate assembly for a file
 src/agents/ChatAgent.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ChatAgent.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/agents/ChatAgent.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/agents.dir/build.make CMakeFiles/agents.dir/src/agents/ChatAgent.cpp.s
 .PHONY : src/agents/ChatAgent.cpp.s
 
-src/agents/CoreMemoryAgent.o: src/agents/CoreMemoryAgent.cpp.o
-.PHONY : src/agents/CoreMemoryAgent.o
+src/agents/MemoryAgent.o: src/agents/MemoryAgent.cpp.o
+.PHONY : src/agents/MemoryAgent.o
 
 # target to build an object file
-src/agents/CoreMemoryAgent.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.o
-.PHONY : src/agents/CoreMemoryAgent.cpp.o
+src/agents/MemoryAgent.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/agents/MemoryAgent.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/agents.dir/build.make CMakeFiles/agents.dir/src/agents/MemoryAgent.cpp.o
+.PHONY : src/agents/MemoryAgent.cpp.o
 
-src/agents/CoreMemoryAgent.i: src/agents/CoreMemoryAgent.cpp.i
-.PHONY : src/agents/CoreMemoryAgent.i
-
-# target to preprocess a source file
-src/agents/CoreMemoryAgent.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.i
-.PHONY : src/agents/CoreMemoryAgent.cpp.i
-
-src/agents/CoreMemoryAgent.s: src/agents/CoreMemoryAgent.cpp.s
-.PHONY : src/agents/CoreMemoryAgent.s
-
-# target to generate assembly for a file
-src/agents/CoreMemoryAgent.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/CoreMemoryAgent.cpp.s
-.PHONY : src/agents/CoreMemoryAgent.cpp.s
-
-src/agents/EpisodicMemoryAgent.o: src/agents/EpisodicMemoryAgent.cpp.o
-.PHONY : src/agents/EpisodicMemoryAgent.o
-
-# target to build an object file
-src/agents/EpisodicMemoryAgent.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.o
-.PHONY : src/agents/EpisodicMemoryAgent.cpp.o
-
-src/agents/EpisodicMemoryAgent.i: src/agents/EpisodicMemoryAgent.cpp.i
-.PHONY : src/agents/EpisodicMemoryAgent.i
+src/agents/MemoryAgent.i: src/agents/MemoryAgent.cpp.i
+.PHONY : src/agents/MemoryAgent.i
 
 # target to preprocess a source file
-src/agents/EpisodicMemoryAgent.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.i
-.PHONY : src/agents/EpisodicMemoryAgent.cpp.i
+src/agents/MemoryAgent.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/agents/MemoryAgent.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/agents.dir/build.make CMakeFiles/agents.dir/src/agents/MemoryAgent.cpp.i
+.PHONY : src/agents/MemoryAgent.cpp.i
 
-src/agents/EpisodicMemoryAgent.s: src/agents/EpisodicMemoryAgent.cpp.s
-.PHONY : src/agents/EpisodicMemoryAgent.s
-
-# target to generate assembly for a file
-src/agents/EpisodicMemoryAgent.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/EpisodicMemoryAgent.cpp.s
-.PHONY : src/agents/EpisodicMemoryAgent.cpp.s
-
-src/agents/KnowledgeVaultAgent.o: src/agents/KnowledgeVaultAgent.cpp.o
-.PHONY : src/agents/KnowledgeVaultAgent.o
-
-# target to build an object file
-src/agents/KnowledgeVaultAgent.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.o
-.PHONY : src/agents/KnowledgeVaultAgent.cpp.o
-
-src/agents/KnowledgeVaultAgent.i: src/agents/KnowledgeVaultAgent.cpp.i
-.PHONY : src/agents/KnowledgeVaultAgent.i
-
-# target to preprocess a source file
-src/agents/KnowledgeVaultAgent.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.i
-.PHONY : src/agents/KnowledgeVaultAgent.cpp.i
-
-src/agents/KnowledgeVaultAgent.s: src/agents/KnowledgeVaultAgent.cpp.s
-.PHONY : src/agents/KnowledgeVaultAgent.s
+src/agents/MemoryAgent.s: src/agents/MemoryAgent.cpp.s
+.PHONY : src/agents/MemoryAgent.s
 
 # target to generate assembly for a file
-src/agents/KnowledgeVaultAgent.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/KnowledgeVaultAgent.cpp.s
-.PHONY : src/agents/KnowledgeVaultAgent.cpp.s
-
-src/agents/ProceduralMemoryAgent.o: src/agents/ProceduralMemoryAgent.cpp.o
-.PHONY : src/agents/ProceduralMemoryAgent.o
-
-# target to build an object file
-src/agents/ProceduralMemoryAgent.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.o
-.PHONY : src/agents/ProceduralMemoryAgent.cpp.o
-
-src/agents/ProceduralMemoryAgent.i: src/agents/ProceduralMemoryAgent.cpp.i
-.PHONY : src/agents/ProceduralMemoryAgent.i
-
-# target to preprocess a source file
-src/agents/ProceduralMemoryAgent.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.i
-.PHONY : src/agents/ProceduralMemoryAgent.cpp.i
-
-src/agents/ProceduralMemoryAgent.s: src/agents/ProceduralMemoryAgent.cpp.s
-.PHONY : src/agents/ProceduralMemoryAgent.s
-
-# target to generate assembly for a file
-src/agents/ProceduralMemoryAgent.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ProceduralMemoryAgent.cpp.s
-.PHONY : src/agents/ProceduralMemoryAgent.cpp.s
-
-src/agents/ResourceMemoryAgent.o: src/agents/ResourceMemoryAgent.cpp.o
-.PHONY : src/agents/ResourceMemoryAgent.o
-
-# target to build an object file
-src/agents/ResourceMemoryAgent.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.o
-.PHONY : src/agents/ResourceMemoryAgent.cpp.o
-
-src/agents/ResourceMemoryAgent.i: src/agents/ResourceMemoryAgent.cpp.i
-.PHONY : src/agents/ResourceMemoryAgent.i
-
-# target to preprocess a source file
-src/agents/ResourceMemoryAgent.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.i
-.PHONY : src/agents/ResourceMemoryAgent.cpp.i
-
-src/agents/ResourceMemoryAgent.s: src/agents/ResourceMemoryAgent.cpp.s
-.PHONY : src/agents/ResourceMemoryAgent.s
-
-# target to generate assembly for a file
-src/agents/ResourceMemoryAgent.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/ResourceMemoryAgent.cpp.s
-.PHONY : src/agents/ResourceMemoryAgent.cpp.s
-
-src/agents/SemanticMemoryAgent.o: src/agents/SemanticMemoryAgent.cpp.o
-.PHONY : src/agents/SemanticMemoryAgent.o
-
-# target to build an object file
-src/agents/SemanticMemoryAgent.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.o
-.PHONY : src/agents/SemanticMemoryAgent.cpp.o
-
-src/agents/SemanticMemoryAgent.i: src/agents/SemanticMemoryAgent.cpp.i
-.PHONY : src/agents/SemanticMemoryAgent.i
-
-# target to preprocess a source file
-src/agents/SemanticMemoryAgent.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.i
-.PHONY : src/agents/SemanticMemoryAgent.cpp.i
-
-src/agents/SemanticMemoryAgent.s: src/agents/SemanticMemoryAgent.cpp.s
-.PHONY : src/agents/SemanticMemoryAgent.s
-
-# target to generate assembly for a file
-src/agents/SemanticMemoryAgent.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/agents/SemanticMemoryAgent.cpp.s
-.PHONY : src/agents/SemanticMemoryAgent.cpp.s
-
-src/api/APIServer.o: src/api/APIServer.cpp.o
-.PHONY : src/api/APIServer.o
-
-# target to build an object file
-src/api/APIServer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.o
-.PHONY : src/api/APIServer.cpp.o
-
-src/api/APIServer.i: src/api/APIServer.cpp.i
-.PHONY : src/api/APIServer.i
-
-# target to preprocess a source file
-src/api/APIServer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.i
-.PHONY : src/api/APIServer.cpp.i
-
-src/api/APIServer.s: src/api/APIServer.cpp.s
-.PHONY : src/api/APIServer.s
-
-# target to generate assembly for a file
-src/api/APIServer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/api/APIServer.cpp.s
-.PHONY : src/api/APIServer.cpp.s
+src/agents/MemoryAgent.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/agents/MemoryAgent.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/agents.dir/build.make CMakeFiles/agents.dir/src/agents/MemoryAgent.cpp.s
+.PHONY : src/agents/MemoryAgent.cpp.s
 
 src/capture/AudioCaptureManager.o: src/capture/AudioCaptureManager.cpp.o
 .PHONY : src/capture/AudioCaptureManager.o
 
 # target to build an object file
 src/capture/AudioCaptureManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/AudioCaptureManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/AudioCaptureManager.cpp.o
 .PHONY : src/capture/AudioCaptureManager.cpp.o
 
 src/capture/AudioCaptureManager.i: src/capture/AudioCaptureManager.cpp.i
@@ -567,7 +353,8 @@ src/capture/AudioCaptureManager.i: src/capture/AudioCaptureManager.cpp.i
 
 # target to preprocess a source file
 src/capture/AudioCaptureManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/AudioCaptureManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/AudioCaptureManager.cpp.i
 .PHONY : src/capture/AudioCaptureManager.cpp.i
 
 src/capture/AudioCaptureManager.s: src/capture/AudioCaptureManager.cpp.s
@@ -575,7 +362,8 @@ src/capture/AudioCaptureManager.s: src/capture/AudioCaptureManager.cpp.s
 
 # target to generate assembly for a file
 src/capture/AudioCaptureManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/AudioCaptureManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/AudioCaptureManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/AudioCaptureManager.cpp.s
 .PHONY : src/capture/AudioCaptureManager.cpp.s
 
 src/capture/CameraCaptureManager.o: src/capture/CameraCaptureManager.cpp.o
@@ -583,7 +371,8 @@ src/capture/CameraCaptureManager.o: src/capture/CameraCaptureManager.cpp.o
 
 # target to build an object file
 src/capture/CameraCaptureManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/CameraCaptureManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/CameraCaptureManager.cpp.o
 .PHONY : src/capture/CameraCaptureManager.cpp.o
 
 src/capture/CameraCaptureManager.i: src/capture/CameraCaptureManager.cpp.i
@@ -591,7 +380,8 @@ src/capture/CameraCaptureManager.i: src/capture/CameraCaptureManager.cpp.i
 
 # target to preprocess a source file
 src/capture/CameraCaptureManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/CameraCaptureManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/CameraCaptureManager.cpp.i
 .PHONY : src/capture/CameraCaptureManager.cpp.i
 
 src/capture/CameraCaptureManager.s: src/capture/CameraCaptureManager.cpp.s
@@ -599,7 +389,8 @@ src/capture/CameraCaptureManager.s: src/capture/CameraCaptureManager.cpp.s
 
 # target to generate assembly for a file
 src/capture/CameraCaptureManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/CameraCaptureManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/CameraCaptureManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/CameraCaptureManager.cpp.s
 .PHONY : src/capture/CameraCaptureManager.cpp.s
 
 src/capture/MultimodalDataManager.o: src/capture/MultimodalDataManager.cpp.o
@@ -607,7 +398,8 @@ src/capture/MultimodalDataManager.o: src/capture/MultimodalDataManager.cpp.o
 
 # target to build an object file
 src/capture/MultimodalDataManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/MultimodalDataManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/MultimodalDataManager.cpp.o
 .PHONY : src/capture/MultimodalDataManager.cpp.o
 
 src/capture/MultimodalDataManager.i: src/capture/MultimodalDataManager.cpp.i
@@ -615,7 +407,8 @@ src/capture/MultimodalDataManager.i: src/capture/MultimodalDataManager.cpp.i
 
 # target to preprocess a source file
 src/capture/MultimodalDataManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/MultimodalDataManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/MultimodalDataManager.cpp.i
 .PHONY : src/capture/MultimodalDataManager.cpp.i
 
 src/capture/MultimodalDataManager.s: src/capture/MultimodalDataManager.cpp.s
@@ -623,7 +416,8 @@ src/capture/MultimodalDataManager.s: src/capture/MultimodalDataManager.cpp.s
 
 # target to generate assembly for a file
 src/capture/MultimodalDataManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/MultimodalDataManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/MultimodalDataManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/MultimodalDataManager.cpp.s
 .PHONY : src/capture/MultimodalDataManager.cpp.s
 
 src/capture/ScreenActivityTracker.o: src/capture/ScreenActivityTracker.cpp.o
@@ -631,7 +425,8 @@ src/capture/ScreenActivityTracker.o: src/capture/ScreenActivityTracker.cpp.o
 
 # target to build an object file
 src/capture/ScreenActivityTracker.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/ScreenActivityTracker.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/ScreenActivityTracker.cpp.o
 .PHONY : src/capture/ScreenActivityTracker.cpp.o
 
 src/capture/ScreenActivityTracker.i: src/capture/ScreenActivityTracker.cpp.i
@@ -639,7 +434,8 @@ src/capture/ScreenActivityTracker.i: src/capture/ScreenActivityTracker.cpp.i
 
 # target to preprocess a source file
 src/capture/ScreenActivityTracker.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/ScreenActivityTracker.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/ScreenActivityTracker.cpp.i
 .PHONY : src/capture/ScreenActivityTracker.cpp.i
 
 src/capture/ScreenActivityTracker.s: src/capture/ScreenActivityTracker.cpp.s
@@ -647,63 +443,17 @@ src/capture/ScreenActivityTracker.s: src/capture/ScreenActivityTracker.cpp.s
 
 # target to generate assembly for a file
 src/capture/ScreenActivityTracker.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/ScreenActivityTracker.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/capture/ScreenActivityTracker.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/capture.dir/build.make CMakeFiles/capture.dir/src/capture/ScreenActivityTracker.cpp.s
 .PHONY : src/capture/ScreenActivityTracker.cpp.s
-
-src/capture/SystemEventManager.o: src/capture/SystemEventManager.cpp.o
-.PHONY : src/capture/SystemEventManager.o
-
-# target to build an object file
-src/capture/SystemEventManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.o
-.PHONY : src/capture/SystemEventManager.cpp.o
-
-src/capture/SystemEventManager.i: src/capture/SystemEventManager.cpp.i
-.PHONY : src/capture/SystemEventManager.i
-
-# target to preprocess a source file
-src/capture/SystemEventManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.i
-.PHONY : src/capture/SystemEventManager.cpp.i
-
-src/capture/SystemEventManager.s: src/capture/SystemEventManager.cpp.s
-.PHONY : src/capture/SystemEventManager.s
-
-# target to generate assembly for a file
-src/capture/SystemEventManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/SystemEventManager.cpp.s
-.PHONY : src/capture/SystemEventManager.cpp.s
-
-src/capture/mac/ScreenCaptureHelper.o: src/capture/mac/ScreenCaptureHelper.mm.o
-.PHONY : src/capture/mac/ScreenCaptureHelper.o
-
-# target to build an object file
-src/capture/mac/ScreenCaptureHelper.mm.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.o
-.PHONY : src/capture/mac/ScreenCaptureHelper.mm.o
-
-src/capture/mac/ScreenCaptureHelper.i: src/capture/mac/ScreenCaptureHelper.mm.i
-.PHONY : src/capture/mac/ScreenCaptureHelper.i
-
-# target to preprocess a source file
-src/capture/mac/ScreenCaptureHelper.mm.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.i
-.PHONY : src/capture/mac/ScreenCaptureHelper.mm.i
-
-src/capture/mac/ScreenCaptureHelper.s: src/capture/mac/ScreenCaptureHelper.mm.s
-.PHONY : src/capture/mac/ScreenCaptureHelper.s
-
-# target to generate assembly for a file
-src/capture/mac/ScreenCaptureHelper.mm.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/capture/mac/ScreenCaptureHelper.mm.s
-.PHONY : src/capture/mac/ScreenCaptureHelper.mm.s
 
 src/cli/CommandLineInterface.o: src/cli/CommandLineInterface.cpp.o
 .PHONY : src/cli/CommandLineInterface.o
 
 # target to build an object file
 src/cli/CommandLineInterface.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/cli/CommandLineInterface.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cli.dir/build.make CMakeFiles/cli.dir/src/cli/CommandLineInterface.cpp.o
 .PHONY : src/cli/CommandLineInterface.cpp.o
 
 src/cli/CommandLineInterface.i: src/cli/CommandLineInterface.cpp.i
@@ -711,7 +461,8 @@ src/cli/CommandLineInterface.i: src/cli/CommandLineInterface.cpp.i
 
 # target to preprocess a source file
 src/cli/CommandLineInterface.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/cli/CommandLineInterface.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cli.dir/build.make CMakeFiles/cli.dir/src/cli/CommandLineInterface.cpp.i
 .PHONY : src/cli/CommandLineInterface.cpp.i
 
 src/cli/CommandLineInterface.s: src/cli/CommandLineInterface.cpp.s
@@ -719,15 +470,44 @@ src/cli/CommandLineInterface.s: src/cli/CommandLineInterface.cpp.s
 
 # target to generate assembly for a file
 src/cli/CommandLineInterface.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/cli/CommandLineInterface.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/cli/CommandLineInterface.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/cli.dir/build.make CMakeFiles/cli.dir/src/cli/CommandLineInterface.cpp.s
 .PHONY : src/cli/CommandLineInterface.cpp.s
+
+src/database/core/ORMWrapper.o: src/database/core/ORMWrapper.cpp.o
+.PHONY : src/database/core/ORMWrapper.o
+
+# target to build an object file
+src/database/core/ORMWrapper.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/ORMWrapper.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/ORMWrapper.cpp.o
+.PHONY : src/database/core/ORMWrapper.cpp.o
+
+src/database/core/ORMWrapper.i: src/database/core/ORMWrapper.cpp.i
+.PHONY : src/database/core/ORMWrapper.i
+
+# target to preprocess a source file
+src/database/core/ORMWrapper.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/ORMWrapper.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/ORMWrapper.cpp.i
+.PHONY : src/database/core/ORMWrapper.cpp.i
+
+src/database/core/ORMWrapper.s: src/database/core/ORMWrapper.cpp.s
+.PHONY : src/database/core/ORMWrapper.s
+
+# target to generate assembly for a file
+src/database/core/ORMWrapper.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/ORMWrapper.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/ORMWrapper.cpp.s
+.PHONY : src/database/core/ORMWrapper.cpp.s
 
 src/database/core/StorageManager.o: src/database/core/StorageManager.cpp.o
 .PHONY : src/database/core/StorageManager.o
 
 # target to build an object file
 src/database/core/StorageManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/StorageManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/StorageManager.cpp.o
 .PHONY : src/database/core/StorageManager.cpp.o
 
 src/database/core/StorageManager.i: src/database/core/StorageManager.cpp.i
@@ -735,7 +515,8 @@ src/database/core/StorageManager.i: src/database/core/StorageManager.cpp.i
 
 # target to preprocess a source file
 src/database/core/StorageManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/StorageManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/StorageManager.cpp.i
 .PHONY : src/database/core/StorageManager.cpp.i
 
 src/database/core/StorageManager.s: src/database/core/StorageManager.cpp.s
@@ -743,7 +524,8 @@ src/database/core/StorageManager.s: src/database/core/StorageManager.cpp.s
 
 # target to generate assembly for a file
 src/database/core/StorageManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/core/StorageManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/StorageManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/StorageManager.cpp.s
 .PHONY : src/database/core/StorageManager.cpp.s
 
 src/database/core/TransactionManager.o: src/database/core/TransactionManager.cpp.o
@@ -751,7 +533,8 @@ src/database/core/TransactionManager.o: src/database/core/TransactionManager.cpp
 
 # target to build an object file
 src/database/core/TransactionManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/TransactionManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/TransactionManager.cpp.o
 .PHONY : src/database/core/TransactionManager.cpp.o
 
 src/database/core/TransactionManager.i: src/database/core/TransactionManager.cpp.i
@@ -759,7 +542,8 @@ src/database/core/TransactionManager.i: src/database/core/TransactionManager.cpp
 
 # target to preprocess a source file
 src/database/core/TransactionManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/TransactionManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/TransactionManager.cpp.i
 .PHONY : src/database/core/TransactionManager.cpp.i
 
 src/database/core/TransactionManager.s: src/database/core/TransactionManager.cpp.s
@@ -767,135 +551,44 @@ src/database/core/TransactionManager.s: src/database/core/TransactionManager.cpp
 
 # target to generate assembly for a file
 src/database/core/TransactionManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/core/TransactionManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/core/TransactionManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/core/TransactionManager.cpp.s
 .PHONY : src/database/core/TransactionManager.cpp.s
 
-src/database/initialization/ConfigManager/ConfigManager.o: src/database/initialization/ConfigManager/ConfigManager.cpp.o
-.PHONY : src/database/initialization/ConfigManager/ConfigManager.o
+src/database/initialization/ConfigManager.o: src/database/initialization/ConfigManager.cpp.o
+.PHONY : src/database/initialization/ConfigManager.o
 
 # target to build an object file
-src/database/initialization/ConfigManager/ConfigManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.o
-.PHONY : src/database/initialization/ConfigManager/ConfigManager.cpp.o
+src/database/initialization/ConfigManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/initialization/ConfigManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/initialization/ConfigManager.cpp.o
+.PHONY : src/database/initialization/ConfigManager.cpp.o
 
-src/database/initialization/ConfigManager/ConfigManager.i: src/database/initialization/ConfigManager/ConfigManager.cpp.i
-.PHONY : src/database/initialization/ConfigManager/ConfigManager.i
-
-# target to preprocess a source file
-src/database/initialization/ConfigManager/ConfigManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.i
-.PHONY : src/database/initialization/ConfigManager/ConfigManager.cpp.i
-
-src/database/initialization/ConfigManager/ConfigManager.s: src/database/initialization/ConfigManager/ConfigManager.cpp.s
-.PHONY : src/database/initialization/ConfigManager/ConfigManager.s
-
-# target to generate assembly for a file
-src/database/initialization/ConfigManager/ConfigManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/initialization/ConfigManager/ConfigManager.cpp.s
-.PHONY : src/database/initialization/ConfigManager/ConfigManager.cpp.s
-
-src/database/initialization/InitDB.o: src/database/initialization/InitDB.cpp.o
-.PHONY : src/database/initialization/InitDB.o
-
-# target to build an object file
-src/database/initialization/InitDB.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.o
-.PHONY : src/database/initialization/InitDB.cpp.o
-
-src/database/initialization/InitDB.i: src/database/initialization/InitDB.cpp.i
-.PHONY : src/database/initialization/InitDB.i
+src/database/initialization/ConfigManager.i: src/database/initialization/ConfigManager.cpp.i
+.PHONY : src/database/initialization/ConfigManager.i
 
 # target to preprocess a source file
-src/database/initialization/InitDB.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.i
-.PHONY : src/database/initialization/InitDB.cpp.i
+src/database/initialization/ConfigManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/initialization/ConfigManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/initialization/ConfigManager.cpp.i
+.PHONY : src/database/initialization/ConfigManager.cpp.i
 
-src/database/initialization/InitDB.s: src/database/initialization/InitDB.cpp.s
-.PHONY : src/database/initialization/InitDB.s
-
-# target to generate assembly for a file
-src/database/initialization/InitDB.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/initialization/InitDB.cpp.s
-.PHONY : src/database/initialization/InitDB.cpp.s
-
-src/database/managers/ArchivalMemoryManager.o: src/database/managers/ArchivalMemoryManager.cpp.o
-.PHONY : src/database/managers/ArchivalMemoryManager.o
-
-# target to build an object file
-src/database/managers/ArchivalMemoryManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.o
-.PHONY : src/database/managers/ArchivalMemoryManager.cpp.o
-
-src/database/managers/ArchivalMemoryManager.i: src/database/managers/ArchivalMemoryManager.cpp.i
-.PHONY : src/database/managers/ArchivalMemoryManager.i
-
-# target to preprocess a source file
-src/database/managers/ArchivalMemoryManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.i
-.PHONY : src/database/managers/ArchivalMemoryManager.cpp.i
-
-src/database/managers/ArchivalMemoryManager.s: src/database/managers/ArchivalMemoryManager.cpp.s
-.PHONY : src/database/managers/ArchivalMemoryManager.s
+src/database/initialization/ConfigManager.s: src/database/initialization/ConfigManager.cpp.s
+.PHONY : src/database/initialization/ConfigManager.s
 
 # target to generate assembly for a file
-src/database/managers/ArchivalMemoryManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ArchivalMemoryManager.cpp.s
-.PHONY : src/database/managers/ArchivalMemoryManager.cpp.s
-
-src/database/managers/AuditLogManager.o: src/database/managers/AuditLogManager.cpp.o
-.PHONY : src/database/managers/AuditLogManager.o
-
-# target to build an object file
-src/database/managers/AuditLogManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.o
-.PHONY : src/database/managers/AuditLogManager.cpp.o
-
-src/database/managers/AuditLogManager.i: src/database/managers/AuditLogManager.cpp.i
-.PHONY : src/database/managers/AuditLogManager.i
-
-# target to preprocess a source file
-src/database/managers/AuditLogManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.i
-.PHONY : src/database/managers/AuditLogManager.cpp.i
-
-src/database/managers/AuditLogManager.s: src/database/managers/AuditLogManager.cpp.s
-.PHONY : src/database/managers/AuditLogManager.s
-
-# target to generate assembly for a file
-src/database/managers/AuditLogManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/AuditLogManager.cpp.s
-.PHONY : src/database/managers/AuditLogManager.cpp.s
-
-src/database/managers/BackupManager.o: src/database/managers/BackupManager.cpp.o
-.PHONY : src/database/managers/BackupManager.o
-
-# target to build an object file
-src/database/managers/BackupManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.o
-.PHONY : src/database/managers/BackupManager.cpp.o
-
-src/database/managers/BackupManager.i: src/database/managers/BackupManager.cpp.i
-.PHONY : src/database/managers/BackupManager.i
-
-# target to preprocess a source file
-src/database/managers/BackupManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.i
-.PHONY : src/database/managers/BackupManager.cpp.i
-
-src/database/managers/BackupManager.s: src/database/managers/BackupManager.cpp.s
-.PHONY : src/database/managers/BackupManager.s
-
-# target to generate assembly for a file
-src/database/managers/BackupManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/BackupManager.cpp.s
-.PHONY : src/database/managers/BackupManager.cpp.s
+src/database/initialization/ConfigManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/initialization/ConfigManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/initialization/ConfigManager.cpp.s
+.PHONY : src/database/initialization/ConfigManager.cpp.s
 
 src/database/managers/CoreMemoryBlockManager.o: src/database/managers/CoreMemoryBlockManager.cpp.o
 .PHONY : src/database/managers/CoreMemoryBlockManager.o
 
 # target to build an object file
 src/database/managers/CoreMemoryBlockManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/CoreMemoryBlockManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/CoreMemoryBlockManager.cpp.o
 .PHONY : src/database/managers/CoreMemoryBlockManager.cpp.o
 
 src/database/managers/CoreMemoryBlockManager.i: src/database/managers/CoreMemoryBlockManager.cpp.i
@@ -903,7 +596,8 @@ src/database/managers/CoreMemoryBlockManager.i: src/database/managers/CoreMemory
 
 # target to preprocess a source file
 src/database/managers/CoreMemoryBlockManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/CoreMemoryBlockManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/CoreMemoryBlockManager.cpp.i
 .PHONY : src/database/managers/CoreMemoryBlockManager.cpp.i
 
 src/database/managers/CoreMemoryBlockManager.s: src/database/managers/CoreMemoryBlockManager.cpp.s
@@ -911,7 +605,8 @@ src/database/managers/CoreMemoryBlockManager.s: src/database/managers/CoreMemory
 
 # target to generate assembly for a file
 src/database/managers/CoreMemoryBlockManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/CoreMemoryBlockManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/CoreMemoryBlockManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/CoreMemoryBlockManager.cpp.s
 .PHONY : src/database/managers/CoreMemoryBlockManager.cpp.s
 
 src/database/managers/EpisodicMemoryManager.o: src/database/managers/EpisodicMemoryManager.cpp.o
@@ -919,7 +614,8 @@ src/database/managers/EpisodicMemoryManager.o: src/database/managers/EpisodicMem
 
 # target to build an object file
 src/database/managers/EpisodicMemoryManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/EpisodicMemoryManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/EpisodicMemoryManager.cpp.o
 .PHONY : src/database/managers/EpisodicMemoryManager.cpp.o
 
 src/database/managers/EpisodicMemoryManager.i: src/database/managers/EpisodicMemoryManager.cpp.i
@@ -927,7 +623,8 @@ src/database/managers/EpisodicMemoryManager.i: src/database/managers/EpisodicMem
 
 # target to preprocess a source file
 src/database/managers/EpisodicMemoryManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/EpisodicMemoryManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/EpisodicMemoryManager.cpp.i
 .PHONY : src/database/managers/EpisodicMemoryManager.cpp.i
 
 src/database/managers/EpisodicMemoryManager.s: src/database/managers/EpisodicMemoryManager.cpp.s
@@ -935,39 +632,17 @@ src/database/managers/EpisodicMemoryManager.s: src/database/managers/EpisodicMem
 
 # target to generate assembly for a file
 src/database/managers/EpisodicMemoryManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/EpisodicMemoryManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/EpisodicMemoryManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/EpisodicMemoryManager.cpp.s
 .PHONY : src/database/managers/EpisodicMemoryManager.cpp.s
-
-src/database/managers/KnowledgeVaultManager.o: src/database/managers/KnowledgeVaultManager.cpp.o
-.PHONY : src/database/managers/KnowledgeVaultManager.o
-
-# target to build an object file
-src/database/managers/KnowledgeVaultManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.o
-.PHONY : src/database/managers/KnowledgeVaultManager.cpp.o
-
-src/database/managers/KnowledgeVaultManager.i: src/database/managers/KnowledgeVaultManager.cpp.i
-.PHONY : src/database/managers/KnowledgeVaultManager.i
-
-# target to preprocess a source file
-src/database/managers/KnowledgeVaultManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.i
-.PHONY : src/database/managers/KnowledgeVaultManager.cpp.i
-
-src/database/managers/KnowledgeVaultManager.s: src/database/managers/KnowledgeVaultManager.cpp.s
-.PHONY : src/database/managers/KnowledgeVaultManager.s
-
-# target to generate assembly for a file
-src/database/managers/KnowledgeVaultManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/KnowledgeVaultManager.cpp.s
-.PHONY : src/database/managers/KnowledgeVaultManager.cpp.s
 
 src/database/managers/MemoryOrchestrator.o: src/database/managers/MemoryOrchestrator.cpp.o
 .PHONY : src/database/managers/MemoryOrchestrator.o
 
 # target to build an object file
 src/database/managers/MemoryOrchestrator.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryOrchestrator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MemoryOrchestrator.cpp.o
 .PHONY : src/database/managers/MemoryOrchestrator.cpp.o
 
 src/database/managers/MemoryOrchestrator.i: src/database/managers/MemoryOrchestrator.cpp.i
@@ -975,7 +650,8 @@ src/database/managers/MemoryOrchestrator.i: src/database/managers/MemoryOrchestr
 
 # target to preprocess a source file
 src/database/managers/MemoryOrchestrator.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryOrchestrator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MemoryOrchestrator.cpp.i
 .PHONY : src/database/managers/MemoryOrchestrator.cpp.i
 
 src/database/managers/MemoryOrchestrator.s: src/database/managers/MemoryOrchestrator.cpp.s
@@ -983,15 +659,95 @@ src/database/managers/MemoryOrchestrator.s: src/database/managers/MemoryOrchestr
 
 # target to generate assembly for a file
 src/database/managers/MemoryOrchestrator.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/MemoryOrchestrator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryOrchestrator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MemoryOrchestrator.cpp.s
 .PHONY : src/database/managers/MemoryOrchestrator.cpp.s
+
+src/database/managers/MemoryOrchestratorImpl.o: src/database/managers/MemoryOrchestratorImpl.cpp.o
+.PHONY : src/database/managers/MemoryOrchestratorImpl.o
+
+# target to build an object file
+src/database/managers/MemoryOrchestratorImpl.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryOrchestratorImpl.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MemoryOrchestratorImpl.cpp.o
+.PHONY : src/database/managers/MemoryOrchestratorImpl.cpp.o
+
+src/database/managers/MemoryOrchestratorImpl.i: src/database/managers/MemoryOrchestratorImpl.cpp.i
+.PHONY : src/database/managers/MemoryOrchestratorImpl.i
+
+# target to preprocess a source file
+src/database/managers/MemoryOrchestratorImpl.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryOrchestratorImpl.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MemoryOrchestratorImpl.cpp.i
+.PHONY : src/database/managers/MemoryOrchestratorImpl.cpp.i
+
+src/database/managers/MemoryOrchestratorImpl.s: src/database/managers/MemoryOrchestratorImpl.cpp.s
+.PHONY : src/database/managers/MemoryOrchestratorImpl.s
+
+# target to generate assembly for a file
+src/database/managers/MemoryOrchestratorImpl.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryOrchestratorImpl.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MemoryOrchestratorImpl.cpp.s
+.PHONY : src/database/managers/MemoryOrchestratorImpl.cpp.s
+
+src/database/managers/MemoryProvenanceManager.o: src/database/managers/MemoryProvenanceManager.cpp.o
+.PHONY : src/database/managers/MemoryProvenanceManager.o
+
+# target to build an object file
+src/database/managers/MemoryProvenanceManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryProvenanceManager.cpp.o
+.PHONY : src/database/managers/MemoryProvenanceManager.cpp.o
+
+src/database/managers/MemoryProvenanceManager.i: src/database/managers/MemoryProvenanceManager.cpp.i
+.PHONY : src/database/managers/MemoryProvenanceManager.i
+
+# target to preprocess a source file
+src/database/managers/MemoryProvenanceManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryProvenanceManager.cpp.i
+.PHONY : src/database/managers/MemoryProvenanceManager.cpp.i
+
+src/database/managers/MemoryProvenanceManager.s: src/database/managers/MemoryProvenanceManager.cpp.s
+.PHONY : src/database/managers/MemoryProvenanceManager.s
+
+# target to generate assembly for a file
+src/database/managers/MemoryProvenanceManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MemoryProvenanceManager.cpp.s
+.PHONY : src/database/managers/MemoryProvenanceManager.cpp.s
+
+src/database/managers/MessageMemoryManager.o: src/database/managers/MessageMemoryManager.cpp.o
+.PHONY : src/database/managers/MessageMemoryManager.o
+
+# target to build an object file
+src/database/managers/MessageMemoryManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MessageMemoryManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MessageMemoryManager.cpp.o
+.PHONY : src/database/managers/MessageMemoryManager.cpp.o
+
+src/database/managers/MessageMemoryManager.i: src/database/managers/MessageMemoryManager.cpp.i
+.PHONY : src/database/managers/MessageMemoryManager.i
+
+# target to preprocess a source file
+src/database/managers/MessageMemoryManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MessageMemoryManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MessageMemoryManager.cpp.i
+.PHONY : src/database/managers/MessageMemoryManager.cpp.i
+
+src/database/managers/MessageMemoryManager.s: src/database/managers/MessageMemoryManager.cpp.s
+.PHONY : src/database/managers/MessageMemoryManager.s
+
+# target to generate assembly for a file
+src/database/managers/MessageMemoryManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/MessageMemoryManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/MessageMemoryManager.cpp.s
+.PHONY : src/database/managers/MessageMemoryManager.cpp.s
 
 src/database/managers/ProceduralMemoryManager.o: src/database/managers/ProceduralMemoryManager.cpp.o
 .PHONY : src/database/managers/ProceduralMemoryManager.o
 
 # target to build an object file
 src/database/managers/ProceduralMemoryManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/ProceduralMemoryManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/ProceduralMemoryManager.cpp.o
 .PHONY : src/database/managers/ProceduralMemoryManager.cpp.o
 
 src/database/managers/ProceduralMemoryManager.i: src/database/managers/ProceduralMemoryManager.cpp.i
@@ -999,7 +755,8 @@ src/database/managers/ProceduralMemoryManager.i: src/database/managers/Procedura
 
 # target to preprocess a source file
 src/database/managers/ProceduralMemoryManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/ProceduralMemoryManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/ProceduralMemoryManager.cpp.i
 .PHONY : src/database/managers/ProceduralMemoryManager.cpp.i
 
 src/database/managers/ProceduralMemoryManager.s: src/database/managers/ProceduralMemoryManager.cpp.s
@@ -1007,63 +764,44 @@ src/database/managers/ProceduralMemoryManager.s: src/database/managers/Procedura
 
 # target to generate assembly for a file
 src/database/managers/ProceduralMemoryManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ProceduralMemoryManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/ProceduralMemoryManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/ProceduralMemoryManager.cpp.s
 .PHONY : src/database/managers/ProceduralMemoryManager.cpp.s
 
-src/database/managers/RecallMemoryManager.o: src/database/managers/RecallMemoryManager.cpp.o
-.PHONY : src/database/managers/RecallMemoryManager.o
+src/database/managers/SecretVaultManager.o: src/database/managers/SecretVaultManager.cpp.o
+.PHONY : src/database/managers/SecretVaultManager.o
 
 # target to build an object file
-src/database/managers/RecallMemoryManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.o
-.PHONY : src/database/managers/RecallMemoryManager.cpp.o
+src/database/managers/SecretVaultManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SecretVaultManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SecretVaultManager.cpp.o
+.PHONY : src/database/managers/SecretVaultManager.cpp.o
 
-src/database/managers/RecallMemoryManager.i: src/database/managers/RecallMemoryManager.cpp.i
-.PHONY : src/database/managers/RecallMemoryManager.i
-
-# target to preprocess a source file
-src/database/managers/RecallMemoryManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.i
-.PHONY : src/database/managers/RecallMemoryManager.cpp.i
-
-src/database/managers/RecallMemoryManager.s: src/database/managers/RecallMemoryManager.cpp.s
-.PHONY : src/database/managers/RecallMemoryManager.s
-
-# target to generate assembly for a file
-src/database/managers/RecallMemoryManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/RecallMemoryManager.cpp.s
-.PHONY : src/database/managers/RecallMemoryManager.cpp.s
-
-src/database/managers/ResourceMemoryManager.o: src/database/managers/ResourceMemoryManager.cpp.o
-.PHONY : src/database/managers/ResourceMemoryManager.o
-
-# target to build an object file
-src/database/managers/ResourceMemoryManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.o
-.PHONY : src/database/managers/ResourceMemoryManager.cpp.o
-
-src/database/managers/ResourceMemoryManager.i: src/database/managers/ResourceMemoryManager.cpp.i
-.PHONY : src/database/managers/ResourceMemoryManager.i
+src/database/managers/SecretVaultManager.i: src/database/managers/SecretVaultManager.cpp.i
+.PHONY : src/database/managers/SecretVaultManager.i
 
 # target to preprocess a source file
-src/database/managers/ResourceMemoryManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.i
-.PHONY : src/database/managers/ResourceMemoryManager.cpp.i
+src/database/managers/SecretVaultManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SecretVaultManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SecretVaultManager.cpp.i
+.PHONY : src/database/managers/SecretVaultManager.cpp.i
 
-src/database/managers/ResourceMemoryManager.s: src/database/managers/ResourceMemoryManager.cpp.s
-.PHONY : src/database/managers/ResourceMemoryManager.s
+src/database/managers/SecretVaultManager.s: src/database/managers/SecretVaultManager.cpp.s
+.PHONY : src/database/managers/SecretVaultManager.s
 
 # target to generate assembly for a file
-src/database/managers/ResourceMemoryManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/ResourceMemoryManager.cpp.s
-.PHONY : src/database/managers/ResourceMemoryManager.cpp.s
+src/database/managers/SecretVaultManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SecretVaultManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SecretVaultManager.cpp.s
+.PHONY : src/database/managers/SecretVaultManager.cpp.s
 
 src/database/managers/SemanticMemoryManager.o: src/database/managers/SemanticMemoryManager.cpp.o
 .PHONY : src/database/managers/SemanticMemoryManager.o
 
 # target to build an object file
 src/database/managers/SemanticMemoryManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SemanticMemoryManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SemanticMemoryManager.cpp.o
 .PHONY : src/database/managers/SemanticMemoryManager.cpp.o
 
 src/database/managers/SemanticMemoryManager.i: src/database/managers/SemanticMemoryManager.cpp.i
@@ -1071,7 +809,8 @@ src/database/managers/SemanticMemoryManager.i: src/database/managers/SemanticMem
 
 # target to preprocess a source file
 src/database/managers/SemanticMemoryManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SemanticMemoryManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SemanticMemoryManager.cpp.i
 .PHONY : src/database/managers/SemanticMemoryManager.cpp.i
 
 src/database/managers/SemanticMemoryManager.s: src/database/managers/SemanticMemoryManager.cpp.s
@@ -1079,7 +818,8 @@ src/database/managers/SemanticMemoryManager.s: src/database/managers/SemanticMem
 
 # target to generate assembly for a file
 src/database/managers/SemanticMemoryManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/SemanticMemoryManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SemanticMemoryManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SemanticMemoryManager.cpp.s
 .PHONY : src/database/managers/SemanticMemoryManager.cpp.s
 
 src/database/managers/SessionManager.o: src/database/managers/SessionManager.cpp.o
@@ -1087,7 +827,8 @@ src/database/managers/SessionManager.o: src/database/managers/SessionManager.cpp
 
 # target to build an object file
 src/database/managers/SessionManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SessionManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SessionManager.cpp.o
 .PHONY : src/database/managers/SessionManager.cpp.o
 
 src/database/managers/SessionManager.i: src/database/managers/SessionManager.cpp.i
@@ -1095,7 +836,8 @@ src/database/managers/SessionManager.i: src/database/managers/SessionManager.cpp
 
 # target to preprocess a source file
 src/database/managers/SessionManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SessionManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SessionManager.cpp.i
 .PHONY : src/database/managers/SessionManager.cpp.i
 
 src/database/managers/SessionManager.s: src/database/managers/SessionManager.cpp.s
@@ -1103,7 +845,8 @@ src/database/managers/SessionManager.s: src/database/managers/SessionManager.cpp
 
 # target to generate assembly for a file
 src/database/managers/SessionManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/SessionManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/SessionManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/SessionManager.cpp.s
 .PHONY : src/database/managers/SessionManager.cpp.s
 
 src/database/managers/UserManager.o: src/database/managers/UserManager.cpp.o
@@ -1111,7 +854,8 @@ src/database/managers/UserManager.o: src/database/managers/UserManager.cpp.o
 
 # target to build an object file
 src/database/managers/UserManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/UserManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/UserManager.cpp.o
 .PHONY : src/database/managers/UserManager.cpp.o
 
 src/database/managers/UserManager.i: src/database/managers/UserManager.cpp.i
@@ -1119,7 +863,8 @@ src/database/managers/UserManager.i: src/database/managers/UserManager.cpp.i
 
 # target to preprocess a source file
 src/database/managers/UserManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/UserManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/UserManager.cpp.i
 .PHONY : src/database/managers/UserManager.cpp.i
 
 src/database/managers/UserManager.s: src/database/managers/UserManager.cpp.s
@@ -1127,63 +872,338 @@ src/database/managers/UserManager.s: src/database/managers/UserManager.cpp.s
 
 # target to generate assembly for a file
 src/database/managers/UserManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/UserManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/database/managers/UserManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/database.dir/build.make CMakeFiles/database.dir/src/database/managers/UserManager.cpp.s
 .PHONY : src/database/managers/UserManager.cpp.s
 
-src/database/managers/VisualizationManager.o: src/database/managers/VisualizationManager.cpp.o
-.PHONY : src/database/managers/VisualizationManager.o
+src/main.o: src/main.cpp.o
+.PHONY : src/main.o
 
 # target to build an object file
-src/database/managers/VisualizationManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.o
-.PHONY : src/database/managers/VisualizationManager.cpp.o
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
 
-src/database/managers/VisualizationManager.i: src/database/managers/VisualizationManager.cpp.i
-.PHONY : src/database/managers/VisualizationManager.i
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-src/database/managers/VisualizationManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.i
-.PHONY : src/database/managers/VisualizationManager.cpp.i
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
 
-src/database/managers/VisualizationManager.s: src/database/managers/VisualizationManager.cpp.s
-.PHONY : src/database/managers/VisualizationManager.s
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-src/database/managers/VisualizationManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/database/managers/VisualizationManager.cpp.s
-.PHONY : src/database/managers/VisualizationManager.cpp.s
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
-src/gui/GUIManager.o: src/gui/GUIManager.cpp.o
-.PHONY : src/gui/GUIManager.o
+src/memory/context/ContextBuilder.o: src/memory/context/ContextBuilder.cpp.o
+.PHONY : src/memory/context/ContextBuilder.o
 
 # target to build an object file
-src/gui/GUIManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.o
-.PHONY : src/gui/GUIManager.cpp.o
+src/memory/context/ContextBuilder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/context/ContextBuilder.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/context/ContextBuilder.cpp.o
+.PHONY : src/memory/context/ContextBuilder.cpp.o
 
-src/gui/GUIManager.i: src/gui/GUIManager.cpp.i
-.PHONY : src/gui/GUIManager.i
+src/memory/context/ContextBuilder.i: src/memory/context/ContextBuilder.cpp.i
+.PHONY : src/memory/context/ContextBuilder.i
 
 # target to preprocess a source file
-src/gui/GUIManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.i
-.PHONY : src/gui/GUIManager.cpp.i
+src/memory/context/ContextBuilder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/context/ContextBuilder.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/context/ContextBuilder.cpp.i
+.PHONY : src/memory/context/ContextBuilder.cpp.i
 
-src/gui/GUIManager.s: src/gui/GUIManager.cpp.s
-.PHONY : src/gui/GUIManager.s
+src/memory/context/ContextBuilder.s: src/memory/context/ContextBuilder.cpp.s
+.PHONY : src/memory/context/ContextBuilder.s
 
 # target to generate assembly for a file
-src/gui/GUIManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/gui/GUIManager.cpp.s
-.PHONY : src/gui/GUIManager.cpp.s
+src/memory/context/ContextBuilder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/context/ContextBuilder.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/context/ContextBuilder.cpp.s
+.PHONY : src/memory/context/ContextBuilder.cpp.s
+
+src/memory/generation/MemoryClassifier.o: src/memory/generation/MemoryClassifier.cpp.o
+.PHONY : src/memory/generation/MemoryClassifier.o
+
+# target to build an object file
+src/memory/generation/MemoryClassifier.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/MemoryClassifier.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/MemoryClassifier.cpp.o
+.PHONY : src/memory/generation/MemoryClassifier.cpp.o
+
+src/memory/generation/MemoryClassifier.i: src/memory/generation/MemoryClassifier.cpp.i
+.PHONY : src/memory/generation/MemoryClassifier.i
+
+# target to preprocess a source file
+src/memory/generation/MemoryClassifier.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/MemoryClassifier.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/MemoryClassifier.cpp.i
+.PHONY : src/memory/generation/MemoryClassifier.cpp.i
+
+src/memory/generation/MemoryClassifier.s: src/memory/generation/MemoryClassifier.cpp.s
+.PHONY : src/memory/generation/MemoryClassifier.s
+
+# target to generate assembly for a file
+src/memory/generation/MemoryClassifier.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/MemoryClassifier.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/MemoryClassifier.cpp.s
+.PHONY : src/memory/generation/MemoryClassifier.cpp.s
+
+src/memory/generation/MemoryGenerationManager.o: src/memory/generation/MemoryGenerationManager.cpp.o
+.PHONY : src/memory/generation/MemoryGenerationManager.o
+
+# target to build an object file
+src/memory/generation/MemoryGenerationManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/MemoryGenerationManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/MemoryGenerationManager.cpp.o
+.PHONY : src/memory/generation/MemoryGenerationManager.cpp.o
+
+src/memory/generation/MemoryGenerationManager.i: src/memory/generation/MemoryGenerationManager.cpp.i
+.PHONY : src/memory/generation/MemoryGenerationManager.i
+
+# target to preprocess a source file
+src/memory/generation/MemoryGenerationManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/MemoryGenerationManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/MemoryGenerationManager.cpp.i
+.PHONY : src/memory/generation/MemoryGenerationManager.cpp.i
+
+src/memory/generation/MemoryGenerationManager.s: src/memory/generation/MemoryGenerationManager.cpp.s
+.PHONY : src/memory/generation/MemoryGenerationManager.s
+
+# target to generate assembly for a file
+src/memory/generation/MemoryGenerationManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/MemoryGenerationManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/MemoryGenerationManager.cpp.s
+.PHONY : src/memory/generation/MemoryGenerationManager.cpp.s
+
+src/memory/generation/generators/BaseMemoryGenerator.o: src/memory/generation/generators/BaseMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/BaseMemoryGenerator.o
+
+# target to build an object file
+src/memory/generation/generators/BaseMemoryGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/BaseMemoryGenerator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/BaseMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/BaseMemoryGenerator.cpp.o
+
+src/memory/generation/generators/BaseMemoryGenerator.i: src/memory/generation/generators/BaseMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/BaseMemoryGenerator.i
+
+# target to preprocess a source file
+src/memory/generation/generators/BaseMemoryGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/BaseMemoryGenerator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/BaseMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/BaseMemoryGenerator.cpp.i
+
+src/memory/generation/generators/BaseMemoryGenerator.s: src/memory/generation/generators/BaseMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/BaseMemoryGenerator.s
+
+# target to generate assembly for a file
+src/memory/generation/generators/BaseMemoryGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/BaseMemoryGenerator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/BaseMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/BaseMemoryGenerator.cpp.s
+
+src/memory/generation/generators/CoreMemoryGenerator.o: src/memory/generation/generators/CoreMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/CoreMemoryGenerator.o
+
+# target to build an object file
+src/memory/generation/generators/CoreMemoryGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/CoreMemoryGenerator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/CoreMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/CoreMemoryGenerator.cpp.o
+
+src/memory/generation/generators/CoreMemoryGenerator.i: src/memory/generation/generators/CoreMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/CoreMemoryGenerator.i
+
+# target to preprocess a source file
+src/memory/generation/generators/CoreMemoryGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/CoreMemoryGenerator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/CoreMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/CoreMemoryGenerator.cpp.i
+
+src/memory/generation/generators/CoreMemoryGenerator.s: src/memory/generation/generators/CoreMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/CoreMemoryGenerator.s
+
+# target to generate assembly for a file
+src/memory/generation/generators/CoreMemoryGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/CoreMemoryGenerator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/CoreMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/CoreMemoryGenerator.cpp.s
+
+src/memory/generation/generators/EpisodicMemoryGenerator.o: src/memory/generation/generators/EpisodicMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/EpisodicMemoryGenerator.o
+
+# target to build an object file
+src/memory/generation/generators/EpisodicMemoryGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/EpisodicMemoryGenerator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/EpisodicMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/EpisodicMemoryGenerator.cpp.o
+
+src/memory/generation/generators/EpisodicMemoryGenerator.i: src/memory/generation/generators/EpisodicMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/EpisodicMemoryGenerator.i
+
+# target to preprocess a source file
+src/memory/generation/generators/EpisodicMemoryGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/EpisodicMemoryGenerator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/EpisodicMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/EpisodicMemoryGenerator.cpp.i
+
+src/memory/generation/generators/EpisodicMemoryGenerator.s: src/memory/generation/generators/EpisodicMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/EpisodicMemoryGenerator.s
+
+# target to generate assembly for a file
+src/memory/generation/generators/EpisodicMemoryGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/EpisodicMemoryGenerator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/EpisodicMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/EpisodicMemoryGenerator.cpp.s
+
+src/memory/generation/generators/ProceduralMemoryGenerator.o: src/memory/generation/generators/ProceduralMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/ProceduralMemoryGenerator.o
+
+# target to build an object file
+src/memory/generation/generators/ProceduralMemoryGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/ProceduralMemoryGenerator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/ProceduralMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/ProceduralMemoryGenerator.cpp.o
+
+src/memory/generation/generators/ProceduralMemoryGenerator.i: src/memory/generation/generators/ProceduralMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/ProceduralMemoryGenerator.i
+
+# target to preprocess a source file
+src/memory/generation/generators/ProceduralMemoryGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/ProceduralMemoryGenerator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/ProceduralMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/ProceduralMemoryGenerator.cpp.i
+
+src/memory/generation/generators/ProceduralMemoryGenerator.s: src/memory/generation/generators/ProceduralMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/ProceduralMemoryGenerator.s
+
+# target to generate assembly for a file
+src/memory/generation/generators/ProceduralMemoryGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/ProceduralMemoryGenerator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/ProceduralMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/ProceduralMemoryGenerator.cpp.s
+
+src/memory/generation/generators/SecretVaultGenerator.o: src/memory/generation/generators/SecretVaultGenerator.cpp.o
+.PHONY : src/memory/generation/generators/SecretVaultGenerator.o
+
+# target to build an object file
+src/memory/generation/generators/SecretVaultGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/SecretVaultGenerator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/SecretVaultGenerator.cpp.o
+.PHONY : src/memory/generation/generators/SecretVaultGenerator.cpp.o
+
+src/memory/generation/generators/SecretVaultGenerator.i: src/memory/generation/generators/SecretVaultGenerator.cpp.i
+.PHONY : src/memory/generation/generators/SecretVaultGenerator.i
+
+# target to preprocess a source file
+src/memory/generation/generators/SecretVaultGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/SecretVaultGenerator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/SecretVaultGenerator.cpp.i
+.PHONY : src/memory/generation/generators/SecretVaultGenerator.cpp.i
+
+src/memory/generation/generators/SecretVaultGenerator.s: src/memory/generation/generators/SecretVaultGenerator.cpp.s
+.PHONY : src/memory/generation/generators/SecretVaultGenerator.s
+
+# target to generate assembly for a file
+src/memory/generation/generators/SecretVaultGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/SecretVaultGenerator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/SecretVaultGenerator.cpp.s
+.PHONY : src/memory/generation/generators/SecretVaultGenerator.cpp.s
+
+src/memory/generation/generators/SemanticMemoryGenerator.o: src/memory/generation/generators/SemanticMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/SemanticMemoryGenerator.o
+
+# target to build an object file
+src/memory/generation/generators/SemanticMemoryGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/SemanticMemoryGenerator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/SemanticMemoryGenerator.cpp.o
+.PHONY : src/memory/generation/generators/SemanticMemoryGenerator.cpp.o
+
+src/memory/generation/generators/SemanticMemoryGenerator.i: src/memory/generation/generators/SemanticMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/SemanticMemoryGenerator.i
+
+# target to preprocess a source file
+src/memory/generation/generators/SemanticMemoryGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/SemanticMemoryGenerator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/SemanticMemoryGenerator.cpp.i
+.PHONY : src/memory/generation/generators/SemanticMemoryGenerator.cpp.i
+
+src/memory/generation/generators/SemanticMemoryGenerator.s: src/memory/generation/generators/SemanticMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/SemanticMemoryGenerator.s
+
+# target to generate assembly for a file
+src/memory/generation/generators/SemanticMemoryGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/generation/generators/SemanticMemoryGenerator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/generation/generators/SemanticMemoryGenerator.cpp.s
+.PHONY : src/memory/generation/generators/SemanticMemoryGenerator.cpp.s
+
+src/memory/messages/MessageManager.o: src/memory/messages/MessageManager.cpp.o
+.PHONY : src/memory/messages/MessageManager.o
+
+# target to build an object file
+src/memory/messages/MessageManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/messages/MessageManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/messages/MessageManager.cpp.o
+.PHONY : src/memory/messages/MessageManager.cpp.o
+
+src/memory/messages/MessageManager.i: src/memory/messages/MessageManager.cpp.i
+.PHONY : src/memory/messages/MessageManager.i
+
+# target to preprocess a source file
+src/memory/messages/MessageManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/messages/MessageManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/messages/MessageManager.cpp.i
+.PHONY : src/memory/messages/MessageManager.cpp.i
+
+src/memory/messages/MessageManager.s: src/memory/messages/MessageManager.cpp.s
+.PHONY : src/memory/messages/MessageManager.s
+
+# target to generate assembly for a file
+src/memory/messages/MessageManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/messages/MessageManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/messages/MessageManager.cpp.s
+.PHONY : src/memory/messages/MessageManager.cpp.s
+
+src/memory/scheduling/MemoryGenerationScheduler.o: src/memory/scheduling/MemoryGenerationScheduler.cpp.o
+.PHONY : src/memory/scheduling/MemoryGenerationScheduler.o
+
+# target to build an object file
+src/memory/scheduling/MemoryGenerationScheduler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/scheduling/MemoryGenerationScheduler.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/scheduling/MemoryGenerationScheduler.cpp.o
+.PHONY : src/memory/scheduling/MemoryGenerationScheduler.cpp.o
+
+src/memory/scheduling/MemoryGenerationScheduler.i: src/memory/scheduling/MemoryGenerationScheduler.cpp.i
+.PHONY : src/memory/scheduling/MemoryGenerationScheduler.i
+
+# target to preprocess a source file
+src/memory/scheduling/MemoryGenerationScheduler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/scheduling/MemoryGenerationScheduler.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/scheduling/MemoryGenerationScheduler.cpp.i
+.PHONY : src/memory/scheduling/MemoryGenerationScheduler.cpp.i
+
+src/memory/scheduling/MemoryGenerationScheduler.s: src/memory/scheduling/MemoryGenerationScheduler.cpp.s
+.PHONY : src/memory/scheduling/MemoryGenerationScheduler.s
+
+# target to generate assembly for a file
+src/memory/scheduling/MemoryGenerationScheduler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/memory/scheduling/MemoryGenerationScheduler.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/memory/scheduling/MemoryGenerationScheduler.cpp.s
+.PHONY : src/memory/scheduling/MemoryGenerationScheduler.cpp.s
 
 src/models/CLIPProcessor.o: src/models/CLIPProcessor.cpp.o
 .PHONY : src/models/CLIPProcessor.o
 
 # target to build an object file
 src/models/CLIPProcessor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/CLIPProcessor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/CLIPProcessor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/CLIPProcessor.cpp.o
 .PHONY : src/models/CLIPProcessor.cpp.o
 
 src/models/CLIPProcessor.i: src/models/CLIPProcessor.cpp.i
@@ -1191,7 +1211,8 @@ src/models/CLIPProcessor.i: src/models/CLIPProcessor.cpp.i
 
 # target to preprocess a source file
 src/models/CLIPProcessor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/CLIPProcessor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/CLIPProcessor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/CLIPProcessor.cpp.i
 .PHONY : src/models/CLIPProcessor.cpp.i
 
 src/models/CLIPProcessor.s: src/models/CLIPProcessor.cpp.s
@@ -1199,7 +1220,8 @@ src/models/CLIPProcessor.s: src/models/CLIPProcessor.cpp.s
 
 # target to generate assembly for a file
 src/models/CLIPProcessor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/CLIPProcessor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/CLIPProcessor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/CLIPProcessor.cpp.s
 .PHONY : src/models/CLIPProcessor.cpp.s
 
 src/models/EmbeddingIndexManager.o: src/models/EmbeddingIndexManager.cpp.o
@@ -1207,7 +1229,8 @@ src/models/EmbeddingIndexManager.o: src/models/EmbeddingIndexManager.cpp.o
 
 # target to build an object file
 src/models/EmbeddingIndexManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/EmbeddingIndexManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/EmbeddingIndexManager.cpp.o
 .PHONY : src/models/EmbeddingIndexManager.cpp.o
 
 src/models/EmbeddingIndexManager.i: src/models/EmbeddingIndexManager.cpp.i
@@ -1215,7 +1238,8 @@ src/models/EmbeddingIndexManager.i: src/models/EmbeddingIndexManager.cpp.i
 
 # target to preprocess a source file
 src/models/EmbeddingIndexManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/EmbeddingIndexManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/EmbeddingIndexManager.cpp.i
 .PHONY : src/models/EmbeddingIndexManager.cpp.i
 
 src/models/EmbeddingIndexManager.s: src/models/EmbeddingIndexManager.cpp.s
@@ -1223,7 +1247,8 @@ src/models/EmbeddingIndexManager.s: src/models/EmbeddingIndexManager.cpp.s
 
 # target to generate assembly for a file
 src/models/EmbeddingIndexManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/EmbeddingIndexManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/EmbeddingIndexManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/EmbeddingIndexManager.cpp.s
 .PHONY : src/models/EmbeddingIndexManager.cpp.s
 
 src/models/ModelManager.o: src/models/ModelManager.cpp.o
@@ -1231,7 +1256,8 @@ src/models/ModelManager.o: src/models/ModelManager.cpp.o
 
 # target to build an object file
 src/models/ModelManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/ModelManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/ModelManager.cpp.o
 .PHONY : src/models/ModelManager.cpp.o
 
 src/models/ModelManager.i: src/models/ModelManager.cpp.i
@@ -1239,7 +1265,8 @@ src/models/ModelManager.i: src/models/ModelManager.cpp.i
 
 # target to preprocess a source file
 src/models/ModelManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/ModelManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/ModelManager.cpp.i
 .PHONY : src/models/ModelManager.cpp.i
 
 src/models/ModelManager.s: src/models/ModelManager.cpp.s
@@ -1247,15 +1274,44 @@ src/models/ModelManager.s: src/models/ModelManager.cpp.s
 
 # target to generate assembly for a file
 src/models/ModelManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/ModelManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/ModelManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/ModelManager.cpp.s
 .PHONY : src/models/ModelManager.cpp.s
+
+src/models/PromptTemplates.o: src/models/PromptTemplates.cpp.o
+.PHONY : src/models/PromptTemplates.o
+
+# target to build an object file
+src/models/PromptTemplates.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/PromptTemplates.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/PromptTemplates.cpp.o
+.PHONY : src/models/PromptTemplates.cpp.o
+
+src/models/PromptTemplates.i: src/models/PromptTemplates.cpp.i
+.PHONY : src/models/PromptTemplates.i
+
+# target to preprocess a source file
+src/models/PromptTemplates.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/PromptTemplates.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/PromptTemplates.cpp.i
+.PHONY : src/models/PromptTemplates.cpp.i
+
+src/models/PromptTemplates.s: src/models/PromptTemplates.cpp.s
+.PHONY : src/models/PromptTemplates.s
+
+# target to generate assembly for a file
+src/models/PromptTemplates.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/PromptTemplates.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/PromptTemplates.cpp.s
+.PHONY : src/models/PromptTemplates.cpp.s
 
 src/models/QwenAPI.o: src/models/QwenAPI.cpp.o
 .PHONY : src/models/QwenAPI.o
 
 # target to build an object file
 src/models/QwenAPI.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/QwenAPI.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/QwenAPI.cpp.o
 .PHONY : src/models/QwenAPI.cpp.o
 
 src/models/QwenAPI.i: src/models/QwenAPI.cpp.i
@@ -1263,7 +1319,8 @@ src/models/QwenAPI.i: src/models/QwenAPI.cpp.i
 
 # target to preprocess a source file
 src/models/QwenAPI.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/QwenAPI.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/QwenAPI.cpp.i
 .PHONY : src/models/QwenAPI.cpp.i
 
 src/models/QwenAPI.s: src/models/QwenAPI.cpp.s
@@ -1271,7 +1328,8 @@ src/models/QwenAPI.s: src/models/QwenAPI.cpp.s
 
 # target to generate assembly for a file
 src/models/QwenAPI.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/QwenAPI.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/QwenAPI.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/QwenAPI.cpp.s
 .PHONY : src/models/QwenAPI.cpp.s
 
 src/models/TextEmbeddingGenerator.o: src/models/TextEmbeddingGenerator.cpp.o
@@ -1279,7 +1337,8 @@ src/models/TextEmbeddingGenerator.o: src/models/TextEmbeddingGenerator.cpp.o
 
 # target to build an object file
 src/models/TextEmbeddingGenerator.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/TextEmbeddingGenerator.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/TextEmbeddingGenerator.cpp.o
 .PHONY : src/models/TextEmbeddingGenerator.cpp.o
 
 src/models/TextEmbeddingGenerator.i: src/models/TextEmbeddingGenerator.cpp.i
@@ -1287,7 +1346,8 @@ src/models/TextEmbeddingGenerator.i: src/models/TextEmbeddingGenerator.cpp.i
 
 # target to preprocess a source file
 src/models/TextEmbeddingGenerator.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/TextEmbeddingGenerator.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/TextEmbeddingGenerator.cpp.i
 .PHONY : src/models/TextEmbeddingGenerator.cpp.i
 
 src/models/TextEmbeddingGenerator.s: src/models/TextEmbeddingGenerator.cpp.s
@@ -1295,7 +1355,8 @@ src/models/TextEmbeddingGenerator.s: src/models/TextEmbeddingGenerator.cpp.s
 
 # target to generate assembly for a file
 src/models/TextEmbeddingGenerator.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/TextEmbeddingGenerator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/TextEmbeddingGenerator.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/TextEmbeddingGenerator.cpp.s
 .PHONY : src/models/TextEmbeddingGenerator.cpp.s
 
 src/models/VectorSearchManager.o: src/models/VectorSearchManager.cpp.o
@@ -1303,7 +1364,8 @@ src/models/VectorSearchManager.o: src/models/VectorSearchManager.cpp.o
 
 # target to build an object file
 src/models/VectorSearchManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/VectorSearchManager.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/VectorSearchManager.cpp.o
 .PHONY : src/models/VectorSearchManager.cpp.o
 
 src/models/VectorSearchManager.i: src/models/VectorSearchManager.cpp.i
@@ -1311,7 +1373,8 @@ src/models/VectorSearchManager.i: src/models/VectorSearchManager.cpp.i
 
 # target to preprocess a source file
 src/models/VectorSearchManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/VectorSearchManager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/VectorSearchManager.cpp.i
 .PHONY : src/models/VectorSearchManager.cpp.i
 
 src/models/VectorSearchManager.s: src/models/VectorSearchManager.cpp.s
@@ -1319,39 +1382,18 @@ src/models/VectorSearchManager.s: src/models/VectorSearchManager.cpp.s
 
 # target to generate assembly for a file
 src/models/VectorSearchManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/models/VectorSearchManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/models/VectorSearchManager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/models.dir/build.make CMakeFiles/models.dir/src/models/VectorSearchManager.cpp.s
 .PHONY : src/models/VectorSearchManager.cpp.s
-
-src/storage/StorageManager.o: src/storage/StorageManager.cpp.o
-.PHONY : src/storage/StorageManager.o
-
-# target to build an object file
-src/storage/StorageManager.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.o
-.PHONY : src/storage/StorageManager.cpp.o
-
-src/storage/StorageManager.i: src/storage/StorageManager.cpp.i
-.PHONY : src/storage/StorageManager.i
-
-# target to preprocess a source file
-src/storage/StorageManager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.i
-.PHONY : src/storage/StorageManager.cpp.i
-
-src/storage/StorageManager.s: src/storage/StorageManager.cpp.s
-.PHONY : src/storage/StorageManager.s
-
-# target to generate assembly for a file
-src/storage/StorageManager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/storage/StorageManager.cpp.s
-.PHONY : src/storage/StorageManager.cpp.s
 
 src/utils/TimeUtils.o: src/utils/TimeUtils.cpp.o
 .PHONY : src/utils/TimeUtils.o
 
 # target to build an object file
 src/utils/TimeUtils.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/utils/TimeUtils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/src/utils/TimeUtils.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/src/utils/TimeUtils.cpp.o
 .PHONY : src/utils/TimeUtils.cpp.o
 
 src/utils/TimeUtils.i: src/utils/TimeUtils.cpp.i
@@ -1359,7 +1401,9 @@ src/utils/TimeUtils.i: src/utils/TimeUtils.cpp.i
 
 # target to preprocess a source file
 src/utils/TimeUtils.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/utils/TimeUtils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/src/utils/TimeUtils.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/src/utils/TimeUtils.cpp.i
 .PHONY : src/utils/TimeUtils.cpp.i
 
 src/utils/TimeUtils.s: src/utils/TimeUtils.cpp.s
@@ -1367,7 +1411,9 @@ src/utils/TimeUtils.s: src/utils/TimeUtils.cpp.s
 
 # target to generate assembly for a file
 src/utils/TimeUtils.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/TimeUtils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/utils/TimeUtils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/src/utils/TimeUtils.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/src/utils/TimeUtils.cpp.s
 .PHONY : src/utils/TimeUtils.cpp.s
 
 src/utils/VectorSerializer.o: src/utils/VectorSerializer.cpp.o
@@ -1375,7 +1421,9 @@ src/utils/VectorSerializer.o: src/utils/VectorSerializer.cpp.o
 
 # target to build an object file
 src/utils/VectorSerializer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/utils/VectorSerializer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/src/utils/VectorSerializer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/src/utils/VectorSerializer.cpp.o
 .PHONY : src/utils/VectorSerializer.cpp.o
 
 src/utils/VectorSerializer.i: src/utils/VectorSerializer.cpp.i
@@ -1383,7 +1431,9 @@ src/utils/VectorSerializer.i: src/utils/VectorSerializer.cpp.i
 
 # target to preprocess a source file
 src/utils/VectorSerializer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/utils/VectorSerializer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/src/utils/VectorSerializer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/src/utils/VectorSerializer.cpp.i
 .PHONY : src/utils/VectorSerializer.cpp.i
 
 src/utils/VectorSerializer.s: src/utils/VectorSerializer.cpp.s
@@ -1391,177 +1441,65 @@ src/utils/VectorSerializer.s: src/utils/VectorSerializer.cpp.s
 
 # target to generate assembly for a file
 src/utils/VectorSerializer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/src/utils/VectorSerializer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix.dir/build.make CMakeFiles/mirix.dir/src/utils/VectorSerializer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/utils.dir/build.make CMakeFiles/utils.dir/src/utils/VectorSerializer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/src/utils/VectorSerializer.cpp.s
 .PHONY : src/utils/VectorSerializer.cpp.s
 
-test/test_chat_with_auto_capture.o: test/test_chat_with_auto_capture.cpp.o
-.PHONY : test/test_chat_with_auto_capture.o
+test/test_context_builder.o: test/test_context_builder.cpp.o
+.PHONY : test/test_context_builder.o
 
 # target to build an object file
-test/test_chat_with_auto_capture.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_auto_capture.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_auto_capture.dir/build.make CMakeFiles/test_chat_with_auto_capture.dir/test/test_chat_with_auto_capture.cpp.o
-.PHONY : test/test_chat_with_auto_capture.cpp.o
+test/test_context_builder.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_context_builder.dir/build.make CMakeFiles/test_context_builder.dir/test/test_context_builder.cpp.o
+.PHONY : test/test_context_builder.cpp.o
 
-test/test_chat_with_auto_capture.i: test/test_chat_with_auto_capture.cpp.i
-.PHONY : test/test_chat_with_auto_capture.i
+test/test_context_builder.i: test/test_context_builder.cpp.i
+.PHONY : test/test_context_builder.i
 
 # target to preprocess a source file
-test/test_chat_with_auto_capture.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_auto_capture.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_auto_capture.dir/build.make CMakeFiles/test_chat_with_auto_capture.dir/test/test_chat_with_auto_capture.cpp.i
-.PHONY : test/test_chat_with_auto_capture.cpp.i
+test/test_context_builder.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_context_builder.dir/build.make CMakeFiles/test_context_builder.dir/test/test_context_builder.cpp.i
+.PHONY : test/test_context_builder.cpp.i
 
-test/test_chat_with_auto_capture.s: test/test_chat_with_auto_capture.cpp.s
-.PHONY : test/test_chat_with_auto_capture.s
+test/test_context_builder.s: test/test_context_builder.cpp.s
+.PHONY : test/test_context_builder.s
 
 # target to generate assembly for a file
-test/test_chat_with_auto_capture.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_auto_capture.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_auto_capture.dir/build.make CMakeFiles/test_chat_with_auto_capture.dir/test/test_chat_with_auto_capture.cpp.s
-.PHONY : test/test_chat_with_auto_capture.cpp.s
+test/test_context_builder.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_context_builder.dir/build.make CMakeFiles/test_context_builder.dir/test/test_context_builder.cpp.s
+.PHONY : test/test_context_builder.cpp.s
 
-test/test_chat_with_model.o: test/test_chat_with_model.cpp.o
-.PHONY : test/test_chat_with_model.o
+test/test_memory_generation.o: test/test_memory_generation.cpp.o
+.PHONY : test/test_memory_generation.o
 
 # target to build an object file
-test/test_chat_with_model.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_model.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.o
-.PHONY : test/test_chat_with_model.cpp.o
+test/test_memory_generation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_memory_generation.dir/build.make CMakeFiles/test_memory_generation.dir/test/test_memory_generation.cpp.o
+.PHONY : test/test_memory_generation.cpp.o
 
-test/test_chat_with_model.i: test/test_chat_with_model.cpp.i
-.PHONY : test/test_chat_with_model.i
-
-# target to preprocess a source file
-test/test_chat_with_model.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_model.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.i
-.PHONY : test/test_chat_with_model.cpp.i
-
-test/test_chat_with_model.s: test/test_chat_with_model.cpp.s
-.PHONY : test/test_chat_with_model.s
-
-# target to generate assembly for a file
-test/test_chat_with_model.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_chat_with_model.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chat_with_model.dir/build.make CMakeFiles/test_chat_with_model.dir/test/test_chat_with_model.cpp.s
-.PHONY : test/test_chat_with_model.cpp.s
-
-test/test_clip_processor.o: test/test_clip_processor.cpp.o
-.PHONY : test/test_clip_processor.o
-
-# target to build an object file
-test/test_clip_processor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_clip_processor.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.o
-.PHONY : test/test_clip_processor.cpp.o
-
-test/test_clip_processor.i: test/test_clip_processor.cpp.i
-.PHONY : test/test_clip_processor.i
+test/test_memory_generation.i: test/test_memory_generation.cpp.i
+.PHONY : test/test_memory_generation.i
 
 # target to preprocess a source file
-test/test_clip_processor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_clip_processor.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.i
-.PHONY : test/test_clip_processor.cpp.i
+test/test_memory_generation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_memory_generation.dir/build.make CMakeFiles/test_memory_generation.dir/test/test_memory_generation.cpp.i
+.PHONY : test/test_memory_generation.cpp.i
 
-test/test_clip_processor.s: test/test_clip_processor.cpp.s
-.PHONY : test/test_clip_processor.s
-
-# target to generate assembly for a file
-test/test_clip_processor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_clip_processor.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_clip_processor.dir/build.make CMakeFiles/test_clip_processor.dir/test/test_clip_processor.cpp.s
-.PHONY : test/test_clip_processor.cpp.s
-
-test/test_embedding_comprehensive.o: test/test_embedding_comprehensive.cpp.o
-.PHONY : test/test_embedding_comprehensive.o
-
-# target to build an object file
-test/test_embedding_comprehensive.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_comprehensive.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.o
-.PHONY : test/test_embedding_comprehensive.cpp.o
-
-test/test_embedding_comprehensive.i: test/test_embedding_comprehensive.cpp.i
-.PHONY : test/test_embedding_comprehensive.i
-
-# target to preprocess a source file
-test/test_embedding_comprehensive.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_comprehensive.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.i
-.PHONY : test/test_embedding_comprehensive.cpp.i
-
-test/test_embedding_comprehensive.s: test/test_embedding_comprehensive.cpp.s
-.PHONY : test/test_embedding_comprehensive.s
+test/test_memory_generation.s: test/test_memory_generation.cpp.s
+.PHONY : test/test_memory_generation.s
 
 # target to generate assembly for a file
-test/test_embedding_comprehensive.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_comprehensive.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding_comprehensive.dir/build.make CMakeFiles/test_embedding_comprehensive.dir/test/test_embedding_comprehensive.cpp.s
-.PHONY : test/test_embedding_comprehensive.cpp.s
-
-test/test_embedding_functionality.o: test/test_embedding_functionality.cpp.o
-.PHONY : test/test_embedding_functionality.o
-
-# target to build an object file
-test/test_embedding_functionality.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_functionality.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.o
-.PHONY : test/test_embedding_functionality.cpp.o
-
-test/test_embedding_functionality.i: test/test_embedding_functionality.cpp.i
-.PHONY : test/test_embedding_functionality.i
-
-# target to preprocess a source file
-test/test_embedding_functionality.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_functionality.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.i
-.PHONY : test/test_embedding_functionality.cpp.i
-
-test/test_embedding_functionality.s: test/test_embedding_functionality.cpp.s
-.PHONY : test/test_embedding_functionality.s
-
-# target to generate assembly for a file
-test/test_embedding_functionality.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_embedding_functionality.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_embedding.dir/build.make CMakeFiles/test_embedding.dir/test/test_embedding_functionality.cpp.s
-.PHONY : test/test_embedding_functionality.cpp.s
-
-test/test_initialize_memories.o: test/test_initialize_memories.cpp.o
-.PHONY : test/test_initialize_memories.o
-
-# target to build an object file
-test/test_initialize_memories.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_initialize_memories.dir/build.make CMakeFiles/test_initialize_memories.dir/test/test_initialize_memories.cpp.o
-.PHONY : test/test_initialize_memories.cpp.o
-
-test/test_initialize_memories.i: test/test_initialize_memories.cpp.i
-.PHONY : test/test_initialize_memories.i
-
-# target to preprocess a source file
-test/test_initialize_memories.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_initialize_memories.dir/build.make CMakeFiles/test_initialize_memories.dir/test/test_initialize_memories.cpp.i
-.PHONY : test/test_initialize_memories.cpp.i
-
-test/test_initialize_memories.s: test/test_initialize_memories.cpp.s
-.PHONY : test/test_initialize_memories.s
-
-# target to generate assembly for a file
-test/test_initialize_memories.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/initialize_memories.dir/build.make CMakeFiles/initialize_memories.dir/test/test_initialize_memories.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_initialize_memories.dir/build.make CMakeFiles/test_initialize_memories.dir/test/test_initialize_memories.cpp.s
-.PHONY : test/test_initialize_memories.cpp.s
+test/test_memory_generation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_memory_generation.dir/build.make CMakeFiles/test_memory_generation.dir/test/test_memory_generation.cpp.s
+.PHONY : test/test_memory_generation.cpp.s
 
 test/test_real_multimodal_demo.o: test/test_real_multimodal_demo.cpp.o
 .PHONY : test/test_real_multimodal_demo.o
 
 # target to build an object file
 test/test_real_multimodal_demo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.o
 .PHONY : test/test_real_multimodal_demo.cpp.o
 
 test/test_real_multimodal_demo.i: test/test_real_multimodal_demo.cpp.i
@@ -1569,7 +1507,7 @@ test/test_real_multimodal_demo.i: test/test_real_multimodal_demo.cpp.i
 
 # target to preprocess a source file
 test/test_real_multimodal_demo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.i
 .PHONY : test/test_real_multimodal_demo.cpp.i
 
 test/test_real_multimodal_demo.s: test/test_real_multimodal_demo.cpp.s
@@ -1577,7 +1515,7 @@ test/test_real_multimodal_demo.s: test/test_real_multimodal_demo.cpp.s
 
 # target to generate assembly for a file
 test/test_real_multimodal_demo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/real_multimodal_demo.dir/build.make CMakeFiles/real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_real_multimodal_demo.dir/build.make CMakeFiles/test_real_multimodal_demo.dir/test/test_real_multimodal_demo.cpp.s
 .PHONY : test/test_real_multimodal_demo.cpp.s
 
 test/test_system_initialization.o: test/test_system_initialization.cpp.o
@@ -1585,7 +1523,6 @@ test/test_system_initialization.o: test/test_system_initialization.cpp.o
 
 # target to build an object file
 test/test_system_initialization.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_system_initialization.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/test/test_system_initialization.cpp.o
 .PHONY : test/test_system_initialization.cpp.o
 
@@ -1594,7 +1531,6 @@ test/test_system_initialization.i: test/test_system_initialization.cpp.i
 
 # target to preprocess a source file
 test/test_system_initialization.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_system_initialization.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/test/test_system_initialization.cpp.i
 .PHONY : test/test_system_initialization.cpp.i
 
@@ -1603,7 +1539,6 @@ test/test_system_initialization.s: test/test_system_initialization.cpp.s
 
 # target to generate assembly for a file
 test/test_system_initialization.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_system_initialization.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_system_initialization.dir/build.make CMakeFiles/test_system_initialization.dir/test/test_system_initialization.cpp.s
 .PHONY : test/test_system_initialization.cpp.s
 
@@ -1612,7 +1547,6 @@ test/test_vector_serializer.o: test/test_vector_serializer.cpp.o
 
 # target to build an object file
 test/test_vector_serializer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_vector_serializer.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.o
 .PHONY : test/test_vector_serializer.cpp.o
 
@@ -1621,7 +1555,6 @@ test/test_vector_serializer.i: test/test_vector_serializer.cpp.i
 
 # target to preprocess a source file
 test/test_vector_serializer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_vector_serializer.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.i
 .PHONY : test/test_vector_serializer.cpp.i
 
@@ -1630,7 +1563,6 @@ test/test_vector_serializer.s: test/test_vector_serializer.cpp.s
 
 # target to generate assembly for a file
 test/test_vector_serializer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/mirix_lib.dir/build.make CMakeFiles/mirix_lib.dir/test/test_vector_serializer.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_vector_serializer.dir/build.make CMakeFiles/test_vector_serializer.dir/test/test_vector_serializer.cpp.s
 .PHONY : test/test_vector_serializer.cpp.s
 
@@ -1641,53 +1573,26 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
-	@echo "... install"
-	@echo "... install/local"
-	@echo "... install/strip"
-	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... test"
-	@echo "... initialize_memories"
-	@echo "... mirix_lib"
-	@echo "... real_multimodal_demo"
-	@echo "... test_chat_with_auto_capture"
-	@echo "... test_chat_with_model"
-	@echo "... test_clip_processor"
-	@echo "... test_embedding"
-	@echo "... test_embedding_comprehensive"
-	@echo "... test_initialize_memories"
+	@echo "... agents"
+	@echo "... capture"
+	@echo "... cli"
+	@echo "... database"
+	@echo "... memory"
+	@echo "... mirix"
+	@echo "... models"
+	@echo "... test_context_builder"
+	@echo "... test_memory_generation"
+	@echo "... test_real_multimodal_demo"
 	@echo "... test_system_initialization"
 	@echo "... test_vector_serializer"
-	@echo "... src/agents/AgentManager.o"
-	@echo "... src/agents/AgentManager.i"
-	@echo "... src/agents/AgentManager.s"
-	@echo "... src/agents/AgentWrapper.o"
-	@echo "... src/agents/AgentWrapper.i"
-	@echo "... src/agents/AgentWrapper.s"
+	@echo "... utils"
 	@echo "... src/agents/ChatAgent.o"
 	@echo "... src/agents/ChatAgent.i"
 	@echo "... src/agents/ChatAgent.s"
-	@echo "... src/agents/CoreMemoryAgent.o"
-	@echo "... src/agents/CoreMemoryAgent.i"
-	@echo "... src/agents/CoreMemoryAgent.s"
-	@echo "... src/agents/EpisodicMemoryAgent.o"
-	@echo "... src/agents/EpisodicMemoryAgent.i"
-	@echo "... src/agents/EpisodicMemoryAgent.s"
-	@echo "... src/agents/KnowledgeVaultAgent.o"
-	@echo "... src/agents/KnowledgeVaultAgent.i"
-	@echo "... src/agents/KnowledgeVaultAgent.s"
-	@echo "... src/agents/ProceduralMemoryAgent.o"
-	@echo "... src/agents/ProceduralMemoryAgent.i"
-	@echo "... src/agents/ProceduralMemoryAgent.s"
-	@echo "... src/agents/ResourceMemoryAgent.o"
-	@echo "... src/agents/ResourceMemoryAgent.i"
-	@echo "... src/agents/ResourceMemoryAgent.s"
-	@echo "... src/agents/SemanticMemoryAgent.o"
-	@echo "... src/agents/SemanticMemoryAgent.i"
-	@echo "... src/agents/SemanticMemoryAgent.s"
-	@echo "... src/api/APIServer.o"
-	@echo "... src/api/APIServer.i"
-	@echo "... src/api/APIServer.s"
+	@echo "... src/agents/MemoryAgent.o"
+	@echo "... src/agents/MemoryAgent.i"
+	@echo "... src/agents/MemoryAgent.s"
 	@echo "... src/capture/AudioCaptureManager.o"
 	@echo "... src/capture/AudioCaptureManager.i"
 	@echo "... src/capture/AudioCaptureManager.s"
@@ -1700,57 +1605,45 @@ help:
 	@echo "... src/capture/ScreenActivityTracker.o"
 	@echo "... src/capture/ScreenActivityTracker.i"
 	@echo "... src/capture/ScreenActivityTracker.s"
-	@echo "... src/capture/SystemEventManager.o"
-	@echo "... src/capture/SystemEventManager.i"
-	@echo "... src/capture/SystemEventManager.s"
-	@echo "... src/capture/mac/ScreenCaptureHelper.o"
-	@echo "... src/capture/mac/ScreenCaptureHelper.i"
-	@echo "... src/capture/mac/ScreenCaptureHelper.s"
 	@echo "... src/cli/CommandLineInterface.o"
 	@echo "... src/cli/CommandLineInterface.i"
 	@echo "... src/cli/CommandLineInterface.s"
+	@echo "... src/database/core/ORMWrapper.o"
+	@echo "... src/database/core/ORMWrapper.i"
+	@echo "... src/database/core/ORMWrapper.s"
 	@echo "... src/database/core/StorageManager.o"
 	@echo "... src/database/core/StorageManager.i"
 	@echo "... src/database/core/StorageManager.s"
 	@echo "... src/database/core/TransactionManager.o"
 	@echo "... src/database/core/TransactionManager.i"
 	@echo "... src/database/core/TransactionManager.s"
-	@echo "... src/database/initialization/ConfigManager/ConfigManager.o"
-	@echo "... src/database/initialization/ConfigManager/ConfigManager.i"
-	@echo "... src/database/initialization/ConfigManager/ConfigManager.s"
-	@echo "... src/database/initialization/InitDB.o"
-	@echo "... src/database/initialization/InitDB.i"
-	@echo "... src/database/initialization/InitDB.s"
-	@echo "... src/database/managers/ArchivalMemoryManager.o"
-	@echo "... src/database/managers/ArchivalMemoryManager.i"
-	@echo "... src/database/managers/ArchivalMemoryManager.s"
-	@echo "... src/database/managers/AuditLogManager.o"
-	@echo "... src/database/managers/AuditLogManager.i"
-	@echo "... src/database/managers/AuditLogManager.s"
-	@echo "... src/database/managers/BackupManager.o"
-	@echo "... src/database/managers/BackupManager.i"
-	@echo "... src/database/managers/BackupManager.s"
+	@echo "... src/database/initialization/ConfigManager.o"
+	@echo "... src/database/initialization/ConfigManager.i"
+	@echo "... src/database/initialization/ConfigManager.s"
 	@echo "... src/database/managers/CoreMemoryBlockManager.o"
 	@echo "... src/database/managers/CoreMemoryBlockManager.i"
 	@echo "... src/database/managers/CoreMemoryBlockManager.s"
 	@echo "... src/database/managers/EpisodicMemoryManager.o"
 	@echo "... src/database/managers/EpisodicMemoryManager.i"
 	@echo "... src/database/managers/EpisodicMemoryManager.s"
-	@echo "... src/database/managers/KnowledgeVaultManager.o"
-	@echo "... src/database/managers/KnowledgeVaultManager.i"
-	@echo "... src/database/managers/KnowledgeVaultManager.s"
 	@echo "... src/database/managers/MemoryOrchestrator.o"
 	@echo "... src/database/managers/MemoryOrchestrator.i"
 	@echo "... src/database/managers/MemoryOrchestrator.s"
+	@echo "... src/database/managers/MemoryOrchestratorImpl.o"
+	@echo "... src/database/managers/MemoryOrchestratorImpl.i"
+	@echo "... src/database/managers/MemoryOrchestratorImpl.s"
+	@echo "... src/database/managers/MemoryProvenanceManager.o"
+	@echo "... src/database/managers/MemoryProvenanceManager.i"
+	@echo "... src/database/managers/MemoryProvenanceManager.s"
+	@echo "... src/database/managers/MessageMemoryManager.o"
+	@echo "... src/database/managers/MessageMemoryManager.i"
+	@echo "... src/database/managers/MessageMemoryManager.s"
 	@echo "... src/database/managers/ProceduralMemoryManager.o"
 	@echo "... src/database/managers/ProceduralMemoryManager.i"
 	@echo "... src/database/managers/ProceduralMemoryManager.s"
-	@echo "... src/database/managers/RecallMemoryManager.o"
-	@echo "... src/database/managers/RecallMemoryManager.i"
-	@echo "... src/database/managers/RecallMemoryManager.s"
-	@echo "... src/database/managers/ResourceMemoryManager.o"
-	@echo "... src/database/managers/ResourceMemoryManager.i"
-	@echo "... src/database/managers/ResourceMemoryManager.s"
+	@echo "... src/database/managers/SecretVaultManager.o"
+	@echo "... src/database/managers/SecretVaultManager.i"
+	@echo "... src/database/managers/SecretVaultManager.s"
 	@echo "... src/database/managers/SemanticMemoryManager.o"
 	@echo "... src/database/managers/SemanticMemoryManager.i"
 	@echo "... src/database/managers/SemanticMemoryManager.s"
@@ -1760,12 +1653,42 @@ help:
 	@echo "... src/database/managers/UserManager.o"
 	@echo "... src/database/managers/UserManager.i"
 	@echo "... src/database/managers/UserManager.s"
-	@echo "... src/database/managers/VisualizationManager.o"
-	@echo "... src/database/managers/VisualizationManager.i"
-	@echo "... src/database/managers/VisualizationManager.s"
-	@echo "... src/gui/GUIManager.o"
-	@echo "... src/gui/GUIManager.i"
-	@echo "... src/gui/GUIManager.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
+	@echo "... src/memory/context/ContextBuilder.o"
+	@echo "... src/memory/context/ContextBuilder.i"
+	@echo "... src/memory/context/ContextBuilder.s"
+	@echo "... src/memory/generation/MemoryClassifier.o"
+	@echo "... src/memory/generation/MemoryClassifier.i"
+	@echo "... src/memory/generation/MemoryClassifier.s"
+	@echo "... src/memory/generation/MemoryGenerationManager.o"
+	@echo "... src/memory/generation/MemoryGenerationManager.i"
+	@echo "... src/memory/generation/MemoryGenerationManager.s"
+	@echo "... src/memory/generation/generators/BaseMemoryGenerator.o"
+	@echo "... src/memory/generation/generators/BaseMemoryGenerator.i"
+	@echo "... src/memory/generation/generators/BaseMemoryGenerator.s"
+	@echo "... src/memory/generation/generators/CoreMemoryGenerator.o"
+	@echo "... src/memory/generation/generators/CoreMemoryGenerator.i"
+	@echo "... src/memory/generation/generators/CoreMemoryGenerator.s"
+	@echo "... src/memory/generation/generators/EpisodicMemoryGenerator.o"
+	@echo "... src/memory/generation/generators/EpisodicMemoryGenerator.i"
+	@echo "... src/memory/generation/generators/EpisodicMemoryGenerator.s"
+	@echo "... src/memory/generation/generators/ProceduralMemoryGenerator.o"
+	@echo "... src/memory/generation/generators/ProceduralMemoryGenerator.i"
+	@echo "... src/memory/generation/generators/ProceduralMemoryGenerator.s"
+	@echo "... src/memory/generation/generators/SecretVaultGenerator.o"
+	@echo "... src/memory/generation/generators/SecretVaultGenerator.i"
+	@echo "... src/memory/generation/generators/SecretVaultGenerator.s"
+	@echo "... src/memory/generation/generators/SemanticMemoryGenerator.o"
+	@echo "... src/memory/generation/generators/SemanticMemoryGenerator.i"
+	@echo "... src/memory/generation/generators/SemanticMemoryGenerator.s"
+	@echo "... src/memory/messages/MessageManager.o"
+	@echo "... src/memory/messages/MessageManager.i"
+	@echo "... src/memory/messages/MessageManager.s"
+	@echo "... src/memory/scheduling/MemoryGenerationScheduler.o"
+	@echo "... src/memory/scheduling/MemoryGenerationScheduler.i"
+	@echo "... src/memory/scheduling/MemoryGenerationScheduler.s"
 	@echo "... src/models/CLIPProcessor.o"
 	@echo "... src/models/CLIPProcessor.i"
 	@echo "... src/models/CLIPProcessor.s"
@@ -1775,6 +1698,9 @@ help:
 	@echo "... src/models/ModelManager.o"
 	@echo "... src/models/ModelManager.i"
 	@echo "... src/models/ModelManager.s"
+	@echo "... src/models/PromptTemplates.o"
+	@echo "... src/models/PromptTemplates.i"
+	@echo "... src/models/PromptTemplates.s"
 	@echo "... src/models/QwenAPI.o"
 	@echo "... src/models/QwenAPI.i"
 	@echo "... src/models/QwenAPI.s"
@@ -1784,33 +1710,18 @@ help:
 	@echo "... src/models/VectorSearchManager.o"
 	@echo "... src/models/VectorSearchManager.i"
 	@echo "... src/models/VectorSearchManager.s"
-	@echo "... src/storage/StorageManager.o"
-	@echo "... src/storage/StorageManager.i"
-	@echo "... src/storage/StorageManager.s"
 	@echo "... src/utils/TimeUtils.o"
 	@echo "... src/utils/TimeUtils.i"
 	@echo "... src/utils/TimeUtils.s"
 	@echo "... src/utils/VectorSerializer.o"
 	@echo "... src/utils/VectorSerializer.i"
 	@echo "... src/utils/VectorSerializer.s"
-	@echo "... test/test_chat_with_auto_capture.o"
-	@echo "... test/test_chat_with_auto_capture.i"
-	@echo "... test/test_chat_with_auto_capture.s"
-	@echo "... test/test_chat_with_model.o"
-	@echo "... test/test_chat_with_model.i"
-	@echo "... test/test_chat_with_model.s"
-	@echo "... test/test_clip_processor.o"
-	@echo "... test/test_clip_processor.i"
-	@echo "... test/test_clip_processor.s"
-	@echo "... test/test_embedding_comprehensive.o"
-	@echo "... test/test_embedding_comprehensive.i"
-	@echo "... test/test_embedding_comprehensive.s"
-	@echo "... test/test_embedding_functionality.o"
-	@echo "... test/test_embedding_functionality.i"
-	@echo "... test/test_embedding_functionality.s"
-	@echo "... test/test_initialize_memories.o"
-	@echo "... test/test_initialize_memories.i"
-	@echo "... test/test_initialize_memories.s"
+	@echo "... test/test_context_builder.o"
+	@echo "... test/test_context_builder.i"
+	@echo "... test/test_context_builder.s"
+	@echo "... test/test_memory_generation.o"
+	@echo "... test/test_memory_generation.i"
+	@echo "... test/test_memory_generation.s"
 	@echo "... test/test_real_multimodal_demo.o"
 	@echo "... test/test_real_multimodal_demo.i"
 	@echo "... test/test_real_multimodal_demo.s"

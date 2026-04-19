@@ -3,25 +3,26 @@
 
 #include <string>
 #include <sqlite3.h>
+#include <memory>
+#include "ORMWrapper.h"
 
 class StorageManager {
 private:
     std::string dbPath;
     sqlite3* db;
+    std::unique_ptr<ORMWrapper> ormWrapper;
     
-    bool enableForeignKeys();
-
 public:
     StorageManager(const std::string& path);
     ~StorageManager();
     
     bool initialize();
-    bool executeQuery(const std::string& query);
-    bool executeQuery(const std::string& query, sqlite3_stmt*& stmt);
-    bool executeNonQuery(const std::string& query); // 添加这一行
     
-    sqlite3* getDatabase() { return db; }
-    std::string getDatabasePath() { return dbPath; }
+    const std::string& getDatabasePath() const { return dbPath; }
+    sqlite3* getDatabase() const { return db; }
+    
+    // 提供对ORMWrapper的访问
+    ORMWrapper& getORMWrapper() { return *ormWrapper; }
 };
 
 #endif // STORAGE_MANAGER_H

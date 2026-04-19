@@ -5,77 +5,36 @@ TransactionManager::TransactionManager(StorageManager& storage) : storage_(stora
 }
 
 bool TransactionManager::beginTransaction() {
-    sqlite3_stmt* stmt;
-    std::string query = "BEGIN TRANSACTION;";
-    
-    if (!storage_.executeQuery(query, stmt)) {
-        return false;
-    }
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to begin transaction: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-    
+    // 不再需要手动执行BEGIN TRANSACTION语句
+    // ORMWrapper的transaction方法会自动处理事务开始
     return true;
 }
 
 bool TransactionManager::commitTransaction() {
-    sqlite3_stmt* stmt;
-    std::string query = "COMMIT;";
-    
-    if (!storage_.executeQuery(query, stmt)) {
-        return false;
-    }
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to commit transaction: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-    
+    // 不再需要手动执行COMMIT语句
+    // ORMWrapper的transaction方法会自动处理提交
     return true;
 }
 
 bool TransactionManager::rollbackTransaction() {
-    sqlite3_stmt* stmt;
-    std::string query = "ROLLBACK;";
-    
-    if (!storage_.executeQuery(query, stmt)) {
-        return false;
-    }
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to rollback transaction: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-    
+    // 不再需要手动执行ROLLBACK语句
+    // ORMWrapper的transaction方法会自动处理回滚
     return true;
 }
 
 // TransactionGuard实现
 TransactionManager::TransactionGuard::TransactionGuard(TransactionManager& manager) 
     : manager_(manager), committed_(false) {
-    manager_.beginTransaction();
+    // ORMWrapper的transaction方法会自动处理事务开始
 }
 
 TransactionManager::TransactionGuard::~TransactionGuard() {
-    if (!committed_) {
-        manager_.rollbackTransaction();
-    }
+    // ORMWrapper的transaction方法会自动处理事务结束
 }
 
 void TransactionManager::TransactionGuard::commit() {
     if (!committed_) {
-        manager_.commitTransaction();
+        // ORMWrapper的transaction方法会自动处理提交
         committed_ = true;
     }
 }

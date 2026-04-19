@@ -1,9 +1,9 @@
 #include "TextEmbeddingGenerator.h"
+#include "../database/initialization/ConfigManager.h"
 #include "QwenAPI.h"
 #include <iostream>
 #include <cmath>
 #include <cstring>
-#include "../database/initialization/ConfigManager/ConfigManager.h"
 
 TextEmbeddingGenerator::TextEmbeddingGenerator(StorageManager* storage) : storage_(storage) {
     std::cout << "[TextEmbeddingGenerator] 初始化..." << std::endl;
@@ -39,13 +39,17 @@ std::vector<float> TextEmbeddingGenerator::generateTextEmbedding(const std::stri
     std::cout << "[TextEmbeddingGenerator] 输入文本长度: " << text.length() << " 字符" << std::endl;
     
     // 优先使用text-embedding-v4模型生成文本embedding（通过Qwen API）
+    ConfigManager& config_manager = ConfigManager::getInstance();
+    std::string local_api_url = config_manager.getLocalApiUrl();
     const char* api_key = std::getenv("DASHSCOPE_API_KEY");
-    if (api_key && strlen(api_key) > 0) {
+    if (!local_api_url.empty() || (api_key && strlen(api_key) > 0)) {
         std::cout << "[TextEmbeddingGenerator] 尝试使用text-embedding-v4模型生成文本embedding..." << std::endl;
         try {
             // 调用Qwen API的text-embedding-v4模型
             QwenAPI qwen_api;
-            qwen_api.set_api_key(api_key);
+            if (api_key && strlen(api_key) > 0) {
+                qwen_api.set_api_key(api_key);
+            }
             QwenEmbeddingRequest request;
             request.model = "text-embedding-v4";
             request.input.push_back(text);
@@ -64,14 +68,13 @@ std::vector<float> TextEmbeddingGenerator::generateTextEmbedding(const std::stri
                 throw std::runtime_error("Empty embedding response");
             }
         }
-        
-        // 如果API调用失败，回退到模拟实现
+        // 如果API调用失败，回退到CLIP处理器或模拟实现
         catch (const std::exception& e) {
             std::cerr << "[TextEmbeddingGenerator] 警告: text-embedding-v4模型调用失败: " << e.what() << std::endl;
             std::cerr << "[TextEmbeddingGenerator] 回退到CLIP处理器或模拟实现" << std::endl;
         }
     } else {
-        std::cout << "[TextEmbeddingGenerator] 未配置API密钥，跳过text-embedding-v4模型" << std::endl;
+        std::cout << "[TextEmbeddingGenerator] 未配置API密钥或本地API URL，跳过text-embedding-v4模型" << std::endl;
     }
     
     // 备选用CLIP处理器生成文本embedding

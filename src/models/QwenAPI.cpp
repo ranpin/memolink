@@ -1,5 +1,5 @@
 #include "QwenAPI.h"
-#include "../database/initialization/ConfigManager/ConfigManager.h"
+#include "../database/initialization/ConfigManager.h"
 #include <curl/curl.h>
 #include <json/json.h>
 #include <iostream>
@@ -133,10 +133,27 @@ void QwenAPI::set_base_url(const std::string& base_url) {
 }
 
 QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequest& request) {
-    CURL* curl = curl_easy_init();
     QwenChatCompletionResponse response;
     
-    if (curl) {
+    // 1. 验证请求参数
+    std::string validation_error;
+    if (!request.validate(&validation_error)) {
+        std::cerr << "[QwenAPI] Request validation failed: " << validation_error << std::endl;
+        response.success = false;
+        response.error_message = "Request validation failed: " + validation_error;
+        response.content = "Error: " + validation_error;
+        return response;
+    }
+    
+    CURL* curl = curl_easy_init();
+    
+    if (!curl) {
+        std::cerr << "[QwenAPI] Failed to initialize CURL" << std::endl;
+        response.success = false;
+        response.error_message = "Failed to initialize CURL";
+        response.content = "Error: Failed to initialize CURL";
+        return response;
+    }
         // 确定使用的API端点
         std::string url;
         if (shouldUseLocalAPI()) {
@@ -147,10 +164,7 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
             // 使用阿里云DashScope API
             url = base_url_ + "/compatible-mode/v1/chat/completions";
         }
-        
-        // 检查是否使用需要流式传输的模型
-        // 修复：不再写死模型名称，而是检查模型名称是否包含"omni"关键词
-        bool needs_streaming = (request.model.find("omni") != std::string::npos);
+        std::cout << "[QwenAPI] ChatCompletion URL: " << url << std::endl;
         
         // 构建JSON请求体
         Json::Value root;
@@ -176,17 +190,11 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
                         c["type"] = "text";
                         c["text"] = content.text;
                     } else if (content.type == "audio_url") {
-                        // 将音频文件转换为base64
-                        std::string base64_data = file_to_base64(content.audio_url);
-                        if (!base64_data.empty()) {
-                            // 使用text类型包含音频数据描述
-                            c["type"] = "text";
-                            c["text"] = "[音频数据已提供，但当前API不直接支持音频输入]";
-                        } else {
-                            std::cerr << "音频文件base64编码失败: " << content.audio_url << std::endl;
-                            c["type"] = "text";
-                            c["text"] = "[音频文件不可用: " + content.audio_url + "]";
-                        }
+                        // 直接使用已构造的音频data-uri，不在此处重新编码
+                        c["type"] = "audio_url";
+                        Json::Value audio_url_obj;
+                        audio_url_obj["url"] = content.audio_url;  // 这里已经是完整的data:audio/...;base64,...格式
+                        c["audio_url"] = audio_url_obj;
                     } else {
                         // 默认处理
                         c["type"] = "text";
@@ -203,14 +211,27 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
             messages.append(message);
         }
         root["messages"] = messages;
+        
+        // 显式设置所有模型参数
         root["temperature"] = request.temperature;
         root["top_p"] = request.top_p;
         root["max_tokens"] = request.max_tokens;
         
-        // 对于需要流式传输的模型，设置stream=true
-        if (needs_streaming) {
-            root["stream"] = true;
+        // 只有当参数值非默认值时才添加到请求中
+        if (request.top_k > 0) {
+            root["top_k"] = request.top_k;
         }
+        
+        if (request.repetition_penalty != 1.0) {
+            root["repetition_penalty"] = request.repetition_penalty;
+        }
+        
+        if (!request.stop.empty()) {
+            root["stop"] = request.stop;
+        }
+        
+        // 设置stream参数
+        root["stream"] = request.stream;
         
         Json::StreamWriterBuilder builder;
         builder["indentation"] = ""; // 紧凑格式
@@ -249,14 +270,16 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
         CURLcode res = curl_easy_perform(curl);
         
         if (res != CURLE_OK) {
-            std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+            std::cerr << "[QwenAPI] curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
+            response.success = false;
+            response.error_message = std::string(curl_easy_strerror(res));
             response.content = "Error: Failed to call API: " + std::string(curl_easy_strerror(res));
         } else {
             long response_code;
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
             
             // 如果是流式响应，需要特殊处理
-            if (needs_streaming) {
+            if (request.stream) {
                 // 解析流式响应，提取最终内容
                 std::string final_content;
                 std::istringstream response_stream(response_string);
@@ -273,70 +296,55 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
                         line = line.substr(6);
                     }
                     
-                    // 解析JSON
-                    Json::CharReaderBuilder reader_builder;
-                    Json::Value chunk_json;
-                    std::unique_ptr<Json::CharReader> reader(reader_builder.newCharReader());
-                    Json::String errs;
-                    
-                    bool parsingSuccessful = reader->parse(line.c_str(), 
-                                                         line.c_str() + line.size(),
-                                                         &chunk_json, &errs);
-                    
-                    if (parsingSuccessful) {
-                        if (chunk_json.isMember("choices") && chunk_json["choices"].isArray() && 
-                            chunk_json["choices"].size() > 0) {
-                            Json::Value choice = chunk_json["choices"][0];
-                            if (choice.isMember("delta") && choice["delta"].isMember("content")) {
-                                final_content += choice["delta"]["content"].asString();
+                    try {
+                        Json::Value chunk;
+                        Json::Reader reader;
+                        if (reader.parse(line, chunk)) {
+                            if (chunk.isMember("output") && chunk["output"].isMember("text")) {
+                                final_content += chunk["output"]["text"].asString();
                             }
                         }
+                    } catch (const std::exception& e) {
+                        std::cerr << "Error parsing streaming response: " << e.what() << std::endl;
                     }
                 }
                 
                 response.content = final_content;
             } else {
-                // 解析非流式响应
-                Json::CharReaderBuilder reader_builder;
-                Json::Value response_json;
-                std::unique_ptr<Json::CharReader> reader(reader_builder.newCharReader());
-                Json::String errs;
-                
-                bool parsingSuccessful = reader->parse(response_string.c_str(), 
-                                                     response_string.c_str() + response_string.size(),
-                                                     &response_json, &errs);
-                
-                if (parsingSuccessful) {
-                    // 添加类型检查
-                    if (response_json.isObject()) {
-                        if (response_json.isMember("choices") && response_json["choices"].isArray() && 
-                            response_json["choices"].size() > 0) {
-                            Json::Value choice = response_json["choices"][0];
-                            // 确保choice是对象类型
-                            if (choice.isObject()) {
-                                if (choice.isMember("message") && choice["message"].isMember("content")) {
-                                    response.content = choice["message"]["content"].asString();
-                                } else if (choice.isMember("delta") && choice["delta"].isMember("content")) {
-                                    response.content = choice["delta"]["content"].asString();
-                                }
-                            }
-                        } else if (response_json.isMember("error")) {
-                            // 确保error是对象类型
-                            if (response_json["error"].isObject() && response_json["error"].isMember("message")) {
-                                response.content = "Error: " + response_json["error"]["message"].asString();
-                            } else {
-                                response.content = "Error: " + response_json["error"].asString();
-                            }
+                // 非流式响应，直接解析JSON
+                Json::Value root;
+                Json::Reader reader;
+                if (reader.parse(response_string, root)) {
+                    // 1. DashScope 兼容模式格式：{"output": {"text": "..."}}
+                    if (root.isMember("output") && root["output"].isMember("text")) {
+                        response.content = root["output"]["text"].asString();
+                    }
+                    // 2. OpenAI/兼容格式：{"choices":[{"message":{"content":"..."}}]}
+                    else if (root.isMember("choices") && root["choices"].isArray() && !root["choices"].empty()) {
+                        const Json::Value& first_choice = root["choices"][0];
+                        if (first_choice.isMember("message") && first_choice["message"].isMember("content")) {
+                            response.content = first_choice["message"]["content"].asString();
+                        } else if (first_choice.isMember("delta") && first_choice["delta"].isMember("content")) {
+                            // 流式增量的最终聚合结果（兼容某些实现）
+                            response.content = first_choice["delta"]["content"].asString();
                         } else {
-                            response.content = "Error: Invalid response format";
+                            response.content = "Error: Invalid choices format in API response";
                         }
-                    } else {
-                        response.content = "Error: Response is not a JSON object";
+                    }
+                    // 3. 错误信息格式：{"error": {"message": "..."}}
+                    else if (root.isMember("error")) {
+                        if (root["error"].isObject() && root["error"].isMember("message")) {
+                            response.content = "Error: " + root["error"]["message"].asString();
+                        } else {
+                            response.content = "Error: " + root["error"].toStyledString();
+                        }
+                    }
+                    // 4. 未知格式
+                    else {
+                        response.content = "Error: Invalid API response format";
                     }
                 } else {
-                    response.content = "Error: Failed to parse API response: " + errs;
-                    // 添加响应内容以便调试
-                    std::cerr << "Response content: " << response_string << std::endl;
+                    response.content = "Error: Failed to parse API response";
                 }
             }
         }
@@ -344,12 +352,7 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
         // 清理
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
-        
-        return response;
-    }
     
-    // 默认响应
-    response.content = "Error: Failed to initialize CURL";
     return response;
 }
 
@@ -368,16 +371,24 @@ QwenEmbeddingResponse QwenAPI::generate_embeddings(const QwenEmbeddingRequest& r
             // 使用阿里云DashScope API
             url = base_url_ + "/compatible-mode/v1/embeddings";
         }
+        std::cout << "[QwenAPI] Embedding URL: " << url << std::endl;
         
         // 构建JSON请求体
         Json::Value root;
         root["model"] = request.model;
         
-        Json::Value input(Json::arrayValue);
-        for (const auto& text : request.input) {
-            input.append(text);
+        // 根据输入的数量决定使用input还是texts字段
+        if (request.input.size() == 1) {
+            // 单个输入使用input字段
+            root["input"] = request.input[0];
+        } else {
+            // 多个输入使用texts字段
+            Json::Value texts(Json::arrayValue);
+            for (const auto& text : request.input) {
+                texts.append(text);
+            }
+            root["texts"] = texts;
         }
-        root["input"] = input;
         
         Json::StreamWriterBuilder builder;
         builder["indentation"] = ""; // 紧凑格式

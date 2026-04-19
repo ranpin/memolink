@@ -1,156 +1,99 @@
 #include "SessionManager.h"
-#include "../../utils/TimeUtils.h"
-#include <sqlite3.h>
 #include <iostream>
-#include <sstream>
+#include <sqlite3.h>
 
-SessionManager::SessionManager(StorageManager& storage) : storage_(storage) {}
-
-bool SessionManager::create_session(const SessionItem& item) {
-    sqlite3_stmt* stmt;
-    std::string query = "INSERT INTO session (user_id, start_time, end_time, status, metadata) VALUES (?, ?, ?, ?, ?);";
-    
-    if (!storage_.executeQuery(query, stmt)) {
-        return false;
+int SessionManager::create_session(int user_id, const std::string& metadata) {
+    try {
+        // 创建Session对象
+        Session session{};
+        session.user_id = user_id;
+        session.metadata = metadata;
+        
+        // 插入数据库
+        auto& orm = storage_.getORMWrapper();
+        int session_id = orm.insert(session);
+        
+        // 更新开始时间为当前时间戳
+        auto session_opt = orm.getById<Session>(session_id);
+        if (session_opt.has_value()) {
+            session = session_opt.value();
+            session.start_time = "CURRENT_TIMESTAMP"; // 这将在数据库中被解释为当前时间
+            
+            // 保存更新后的会话
+            orm.update(session);
+        }
+        
+        return session_id;
+    } catch (const std::exception& e) {
+        std::cerr << "Error creating session: " << e.what() << std::endl;
+        return -1;
     }
-    
-    sqlite3_bind_int(stmt, 1, std::stoi(item.user_id));
-    sqlite3_bind_text(stmt, 2, item.start_time.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, item.end_time.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, item.status.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 5, item.metadata.c_str(), -1, SQLITE_STATIC);
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-    
-    return true;
 }
 
-std::vector<SessionItem> SessionManager::list_sessions(const std::string& user_id) {
-    std::vector<SessionItem> sessions;
-    
-    sqlite3_stmt* stmt;
-    std::string query = "SELECT id, user_id, start_time, end_time, status, metadata FROM session WHERE user_id = ?;";
-    
-    if (!storage_.executeQuery(query, stmt)) {
-        return sessions;
+bool SessionManager::end_session(int session_id) {
+    try {
+        auto& orm = storage_.getORMWrapper();
+        
+        // 获取现有会话
+        auto session_opt = orm.getById<Session>(session_id);
+        if (!session_opt.has_value()) {
+            return false;
+        }
+        
+        // 更新结束时间
+        auto session = session_opt.value();
+        session.end_time = "CURRENT_TIMESTAMP"; // 这将在数据库中被解释为当前时间
+        
+        // 保存更新后的会话
+        orm.update(session);
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "Error ending session: " << e.what() << std::endl;
+        return false;
     }
-    
-    sqlite3_bind_int(stmt, 1, std::stoi(user_id));
-    
-    while (sqlite3_step(stmt) == SQLITE_ROW) {
-        SessionItem item;
-        item.id = sqlite3_column_int(stmt, 0);
-        item.user_id = std::to_string(sqlite3_column_int(stmt, 1));
-        item.start_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-        item.end_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-        item.status = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-        item.metadata = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-        sessions.push_back(item);
-    }
-    
-    sqlite3_finalize(stmt);
-    return sessions;
 }
 
-bool SessionManager::update_session(int id, const SessionItem& item) {
-    sqlite3_stmt* stmt;
-    std::string query = "UPDATE session SET user_id = ?, start_time = ?, end_time = ?, status = ?, metadata = ? WHERE id = ?;";
-    
-    if (!storage_.executeQuery(query, stmt)) {
-        return false;
+std::optional<Session> SessionManager::get_session(int session_id) {
+    try {
+        auto& orm = storage_.getORMWrapper();
+        return orm.getById<Session>(session_id);
+    } catch (const std::exception& e) {
+        std::cerr << "Error getting session: " << e.what() << std::endl;
+        return std::nullopt;
     }
-    
-    sqlite3_bind_int(stmt, 1, std::stoi(item.user_id));
-    sqlite3_bind_text(stmt, 2, item.start_time.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, item.end_time.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, item.status.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 5, item.metadata.c_str(), -1, SQLITE_STATIC);
-    sqlite3_bind_int(stmt, 6, id);
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-    
-    return true;
 }
 
-bool SessionManager::delete_session(int id) {
-    sqlite3_stmt* stmt;
-    std::string query = "DELETE FROM session WHERE id = ?;";
-    
-    if (!storage_.executeQuery(query, stmt)) {
-        return false;
+std::vector<Session> SessionManager::get_user_sessions(int user_id, int limit) {
+    try {
+        auto& orm = storage_.getORMWrapper();
+        return orm.getByCondition<Session>(
+            sqlite_orm::where(sqlite_orm::c(&Session::user_id) == user_id)
+        );
+    } catch (const std::exception& e) {
+        std::cerr << "Error getting user sessions: " << e.what() << std::endl;
+        return {};
     }
-    
-    sqlite3_bind_int(stmt, 1, id);
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-    
-    return true;
 }
 
-SessionItem SessionManager::get_active_session(const std::string& user_id) {
-    SessionItem item;
-    item.id = -1; // 表示未找到
-    
-    sqlite3_stmt* stmt;
-    std::string query = "SELECT id, user_id, start_time, end_time, status, metadata FROM session WHERE user_id = ? AND status = 'active' ORDER BY start_time DESC LIMIT 1;";
-    
-    if (!storage_.executeQuery(query, stmt)) {
-        return item;
-    }
-    
-    sqlite3_bind_int(stmt, 1, std::stoi(user_id));
-    
-    if (sqlite3_step(stmt) == SQLITE_ROW) {
-        item.id = sqlite3_column_int(stmt, 0);
-        item.user_id = std::to_string(sqlite3_column_int(stmt, 1));
-        item.start_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-        item.end_time = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
-        item.status = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 4));
-        item.metadata = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
-    }
-    
-    sqlite3_finalize(stmt);
-    return item;
-}
-
-bool SessionManager::end_session(int id) {
-    sqlite3_stmt* stmt;
-    // 使用TimeUtils获取当前时间戳
-    std::string currentTime = TimeUtils::getCurrentTimestamp();
-    std::string query = "UPDATE session SET end_time = ?, status = 'ended' WHERE id = ?;";
-    
-    if (!storage_.executeQuery(query, stmt)) {
+bool SessionManager::update_session_metadata(int session_id, const std::string& metadata) {
+    try {
+        auto& orm = storage_.getORMWrapper();
+        
+        // 获取现有会话
+        auto session_opt = orm.getById<Session>(session_id);
+        if (!session_opt.has_value()) {
+            return false;
+        }
+        
+        // 更新元数据
+        auto session = session_opt.value();
+        session.metadata = metadata;
+        
+        // 保存更新后的会话
+        orm.update(session);
+        return true;
+    } catch (const std::exception& e) {
+        std::cerr << "Error updating session metadata: " << e.what() << std::endl;
         return false;
     }
-    
-    sqlite3_bind_text(stmt, 1, currentTime.c_str(), -1, SQLITE_STATIC); // 绑定当前时间
-    sqlite3_bind_int(stmt, 2, id);
-    
-    int rc = sqlite3_step(stmt);
-    sqlite3_finalize(stmt);
-    
-    if (rc != SQLITE_DONE) {
-        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-        return false;
-    }
-    
-    return true;
 }

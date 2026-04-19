@@ -1,38 +1,31 @@
-#ifndef CORE_MEMORY_BLOCK_MANAGER_H
-#define CORE_MEMORY_BLOCK_MANAGER_H
+#pragma once
 
-#include <string>
-#include <vector>
-#include "../core/StorageManager.h"
+#include "../core/MemoryManager.h"
+#include "../models/MemoryModels.h"
+#include "../../models/EmbeddingIndexManager.h"
+#include "../initialization/ConfigManager.h"
 
-struct CoreMemoryBlockRecord {
-    int id;
-    int user_id;
-    std::string label;
-    std::string value;
-    std::string encrypted_value;
-    std::string created_at;
-    std::string last_updated;
-};
-
-class CoreMemoryBlockManager {
-private:
-    StorageManager& storage;
-
+// 核心记忆管理器类
+class CoreMemoryBlockManager : public MemoryManager<CoreMemory> {
 public:
-    CoreMemoryBlockManager(StorageManager& storage);
+    explicit CoreMemoryBlockManager(ORMWrapper& orm) 
+        : MemoryManager<CoreMemory>(orm) {}
     
-    bool addCoreMemoryBlock(int userId, const std::string& label, 
-                           const std::string& value, const std::string& encryptedValue);
-    std::vector<std::pair<std::string, std::string>> listCoreMemoryBlocks(int userId);
-    bool updateCoreMemoryBlock(int userId, const std::string& label, 
-                              const std::string& value, const std::string& encryptedValue);
-    bool deleteCoreMemoryBlock(int userId, const std::string& label);
+    // 覆盖 remove 方法以实现级联删除
+    void remove(int64_t id) {
+        orm_.remove<CoreMemory>(id);
+        EmbeddingIndexManager embeddingMgr;
+        std::string db_path = ConfigManager::getInstance().getDatabasePath();
+        embeddingMgr.deleteEmbeddingByMemory(static_cast<int>(id), "core", db_path);
+    }
+        
+    // 根据记忆类型查询核心记忆
+    std::vector<CoreMemory> getByMemoryType(const std::string& memoryType) {
+        return find(sqlite_orm::where(sqlite_orm::c(&CoreMemory::memory_type) == memoryType));
+    }
     
-    // 添加查询功能
-    std::vector<CoreMemoryBlockRecord> getAllCoreMemoryBlocks(int userId);
-    CoreMemoryBlockRecord getCoreMemoryBlockById(int id);
-    std::vector<CoreMemoryBlockRecord> searchCoreMemoryBlocks(int userId, const std::string& keyword);
+    // 根据优先级查询核心记忆
+    std::vector<CoreMemory> getByPriority(int priority) {
+        return find(sqlite_orm::where(sqlite_orm::c(&CoreMemory::priority) == priority));
+    }
 };
-
-#endif // CORE_MEMORY_BLOCK_MANAGER_H

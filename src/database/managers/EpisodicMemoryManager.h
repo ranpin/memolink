@@ -1,40 +1,35 @@
-#ifndef EPISODIC_MEMORY_MANAGER_H
-#define EPISODIC_MEMORY_MANAGER_H
+#pragma once
 
-#include <string>
-#include <vector>
+#include "../core/MemoryManager.h"
+#include "../models/MemoryModels.h"
+#include "../../models/EmbeddingIndexManager.h"
+#include "../initialization/ConfigManager.h"
 
-struct EpisodicMemoryRecord {
-    int id;
-    int user_id;
-    int agent_id;
-    std::string timestamp;
-    std::string event;
-    std::string details;
-    std::string event_type;
-    std::string tree_path;
-    std::string metadata;
-    std::string created_at;
-    std::string updated_at;
-};
-
-class EpisodicMemoryManager {
+// 事件记忆管理器类
+class EpisodicMemoryManager : public MemoryManager<EpisodicMemory> {
 public:
-    static bool addEpisodicMemory(int userId, int agentId, const std::string& timestamp,
-                                const std::string& event, const std::string& details,
-                                const std::string& eventType, const std::string& treePath,
-                                const std::string& metadata, const std::string& dbPath);
+    explicit EpisodicMemoryManager(ORMWrapper& orm) 
+        : MemoryManager<EpisodicMemory>(orm) {}
     
-    static bool updateEpisodicMemory(int memoryId, const std::string& event,
-                                   const std::string& details, const std::string& metadata,
-                                   const std::string& dbPath);
+    // 覆盖 remove 方法以实现级联删除
+    void remove(int64_t id) {
+        // 先删除记忆记录
+        orm_.remove<EpisodicMemory>(id);
+        
+        // 级联删除 embedding 索引
+        EmbeddingIndexManager embeddingMgr;
+        std::string db_path = ConfigManager::getInstance().getDatabasePath();
+        embeddingMgr.deleteEmbeddingByMemory(static_cast<int>(id), "episodic", db_path);
+    }
+        
+    // 根据会话 ID查询事件记忆
+    std::vector<EpisodicMemory> getBySessionId(int64_t sessionId) {
+        return find(sqlite_orm::where(sqlite_orm::c(&EpisodicMemory::session_id) == sessionId));
+    }
     
-    static bool deleteEpisodicMemory(int memoryId, const std::string& dbPath);
-    
-    // 添加查询功能
-    static std::vector<EpisodicMemoryRecord> getAllEpisodicMemories(int userId, const std::string& dbPath);
-    static EpisodicMemoryRecord getEpisodicMemoryById(int memoryId, const std::string& dbPath);
-    static std::vector<EpisodicMemoryRecord> searchEpisodicMemories(int userId, const std::string& keyword, const std::string& dbPath);
+    // 根据重要性范围查询事件记忆
+    std::vector<EpisodicMemory> getByImportanceRange(float minImportance, float maxImportance) {
+        return find(sqlite_orm::where(sqlite_orm::c(&EpisodicMemory::importance) >= minImportance and
+                                     sqlite_orm::c(&EpisodicMemory::importance) <= maxImportance));
+    }
 };
-
-#endif // EPISODIC_MEMORY_MANAGER_H

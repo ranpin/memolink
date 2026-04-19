@@ -14,6 +14,9 @@
 # EXTERNAL cache entries
 ########################
 
+//Path to a library.
+APP_SERVICES_FRAMEWORK:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/ApplicationServices.framework
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=CMAKE_ADDR2LINE-NOTFOUND
 
@@ -146,7 +149,22 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=MIRIX
+CMAKE_PROJECT_NAME:STATIC=Mirix
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION:STATIC=1.0
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=1
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MINOR:STATIC=0
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_PATCH:STATIC=
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_TWEAK:STATIC=
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -213,6 +231,9 @@ CMAKE_TAPI:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/tapi
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
+//Path to a library.
+CORE_GRAPHICS_FRAMEWORK:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/CoreGraphics.framework
+
 //The directory containing a CMake configuration file for CURL.
 CURL_DIR:PATH=CURL_DIR-NOTFOUND
 
@@ -226,22 +247,13 @@ CURL_LIBRARY_DEBUG:FILEPATH=CURL_LIBRARY_DEBUG-NOTFOUND
 CURL_LIBRARY_RELEASE:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd
 
 //Value Computed by CMake
-MIRIX_BINARY_DIR:STATIC=/Users/ranpin/code/mirix-cpp/build
+Mirix_BINARY_DIR:STATIC=/Users/ranpin/code/mirix-cpp/build
 
 //Value Computed by CMake
-MIRIX_IS_TOP_LEVEL:STATIC=ON
+Mirix_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-MIRIX_SOURCE_DIR:STATIC=/Users/ranpin/code/mirix-cpp
-
-//Path to a library.
-OPENSSL_CRYPTO_LIBRARY:FILEPATH=/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
-
-//Path to a file.
-OPENSSL_INCLUDE_DIR:PATH=/opt/homebrew/Cellar/openssl@3/3.6.0/include
-
-//Path to a library.
-OPENSSL_SSL_LIBRARY:FILEPATH=/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
+Mirix_SOURCE_DIR:STATIC=/Users/ranpin/code/mirix-cpp
 
 //The directory containing a CMake configuration file for OpenCV.
 OpenCV_DIR:PATH=/opt/homebrew/lib/cmake/opencv4
@@ -252,38 +264,26 @@ PKG_CONFIG_ARGN:STRING=
 //pkg-config executable
 PKG_CONFIG_EXECUTABLE:FILEPATH=/opt/homebrew/bin/pkg-config
 
-//The directory containing a CMake configuration file for Qt5.
-Qt5_DIR:PATH=Qt5_DIR-NOTFOUND
-
-//Path to a file.
-SQLite3_INCLUDE_DIR:PATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include
-
-//Path to a library.
-SQLite3_LIBRARY:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
-
-//The directory containing a CMake configuration file for faiss.
-faiss_DIR:PATH=/usr/local/share/faiss
-
-//The directory containing a CMake configuration file for jsoncpp.
-jsoncpp_DIR:PATH=/opt/homebrew/lib/cmake/jsoncpp
+//Dependencies for the target
+agents_LIB_DEPENDS:STATIC=general;sqlite3;general;jsoncpp;general;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd;
 
 //Dependencies for the target
-mirix_lib_LIB_DEPENDS:STATIC=general;SQLite::SQLite3;general;/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib;general;/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib;general;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd;general;jsoncpp;general;portaudio;general;-framework CoreAudio;general;-framework AudioToolbox;general;-framework AudioUnit;general;-framework CoreFoundation;general;-framework CoreServices;general;opencv_calib3d;general;opencv_core;general;opencv_dnn;general;opencv_features2d;general;opencv_flann;general;opencv_gapi;general;opencv_highgui;general;opencv_imgcodecs;general;opencv_imgproc;general;opencv_ml;general;opencv_objdetect;general;opencv_photo;general;opencv_stitching;general;opencv_video;general;opencv_videoio;general;opencv_alphamat;general;opencv_aruco;general;opencv_bgsegm;general;opencv_bioinspired;general;opencv_ccalib;general;opencv_datasets;general;opencv_dnn_objdetect;general;opencv_dnn_superres;general;opencv_dpm;general;opencv_face;general;opencv_freetype;general;opencv_fuzzy;general;opencv_hfs;general;opencv_img_hash;general;opencv_intensity_transform;general;opencv_line_descriptor;general;opencv_mcc;general;opencv_optflow;general;opencv_phase_unwrapping;general;opencv_plot;general;opencv_quality;general;opencv_rapid;general;opencv_reg;general;opencv_rgbd;general;opencv_saliency;general;opencv_sfm;general;opencv_shape;general;opencv_signal;general;opencv_stereo;general;opencv_structured_light;general;opencv_superres;general;opencv_surface_matching;general;opencv_text;general;opencv_tracking;general;opencv_videostab;general;opencv_viz;general;opencv_wechat_qrcode;general;opencv_xfeatures2d;general;opencv_ximgproc;general;opencv_xobjdetect;general;opencv_xphoto;general;-framework ApplicationServices;
+capture_LIB_DEPENDS:STATIC=general;sqlite3;general;jsoncpp;general;portaudio;general;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd;
+
+//Dependencies for the target
+cli_LIB_DEPENDS:STATIC=general;sqlite3;general;jsoncpp;general;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd;
+
+//Dependencies for the target
+database_LIB_DEPENDS:STATIC=general;sqlite3;general;jsoncpp;general;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd;
+
+//Dependencies for the target
+memory_LIB_DEPENDS:STATIC=general;sqlite3;general;jsoncpp;general;utils;general;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd;
+
+//Dependencies for the target
+models_LIB_DEPENDS:STATIC=general;sqlite3;general;jsoncpp;general;utils;general;/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd;
 
 //Path to a library.
 pkgcfg_lib_PC_CURL_curl:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd
-
-//Path to a library.
-pkgcfg_lib_PC_SQLite3_sqlite3:FILEPATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd
-
-//Path to a library.
-pkgcfg_lib_PORTAUDIO_portaudio:FILEPATH=/opt/homebrew/Cellar/portaudio/19.7.0/lib/libportaudio.dylib
-
-//Path to a library.
-pkgcfg_lib__OPENSSL_crypto:FILEPATH=/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib
-
-//Path to a library.
-pkgcfg_lib__OPENSSL_ssl:FILEPATH=/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libssl.dylib
 
 
 ########################
@@ -443,18 +443,8 @@ CURL_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 FIND_PACKAGE_MESSAGE_DETAILS_CURL:INTERNAL=[/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libcurl.tbd][/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include][ ][v8.7.1()]
 //Details about finding OpenCV
 FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/opt/homebrew/Cellar/opencv/4.12.0_11][v4.12.0()]
-//Details about finding OpenSSL
-FIND_PACKAGE_MESSAGE_DETAILS_OpenSSL:INTERNAL=[/opt/homebrew/Cellar/openssl@3/3.6.0/lib/libcrypto.dylib][/opt/homebrew/Cellar/openssl@3/3.6.0/include][ ][v3.6.0()]
 //Details about finding PkgConfig
 FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[/opt/homebrew/bin/pkg-config][v2.5.1()]
-//Details about finding SQLite3
-FIND_PACKAGE_MESSAGE_DETAILS_SQLite3:INTERNAL=[/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include][/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/libsqlite3.tbd][v3.43.2()]
-//ADVANCED property for variable: OPENSSL_CRYPTO_LIBRARY
-OPENSSL_CRYPTO_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: OPENSSL_INCLUDE_DIR
-OPENSSL_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: OPENSSL_SSL_LIBRARY
-OPENSSL_SSL_LIBRARY-ADVANCED:INTERNAL=1
 PC_CURL_CFLAGS:INTERNAL=
 PC_CURL_CFLAGS_I:INTERNAL=
 PC_CURL_CFLAGS_OTHER:INTERNAL=
@@ -490,136 +480,13 @@ PC_CURL_libcurl_INCLUDEDIR:INTERNAL=
 PC_CURL_libcurl_LIBDIR:INTERNAL=
 PC_CURL_libcurl_PREFIX:INTERNAL=
 PC_CURL_libcurl_VERSION:INTERNAL=
-PC_SQLite3_CFLAGS:INTERNAL=
-PC_SQLite3_CFLAGS_I:INTERNAL=
-PC_SQLite3_CFLAGS_OTHER:INTERNAL=
-PC_SQLite3_FOUND:INTERNAL=1
-PC_SQLite3_INCLUDEDIR:INTERNAL=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr/include
-PC_SQLite3_INCLUDE_DIRS:INTERNAL=
-PC_SQLite3_LDFLAGS:INTERNAL=-L/usr/lib;-lsqlite3
-PC_SQLite3_LDFLAGS_OTHER:INTERNAL=
-PC_SQLite3_LIBDIR:INTERNAL=/usr/lib
-PC_SQLite3_LIBRARIES:INTERNAL=sqlite3
-PC_SQLite3_LIBRARY_DIRS:INTERNAL=/usr/lib
-PC_SQLite3_LIBS:INTERNAL=
-PC_SQLite3_LIBS_L:INTERNAL=
-PC_SQLite3_LIBS_OTHER:INTERNAL=
-PC_SQLite3_LIBS_PATHS:INTERNAL=
-PC_SQLite3_MODULE_NAME:INTERNAL=sqlite3
-PC_SQLite3_PREFIX:INTERNAL=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk/usr
-PC_SQLite3_STATIC_CFLAGS:INTERNAL=
-PC_SQLite3_STATIC_CFLAGS_I:INTERNAL=
-PC_SQLite3_STATIC_CFLAGS_OTHER:INTERNAL=
-PC_SQLite3_STATIC_INCLUDE_DIRS:INTERNAL=
-PC_SQLite3_STATIC_LDFLAGS:INTERNAL=-L/usr/lib;-lsqlite3
-PC_SQLite3_STATIC_LDFLAGS_OTHER:INTERNAL=
-PC_SQLite3_STATIC_LIBDIR:INTERNAL=
-PC_SQLite3_STATIC_LIBRARIES:INTERNAL=sqlite3
-PC_SQLite3_STATIC_LIBRARY_DIRS:INTERNAL=/usr/lib
-PC_SQLite3_STATIC_LIBS:INTERNAL=
-PC_SQLite3_STATIC_LIBS_L:INTERNAL=
-PC_SQLite3_STATIC_LIBS_OTHER:INTERNAL=
-PC_SQLite3_STATIC_LIBS_PATHS:INTERNAL=
-PC_SQLite3_VERSION:INTERNAL=3.43.2
-PC_SQLite3_sqlite3_INCLUDEDIR:INTERNAL=
-PC_SQLite3_sqlite3_LIBDIR:INTERNAL=
-PC_SQLite3_sqlite3_PREFIX:INTERNAL=
-PC_SQLite3_sqlite3_VERSION:INTERNAL=
 //ADVANCED property for variable: PKG_CONFIG_ARGN
 PKG_CONFIG_ARGN-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
 PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
-PORTAUDIO_CFLAGS:INTERNAL=-I/opt/homebrew/Cellar/portaudio/19.7.0/include
-PORTAUDIO_CFLAGS_I:INTERNAL=
-PORTAUDIO_CFLAGS_OTHER:INTERNAL=
-PORTAUDIO_FOUND:INTERNAL=1
-PORTAUDIO_INCLUDEDIR:INTERNAL=/opt/homebrew/Cellar/portaudio/19.7.0/include
-PORTAUDIO_INCLUDE_DIRS:INTERNAL=/opt/homebrew/Cellar/portaudio/19.7.0/include
-PORTAUDIO_LDFLAGS:INTERNAL=-L/opt/homebrew/Cellar/portaudio/19.7.0/lib;-lportaudio;-framework;CoreAudio;-framework;AudioToolbox;-framework;AudioUnit;-framework;CoreFoundation;-framework;CoreServices
-PORTAUDIO_LDFLAGS_OTHER:INTERNAL=
-PORTAUDIO_LIBDIR:INTERNAL=/opt/homebrew/Cellar/portaudio/19.7.0/lib
-PORTAUDIO_LIBRARIES:INTERNAL=portaudio;-framework CoreAudio;-framework AudioToolbox;-framework AudioUnit;-framework CoreFoundation;-framework CoreServices
-PORTAUDIO_LIBRARY_DIRS:INTERNAL=/opt/homebrew/Cellar/portaudio/19.7.0/lib
-PORTAUDIO_LIBS:INTERNAL=
-PORTAUDIO_LIBS_L:INTERNAL=
-PORTAUDIO_LIBS_OTHER:INTERNAL=
-PORTAUDIO_LIBS_PATHS:INTERNAL=
-PORTAUDIO_MODULE_NAME:INTERNAL=portaudio-2.0
-PORTAUDIO_PREFIX:INTERNAL=/opt/homebrew/Cellar/portaudio/19.7.0
-PORTAUDIO_STATIC_CFLAGS:INTERNAL=-I/opt/homebrew/Cellar/portaudio/19.7.0/include
-PORTAUDIO_STATIC_CFLAGS_I:INTERNAL=
-PORTAUDIO_STATIC_CFLAGS_OTHER:INTERNAL=
-PORTAUDIO_STATIC_INCLUDE_DIRS:INTERNAL=/opt/homebrew/Cellar/portaudio/19.7.0/include
-PORTAUDIO_STATIC_LDFLAGS:INTERNAL=-L/opt/homebrew/Cellar/portaudio/19.7.0/lib;-lportaudio;-framework;CoreAudio;-framework;AudioToolbox;-framework;AudioUnit;-framework;CoreFoundation;-framework;CoreServices
-PORTAUDIO_STATIC_LDFLAGS_OTHER:INTERNAL=-framework;CoreAudio;-framework;AudioToolbox;-framework;AudioUnit;-framework;CoreFoundation;-framework;CoreServices
-PORTAUDIO_STATIC_LIBDIR:INTERNAL=
-PORTAUDIO_STATIC_LIBRARIES:INTERNAL=portaudio
-PORTAUDIO_STATIC_LIBRARY_DIRS:INTERNAL=/opt/homebrew/Cellar/portaudio/19.7.0/lib
-PORTAUDIO_STATIC_LIBS:INTERNAL=
-PORTAUDIO_STATIC_LIBS_L:INTERNAL=
-PORTAUDIO_STATIC_LIBS_OTHER:INTERNAL=
-PORTAUDIO_STATIC_LIBS_PATHS:INTERNAL=
-PORTAUDIO_VERSION:INTERNAL=19
-PORTAUDIO_portaudio-2.0_INCLUDEDIR:INTERNAL=
-PORTAUDIO_portaudio-2.0_LIBDIR:INTERNAL=
-PORTAUDIO_portaudio-2.0_PREFIX:INTERNAL=
-PORTAUDIO_portaudio-2.0_VERSION:INTERNAL=
-//ADVANCED property for variable: SQLite3_INCLUDE_DIR
-SQLite3_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: SQLite3_LIBRARY
-SQLite3_LIBRARY-ADVANCED:INTERNAL=1
-_OPENSSL_CFLAGS:INTERNAL=-I/opt/homebrew/Cellar/openssl@3/3.6.0/include
-_OPENSSL_CFLAGS_I:INTERNAL=
-_OPENSSL_CFLAGS_OTHER:INTERNAL=
-_OPENSSL_FOUND:INTERNAL=1
-_OPENSSL_INCLUDEDIR:INTERNAL=/opt/homebrew/Cellar/openssl@3/3.6.0/include
-_OPENSSL_INCLUDE_DIRS:INTERNAL=/opt/homebrew/Cellar/openssl@3/3.6.0/include
-_OPENSSL_LDFLAGS:INTERNAL=-L/opt/homebrew/Cellar/openssl@3/3.6.0/lib;-lssl;-lcrypto
-_OPENSSL_LDFLAGS_OTHER:INTERNAL=
-_OPENSSL_LIBDIR:INTERNAL=/opt/homebrew/Cellar/openssl@3/3.6.0/lib
-_OPENSSL_LIBRARIES:INTERNAL=ssl;crypto
-_OPENSSL_LIBRARY_DIRS:INTERNAL=/opt/homebrew/Cellar/openssl@3/3.6.0/lib
-_OPENSSL_LIBS:INTERNAL=
-_OPENSSL_LIBS_L:INTERNAL=
-_OPENSSL_LIBS_OTHER:INTERNAL=
-_OPENSSL_LIBS_PATHS:INTERNAL=
-_OPENSSL_MODULE_NAME:INTERNAL=openssl
-_OPENSSL_PREFIX:INTERNAL=/opt/homebrew/Cellar/openssl@3/3.6.0
-_OPENSSL_STATIC_CFLAGS:INTERNAL=-I/opt/homebrew/Cellar/openssl@3/3.6.0/include
-_OPENSSL_STATIC_CFLAGS_I:INTERNAL=
-_OPENSSL_STATIC_CFLAGS_OTHER:INTERNAL=
-_OPENSSL_STATIC_INCLUDE_DIRS:INTERNAL=/opt/homebrew/Cellar/openssl@3/3.6.0/include
-_OPENSSL_STATIC_LDFLAGS:INTERNAL=-L/opt/homebrew/Cellar/openssl@3/3.6.0/lib;-lssl;-lcrypto
-_OPENSSL_STATIC_LDFLAGS_OTHER:INTERNAL=
-_OPENSSL_STATIC_LIBDIR:INTERNAL=
-_OPENSSL_STATIC_LIBRARIES:INTERNAL=ssl;crypto
-_OPENSSL_STATIC_LIBRARY_DIRS:INTERNAL=/opt/homebrew/Cellar/openssl@3/3.6.0/lib
-_OPENSSL_STATIC_LIBS:INTERNAL=
-_OPENSSL_STATIC_LIBS_L:INTERNAL=
-_OPENSSL_STATIC_LIBS_OTHER:INTERNAL=
-_OPENSSL_STATIC_LIBS_PATHS:INTERNAL=
-_OPENSSL_VERSION:INTERNAL=3.6.0
-_OPENSSL_openssl_INCLUDEDIR:INTERNAL=
-_OPENSSL_openssl_LIBDIR:INTERNAL=
-_OPENSSL_openssl_PREFIX:INTERNAL=
-_OPENSSL_openssl_VERSION:INTERNAL=
 __pkg_config_arguments_PC_CURL:INTERNAL=QUIET;libcurl
-__pkg_config_arguments_PC_SQLite3:INTERNAL=QUIET;sqlite3
-__pkg_config_arguments_PORTAUDIO:INTERNAL=REQUIRED;portaudio-2.0
-__pkg_config_arguments__OPENSSL:INTERNAL=QUIET;openssl
 __pkg_config_checked_PC_CURL:INTERNAL=1
-__pkg_config_checked_PC_SQLite3:INTERNAL=1
-__pkg_config_checked_PORTAUDIO:INTERNAL=1
-__pkg_config_checked__OPENSSL:INTERNAL=1
 //ADVANCED property for variable: pkgcfg_lib_PC_CURL_curl
 pkgcfg_lib_PC_CURL_curl-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: pkgcfg_lib_PC_SQLite3_sqlite3
-pkgcfg_lib_PC_SQLite3_sqlite3-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: pkgcfg_lib_PORTAUDIO_portaudio
-pkgcfg_lib_PORTAUDIO_portaudio-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: pkgcfg_lib__OPENSSL_crypto
-pkgcfg_lib__OPENSSL_crypto-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: pkgcfg_lib__OPENSSL_ssl
-pkgcfg_lib__OPENSSL_ssl-ADVANCED:INTERNAL=1
 prefix_result:INTERNAL=alt-svc;AsynchDNS;GSS-API;HSTS;HTTP2;HTTPS-proxy;IPv6;Kerberos;Largefile;libz;MultiSSL;NTLM;SPNEGO;SSL;threadsafe;UnixSockets
 

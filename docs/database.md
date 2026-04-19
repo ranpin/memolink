@@ -36,7 +36,7 @@ MIRIX系统使用SQLite作为主要的数据存储解决方案，实现了完整
 - capabilities: TEXT
 - created_at: TEXT
 
-### 4. 回忆记忆表 (recall_memory)
+### 4. 回忆记忆表 (message_memory)
 存储对话历史和记忆检索过程：
 - id: INTEGER PRIMARY KEY
 - user_id: INTEGER
@@ -111,8 +111,8 @@ MIRIX系统使用SQLite作为主要的数据存储解决方案，实现了完整
 - created_at: TEXT
 - updated_at: TEXT
 
-### 10. 知识库表 (knowledge_vault)
-存储知识库信息：
+### 10. 私密信息库表 (secret_vault)
+存储私密信息库信息：
 - id: INTEGER PRIMARY KEY
 - user_id: INTEGER
 - agent_id: INTEGER
@@ -173,13 +173,13 @@ MIRIX系统使用SQLite作为主要的数据存储解决方案，实现了完整
 
 - **UserManager**：管理用户信息
 - **SessionManager**：管理会话信息
-- **RecallMemoryManager**：管理回忆记忆
+- **MessageMemoryManager**：管理回忆记忆
 - **ResourceMemoryManager**：管理资源记忆
 - **CoreMemoryBlockManager**：管理核心记忆块
 - **EpisodicMemoryManager**：管理事件记忆
 - **SemanticMemoryManager**：管理语义记忆
 - **ProceduralMemoryManager**：管理程序记忆
-- **KnowledgeVaultManager**：管理知识库
+- **SecretVaultManager**：管理私密信息库
 - **ArchivalMemoryManager**：管理归档记忆
 - **AuditLogManager**：管理审计日志
 - **BackupManager**：管理备份

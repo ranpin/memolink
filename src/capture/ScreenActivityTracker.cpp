@@ -1,5 +1,5 @@
 #include "ScreenActivityTracker.h"
-#include "../database/managers/ResourceMemoryManager.h"
+
 #include "../utils/TimeUtils.h"
 #include "../models/TextEmbeddingGenerator.h"
 #include "../utils/VectorSerializer.h"
@@ -114,8 +114,8 @@ bool ScreenActivityTracker::capture_screenshot(const std::string& file_path) {
     
     // 保存截图
     std::vector<int> compression_params;
-    compression_params.push_back(cv::IMWRITE_PNG_COMPRESSION);
-    compression_params.push_back(9);
+    compression_params.push_back(cv::IMWRITE_JPEG_QUALITY);
+    compression_params.push_back(75);
     
     bool result = cv::imwrite(file_path, screenshot, compression_params);
     
@@ -144,7 +144,7 @@ bool ScreenActivityTracker::capture_real_screenshot(const std::string& file_path
 #endif
     
     // 使用系统命令捕获屏幕截图
-    std::string command = "screencapture -x \"" + file_path + "\" 2>&1"; // 捕获错误输出
+    std::string command = "screencapture -x -t jpg \"" + file_path + "\" 2>&1"; // 捕获错误输出
     if (verbose_output_) std::cout << "执行命令: " << command << std::endl;
     
     FILE* pipe = popen(command.c_str(), "r");
@@ -230,88 +230,9 @@ bool ScreenActivityTracker::store_screenshot_in_memory(int user_id, const std::s
         }
     }
 
-    // 使用ResourceMemoryManager存储截图数据，使用传入的StorageManager实例
-    ResourceMemoryManager manager(storage_);
-
-    ResourceMemoryManager::ResourceMemoryItem item;
-    item.user_id = user_id;
-    item.agent_id = 1; // 默认agent_id
-    item.session_id = 1; // 默认session_id
-    item.resource_type = "screenshot";
-    item.path = actual_file_path;  // 使用实际文件路径（可能是压缩后的）
-    item.metadata = "{}";
-    item.size = file_size;  // 正确设置文件大小
-
-    // 生成真实的图像描述
-    std::string image_description = "屏幕截图内容";
-    try {
-        TextEmbeddingGenerator textEmbeddingGenerator(&storage_);
-        if (modelManager_ != nullptr) {
-            if (verbose_output_) std::cout << "使用ModelManager生成图像描述..." << std::endl;
-            image_description = textEmbeddingGenerator.generateImageDescription(actual_file_path, *modelManager_);
-        } else {
-            if (verbose_output_) std::cout << "未设置ModelManager，使用默认方式生成图像描述..." << std::endl;
-            image_description = textEmbeddingGenerator.generateImageDescription(actual_file_path);
-        }
-        
-        if (image_description.empty()) {
-            if (verbose_output_) std::cout << "图像描述生成返回空，使用默认描述" << std::endl;
-            image_description = "Captured screen content at " + actual_file_path;
-        } else {
-            if (verbose_output_) std::cout << "生成图像描述: " << image_description << std::endl;
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "生成图像描述时出错: " << e.what() << std::endl;
-        image_description = "Captured screen content at " + actual_file_path;
-    } catch (...) {
-        std::cerr << "生成图像描述时出现未知错误" << std::endl;
-        image_description = "Captured screen content at " + actual_file_path;
-    }
-    
-    item.description = image_description;
-
-    // 为图像描述生成embedding
-    try {
-        TextEmbeddingGenerator textEmbeddingGenerator(&storage_);
-        std::vector<float> descriptionEmbedding;
-        if (modelManager_ != nullptr) {
-            if (verbose_output_) std::cout << "使用ModelManager生成文本embedding..." << std::endl;
-            descriptionEmbedding = textEmbeddingGenerator.generateEmbedding(image_description, *modelManager_);
-        } else {
-            if (verbose_output_) std::cout << "未设置ModelManager，使用默认方式生成文本embedding..." << std::endl;
-            descriptionEmbedding = textEmbeddingGenerator.generateEmbedding(image_description);
-        }
-        
-        if (!descriptionEmbedding.empty()) {
-            // 将embedding序列化并存储到item中
-            item.embedding = VectorSerializer::serialize(descriptionEmbedding);
-            if (verbose_output_) std::cout << "图像描述embedding生成成功，维度: " << descriptionEmbedding.size() << std::endl;
-        } else {
-            if (verbose_output_) std::cout << "图像描述embedding生成失败，返回空向量" << std::endl;
-        }
-    } catch (const std::exception& e) {
-        std::cerr << "生成图像描述embedding时出错: " << e.what() << std::endl;
-    }
-
-    // 存储资源记忆
-    bool success = manager.add_resource_memory(item);
-    if (success) {
-        if (verbose_output_) std::cout << "屏幕截图已成功存储到资源记忆中" << std::endl;
-    } else {
-        std::cerr << "存储屏幕截图到资源记忆失败" << std::endl;
-    }
-    
-    // 如果是压缩文件，在使用后清理
-    if (is_compressed && std::filesystem::exists(actual_file_path)) {
-        try {
-            std::filesystem::remove(actual_file_path);
-            std::cout << "已清理压缩文件: " << actual_file_path << std::endl;
-        } catch (const std::exception& e) {
-            std::cerr << "清理压缩文件失败: " << e.what() << std::endl;
-        }
-    }
-    
-    return success;
+    // 截图已成功保存
+    if (verbose_output_) std::cout << "截图已保存: " << actual_file_path << std::endl;
+    return true;
 }
 
 void ScreenActivityTracker::track_loop() {
@@ -373,7 +294,7 @@ void ScreenActivityTracker::screenshot_loop(int interval_seconds) {
         ss << "_" << std::setfill('0') << std::setw(3) << ms.count();
         std::string timestamp = ss.str();
         
-        std::string file_path = "captures/screen/screenshot_" + timestamp + ".png";
+        std::string file_path = "captures/screen/screenshot_" + timestamp + ".jpg";
         
         // 捕获并存储截图
         if (capture_screenshot(file_path)) {
@@ -388,63 +309,6 @@ void ScreenActivityTracker::screenshot_loop(int interval_seconds) {
     }
     
     if (verbose_output_) std::cout << "持续屏幕截图循环已停止" << std::endl;
-}
-
-int ScreenActivityTracker::saveScreenshotToResourceMemory(
-    int user_id, 
-    const std::string& file_path, 
-    const std::string& summary) {
-    
-    // 获取文件大小
-    std::ifstream in_file(file_path, std::ifstream::ate | std::ifstream::binary);
-    
-    int file_size = static_cast<int>(in_file.tellg());
-    in_file.close();
-    
-    // 检查文件大小，如果超过10MB则进行压缩
-    std::string actual_file_path = file_path;
-    if (file_size > 10 * 1024 * 1024) {  // 10MB限制
-        std::cout << "截图文件过大 (" << file_size << " 字节)，超过10MB限制，进行压缩处理" << std::endl;
-        std::string compressed_path = file_path + "_compressed.jpg";
-        // 调用带输出路径参数的compress_image函数
-        compress_image(file_path, compressed_path);
-        // 检查压缩文件是否存在并使用它
-        if (std::filesystem::exists(compressed_path)) {
-            actual_file_path = compressed_path;
-            std::cout << "图像压缩完成，使用压缩后的文件: " << actual_file_path << std::endl;
-            
-            // 重新获取压缩后文件的大小
-            std::ifstream compressed_file(actual_file_path, std::ifstream::ate | std::ifstream::binary);
-            if (compressed_file.is_open()) {
-                file_size = static_cast<int>(compressed_file.tellg());
-                compressed_file.close();
-                std::cout << "压缩后文件大小: " << file_size << " 字节" << std::endl;
-            }
-        } else {
-            std::cerr << "图像压缩失败，使用原始文件" << std::endl;
-        }
-    }
-    
-    // 使用ResourceMemoryManager存储截图数据，使用传入的StorageManager实例
-    ResourceMemoryManager manager(storage_);
-    
-    ResourceMemoryManager::ResourceMemoryItem item;
-    item.user_id = user_id;
-    item.agent_id = 1; // 默认agent_id
-    item.session_id = 1; // 默认session_id
-    item.description = "Captured screen content: " + actual_file_path;  // 合并title和content为description
-    item.resource_type = "screenshot";
-    item.path = actual_file_path;  // 使用实际文件路径（可能是压缩后的）
-    item.metadata = "{}";
-    item.size = file_size;  // 正确设置文件大小
-    
-    bool result = manager.add_resource_memory(item);
-    if (result) {
-        if (verbose_output_) std::cout << "屏幕截图已成功存储到资源记忆中" << std::endl;
-    } else {
-        std::cerr << "存储屏幕截图到资源记忆失败: " << sqlite3_errmsg(storage_.getDatabase()) << std::endl;
-    }
-    return result ? 1 : -1; // 简化处理，实际应该返回插入记录的ID
 }
 
 // 添加图像压缩函数

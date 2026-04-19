@@ -1,10 +1,10 @@
 #include "ModelManager.h"
+#include "../database/initialization/ConfigManager.h"
 #include <iostream>
 #include <vector>
 #include <sstream>
 #include <fstream>
 #include <json/json.h>
-#include "../database/initialization/ConfigManager/ConfigManager.h"
 #include <filesystem>
 #include <algorithm>
 
@@ -169,13 +169,20 @@ std::string ModelManager::call_text_model_with_context(const std::vector<std::st
     if (!context.empty()) {
         QwenMessage system_msg;
         system_msg.role = "system";
-        // 合并所有上下文信息，使用更清晰的格式
+        // 合并所有上下文信息，并说明各个记忆区块的含义和优先级
         std::ostringstream context_stream;
-        context_stream << "以下是与用户当前问题相关的背景信息，请在回答时参考：\n\n";
+        context_stream << "你是一名对话助手。下面提供的是与用户当前问题相关的背景信息，这些信息由多个带标题的区块组成：\n"
+                       << "1. \"=== 最近消息 ===\"：仅包含最近几轮的纯文本对话内容（不包含任何多模态描述）。\n"
+                       << "2. \"=== 多模态记忆 ===\"：来自图片、音频、屏幕截图等多模态数据的文字描述，以及时间戳和文件路径等元信息。\n"
+                       << "3. 其他记忆区块（情景记忆、语义记忆、核心记忆、程序记忆等）是对更长期历史的结构化摘要；\"=== 资源记忆 ===\" 当前仅为兼容占位，可以忽略。\n"
+                       << "在回答用户问题时，请优先参考最近消息，其次参考多模态记忆，再在需要时参考其它长期记忆；不要重复解释上下文本身。\n\n"
+                       << "以下是完整上下文内容：\n\n";
+
         for (size_t i = 0; i < context.size(); ++i) {
             context_stream << (i + 1) << ". " << context[i] << "\n";
         }
-        context_stream << "\n请根据以上信息，结合用户的具体问题提供准确、相关的回答。";
+
+        context_stream << "\n请根据以上上下文信息，结合用户的具体问题提供准确、简洁且与上下文高度相关的回答。";
         system_msg.content = context_stream.str();
         request.messages.push_back(system_msg);
     }
@@ -247,7 +254,7 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
             size_t image_size = image_file.tellg();
             image_file.close();
             
-            if (image_size > 10 * 1024 * 1024) {  // 10MB限制
+            if (image_size > 10 * 1024 * 1024) {  // 10MB限制（原始文件大小）
                 std::string error_msg = "图像文件过大(" + std::to_string(image_size) + "字节)，超过10MB限制，无法处理";
                 std::cerr << error_msg << std::endl;
                 return error_msg;
@@ -258,6 +265,8 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
             return error_msg;
         }
     }
+    
+    const size_t MAX_BASE64_IMAGE_BYTES = 10 * 1024 * 1024; // 与服务端 data-uri 限制保持一致
     
     if (!audio_path.empty()) {
         std::ifstream audio_file(audio_path, std::ios::binary | std::ios::ate);
@@ -300,18 +309,25 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
                 
                 // 读取图像文件并转换为base64编码
                 std::string base64_data = file_to_base64(image_path);
-                // 根据文件扩展名确定MIME类型
-                std::string mime_type = "image/jpeg";
-                if (image_path.find(".png") != std::string::npos || image_path.find(".PNG") != std::string::npos) {
-                    mime_type = "image/png";
-                } else if (image_path.find(".gif") != std::string::npos || image_path.find(".GIF") != std::string::npos) {
-                    mime_type = "image/gif";
-                } else if (image_path.find(".webp") != std::string::npos || image_path.find(".WEBP") != std::string::npos) {
-                    mime_type = "image/webp";
+                // 检查编码后的data-uri大小是否超过服务端限制
+                if (base64_data.size() > MAX_BASE64_IMAGE_BYTES) {
+                    std::cerr << "编码后的图像数据过大(" << base64_data.size()
+                              << "字节)，超过 data-uri 限制("
+                              << MAX_BASE64_IMAGE_BYTES << ")，此次请求将忽略图像，仅使用文本进行推理" << std::endl;
+                } else {
+                    // 根据文件扩展名确定MIME类型
+                    std::string mime_type = "image/jpeg";
+                    if (image_path.find(".png") != std::string::npos || image_path.find(".PNG") != std::string::npos) {
+                        mime_type = "image/png";
+                    } else if (image_path.find(".gif") != std::string::npos || image_path.find(".GIF") != std::string::npos) {
+                        mime_type = "image/gif";
+                    } else if (image_path.find(".webp") != std::string::npos || image_path.find(".WEBP") != std::string::npos) {
+                        mime_type = "image/webp";
+                    }
+                    image_content.image_url = "data:" + mime_type + ";base64," + base64_data;
+                    user_msg.contents.push_back(image_content);
+                    std::cout << "图像内容添加成功" << std::endl;
                 }
-                image_content.image_url = "data:" + mime_type + ";base64," + base64_data;
-                user_msg.contents.push_back(image_content);
-                std::cout << "图像内容添加成功" << std::endl;
             } catch (const std::exception& e) {
                 std::cerr << "图像文件base64编码失败: " << image_path << ", 错误: " << e.what() << std::endl;
                 // 即使图像处理失败，也要继续处理文本
@@ -319,18 +335,11 @@ std::string ModelManager::call_multimodal_model(const std::string& text,
         }
         
         if (!audio_path.empty()) {
-            // 添加音频内容
+            // 当前多模态API不支持 audio_url 类型，这里仅记录日志，不将音频作为模型输入
             try {
-                std::cout << "处理音频文件: " << audio_path << std::endl;
-                QwenContent audio_content;
-                audio_content.type = "audio_url";
-                // 读取音频文件并转换为base64编码
-                std::string base64_data = file_to_base64(audio_path);
-                audio_content.audio_url = "data:audio/wav;base64," + base64_data;
-                user_msg.contents.push_back(audio_content);
-                std::cout << "音频内容添加成功" << std::endl;
+                std::cout << "处理音频文件(仅存储, 不发送到模型): " << audio_path << std::endl;
             } catch (const std::exception& e) {
-                std::cerr << "音频文件base64编码失败: " << audio_path << ", 错误: " << e.what() << std::endl;
+                std::cerr << "音频文件处理失败: " << audio_path << ", 错误: " << e.what() << std::endl;
             }
         }
         

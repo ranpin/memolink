@@ -14,7 +14,7 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 - AI模型生成的响应
 - 系统日志和元数据
 
-文本数据直接存储在回忆记忆表(recall_memory)中，同时生成向量表示用于相似性搜索。
+文本数据直接存储在消息记忆表(message_memories)中，同时可为其生成向量表示用于相似性搜索。
 
 ### 2. 图像数据
 图像数据包括：
@@ -24,8 +24,9 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 
 图像数据通过以下方式处理：
 - 存储原始图像文件到[captures](file:///Users/ranpin/code/mirix-cpp/captures)目录
-- 在资源记忆表(resource_memory)中存储元信息
-- 使用CLIP模型生成图像描述
+- 在多模态记忆表(multimodal_memories)中存储元信息
+- **优先使用多模态大模型（如 qwen2.5-omni）生成图像的自然语言场景描述，写入 `description` 字段**
+- 降级策略：若多模态模型不可用，则使用CLIP模型生成描述，最终回退到默认模板
 - 为图像描述生成向量表示
 
 系统支持多种图像格式，并对大图像文件进行自动压缩处理，确保符合模型输入限制。
@@ -38,8 +39,8 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 
 音频数据通过以下方式处理：
 - 存储原始音频文件到[captures](file:///Users/ranpin/code/mirix-cpp/captures)目录
-- 在资源记忆表(resource_memory)中存储元信息
-- 使用音频处理技术提取特征
+- 在多模态记忆表(multimodal_memories)中存储元信息
+- 使用音频处理技术提取特征（或使用多模态模型生成描述）
 - 为音频内容生成文本描述和向量表示
 
 ### 4. 屏幕活动数据
@@ -50,8 +51,9 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 
 屏幕活动数据通过以下方式处理：
 - 自动捕获屏幕截图并存储到[captures](file:///Users/ranpin/code/mirix-cpp/captures)目录
-- 在资源记忆表(resource_memory)中存储元信息
-- 使用OCR技术提取屏幕文本内容
+- 在多模态记忆表(multimodal_memories)中存储元信息
+- **优先使用多模态大模型生成屏幕场景的自然语言描述，写入 `description` 字段**
+- 可选使用OCR技术提取屏幕文本内容作为补充
 - 为屏幕内容生成文本描述和向量表示
 
 ## 多模态数据捕获
@@ -80,22 +82,28 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 ### 1. 数据捕获
 从各种数据源捕获多模态数据并存储到文件系统。
 
-### 2. 元信息提取
-提取数据的元信息并存储到资源记忆表中。
+### 2. 元信息提取与存储
+提取数据的元信息并存储到多模态记忆表(multimodal_memories)中，包括文件路径、类型、时间戳等。
 
-### 3. 内容分析
-使用AI模型分析数据内容：
+### 3. 内容分析与语义生成
+使用AI模型分析数据内容并生成语义描述：
 - 文本数据直接处理
-- 图像数据使用CLIP模型生成描述
-- 音频数据使用语音识别技术生成文本
+- **图像/屏幕截图数据：优先使用多模态大模型（qwen2.5-omni等）生成自然语言场景描述**
+- 降级策略：多模态模型 → CLIP模型 → 默认模板
+- 音频数据使用语音识别技术生成文本（或多模态模型）
 
-### 4. 向量生成
-为分析后的内容生成向量表示：
+**关键设计：`multimodal_memories.description` 字段是多模态数据的主语义字段，优先存储模型输出的场景描述。**
+
+### 4. 向量生成（可选）
+为分析后的内容生成向量表示，用于语义检索：
 - 文本内容使用TextEmbeddingGenerator生成向量
-- 图像描述使用TextEmbeddingGenerator生成向量
+- 图像/音频的 `description` 字段可使用TextEmbeddingGenerator生成向量
 
-### 5. 数据存储
-将处理后的数据和向量表示存储到相应的记忆系统中。
+### 5. 长期记忆生成
+**多模态数据的 `description` 字段会作为文本来源（MemorySource.text），与消息记忆一起参与长期记忆生成**：
+- MemoryGenerationManager 从 `multimodal_memories` 和 `message_memories` 收集未处理的原材料
+- 使用 MemoryClassifier 判断是否生成情景、语义、核心等长期记忆
+- 通过 MemoryProvenance 表记录每条长期记忆的来源（消息 + 多模态）
 
 ## CLIP处理器
 
@@ -127,24 +135,27 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 - [captures/screenshots/](file:///Users/ranpin/code/mirix-cpp/captures/screenshots/)：存储屏幕截图
 
 ### 元信息存储
-多模态数据的元信息存储在resource_memory表中，包括：
-- 文件路径
-- 资源类型
-- 描述信息
-- 向量表示
-- 创建时间等
+多模态数据的元信息存储在 `multimodal_memories` 表中，包括：
+- `file_path`：文件路径
+- `type`：资源类型（screenshot, camera, audio等）
+- `description`：**语义描述（优先使用多模态大模型输出）**
+- `embedding`：向量表示（可选）
+- `timestamp`：创建时间
+- `metadata_json`：其他元信息（JSON格式）
+
+**数据表定义**：见 [MemoryModels.h](file:///Users/ranpin/code/mirix-cpp/src/database/models/MemoryModels.h) 中的 `MultimodalMemory` 结构。
 
 ## 多模态数据检索
 
 系统支持多种多模态数据检索方式：
 
 ### 1. 基于内容的检索
-直接查询资源记忆表中的描述信息。
+直接查询多模态记忆表(multimodal_memories)中的 `description` 字段。
 
 ### 2. 基于向量的检索
 使用向量相似性搜索：
-- 文本查询：生成查询文本的向量，与资源记忆中的向量进行相似性计算
-- 图像查询：生成查询图像的向量，与资源记忆中的向量进行相似性计算
+- 文本查询：生成查询文本的向量，与多模态记忆中的 `embedding` 向量进行相似性计算
+- 图像查询：生成查询图像的向量，与多模态记忆中的向量进行相似性计算
 
 ### 3. 跨模态检索
 支持文本到图像、图像到文本的跨模态检索。
