@@ -38,8 +38,10 @@ mirix-cpp/
 ├── CMakeLists.txt              # CMake构建配置文件
 ├── README.md                   # 项目说明文档
 ├── DETAILS.md                  # 详细设计文档
-├── captures/                   # 多模态数据捕获目录
-│   └── images/                 # 图像捕获存储目录
+├── config.ini                  # 运行配置文件（API/模型/数据库）
+├── captures/                   # 多模态数据捕获目录（运行时生成，不入库）
+│   ├── camera/                 # 摄像头图像捕获存储目录
+│   └── screen/                 # 屏幕截图捕获存储目录
 ├── database/                   # 数据库存储目录
 │   └── mirix.db               # 默认SQLite数据库文件
 ├── docs/                       # 项目文档目录
@@ -49,17 +51,23 @@ mirix-cpp/
 │   ├── multimodal.md           # 多模态处理文档
 │   ├── testing.md              # 测试文档
 │   └── improvements.md         # 改进建议文档
+├── models/                     # 模型文件目录（CLIP配置、ONNX模型）
+├── scripts/                    # 辅助脚本（CLIP处理、模型下载）
 ├── src/                        # 源代码目录
 │   ├── agents/                 # 智能代理模块
+│   ├── api/                    # API服务模块
 │   ├── capture/                # 多模态数据捕获模块
+│   ├── cli/                    # 命令行交互模块
 │   ├── database/               # 数据库相关模块
 │   │   ├── core/              # 数据库核心模块
 │   │   ├── initialization/    # 数据库初始化模块
 │   │   └── managers/          # 数据库管理器模块
+│   ├── gui/                    # GUI模块
 │   ├── models/                 # AI模型接口模块
+│   ├── storage/                # 存储模块
 │   └── utils/                 # 工具类模块
+├── test_images/                # 测试用图像素材
 └── test/                       # 测试代码目录
-    ├── CMakeLists.txt          # 测试构建配置
     └── test_*.cpp              # 各类测试程序
 ```
 
@@ -72,9 +80,11 @@ mirix-cpp/
 - SQLite3
 - OpenSSL
 - cURL
+- JsonCpp
 - PortAudio
 - OpenCV
 - FAISS (Facebook AI Similarity Search)
+- Qt5（可选，仅在需要构建 GUI 目标时）
 
 ### 构建步骤
 
