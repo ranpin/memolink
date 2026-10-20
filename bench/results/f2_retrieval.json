@@ -1,0 +1,317 @@
+{
+  "dim": 512,
+  "k": 5,
+  "n_queries": 100,
+  "seed": 20261020,
+  "faiss_threads": 4,
+  "faiss_version": "1.15.1",
+  "data": "clustered synthetic: 256 shared centers, noise std=0.02",
+  "note": "语义检索质量在 F3 用真实记忆语料测",
+  "scales": [
+    {
+      "n": 1000,
+      "base_mb": 2.0,
+      "methods": {
+        "numpy": {
+          "query_ms": 0.0618,
+          "build_s": 0.0,
+          "index_mb": 0.0,
+          "recall": 1.0,
+          "exact": true
+        },
+        "flat": {
+          "query_ms": 0.1266,
+          "build_s": 0.001,
+          "index_mb": 2.05,
+          "recall": 1.0,
+          "exact": true
+        },
+        "hnsw": {
+          "M": 32,
+          "efConstruction": 200,
+          "build_s": 0.246,
+          "index_mb": 2.32,
+          "sweeps": {
+            "efSearch=16": {
+              "query_ms": 0.033,
+              "build_s": 0.246,
+              "index_mb": 2.32,
+              "recall": 0.99,
+              "exact": false,
+              "params": {
+                "efSearch": 16
+              }
+            },
+            "efSearch=64": {
+              "query_ms": 0.0736,
+              "build_s": 0.246,
+              "index_mb": 2.32,
+              "recall": 0.998,
+              "exact": false,
+              "params": {
+                "efSearch": 64
+              }
+            },
+            "efSearch=256": {
+              "query_ms": 0.1652,
+              "build_s": 0.246,
+              "index_mb": 2.32,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "efSearch": 256
+              }
+            }
+          }
+        },
+        "ivf": {
+          "nlist": 31,
+          "build_s": 0.022,
+          "index_mb": 2.12,
+          "sweeps": {
+            "nprobe=1": {
+              "query_ms": 0.0124,
+              "build_s": 0.022,
+              "index_mb": 2.12,
+              "recall": 0.744,
+              "exact": false,
+              "params": {
+                "nprobe": 1
+              }
+            },
+            "nprobe=4": {
+              "query_ms": 0.0217,
+              "build_s": 0.022,
+              "index_mb": 2.12,
+              "recall": 0.846,
+              "exact": false,
+              "params": {
+                "nprobe": 4
+              }
+            },
+            "nprobe=16": {
+              "query_ms": 0.0526,
+              "build_s": 0.022,
+              "index_mb": 2.12,
+              "recall": 0.964,
+              "exact": false,
+              "params": {
+                "nprobe": 16
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "n": 10000,
+      "base_mb": 20.5,
+      "methods": {
+        "numpy": {
+          "query_ms": 0.7794,
+          "build_s": 0.0,
+          "index_mb": 0.0,
+          "recall": 1.0,
+          "exact": true
+        },
+        "flat": {
+          "query_ms": 0.7866,
+          "build_s": 0.006,
+          "index_mb": 20.48,
+          "recall": 1.0,
+          "exact": true
+        },
+        "hnsw": {
+          "M": 32,
+          "efConstruction": 200,
+          "build_s": 3.856,
+          "index_mb": 23.2,
+          "sweeps": {
+            "efSearch=16": {
+              "query_ms": 0.0579,
+              "build_s": 3.856,
+              "index_mb": 23.2,
+              "recall": 0.994,
+              "exact": false,
+              "params": {
+                "efSearch": 16
+              }
+            },
+            "efSearch=64": {
+              "query_ms": 0.1705,
+              "build_s": 3.856,
+              "index_mb": 23.2,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "efSearch": 64
+              }
+            },
+            "efSearch=256": {
+              "query_ms": 0.6312,
+              "build_s": 3.856,
+              "index_mb": 23.2,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "efSearch": 256
+              }
+            }
+          }
+        },
+        "ivf": {
+          "nlist": 100,
+          "build_s": 0.157,
+          "index_mb": 20.77,
+          "sweeps": {
+            "nprobe=1": {
+              "query_ms": 0.0168,
+              "build_s": 0.157,
+              "index_mb": 20.77,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "nprobe": 1
+              }
+            },
+            "nprobe=4": {
+              "query_ms": 0.0329,
+              "build_s": 0.157,
+              "index_mb": 20.77,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "nprobe": 4
+              }
+            },
+            "nprobe=16": {
+              "query_ms": 0.1349,
+              "build_s": 0.157,
+              "index_mb": 20.77,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "nprobe": 16
+              }
+            },
+            "nprobe=64": {
+              "query_ms": 0.529,
+              "build_s": 0.157,
+              "index_mb": 20.77,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "nprobe": 64
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "n": 100000,
+      "base_mb": 204.8,
+      "methods": {
+        "numpy": {
+          "query_ms": 9.8003,
+          "build_s": 0.0,
+          "index_mb": 0.0,
+          "recall": 1.0,
+          "exact": true
+        },
+        "flat": {
+          "query_ms": 6.6314,
+          "build_s": 0.059,
+          "index_mb": 204.8,
+          "recall": 1.0,
+          "exact": true
+        },
+        "hnsw": {
+          "M": 32,
+          "efConstruction": 200,
+          "build_s": 36.124,
+          "index_mb": 232.02,
+          "sweeps": {
+            "efSearch=16": {
+              "query_ms": 0.0792,
+              "build_s": 36.124,
+              "index_mb": 232.02,
+              "recall": 0.94,
+              "exact": false,
+              "params": {
+                "efSearch": 16
+              }
+            },
+            "efSearch=64": {
+              "query_ms": 0.1386,
+              "build_s": 36.124,
+              "index_mb": 232.02,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "efSearch": 64
+              }
+            },
+            "efSearch=256": {
+              "query_ms": 0.2971,
+              "build_s": 36.124,
+              "index_mb": 232.02,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "efSearch": 256
+              }
+            }
+          }
+        },
+        "ivf": {
+          "nlist": 316,
+          "build_s": 3.441,
+          "index_mb": 206.25,
+          "sweeps": {
+            "nprobe=1": {
+              "query_ms": 0.0437,
+              "build_s": 3.441,
+              "index_mb": 206.25,
+              "recall": 0.928,
+              "exact": false,
+              "params": {
+                "nprobe": 1
+              }
+            },
+            "nprobe=4": {
+              "query_ms": 0.1284,
+              "build_s": 3.441,
+              "index_mb": 206.25,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "nprobe": 4
+              }
+            },
+            "nprobe=16": {
+              "query_ms": 0.4071,
+              "build_s": 3.441,
+              "index_mb": 206.25,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "nprobe": 16
+              }
+            },
+            "nprobe=64": {
+              "query_ms": 1.4525,
+              "build_s": 3.441,
+              "index_mb": 206.25,
+              "recall": 1.0,
+              "exact": false,
+              "params": {
+                "nprobe": 64
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "mode": "offline",
+  "n_queries": 5,
+  "routed_edge": 5,
+  "routed_cloud": 0,
+  "embed_ms_mean": 9.4,
+  "retrieve_ms_mean": 0.164,
+  "edge_gen_ms_mean": 919.9,
+  "edge_total_ms_mean": 929.5,
+  "all_gen_ok": true,
+  "records": [
+    {
+      "query": "我的车是什么颜色偏好？",
+      "embed_ms": 8.32,
+      "retrieve_ms": 0.23,
+      "gen_ms": 568.9,
+      "total_ms": 577.5,
+      "backend": "edge-qwen3-4b-q4",
+      "location": "edge",
+      "route_reasons": [
+        "cloud-unavailable: 无 key 或离线，端侧降级"
+      ],
+      "top_hit": {
+        "id": 1,
+        "score": 0.5379,
+        "sensitive": false
+      },
+      "gen_tokens": 16,
+      "answer": "您的车颜色偏好是深蓝色和墨蓝色。",
+      "gen_ok": true
+    },
+    {
+      "query": "我住在哪里？",
+      "embed_ms": 6.38,
+      "retrieve_ms": 0.13,
+      "gen_ms": 360.2,
+      "total_ms": 366.7,
+      "backend": "edge-qwen3-4b-q4",
+      "location": "edge",
+      "route_reasons": [
+        "privacy: 命中 2 条敏感记忆(id=[3, 38])，原文不出设备"
+      ],
+      "top_hit": {
+        "id": 3,
+        "score": 0.4479,
+        "sensitive": true
+      },
+      "gen_tokens": 11,
+      "answer": "您住在杭州西湖区。",
+      "gen_ok": true
+    },
+    {
+      "query": "上次保养是什么时候？另外帮我总结一下我最近的出行安排",
+      "embed_ms": 11.74,
+      "retrieve_ms": 0.14,
+      "gen_ms": 1473.0,
+      "total_ms": 1484.9,
+      "backend": "edge-qwen3-4b-q4",
+      "location": "edge",
+      "route_reasons": [
+        "cloud-unavailable: 无 key 或离线，端侧降级"
+      ],
+      "top_hit": {
+        "id": 2,
+        "score": 0.6476,
+        "sensitive": false
+      },
+      "gen_tokens": 51,
+      "answer": "车辆上次保养是在2026年8月15日，里程数为12000公里。\n\n关于您的出行安排：\n- 上周参加了车友会自驾活动，前往了莫干山。",
+      "gen_ok": true
+    },
+    {
+      "query": "你觉得我最近的生活状态怎么样？",
+      "embed_ms": 10.8,
+      "retrieve_ms": 0.15,
+      "gen_ms": 1511.2,
+      "total_ms": 1522.1,
+      "backend": "edge-qwen3-4b-q4",
+      "location": "edge",
+      "route_reasons": [
+        "cloud-unavailable: 无 key 或离线，端侧降级"
+      ],
+      "top_hit": {
+        "id": 7,
+        "score": 0.411,
+        "sensitive": false
+      },
+      "gen_tokens": 52,
+      "answer": "根据你的生活习惯分析：\n- 通勤状态：基本保持规律，但早高峰时间略有增加（约+1分钟）\n- 饮食习惯：基本保持稳定\n- 通勤路线：基本保持稳定",
+      "gen_ok": true
+    },
+    {
+      "query": "我有点冷",
+      "embed_ms": 9.77,
+      "retrieve_ms": 0.17,
+      "gen_ms": 686.4,
+      "total_ms": 696.3,
+      "backend": "edge-qwen3-4b-q4",
+      "location": "edge",
+      "route_reasons": [
+        "cloud-unavailable: 无 key 或离线，端侧降级"
+      ],
+      "top_hit": {
+        "id": 30,
+        "score": 0.6066,
+        "sensitive": false
+      },
+      "gen_tokens": 22,
+      "answer": "根据您的习惯，我会将空调温度调高2度并开启座椅加热。",
+      "gen_ok": true
+    }
+  ]
+}

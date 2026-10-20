@@ -1,0 +1,240 @@
+{
+  "device": "Orin (dog) aarch64, onnxruntime CPUExecutionProvider",
+  "model": "bge-small-zh-v1.5",
+  "runs": [
+    {
+      "variant": "fp32",
+      "threads": 1,
+      "file": "model.onnx",
+      "size_mb": 94.81,
+      "size_parts": [
+        "model.onnx",
+        "model.onnx_data"
+      ],
+      "load_s": 0.105,
+      "single_query_ms": 33.132,
+      "batch4_query_ms": 111.651,
+      "batch4_memory_ms": 75.307,
+      "dim": 512,
+      "pool_source": "sentence_embedding",
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state",
+        "sentence_embedding"
+      ],
+      "rss_baseline_mb": 49.0,
+      "rss_peak_mb": 125.4,
+      "rss_model_mb": 76.4
+    },
+    {
+      "variant": "fp32",
+      "threads": 2,
+      "file": "model.onnx",
+      "size_mb": 94.81,
+      "size_parts": [
+        "model.onnx",
+        "model.onnx_data"
+      ],
+      "load_s": 0.104,
+      "single_query_ms": 17.677,
+      "batch4_query_ms": 57.501,
+      "batch4_memory_ms": 39.276,
+      "dim": 512,
+      "pool_source": "sentence_embedding",
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state",
+        "sentence_embedding"
+      ],
+      "rss_baseline_mb": 49.0,
+      "rss_peak_mb": 125.7,
+      "rss_model_mb": 76.7
+    },
+    {
+      "variant": "fp32",
+      "threads": 4,
+      "file": "model.onnx",
+      "size_mb": 94.81,
+      "size_parts": [
+        "model.onnx",
+        "model.onnx_data"
+      ],
+      "load_s": 0.102,
+      "single_query_ms": 10.192,
+      "batch4_query_ms": 30.609,
+      "batch4_memory_ms": 21.45,
+      "dim": 512,
+      "pool_source": "sentence_embedding",
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state",
+        "sentence_embedding"
+      ],
+      "rss_baseline_mb": 49.0,
+      "rss_peak_mb": 130.8,
+      "rss_model_mb": 81.8
+    },
+    {
+      "variant": "fp32",
+      "threads": 8,
+      "file": "model.onnx",
+      "size_mb": 94.81,
+      "size_parts": [
+        "model.onnx",
+        "model.onnx_data"
+      ],
+      "load_s": 0.105,
+      "single_query_ms": 5.917,
+      "batch4_query_ms": 16.68,
+      "batch4_memory_ms": 12.072,
+      "dim": 512,
+      "pool_source": "sentence_embedding",
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state",
+        "sentence_embedding"
+      ],
+      "rss_baseline_mb": 49.0,
+      "rss_peak_mb": 130.4,
+      "rss_model_mb": 81.4
+    },
+    {
+      "variant": "int8",
+      "threads": 1,
+      "file": "model_quantized.onnx",
+      "size_mb": 23.94,
+      "size_parts": [
+        "model_quantized.onnx",
+        "model_quantized.onnx_data"
+      ],
+      "load_s": 0.039,
+      "single_query_ms": 10.795,
+      "batch4_query_ms": 40.353,
+      "batch4_memory_ms": 26.857,
+      "dim": 512,
+      "pool_source": "sentence_embedding",
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state",
+        "sentence_embedding"
+      ],
+      "rss_baseline_mb": 47.0,
+      "rss_peak_mb": 88.9,
+      "rss_model_mb": 41.9
+    },
+    {
+      "variant": "int8",
+      "threads": 2,
+      "file": "model_quantized.onnx",
+      "size_mb": 23.94,
+      "size_parts": [
+        "model_quantized.onnx",
+        "model_quantized.onnx_data"
+      ],
+      "load_s": 0.038,
+      "single_query_ms": 6.346,
+      "batch4_query_ms": 22.009,
+      "batch4_memory_ms": 14.987,
+      "dim": 512,
+      "pool_source": "sentence_embedding",
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state",
+        "sentence_embedding"
+      ],
+      "rss_baseline_mb": 51.0,
+      "rss_peak_mb": 92.8,
+      "rss_model_mb": 41.8
+    },
+    {
+      "variant": "int8",
+      "threads": 4,
+      "file": "model_quantized.onnx",
+      "size_mb": 23.94,
+      "size_parts": [
+        "model_quantized.onnx",
+        "model_quantized.onnx_data"
+      ],
+      "load_s": 0.039,
+      "single_query_ms": 4.111,
+      "batch4_query_ms": 12.529,
+      "batch4_memory_ms": 8.96,
+      "dim": 512,
+      "pool_source": "sentence_embedding",
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state",
+        "sentence_embedding"
+      ],
+      "rss_baseline_mb": 49.0,
+      "rss_peak_mb": 94.9,
+      "rss_model_mb": 45.9
+    },
+    {
+      "variant": "int8",
+      "threads": 8,
+      "file": "model_quantized.onnx",
+      "size_mb": 23.94,
+      "size_parts": [
+        "model_quantized.onnx",
+        "model_quantized.onnx_data"
+      ],
+      "load_s": 0.04,
+      "single_query_ms": 3.018,
+      "batch4_query_ms": 7.933,
+      "batch4_memory_ms": 5.923,
+      "dim": 512,
+      "pool_source": "sentence_embedding",
+      "inputs": [
+        "input_ids",
+        "attention_mask",
+        "token_type_ids"
+      ],
+      "outputs": [
+        "last_hidden_state",
+        "sentence_embedding"
+      ],
+      "rss_baseline_mb": 51.0,
+      "rss_peak_mb": 96.9,
+      "rss_model_mb": 45.9
+    }
+  ],
+  "int8_vs_fp32_cosine": {
+    "q": {
+      "mean": 0.99156,
+      "min": 0.99048
+    },
+    "m": {
+      "mean": 0.99336,
+      "min": 0.99289
+    }
+  }
+}
