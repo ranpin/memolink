@@ -28,8 +28,10 @@ pkg_check_modules(PORTAUDIO REQUIRED portaudio-2.0)
 # 查找OpenCV
 find_package(OpenCV REQUIRED)
 
-# 查找Faiss
-find_package(faiss REQUIRED)
+# 注：向量检索目前是对 SQLite 中存储的 embedding 做暴力余弦相似度
+# （见 src/models/VectorSearchManager.cpp），并未链接 FAISS。
+# EmbeddingIndexManager 里的 FAISS 方法仍是占位符，待后续接入；
+# 因此这里不再 find_package(faiss REQUIRED)——否则没装 FAISS 连 configure 都过不了。
 
 # 包含目录
 include_directories(${CMAKE_SOURCE_DIR}/src)
@@ -37,18 +39,14 @@ include_directories(${SQLITE3_INCLUDE_DIRS})
 include_directories(${OPENSSL_INCLUDE_DIR})
 include_directories(${CURL_INCLUDE_DIRS})
 include_directories(${JSONCPP_INCLUDE_DIRS})
-include_directories(/opt/homebrew/Cellar/jsoncpp/1.9.6/include)
 include_directories(${PORTAUDIO_INCLUDE_DIRS})
 include_directories(${OpenCV_INCLUDE_DIRS})
-include_directories(${FAISS_INCLUDE_DIRS})
 
 # 链接目录
 link_directories(${CURL_LIBRARY_DIRS})
 link_directories(${JSONCPP_LIBRARY_DIRS})
-link_directories(/opt/homebrew/Cellar/jsoncpp/1.9.6/lib)
 link_directories(${PORTAUDIO_LIBRARY_DIRS})
 link_directories(${OpenCV_LIBRARY_DIRS})
-link_directories(${FAISS_LIBRARY_DIRS})
 
 # 收集源文件（明确列出所有源文件）
 set(SOURCES
@@ -185,17 +183,19 @@ add_executable(test_system_initialization test/test_system_initialization.cpp)
 target_link_libraries(test_system_initialization mirix_lib)
 
 # GUI 可执行文件
-if(Qt5_FOUND)
-    add_executable(mirix_gui WIN32 src/gui_main.cpp)
-    target_link_libraries(mirix_gui mirix_lib Qt5::Widgets Qt5::Core Qt5::Gui)
-    if(APPLE)
-        # 设置macOS应用bundle属性
-        set_target_properties(mirix_gui PROPERTIES
-            MACOSX_BUNDLE TRUE
-            MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/src/gui/MacOSXBundleInfo.plist.in
-        )
-    endif()
-endif()
+# 注：GUI 入口 src/gui_main.cpp 与 MacOSXBundleInfo.plist.in 目前并不存在
+# （src/gui/ 下只有 GUIManager.cpp/.h），若 Qt5 被找到，这段会让 configure 直接失败。
+# 先注释掉，等补上 gui_main.cpp 再启用。
+# if(Qt5_FOUND)
+#     add_executable(mirix_gui WIN32 src/gui_main.cpp)
+#     target_link_libraries(mirix_gui mirix_lib Qt5::Widgets Qt5::Core Qt5::Gui)
+#     if(APPLE)
+#         set_target_properties(mirix_gui PROPERTIES
+#             MACOSX_BUNDLE TRUE
+#             MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/src/gui/MacOSXBundleInfo.plist.in
+#         )
+#     endif()
+# endif()
 
 # 安装规则
 install(TARGETS real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive test_clip_processor test_chat_with_model test_chat_with_auto_capture test_initialize_memories test_system_initialization
@@ -214,10 +214,7 @@ add_test(NAME test_clip_processor COMMAND test_clip_processor)
 add_test(NAME test_chat_with_model COMMAND test_chat_with_model)
 add_test(NAME test_chat_with_auto_capture COMMAND test_chat_with_auto_capture)
 add_test(NAME test_system_initialization COMMAND test_system_initialization)
-add_test(NAME test_cli_main COMMAND test_cli_main)
 add_test(NAME test_initialize_memories COMMAND test_initialize_memories)
-add_test(NAME test_interactive_main COMMAND test_interactive_main)
-add_test(NAME test_main COMMAND test_main)
 add_test(NAME test_real_multimodal_demo COMMAND test_real_multimodal_demo)
 
 

@@ -4,7 +4,7 @@
 
 MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音频和屏幕活动。系统通过专门的模块来捕获、处理和存储这些多模态数据，并将其整合到仿人类的记忆系统中。
 
-所有多模态数据和相关元信息统一存储在项目根目录下的[captures](file:///Users/ranpin/code/mirix-cpp/captures)和[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中，确保数据持久化且不会因构建目录清理而丢失。
+所有多模态数据和相关元信息统一存储在项目根目录下的[captures](../captures)和[database](../src/database)目录中，确保数据持久化且不会因构建目录清理而丢失。
 
 ## 多模态数据类型
 
@@ -23,7 +23,7 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 - 用户提供的图片文件
 
 图像数据通过以下方式处理：
-- 存储原始图像文件到[captures](file:///Users/ranpin/code/mirix-cpp/captures)目录
+- 存储原始图像文件到[captures](../captures)目录
 - 在资源记忆表(resource_memory)中存储元信息
 - 使用CLIP模型生成图像描述
 - 为图像描述生成向量表示
@@ -37,7 +37,7 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 - 会议录音等
 
 音频数据通过以下方式处理：
-- 存储原始音频文件到[captures](file:///Users/ranpin/code/mirix-cpp/captures)目录
+- 存储原始音频文件到[captures](../captures)目录
 - 在资源记忆表(resource_memory)中存储元信息
 - 使用音频处理技术提取特征
 - 为音频内容生成文本描述和向量表示
@@ -49,7 +49,7 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 - 鼠标键盘操作记录
 
 屏幕活动数据通过以下方式处理：
-- 自动捕获屏幕截图并存储到[captures](file:///Users/ranpin/code/mirix-cpp/captures)目录
+- 自动捕获屏幕截图并存储到[captures](../captures)目录
 - 在资源记忆表(resource_memory)中存储元信息
 - 使用OCR技术提取屏幕文本内容
 - 为屏幕内容生成文本描述和向量表示
@@ -121,10 +121,10 @@ MIRIX系统支持处理多种类型的数据模态，包括文本、图像、音
 ## 多模态数据存储
 
 ### 文件存储
-原始多模态数据文件存储在[captures](file:///Users/ranpin/code/mirix-cpp/captures)目录中，按类型分类存储：
-- [captures/images/](file:///Users/ranpin/code/mirix-cpp/captures/images/)：存储图像文件
-- [captures/audio/](file:///Users/ranpin/code/mirix-cpp/captures/audio/)：存储音频文件
-- [captures/screenshots/](file:///Users/ranpin/code/mirix-cpp/captures/screenshots/)：存储屏幕截图
+原始多模态数据文件存储在[captures](../captures)目录中，按类型分类存储：
+- [captures/images/](../captures/images/)：存储图像文件
+- [captures/audio/](../captures/audio/)：存储音频文件
+- [captures/screenshots/](../captures/screenshots/)：存储屏幕截图
 
 ### 元信息存储
 多模态数据的元信息存储在resource_memory表中，包括：

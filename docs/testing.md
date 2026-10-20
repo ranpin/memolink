@@ -4,7 +4,7 @@
 
 MIRIX系统包含完整的测试套件，用于验证各个模块的功能和整体系统的集成。测试分为单元测试、集成测试和系统测试三个层次。
 
-所有测试程序生成的数据库文件都统一存储在项目根目录下的[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中，避免了在build目录中创建数据库文件的问题。
+所有测试程序生成的数据库文件都统一存储在项目根目录下的[database](../src/database)目录中，避免了在build目录中创建数据库文件的问题。
 
 ## 测试策略
 
@@ -137,10 +137,10 @@ CLIP处理器测试程序。
 
 ## 测试数据库
 
-为了避免测试数据污染主系统数据库，每个测试程序都会创建独立的测试数据库，存储在[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中，文件名根据测试程序命名，例如：
-- [test_chat_with_model.db](file:///Users/ranpin/code/mirix-cpp/database/test_chat_with_model.db)
-- [test_embedding.db](file:///Users/ranpin/code/mirix-cpp/database/test_embedding.db)
-- [system_initialization_test.db](file:///Users/ranpin/code/mirix-cpp/database/system_initialization_test.db)
+为了避免测试数据污染主系统数据库，每个测试程序都会创建独立的测试数据库，存储在[database](../src/database)目录中，文件名根据测试程序命名，例如：
+- [test_chat_with_model.db](../database/test_chat_with_model.db)
+- [test_embedding.db](../database/test_embedding.db)
+- [system_initialization_test.db](../database/system_initialization_test.db)
 
 ## 运行测试
 
@@ -172,14 +172,14 @@ make test
 
 ### 1. 测试文件重构
 对测试文件进行了重构，删除了冗余和过时的测试文件：
-- 删除了[test_system_comprehensive.cpp](file:///Users/ranpin/code/mirix-cpp/test/test_system_comprehensive.cpp)占位符文件
-- 合并了功能重复的测试文件到[test_system_initialization.cpp](file:///Users/ranpin/code/mirix-cpp/test/test_system_initialization.cpp)
+- 删除了[test_system_comprehensive.cpp](../test/test_system_comprehensive.cpp)占位符文件
+- 合并了功能重复的测试文件到[test_system_initialization.cpp](../test/test_system_initialization.cpp)
 
 ### 2. 核心测试文件保留
 保留了以下核心测试文件：
-- [test_embedding_functionality.cpp](file:///Users/ranpin/code/mirix-cpp/test/test_embedding_functionality.cpp)：基础嵌入功能测试
-- [test_embedding_comprehensive.cpp](file:///Users/ranpin/code/mirix-cpp/test/test_embedding_comprehensive.cpp)：综合嵌入功能测试
-- [test_vector_serializer.cpp](file:///Users/ranpin/code/mirix-cpp/test/test_vector_serializer.cpp)：向量序列化测试
+- [test_embedding_functionality.cpp](../test/test_embedding_functionality.cpp)：基础嵌入功能测试
+- [test_embedding_comprehensive.cpp](../test/test_embedding_comprehensive.cpp)：综合嵌入功能测试
+- [test_vector_serializer.cpp](../test/test_vector_serializer.cpp)：向量序列化测试
 
 ### 3. 测试文件组织
 测试文件按照功能进行组织，避免功能重复和冗余：

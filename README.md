@@ -1,8 +1,13 @@
-# MIRIX - 多模态交互记忆系统
+# MIRIX-CPP - 多模态 Agent 记忆系统
 
 ## 项目概述
 
-MIRIX是一个先进的多模态交互记忆系统，旨在模拟人类记忆机制，实现对文本、图像、音频等多种模态信息的存储、检索和关联。该系统采用C++开发，结合现代AI技术，为用户提供智能记忆管理服务。
+MIRIX-CPP 是一个 C++ 实现的多模态 Agent 记忆系统，模拟人类记忆机制，实现对文本、图像、音频等多种模态信息的存储、检索和关联。记忆分层架构（Core / Episodic / Semantic / Procedural / Resource / Knowledge Vault，外加 Recall 回忆记忆）参考自开源项目 [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX)（Apache-2.0），本仓库是其 C++ 侧实现与多模态采集扩展。
+
+**定位与边界（如实说明）**：
+- 这是一个**桌面端**（macOS/Linux）的 Agent 记忆系统，不是端侧/嵌入式部署——无量化、无受限硬件、无内存/热预算。
+- 推理后端是**配置级二选一**：本地 OpenAI 兼容 sidecar（`config.ini` 的 `local_url`）或云端 DashScope（Qwen），由 `QwenAPI` 在启动时按配置选定，**不是端云融合路由**。
+- 向量检索目前是**对 SQLite 中存储的 embedding 做暴力余弦相似度**（见 `src/models/VectorSearchManager.cpp`）；`EmbeddingIndexManager` 中的 FAISS 方法仍为占位符，尚未接入真正的 FAISS 索引。
 
 ## 系统架构
 
@@ -83,8 +88,11 @@ mirix-cpp/
 - JsonCpp
 - PortAudio
 - OpenCV
-- FAISS (Facebook AI Similarity Search)
-- Qt5（可选，仅在需要构建 GUI 目标时）
+
+> **FAISS 不是构建依赖**：当前向量检索走 SQLite 上的暴力余弦相似度，未链接 FAISS
+> （`EmbeddingIndexManager` 里的 FAISS 方法仍是占位符，接入是后续工作）。
+> **Qt5 目前也不需要**：GUI 目标 `mirix_gui` 的入口 `src/gui_main.cpp` 尚未提供，
+> 该目标已在 CMake 中注释停用。
 
 ### 构建步骤
 

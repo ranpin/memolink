@@ -4,7 +4,7 @@
 
 MIRIX系统使用SQLite作为主要的数据存储解决方案，实现了完整的数据库设计来支持仿人类记忆系统的各种功能。系统包含多个表来存储不同类型的记忆信息，并通过专门的管理器类来操作这些数据。
 
-所有数据库文件统一存储在项目根目录下的[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中，避免了在build目录中创建数据库文件的问题。
+所有数据库文件统一存储在项目根目录下的[database](../src/database)目录中，避免了在build目录中创建数据库文件的问题。
 
 ## 数据库表结构
 
@@ -187,7 +187,7 @@ MIRIX系统使用SQLite作为主要的数据存储解决方案，实现了完整
 
 ## 数据库初始化
 
-系统通过InitDB类来初始化数据库，包括创建表结构和索引。数据库文件统一存储在项目根目录下的[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中，确保数据持久化且不会因构建目录清理而丢失。
+系统通过InitDB类来初始化数据库，包括创建表结构和索引。数据库文件统一存储在项目根目录下的[database](../src/database)目录中，确保数据持久化且不会因构建目录清理而丢失。
 
 ## 存储管理
 
@@ -199,7 +199,7 @@ MIRIX系统使用SQLite作为主要的数据存储解决方案，实现了完整
 
 ## 测试数据库
 
-为了避免测试数据污染主系统数据库，每个测试程序都会创建独立的测试数据库，存储在[database](file:///Users/ranpin/code/mirix-cpp/src/database)目录中，文件名根据测试程序命名，例如：
-- [test_chat_with_model.db](file:///Users/ranpin/code/mirix-cpp/database/test_chat_with_model.db)
-- [test_embedding.db](file:///Users/ranpin/code/mirix-cpp/database/test_embedding.db)
-- [system_initialization_test.db](file:///Users/ranpin/code/mirix-cpp/database/system_initialization_test.db)
+为了避免测试数据污染主系统数据库，每个测试程序都会创建独立的测试数据库，存储在[database](../src/database)目录中，文件名根据测试程序命名，例如：
+- [test_chat_with_model.db](../database/test_chat_with_model.db)
+- [test_embedding.db](../database/test_embedding.db)
+- [system_initialization_test.db](../database/system_initialization_test.db)
