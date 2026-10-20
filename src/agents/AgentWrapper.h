@@ -1,5 +1,6 @@
 #ifndef AGENT_WRAPPER_H
 #define AGENT_WRAPPER_H
+#include <algorithm>
 
 // AgentWrapper - 主控代理封装，管理所有代理的生命周期
 

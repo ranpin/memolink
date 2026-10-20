@@ -1,3 +1,4 @@
+#include <vector>
 #include "APIServer.h"
 #include "../database/managers/UserManager.h"
 #include "../agents/AgentManager.h"

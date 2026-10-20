@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "SemanticMemoryManager.h"
 #include "../core/StorageManager.h"
 #include <sqlite3.h>

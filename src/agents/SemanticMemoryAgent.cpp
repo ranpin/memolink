@@ -1,3 +1,4 @@
+#include <string>
 #include "SemanticMemoryAgent.h"
 #include "../database/managers/SemanticMemoryManager.h"
 #include <iostream>

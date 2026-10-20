@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "MemoryOrchestrator.h"
 #include "../../models/EmbeddingIndexManager.h"
 #include <iostream>

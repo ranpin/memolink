@@ -1,3 +1,5 @@
+#include <stdexcept>
+#include <string>
 #include "ModelManager.h"
 #include <iostream>
 #include <vector>

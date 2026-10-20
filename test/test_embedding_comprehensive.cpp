@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <string>
 #include "models/TextEmbeddingGenerator.h"
 #include "models/VectorSearchManager.h"
 #include "models/ModelManager.h"

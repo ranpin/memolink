@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <stdexcept>
 #include "models/ModelManager.h"
 #include "database/core/StorageManager.h"
 #include "database/managers/RecallMemoryManager.h"

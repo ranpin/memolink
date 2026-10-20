@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "GUIManager.h"
 #include <iostream>
 

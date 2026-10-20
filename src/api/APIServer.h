@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 
 #include "../database/core/StorageManager.h"
 #include "../database/managers/UserManager.h"

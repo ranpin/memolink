@@ -1,3 +1,4 @@
+#include <string>
 #include "models/CLIPProcessor.h"
 #include "capture/MultimodalDataManager.h"
 #include "database/initialization/InitDB.h"

@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "VisualizationManager.h"
 #include <iostream>
 #include <sstream>

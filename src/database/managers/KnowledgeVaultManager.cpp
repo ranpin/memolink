@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "KnowledgeVaultManager.h"
 #include "../core/TransactionManager.h"
 #include <sqlite3.h>

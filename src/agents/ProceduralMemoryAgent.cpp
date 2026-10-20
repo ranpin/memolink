@@ -1,3 +1,4 @@
+#include <string>
 #include "ProceduralMemoryAgent.h"
 #include "../database/managers/ProceduralMemoryManager.h"
 #include <iostream>

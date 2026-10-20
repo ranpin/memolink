@@ -1,3 +1,8 @@
+#include <cmath>
+#include <algorithm>
+#include <utility>
+#include <vector>
+#include <string>
 #include "RecallMemoryManager.h"
 #include "../core/StorageManager.h"
 #include <iostream>

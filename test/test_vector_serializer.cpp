@@ -1,3 +1,5 @@
+#include <cmath>
+#include <string>
 #include "utils/VectorSerializer.h"
 #include <iostream>
 #include <vector>

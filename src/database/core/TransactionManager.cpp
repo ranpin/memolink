@@ -1,3 +1,4 @@
+#include <string>
 #include "TransactionManager.h"
 #include <iostream>
 

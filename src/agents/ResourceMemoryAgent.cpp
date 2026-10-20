@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "ResourceMemoryAgent.h"
 #include "../database/managers/ResourceMemoryManager.h"
 #include "../utils/TimeUtils.h"

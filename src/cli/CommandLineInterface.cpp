@@ -1,3 +1,5 @@
+#include <string>
+#include <memory>
 #include "CommandLineInterface.h"
 #include "../database/initialization/ConfigManager/ConfigManager.h"
 #include <iostream>

@@ -1,3 +1,4 @@
+#include <string>
 #include "EpisodicMemoryAgent.h"
 #include "../database/managers/EpisodicMemoryManager.h"
 #include "../utils/TimeUtils.h"

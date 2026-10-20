@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 
 #include "../database/core/StorageManager.h"
 #ifdef MIRIX_HAS_CLIP

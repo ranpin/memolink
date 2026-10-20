@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <stdexcept>
+#include <string>
 #include "QwenAPI.h"
 #include "../database/initialization/ConfigManager/ConfigManager.h"
 #include <curl/curl.h>

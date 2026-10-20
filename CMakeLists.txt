@@ -27,10 +27,10 @@ option(MIRIX_ENABLE_EDGE    "Orin 端侧本地推理（ONNX Runtime C API）" ON
 find_package(PkgConfig REQUIRED)
 find_package(SQLite3 REQUIRED)
 find_package(CURL REQUIRED)
-find_package(jsoncpp REQUIRED)
-if(NOT jsoncpp_FOUND)
-    pkg_check_modules(JSONCPP REQUIRED jsoncpp)
-endif()
+# jsoncpp：find_package(jsoncpp) 成功时只给 imported target、**不设 JSONCPP_INCLUDE_DIRS**，
+# 而源码用 #include <json/json.h>，需要 /usr/include/jsoncpp 在 include 路径上
+# （Ubuntu 的 jsoncpp.pc 正是给 -I/usr/include/jsoncpp）。故统一走 pkg-config。
+pkg_check_modules(JSONCPP REQUIRED jsoncpp)
 
 # 注：OpenSSL 曾是 REQUIRED，但全仓 grep `openssl/` 零命中（HTTPS 由 libcurl 内部处理），
 # 故不再要求——少一个端侧构建依赖。
@@ -49,14 +49,27 @@ endif()
 if(MIRIX_ENABLE_EDGE)
     set(MIRIX_ONNXRUNTIME_ROOT "$ENV{HOME}/chenrunbin/deps/onnxruntime-linux-aarch64-1.31.0"
         CACHE PATH "onnxruntime release 解压根目录（含 include/ 与 lib/）")
-    set(_ort_api_header "${MIRIX_ONNXRUNTIME_ROOT}/include/onnxruntime/core/session/onnxruntime_c_api.h")
-    if(NOT EXISTS "${_ort_api_header}")
-        message(FATAL_ERROR
-            "MIRIX_ENABLE_EDGE=ON 但找不到 ${_ort_api_header}\n"
-            "请下载 onnxruntime linux-aarch64 release 并用 "
-            "-DMIRIX_ONNXRUNTIME_ROOT=<解压目录> 指定，或 -DMIRIX_ENABLE_EDGE=OFF。")
+    # 官方 release 包是**平铺**布局：include/onnxruntime_c_api.h
+    # 源码树才是 include/onnxruntime/core/session/onnxruntime_c_api.h —— 两种都兼容。
+    set(_ort_inc "${MIRIX_ONNXRUNTIME_ROOT}/include")
+    if(NOT EXISTS "${_ort_inc}/onnxruntime_c_api.h")
+        if(EXISTS "${_ort_inc}/onnxruntime/core/session/onnxruntime_c_api.h")
+            set(_ort_inc "${_ort_inc}/onnxruntime/core/session")
+        else()
+            message(FATAL_ERROR
+                "MIRIX_ENABLE_EDGE=ON 但找不到 onnxruntime_c_api.h\n"
+                "  已查 ${MIRIX_ONNXRUNTIME_ROOT}/include/onnxruntime_c_api.h\n"
+                "  以及 ${MIRIX_ONNXRUNTIME_ROOT}/include/onnxruntime/core/session/onnxruntime_c_api.h\n"
+                "请下载 onnxruntime linux-aarch64 release，用 -DMIRIX_ONNXRUNTIME_ROOT=<解压目录> 指定，"
+                "或 -DMIRIX_ENABLE_EDGE=OFF。")
+        endif()
     endif()
-    include_directories("${MIRIX_ONNXRUNTIME_ROOT}/include/onnxruntime/core/session")
+    message(STATUS "onnxruntime headers: ${_ort_inc}")
+    include_directories("${_ort_inc}")
+    # release 包的 include/core/ 下还有被上面那些头 include 的文件
+    if(IS_DIRECTORY "${MIRIX_ONNXRUNTIME_ROOT}/include/core")
+        include_directories("${MIRIX_ONNXRUNTIME_ROOT}/include/core")
+    endif()
     link_directories("${MIRIX_ONNXRUNTIME_ROOT}/lib")
 endif()
 
@@ -207,10 +220,11 @@ endif()
 #    所以这两个显式写映射，其余同名的才用 foreach。
 
 # ---- 始终构建（不依赖采集 / CLIP）----
+# 注：test/test_initialize_memories.cpp 没有 main()（既有缺陷，main 分支的 CMake
+#     也一直把它当可执行文件构建、实际从未链接成功），故不纳入构建目标。
 set(MIRIX_ALWAYS_TESTS
     test_vector_serializer
     test_system_initialization
-    test_initialize_memories
     test_embedding_comprehensive
     test_chat_with_model
 )

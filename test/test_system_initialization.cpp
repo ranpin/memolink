@@ -1,3 +1,4 @@
+#include <string>
 #include <iostream>
 #include <filesystem>
 #include "database/initialization/InitDB.h"

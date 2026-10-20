@@ -1,3 +1,6 @@
+#include <utility>
+#include <vector>
+#include <string>
 #include "ResourceMemoryManager.h"
 #include "../core/StorageManager.h"
 #include <iostream>

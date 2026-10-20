@@ -1,3 +1,5 @@
+#include <string>
+#include <memory>
 #include "AgentWrapper.h"
 #include "ChatAgent.h"
 #include <iostream>

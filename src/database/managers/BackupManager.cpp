@@ -1,3 +1,4 @@
+#include <string>
 #include "BackupManager.h"
 #include "../core/StorageManager.h"
 #include <sqlite3.h>

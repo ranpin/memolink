@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "CoreMemoryAgent.h"
 #include <iostream>
 

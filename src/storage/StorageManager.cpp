@@ -1,3 +1,4 @@
+#include <string>
 // 已移至 src/database/core/StorageManager.cpp
 #include "StorageManager.h"
 #include <iostream>

@@ -1,3 +1,7 @@
+#include <stdexcept>
+#include <vector>
+#include <string>
+#include <memory>
 #include "TextEmbeddingGenerator.h"
 #include "QwenAPI.h"
 #include <iostream>

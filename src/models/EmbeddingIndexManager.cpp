@@ -1,3 +1,6 @@
+#include <utility>
+#include <vector>
+#include <string>
 #include "EmbeddingIndexManager.h"
 #include <iostream>
 #include <sstream>

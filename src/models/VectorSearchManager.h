@@ -1,5 +1,6 @@
 #ifndef VECTOR_SEARCH_MANAGER_H
 #define VECTOR_SEARCH_MANAGER_H
+#include <algorithm>
 
 #include "../database/managers/RecallMemoryManager.h"
 #include "../database/managers/ResourceMemoryManager.h"

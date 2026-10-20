@@ -1,5 +1,6 @@
 #ifndef EMBEDDING_INDEX_MANAGER_H
 #define EMBEDDING_INDEX_MANAGER_H
+#include <utility>
 
 #include <string>
 #include <vector>

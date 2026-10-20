@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 
 // CommandLineInterface - 命令行界面，提供与用户交互的命令行接口
 

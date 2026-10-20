@@ -1,3 +1,6 @@
+#include <vector>
+#include <string>
+#include <memory>
 #include "VectorSearchManager.h"
 #ifdef MIRIX_HAS_CLIP
 #include "CLIPProcessor.h"

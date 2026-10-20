@@ -1,3 +1,7 @@
+#include <utility>
+#include <vector>
+#include <string>
+#include <memory>
 #include "MultimodalDataManager.h"
 #include "../utils/TimeUtils.h"
 #include "../utils/VectorSerializer.h"

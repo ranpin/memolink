@@ -1,4 +1,6 @@
 #pragma once
+#include <algorithm>
+#include <vector>
 
 #include "CameraCaptureManager.h"
 #include "AudioCaptureManager.h"

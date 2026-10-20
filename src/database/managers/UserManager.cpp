@@ -1,3 +1,4 @@
+#include <string>
 #include "UserManager.h"
 #include "../core/StorageManager.h"
 #include <iostream>

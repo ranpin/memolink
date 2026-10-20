@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "ConfigManager.h"
 #include <fstream>
 #include <iostream>

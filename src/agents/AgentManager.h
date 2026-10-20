@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 
 // AgentManager - 代理管理器，负责创建和管理所有代理实例
 

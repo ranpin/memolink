@@ -1,3 +1,6 @@
+#include <utility>
+#include <vector>
+#include <string>
 #include "CoreMemoryBlockManager.h"
 #include <sqlite3.h>
 #include <iostream>

@@ -1,3 +1,5 @@
+#include <string>
+#include <memory>
 #include "AgentManager.h"
 #include "../database/managers/UserManager.h"
 #include "../database/managers/SessionManager.h"

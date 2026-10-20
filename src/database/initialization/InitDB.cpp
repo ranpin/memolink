@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "InitDB.h"
 #include "../core/StorageManager.h"
 #include <iostream>

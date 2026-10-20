@@ -1,3 +1,5 @@
+#include <vector>
+#include <string>
 #include "SessionManager.h"
 #include "../../utils/TimeUtils.h"
 #include <sqlite3.h>
