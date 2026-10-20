@@ -247,6 +247,10 @@ if(MIRIX_ENABLE_EDGE)
 
     add_executable(test_edge_embedding test/test_edge_embedding.cpp)
     target_link_libraries(test_edge_embedding mirix_lib)
+
+    # P3：记忆编排（写入/跨类型检索/敏感标记/实时写入/分类型 FIFO 淘汰）
+    add_executable(test_memory_orchestrator test/test_memory_orchestrator.cpp)
+    target_link_libraries(test_memory_orchestrator mirix_lib)
 endif()
 
 # ---- 依赖多模态采集 / CLIP（随 MIRIX_ENABLE_CAPTURE 开关）----
