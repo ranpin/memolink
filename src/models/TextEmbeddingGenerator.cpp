@@ -26,10 +26,12 @@ TextEmbeddingGenerator::TextEmbeddingGenerator(StorageManager* storage) : storag
     std::cout << "[TextEmbeddingGenerator] 配置的模型: " << model_name << std::endl;
     std::cout << "[TextEmbeddingGenerator] 设置维度为" << embedding_dimension_ << " (" << model_name << ")" << std::endl;
     
-    // 初始化CLIP处理器
+#ifdef MIRIX_HAS_CLIP
+    // 初始化CLIP处理器（仅桌面多模态构建）
     std::cout << "[TextEmbeddingGenerator] 初始化CLIP处理器..." << std::endl;
     clipProcessor_ = std::make_unique<CLIPProcessor>();
     std::cout << "[TextEmbeddingGenerator] CLIP处理器初始化完成" << std::endl;
+#endif
     
     std::cout << "[TextEmbeddingGenerator] 初始化完成，配置维度: " << embedding_dimension_ << std::endl;
 }
@@ -74,7 +76,8 @@ std::vector<float> TextEmbeddingGenerator::generateTextEmbedding(const std::stri
         std::cout << "[TextEmbeddingGenerator] 未配置API密钥，跳过text-embedding-v4模型" << std::endl;
     }
     
-    // 备选用CLIP处理器生成文本embedding
+#ifdef MIRIX_HAS_CLIP
+    // 备选用CLIP处理器生成文本embedding（仅桌面多模态构建）
     if (clipProcessor_) {
         std::cout << "[TextEmbeddingGenerator] 尝试使用CLIP处理器生成文本embedding..." << std::endl;
         try {
@@ -89,6 +92,7 @@ std::vector<float> TextEmbeddingGenerator::generateTextEmbedding(const std::stri
             std::cerr << "[TextEmbeddingGenerator] CLIP文本编码失败: " << e.what() << std::endl;
         }
     }
+#endif
     
     // 生成模拟的嵌入向量
     std::cout << "[TextEmbeddingGenerator] 使用模拟实现生成embedding，维度: " << embedding_dimension_ << std::endl;
@@ -132,7 +136,8 @@ std::vector<float> TextEmbeddingGenerator::generateTextEmbedding(const std::stri
         std::cerr << "[TextEmbeddingGenerator] 回退到CLIP处理器或模拟实现" << std::endl;
     }
     
-    // 备选用CLIP处理器生成文本embedding
+#ifdef MIRIX_HAS_CLIP
+    // 备选用CLIP处理器生成文本embedding（仅桌面多模态构建）
     if (clipProcessor_) {
         std::cout << "[TextEmbeddingGenerator] 尝试使用CLIP处理器生成文本embedding..." << std::endl;
         try {
@@ -147,6 +152,7 @@ std::vector<float> TextEmbeddingGenerator::generateTextEmbedding(const std::stri
             std::cerr << "[TextEmbeddingGenerator] CLIP文本编码失败: " << e.what() << std::endl;
         }
     }
+#endif
     
     // 生成模拟的嵌入向量
     std::cout << "[TextEmbeddingGenerator] 使用模拟实现生成embedding，维度: " << embedding_dimension_ << std::endl;
@@ -187,7 +193,8 @@ std::string TextEmbeddingGenerator::generateImageDescription(const std::string& 
         std::cout << "[TextEmbeddingGenerator] 未提供StorageManager，跳过qwen-omni模型" << std::endl;
     }
     
-    // 使用CLIP处理器生成图像描述（作为备选方案）
+#ifdef MIRIX_HAS_CLIP
+    // 使用CLIP处理器生成图像描述（作为备选方案，仅桌面多模态构建）
     if (clipProcessor_) {
         std::cout << "[TextEmbeddingGenerator] 尝试使用CLIP处理器生成图像描述..." << std::endl;
         try {
@@ -206,7 +213,8 @@ std::string TextEmbeddingGenerator::generateImageDescription(const std::string& 
     } else {
         std::cout << "[TextEmbeddingGenerator] CLIP处理器未初始化" << std::endl;
     }
-    
+#endif
+
     // 使用默认图像描述
     std::cout << "[TextEmbeddingGenerator] 使用默认图像描述" << std::endl;
     return "这是一张图片，但未生成具体描述";
@@ -232,7 +240,8 @@ std::string TextEmbeddingGenerator::generateImageDescription(const std::string& 
         std::cerr << "[TextEmbeddingGenerator] qwen-omni模型图像描述生成失败: " << e.what() << std::endl;
     }
     
-    // 使用CLIP处理器生成图像描述（作为备选方案）
+#ifdef MIRIX_HAS_CLIP
+    // 使用CLIP处理器生成图像描述（作为备选方案，仅桌面多模态构建）
     if (clipProcessor_) {
         std::cout << "[TextEmbeddingGenerator] 尝试使用CLIP处理器生成图像描述..." << std::endl;
         try {
@@ -247,7 +256,8 @@ std::string TextEmbeddingGenerator::generateImageDescription(const std::string& 
             std::cerr << "[TextEmbeddingGenerator] CLIP图像描述生成失败: " << e.what() << std::endl;
         }
     }
-    
+#endif
+
     // 如果所有方法都失败，返回默认描述
     std::cout << "[TextEmbeddingGenerator] 使用默认图像描述" << std::endl;
     return "这是一张图片，但未生成具体描述";

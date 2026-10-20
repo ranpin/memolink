@@ -1,5 +1,7 @@
 #include "VectorSearchManager.h"
+#ifdef MIRIX_HAS_CLIP
 #include "CLIPProcessor.h"
+#endif
 #include "TextEmbeddingGenerator.h"
 #include <algorithm>
 #include <cmath>
@@ -15,12 +17,14 @@ VectorSearchManager::VectorSearchManager(StorageManager& storage)
       resourceMemoryManager_(storage),
       textEmbeddingGenerator_(&storage) {
     std::cout << "[VectorSearchManager] 初始化..." << std::endl;
-    
-    // 初始化CLIP处理器
+
+#ifdef MIRIX_HAS_CLIP
+    // 初始化CLIP处理器（仅桌面多模态构建；端侧文本记忆不需要）
     std::cout << "[VectorSearchManager] 初始化CLIP处理器..." << std::endl;
     clipProcessor_ = std::make_unique<CLIPProcessor>();
     std::cout << "[VectorSearchManager] CLIP处理器初始化完成" << std::endl;
-    
+#endif
+
     std::cout << "[VectorSearchManager] 初始化完成" << std::endl;
 }
 
@@ -37,8 +41,9 @@ std::vector<float> VectorSearchManager::generateTextEmbedding(const std::string&
     } else {
         std::cout << "[VectorSearchManager] TextEmbeddingGenerator返回空embedding，尝试其他方法..." << std::endl;
     }
-    
-    // 备选用CLIP处理器生成文本embedding
+
+#ifdef MIRIX_HAS_CLIP
+    // 备选用CLIP处理器生成文本embedding（仅桌面多模态构建）
     if (clipProcessor_) {
         std::cout << "[VectorSearchManager] 尝试使用CLIP处理器生成查询文本embedding..." << std::endl;
         try {
@@ -53,7 +58,8 @@ std::vector<float> VectorSearchManager::generateTextEmbedding(const std::string&
             std::cerr << "[VectorSearchManager] CLIP文本编码失败: " << e.what() << std::endl;
         }
     }
-    
+#endif
+
     // 如果所有方法都失败，返回空向量
     std::cout << "[VectorSearchManager] 所有方法都失败，返回空embedding" << std::endl;
     return {};

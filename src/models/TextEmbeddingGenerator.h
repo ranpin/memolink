@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../database/core/StorageManager.h"
+#ifdef MIRIX_HAS_CLIP
 #include "CLIPProcessor.h"
+#endif
 #include "ModelManager.h"
 #include <string>
 #include <vector>
@@ -10,7 +12,9 @@
 class TextEmbeddingGenerator {
 private:
     StorageManager* storage_;
+#ifdef MIRIX_HAS_CLIP
     std::unique_ptr<CLIPProcessor> clipProcessor_;
+#endif
     int embedding_dimension_;
 
 public:

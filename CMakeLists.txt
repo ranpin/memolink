@@ -4,57 +4,93 @@ project(MIRIX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 查找依赖库
+# ============================================================================
+# 构建形态开关（orin-edge 分支）
+# ----------------------------------------------------------------------------
+# 端侧记忆系统默认只编核心：database / models / agents / utils / storage。
+# 桌面专属部分（多模态采集 + CLIP、Qt GUI、HTTP API server + CLI）默认关闭，
+# **代码一律保留不删**，需要时用开关打开：
+#
+#   端侧（Orin，默认）：  cmake ..
+#   桌面（Mac，全功能）：  cmake .. -DMIRIX_ENABLE_CAPTURE=ON \
+#                                   -DMIRIX_ENABLE_GUI=ON -DMIRIX_ENABLE_API=ON
+#
+# 关掉 CAPTURE 同时也就不需要 OpenCV / PortAudio；关掉 GUI 不需要 Qt5。
+# 这样端侧构建的依赖面只剩 sqlite3 + curl + jsoncpp（+ EDGE 的 onnxruntime）。
+# ============================================================================
+option(MIRIX_ENABLE_CAPTURE "相机/音频/截屏采集 + CLIP 多模态（需 OpenCV、PortAudio）" OFF)
+option(MIRIX_ENABLE_GUI     "Qt GUI（需 Qt5 Widgets/Core/Gui）" OFF)
+option(MIRIX_ENABLE_API     "HTTP API server + 命令行交互（需 CAPTURE 提供的多模态入口）" OFF)
+option(MIRIX_ENABLE_EDGE    "Orin 端侧本地推理（ONNX Runtime C API）" ON)
+
+# ---------- 必需依赖 ----------
 find_package(PkgConfig REQUIRED)
-find_package(OpenSSL REQUIRED)
-find_package(Qt5 COMPONENTS Widgets Core Gui OPTIONAL_COMPONENTS)
-
-# 查找SQLite3
 find_package(SQLite3 REQUIRED)
-
-# 查找cURL
 find_package(CURL REQUIRED)
-
-# 查找JsonCpp
 find_package(jsoncpp REQUIRED)
 if(NOT jsoncpp_FOUND)
     pkg_check_modules(JSONCPP REQUIRED jsoncpp)
 endif()
 
-# 查找PortAudio
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(PORTAUDIO REQUIRED portaudio-2.0)
+# 注：OpenSSL 曾是 REQUIRED，但全仓 grep `openssl/` 零命中（HTTPS 由 libcurl 内部处理），
+# 故不再要求——少一个端侧构建依赖。
 
-# 查找OpenCV
-find_package(OpenCV REQUIRED)
+# ---------- 可选依赖（随开关）----------
+if(MIRIX_ENABLE_CAPTURE)
+    find_package(OpenCV REQUIRED)
+    pkg_check_modules(PORTAUDIO REQUIRED portaudio-2.0)
+endif()
 
-# 注：向量检索目前是对 SQLite 中存储的 embedding 做暴力余弦相似度
-# （见 src/models/VectorSearchManager.cpp），并未链接 FAISS。
-# EmbeddingIndexManager 里的 FAISS 方法仍是占位符，待后续接入；
-# 因此这里不再把 faiss 当作 REQUIRED 依赖去查找——否则没装 FAISS 连 configure 都过不了。
+if(MIRIX_ENABLE_GUI)
+    find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
+endif()
 
-# 包含目录
+# ---------- 端侧推理：ONNX Runtime（官方 release 包，含 C 头 + 库）----------
+if(MIRIX_ENABLE_EDGE)
+    set(MIRIX_ONNXRUNTIME_ROOT "$ENV{HOME}/chenrunbin/deps/onnxruntime-linux-aarch64-1.31.0"
+        CACHE PATH "onnxruntime release 解压根目录（含 include/ 与 lib/）")
+    set(_ort_api_header "${MIRIX_ONNXRUNTIME_ROOT}/include/onnxruntime/core/session/onnxruntime_c_api.h")
+    if(NOT EXISTS "${_ort_api_header}")
+        message(FATAL_ERROR
+            "MIRIX_ENABLE_EDGE=ON 但找不到 ${_ort_api_header}\n"
+            "请下载 onnxruntime linux-aarch64 release 并用 "
+            "-DMIRIX_ONNXRUNTIME_ROOT=<解压目录> 指定，或 -DMIRIX_ENABLE_EDGE=OFF。")
+    endif()
+    include_directories("${MIRIX_ONNXRUNTIME_ROOT}/include/onnxruntime/core/session")
+    link_directories("${MIRIX_ONNXRUNTIME_ROOT}/lib")
+endif()
+
+# ---------- include / link 目录 ----------
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${SQLITE3_INCLUDE_DIRS})
-include_directories(${OPENSSL_INCLUDE_DIR})
 include_directories(${CURL_INCLUDE_DIRS})
 include_directories(${JSONCPP_INCLUDE_DIRS})
-include_directories(${PORTAUDIO_INCLUDE_DIRS})
-include_directories(${OpenCV_INCLUDE_DIRS})
-
-# 链接目录
 link_directories(${CURL_LIBRARY_DIRS})
 link_directories(${JSONCPP_LIBRARY_DIRS})
-link_directories(${PORTAUDIO_LIBRARY_DIRS})
-link_directories(${OpenCV_LIBRARY_DIRS})
 
-# 收集源文件（明确列出所有源文件）
+if(MIRIX_ENABLE_CAPTURE)
+    include_directories(${PORTAUDIO_INCLUDE_DIRS})
+    include_directories(${OpenCV_INCLUDE_DIRS})
+    link_directories(${PORTAUDIO_LIBRARY_DIRS})
+    link_directories(${OpenCV_LIBRARY_DIRS})
+endif()
+
+# ============================================================================
+# 源文件
+# ----------------------------------------------------------------------------
+# 注：向量检索是对 SQLite 中存储的 embedding 做暴力余弦相似度
+# （见 src/models/VectorSearchManager.cpp），并未链接 FAISS。
+# EmbeddingIndexManager 里的 FAISS 方法仍是占位符；F2 实测已证明在 agent 记忆
+# 量级（1e3~1e4）下精确检索足够（0.79ms@1万条、recall 1.0），而 HNSW 建索引要
+# 36s@10万条，故本项目刻意不接 FAISS（连带不需要 Eigen3）。
+# ============================================================================
 set(SOURCES
-    # 核心源文件
+    # ---- 数据库核心 ----
     src/database/core/StorageManager.cpp
     src/database/core/TransactionManager.cpp
     src/database/initialization/InitDB.cpp
     src/database/initialization/ConfigManager/ConfigManager.cpp
+    # ---- 各类型记忆 manager（记忆系统本体，2618 行）----
     src/database/managers/UserManager.cpp
     src/database/managers/SessionManager.cpp
     src/database/managers/CoreMemoryBlockManager.cpp
@@ -69,12 +105,13 @@ set(SOURCES
     src/database/managers/AuditLogManager.cpp
     src/database/managers/VisualizationManager.cpp
     src/database/managers/MemoryOrchestrator.cpp
+    # ---- 模型接口 ----
     src/models/ModelManager.cpp
     src/models/QwenAPI.cpp
     src/models/TextEmbeddingGenerator.cpp
     src/models/VectorSearchManager.cpp
     src/models/EmbeddingIndexManager.cpp
-    src/models/CLIPProcessor.cpp
+    # ---- Agent ----
     src/agents/AgentManager.cpp
     src/agents/AgentWrapper.cpp
     src/agents/ChatAgent.cpp
@@ -84,109 +121,130 @@ set(SOURCES
     src/agents/ProceduralMemoryAgent.cpp
     src/agents/ResourceMemoryAgent.cpp
     src/agents/KnowledgeVaultAgent.cpp
-    src/capture/CameraCaptureManager.cpp
-    src/capture/AudioCaptureManager.cpp
-    src/capture/ScreenActivityTracker.cpp
-    src/capture/SystemEventManager.cpp
-    src/capture/MultimodalDataManager.cpp
+    # ---- 工具 / 存储 ----
     src/utils/VectorSerializer.cpp
     src/utils/TimeUtils.cpp
-    src/cli/CommandLineInterface.cpp
-    src/api/APIServer.cpp
-    src/gui/GUIManager.cpp
     src/storage/StorageManager.cpp
-    
-    # 测试程序
-    test/test_embedding_functionality.cpp
-    test/test_vector_serializer.cpp
-    test/test_embedding_comprehensive.cpp
-    test/test_clip_processor.cpp
-    test/test_chat_with_model.cpp
-    test/test_chat_with_auto_capture.cpp
-    test/test_system_initialization.cpp
 )
 
-# 移除重复的测试源文件
-list(REMOVE_ITEM SOURCES 
-    src/test_comprehensive.cpp
-    src/test_multimodal_integration.cpp
-    src/test_real_embedding.cpp
-    src/test_real_model_integration.cpp
-    src/test_system_comprehensive.cpp
-    src/test_text_embedding_generator.cpp
-    src/test_vector_search_manager.cpp
-    src/test_vector_search_real_model.cpp
-)
+# ---- 桌面专属：多模态采集 + CLIP（需 OpenCV / PortAudio）----
+if(MIRIX_ENABLE_CAPTURE)
+    list(APPEND SOURCES
+        src/models/CLIPProcessor.cpp
+        src/capture/CameraCaptureManager.cpp
+        src/capture/AudioCaptureManager.cpp
+        src/capture/ScreenActivityTracker.cpp
+        src/capture/SystemEventManager.cpp
+        src/capture/MultimodalDataManager.cpp
+    )
+endif()
 
-# 处理Objective-C++源文件（如果存在）
-if(APPLE)
-    # 查找Objective-C++源文件
-    file(GLOB_RECURSE OBJCPP_SOURCES "src/*.mm")
+# ---- 桌面专属：HTTP API server + CLI ----
+# CommandLineInterface.h include 了 ../api/APIServer.h，故 CLI 随 API 一起开关。
+if(MIRIX_ENABLE_API)
+    list(APPEND SOURCES
+        src/api/APIServer.cpp
+        src/cli/CommandLineInterface.cpp
+    )
+endif()
+
+# ---- 桌面专属：Qt GUI ----
+if(MIRIX_ENABLE_GUI)
+    list(APPEND SOURCES src/gui/GUIManager.cpp)
+endif()
+
+# ---- Objective-C++（仅 macOS 截屏，属 CAPTURE）----
+if(APPLE AND MIRIX_ENABLE_CAPTURE)
+    file(GLOB_RECURSE OBJCPP_SOURCES "src/capture/*.mm")
     if(OBJCPP_SOURCES)
         list(APPEND SOURCES ${OBJCPP_SOURCES})
     endif()
 endif()
 
-# 创建静态库
+# ============================================================================
+# 静态库
+# ============================================================================
 add_library(mirix_lib STATIC ${SOURCES})
-target_link_libraries(mirix_lib 
+
+# VectorSearchManager 里的 CLIP 回退路径用这个宏隔离（CLIPProcessor 依赖 OpenCV
+# 且通过 popen 调 Python，端侧构建不需要也不应该有）
+if(MIRIX_ENABLE_CAPTURE)
+    target_compile_definitions(mirix_lib PUBLIC MIRIX_HAS_CLIP=1)
+endif()
+if(MIRIX_ENABLE_EDGE)
+    target_compile_definitions(mirix_lib PUBLIC MIRIX_HAS_EDGE=1)
+endif()
+
+target_link_libraries(mirix_lib
     SQLite::SQLite3
-    ${OPENSSL_LIBRARIES}
     ${CURL_LIBRARIES}
     ${JSONCPP_LIBRARIES}
-    jsoncpp  # 添加这一行以确保正确链接JsonCPP库
-    ${PORTAUDIO_LIBRARIES}
-    ${OpenCV_LIBS}
-    ${FAISS_LIBRARIES}
+    jsoncpp
 )
+if(MIRIX_ENABLE_CAPTURE)
+    target_link_libraries(mirix_lib ${PORTAUDIO_LIBRARIES} ${OpenCV_LIBS})
+endif()
+if(MIRIX_ENABLE_EDGE)
+    target_link_libraries(mirix_lib onnxruntime)
+endif()
 
-if(APPLE)
-    if(TARGET mirix_lib AND OBJCPP_SOURCES)
+if(APPLE AND MIRIX_ENABLE_CAPTURE)
+    if(OBJCPP_SOURCES)
         set_source_files_properties(${OBJCPP_SOURCES} PROPERTIES LANGUAGE CXX)
     endif()
-    
-    # 为使用屏幕捕获功能的可执行文件链接ApplicationServices框架
+    # 屏幕捕获需要 ApplicationServices
     target_link_libraries(mirix_lib "-framework ApplicationServices")
 endif()
 
-# 创建可执行文件并链接
+# ============================================================================
+# 可执行文件
+# ----------------------------------------------------------------------------
+# 不依赖采集/CLIP 的测试始终构建；依赖的随 MIRIX_ENABLE_CAPTURE 开关。
+# ============================================================================
+# ⚠️ 有两个目标名与源文件名不一致，不能靠 test/${t}.cpp 拼：
+#      test_embedding       ← test/test_embedding_functionality.cpp
+#      real_multimodal_demo ← test/test_real_multimodal_demo.cpp
+#    所以这两个显式写映射，其余同名的才用 foreach。
 
-add_executable(real_multimodal_demo test/test_real_multimodal_demo.cpp)
-target_link_libraries(real_multimodal_demo mirix_lib)
+# ---- 始终构建（不依赖采集 / CLIP）----
+set(MIRIX_ALWAYS_TESTS
+    test_vector_serializer
+    test_system_initialization
+    test_initialize_memories
+    test_embedding_comprehensive
+    test_chat_with_model
+)
+foreach(t ${MIRIX_ALWAYS_TESTS})
+    add_executable(${t} test/${t}.cpp)
+    target_link_libraries(${t} mirix_lib)
+endforeach()
 
-add_executable(initialize_memories test/test_initialize_memories.cpp)
-target_link_libraries(initialize_memories mirix_lib)
+# ---- 依赖多模态采集 / CLIP（随 MIRIX_ENABLE_CAPTURE 开关）----
+if(MIRIX_ENABLE_CAPTURE)
+    add_executable(test_embedding test/test_embedding_functionality.cpp)
+    target_link_libraries(test_embedding mirix_lib)
 
-add_executable(test_embedding test/test_embedding_functionality.cpp)
-target_link_libraries(test_embedding mirix_lib)
+    add_executable(test_clip_processor test/test_clip_processor.cpp)
+    target_link_libraries(test_clip_processor mirix_lib)
 
-add_executable(test_vector_serializer test/test_vector_serializer.cpp)
-target_link_libraries(test_vector_serializer mirix_lib)
+    add_executable(test_chat_with_auto_capture test/test_chat_with_auto_capture.cpp)
+    target_link_libraries(test_chat_with_auto_capture mirix_lib)
 
-add_executable(test_embedding_comprehensive test/test_embedding_comprehensive.cpp)
-target_link_libraries(test_embedding_comprehensive mirix_lib)
+    add_executable(real_multimodal_demo test/test_real_multimodal_demo.cpp)
+    target_link_libraries(real_multimodal_demo mirix_lib)
 
-add_executable(test_clip_processor test/test_clip_processor.cpp)
-target_link_libraries(test_clip_processor mirix_lib)
-
-add_executable(test_chat_with_model test/test_chat_with_model.cpp)
-target_link_libraries(test_chat_with_model mirix_lib)
-
-add_executable(test_chat_with_auto_capture test/test_chat_with_auto_capture.cpp)
-target_link_libraries(test_chat_with_auto_capture mirix_lib)
-
-add_executable(test_initialize_memories test/test_initialize_memories.cpp)
-target_link_libraries(test_initialize_memories mirix_lib)
-
-# 添加新的测试可执行文件
-add_executable(test_system_initialization test/test_system_initialization.cpp)
-target_link_libraries(test_system_initialization mirix_lib)
+    set(MIRIX_CAPTURE_TESTS
+        test_embedding
+        test_clip_processor
+        test_chat_with_auto_capture
+        real_multimodal_demo
+    )
+endif()
 
 # GUI 可执行文件
 # 注：GUI 入口 src/gui_main.cpp 与 MacOSXBundleInfo.plist.in 目前并不存在
-# （src/gui/ 下只有 GUIManager.cpp/.h），若 Qt5 被找到，这段会让 configure 直接失败。
-# 先注释掉，等补上 gui_main.cpp 再启用。
-# if(Qt5_FOUND)
+# （src/gui/ 下只有 GUIManager.cpp/.h），补上之后再启用这段。
+# if(MIRIX_ENABLE_GUI)
 #     add_executable(mirix_gui WIN32 src/gui_main.cpp)
 #     target_link_libraries(mirix_gui mirix_lib Qt5::Widgets Qt5::Core Qt5::Gui)
 #     if(APPLE)
@@ -197,32 +255,37 @@ target_link_libraries(test_system_initialization mirix_lib)
 #     endif()
 # endif()
 
+# ============================================================================
 # 安装规则
-install(TARGETS real_multimodal_demo initialize_memories test_embedding test_vector_serializer test_embedding_comprehensive test_clip_processor test_chat_with_model test_chat_with_auto_capture test_initialize_memories test_system_initialization
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
+# ============================================================================
+install(TARGETS mirix_lib
     ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
 )
+install(TARGETS ${MIRIX_ALWAYS_TESTS}
+    RUNTIME DESTINATION bin
+)
+if(MIRIX_ENABLE_CAPTURE)
+    install(TARGETS ${MIRIX_CAPTURE_TESTS}
+        RUNTIME DESTINATION bin
+    )
+endif()
 
-# 添加测试
-enable_testing()
-
-add_test(NAME test_embedding_comprehensive COMMAND test_embedding_comprehensive)
-add_test(NAME test_embedding COMMAND test_embedding)
-add_test(NAME test_vector_serializer COMMAND test_vector_serializer)
-add_test(NAME test_clip_processor COMMAND test_clip_processor)
-add_test(NAME test_chat_with_model COMMAND test_chat_with_model)
-add_test(NAME test_chat_with_auto_capture COMMAND test_chat_with_auto_capture)
-add_test(NAME test_system_initialization COMMAND test_system_initialization)
-add_test(NAME test_initialize_memories COMMAND test_initialize_memories)
-add_test(NAME test_real_multimodal_demo COMMAND test_real_multimodal_demo)
-
-
-# 安装头文件
-install(DIRECTORY src/ 
+install(DIRECTORY src/
     DESTINATION include/mirix
     FILES_MATCHING PATTERN "*.h"
 )
-
-# 安装配置文件
 install(FILES config.ini DESTINATION etc)
+
+# ============================================================================
+# 测试
+# ============================================================================
+enable_testing()
+foreach(t ${MIRIX_ALWAYS_TESTS})
+    add_test(NAME ${t} COMMAND ${t})
+endforeach()
+if(MIRIX_ENABLE_CAPTURE)
+    foreach(t ${MIRIX_CAPTURE_TESTS})
+        add_test(NAME ${t} COMMAND ${t})
+    endforeach()
+endif()

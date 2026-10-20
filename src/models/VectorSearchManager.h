@@ -10,7 +10,11 @@
 #include <memory>
 
 // 前置声明
+// CLIP 处理器依赖 OpenCV 且通过 popen 调 Python，只在桌面多模态构建（MIRIX_ENABLE_CAPTURE）
+// 里编入；端侧文本记忆构建用 MIRIX_HAS_CLIP 宏整体隔离掉。
+#ifdef MIRIX_HAS_CLIP
 class CLIPProcessor;
+#endif
 
 // 混合检索结果结构
 struct HybridSearchResult {
@@ -29,7 +33,9 @@ private:
     RecallMemoryManager recallMemoryManager_;
     ResourceMemoryManager resourceMemoryManager_;
     TextEmbeddingGenerator textEmbeddingGenerator_;
+#ifdef MIRIX_HAS_CLIP
     std::unique_ptr<CLIPProcessor> clipProcessor_;
+#endif
 
     float cosineSimilarity(const std::vector<float>& a, const std::vector<float>& b);
     float calculateTimeScore(const std::string& timestamp);
