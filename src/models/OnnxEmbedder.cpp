@@ -36,9 +36,22 @@ bool OnnxEmbedder::load(const std::string& model_path, int intra_threads) {
             auto nm = impl_->session->GetOutputNameAllocated(i, impl_->allocator);
             impl_->output_names.emplace_back(nm.get());
         }
+        // 探测输出维度，让 dim() 在 run() 之前就可查——TextEmbeddingGenerator
+        // 构造时就要用它设 embedding_dimension_，不能等到第一次推理。
+        // 优先看 sentence_embedding（[N,dim]），否则 last_hidden_state（[N,seq,dim]）。
+        size_t oi = 0;
+        for (size_t i = 0; i < impl_->output_names.size(); ++i) {
+            if (impl_->output_names[i] == "sentence_embedding") { oi = i; break; }
+        }
+        auto ti = impl_->session->GetOutputTypeInfo(oi);
+        auto shp = ti.GetTensorTypeAndShapeInfo().GetShape();
+        if (shp.size() == 2 && shp[1] > 0) dim_ = static_cast<int>(shp[1]);
+        else if (shp.size() == 3 && shp[2] > 0) dim_ = static_cast<int>(shp[2]);
+
         std::cerr << "[OnnxEmbedder] loaded " << model_path
                   << " inputs=" << impl_->input_names.size()
-                  << " outputs=" << impl_->output_names.size() << std::endl;
+                  << " outputs=" << impl_->output_names.size()
+                  << " dim=" << dim_ << std::endl;
         return true;
     } catch (const std::exception& e) {
         std::cerr << "[OnnxEmbedder] load failed: " << e.what() << std::endl;

@@ -5,6 +5,10 @@
 #ifdef MIRIX_HAS_CLIP
 #include "CLIPProcessor.h"
 #endif
+#ifdef MIRIX_HAS_EDGE
+#include "OnnxEmbedder.h"
+#include "WordPieceTokenizer.h"
+#endif
 #include "ModelManager.h"
 #include <string>
 #include <vector>
@@ -15,6 +19,14 @@ private:
     StorageManager* storage_;
 #ifdef MIRIX_HAS_CLIP
     std::unique_ptr<CLIPProcessor> clipProcessor_;
+#endif
+#ifdef MIRIX_HAS_EDGE
+    // 端侧本地 embedding：自写 WordPiece 分词 + ONNX Runtime 原生推理。
+    // config.ini 的 [edge] 两个路径都配上才会启用；启用后 generateTextEmbedding
+    // 走本地、不再打云端 DashScope text-embedding 接口。
+    std::unique_ptr<WordPieceTokenizer> edgeTokenizer_;
+    std::unique_ptr<OnnxEmbedder> edgeEmbedder_;
+    bool edge_ready_ = false;
 #endif
     int embedding_dimension_;
 

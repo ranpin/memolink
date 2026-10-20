@@ -36,14 +36,57 @@ TextEmbeddingGenerator::TextEmbeddingGenerator(StorageManager* storage) : storag
     clipProcessor_ = std::make_unique<CLIPProcessor>();
     std::cout << "[TextEmbeddingGenerator] CLIP处理器初始化完成" << std::endl;
 #endif
-    
+
+#ifdef MIRIX_HAS_EDGE
+    // 端侧本地 embedding：config.ini [edge] 两个路径都配上才启用。
+    // 启用后 generateTextEmbedding 走本地 ONNX，不再打云端 text-embedding 接口。
+    {
+        const std::string model_path = config_manager.getEdgeEmbeddingModelPath();
+        const std::string tok_path = config_manager.getEdgeTokenizerPath();
+        if (!model_path.empty() && !tok_path.empty()) {
+            edgeTokenizer_ = std::make_unique<WordPieceTokenizer>();
+            edgeEmbedder_ = std::make_unique<OnnxEmbedder>();
+            if (edgeTokenizer_->load(tok_path) &&
+                edgeEmbedder_->load(model_path, config_manager.getEdgeEmbeddingThreads())) {
+                edge_ready_ = true;
+                embedding_dimension_ = edgeEmbedder_->dim();  // 以实际模型维度为准
+                std::cout << "[TextEmbeddingGenerator] 端侧 ONNX embedding 就绪，维度 "
+                          << embedding_dimension_ << std::endl;
+            } else {
+                std::cerr << "[TextEmbeddingGenerator] 端侧 embedding 加载失败，回退云端/模拟" << std::endl;
+                edgeTokenizer_.reset();
+                edgeEmbedder_.reset();
+            }
+        }
+    }
+#endif
+
     std::cout << "[TextEmbeddingGenerator] 初始化完成，配置维度: " << embedding_dimension_ << std::endl;
 }
 
 std::vector<float> TextEmbeddingGenerator::generateTextEmbedding(const std::string& text) {
     std::cout << "[TextEmbeddingGenerator] 开始生成文本embedding..." << std::endl;
     std::cout << "[TextEmbeddingGenerator] 输入文本长度: " << text.length() << " 字符" << std::endl;
-    
+
+#ifdef MIRIX_HAS_EDGE
+    // 端侧本地 ONNX embedding 优先（config.ini [edge] 两个路径都配上才启用）。
+    // 注：BGE 建议 query 侧加检索指令前缀，但本接口无法区分 query/memory，
+    // 故统一不加前缀（对称编码）；前缀优化留到 P4 检索评测按需引入。
+    if (edge_ready_) {
+        std::vector<int> ids = edgeTokenizer_->encode(text, 128);
+        std::vector<std::vector<int64_t>> ids_b{std::vector<int64_t>(ids.begin(), ids.end())};
+        std::vector<std::vector<int64_t>> mask_b{std::vector<int64_t>(ids.size(), 1)};
+        std::vector<std::vector<int64_t>> tt_b{std::vector<int64_t>(ids.size(), 0)};
+        std::vector<std::vector<float>> vecs = edgeEmbedder_->run(ids_b, mask_b, tt_b);
+        if (!vecs.empty() && !vecs[0].empty()) {
+            std::cout << "[TextEmbeddingGenerator] 端侧 ONNX embedding 成功，维度: "
+                      << vecs[0].size() << std::endl;
+            return vecs[0];
+        }
+        std::cerr << "[TextEmbeddingGenerator] 端侧 embedding 失败，回退云端/模拟" << std::endl;
+    }
+#endif
+
     // 优先使用text-embedding-v4模型生成文本embedding（通过Qwen API）
     const char* api_key = std::getenv("DASHSCOPE_API_KEY");
     if (api_key && strlen(api_key) > 0) {

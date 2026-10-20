@@ -186,3 +186,22 @@ std::string ConfigManager::getMultimodalModelName() const {
 void ConfigManager::setMultimodalModelName(const std::string& modelName) {
     setConfig("model.multimodal_model_name", modelName);
 }
+
+// 端侧推理配置（仅 MIRIX_ENABLE_EDGE 构建使用）
+std::string ConfigManager::getEdgeEmbeddingModelPath() const {
+    return getConfig("edge.embedding_model_path", "");
+}
+
+std::string ConfigManager::getEdgeTokenizerPath() const {
+    return getConfig("edge.tokenizer_path", "");
+}
+
+int ConfigManager::getEdgeEmbeddingThreads() const {
+    const std::string v = getConfig("edge.embedding_threads", "4");
+    try {
+        const int n = std::stoi(v);
+        return n > 0 ? n : 4;
+    } catch (...) {
+        return 4;
+    }
+}

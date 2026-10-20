@@ -240,10 +240,13 @@ foreach(t ${MIRIX_ALWAYS_TESTS})
     target_link_libraries(${t} mirix_lib)
 endforeach()
 
-# 端侧 ONNX embedding 对拍工具（依赖 onnxruntime，随 EDGE 开关）
+# 端侧 ONNX embedding 对拍工具 + TextEmbeddingGenerator 接线验证（依赖 onnxruntime，随 EDGE 开关）
 if(MIRIX_ENABLE_EDGE)
     add_executable(test_embed_parity test/test_embed_parity.cpp)
     target_link_libraries(test_embed_parity mirix_lib)
+
+    add_executable(test_edge_embedding test/test_edge_embedding.cpp)
+    target_link_libraries(test_edge_embedding mirix_lib)
 endif()
 
 # ---- 依赖多模态采集 / CLIP（随 MIRIX_ENABLE_CAPTURE 开关）----

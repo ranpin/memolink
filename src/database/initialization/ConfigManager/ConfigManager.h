@@ -42,6 +42,12 @@ public:
     
     std::string getMultimodalModelName() const;
     void setMultimodalModelName(const std::string& modelName);
+
+    // 端侧推理配置（仅 MIRIX_ENABLE_EDGE 构建使用）
+    // 两个路径都非空时，文本 embedding 走本地 ONNX，不再走云端 DashScope。
+    std::string getEdgeEmbeddingModelPath() const;
+    std::string getEdgeTokenizerPath() const;
+    int getEdgeEmbeddingThreads() const;
 };
 
 #endif // CONFIG_MANAGER_H
