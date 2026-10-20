@@ -1,0 +1,4 @@
+# 占位文件：保证 database/ 目录随仓库存在。
+# 代码不会自动创建该目录，而 SQLite 也不会创建父目录——
+# 缺了它，新克隆构建后运行会报 "unable to open database file"。
+# 数据库文件本身（*.db）由 .gitignore 排除，不入库。
