@@ -31,7 +31,7 @@ find_package(OpenCV REQUIRED)
 # 注：向量检索目前是对 SQLite 中存储的 embedding 做暴力余弦相似度
 # （见 src/models/VectorSearchManager.cpp），并未链接 FAISS。
 # EmbeddingIndexManager 里的 FAISS 方法仍是占位符，待后续接入；
-# 因此这里不再 find_package(faiss REQUIRED)——否则没装 FAISS 连 configure 都过不了。
+# 因此这里不再把 faiss 当作 REQUIRED 依赖去查找——否则没装 FAISS 连 configure 都过不了。
 
 # 包含目录
 include_directories(${CMAKE_SOURCE_DIR}/src)
