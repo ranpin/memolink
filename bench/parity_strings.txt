@@ -1,0 +1,25 @@
+hello world
+用户喜欢深蓝色的车
+空调调到22度
+你好，世界！
+真的吗？？
+12345
+为这个句子生成表示以用于检索相关文章：用户喜欢什么颜色的车？
+车辆上次保养是 2026 年 8 月，里程 12000 公里。
+用户住在杭州西湖区，家庭地址已存入导航常用地点。
+我有点冷
+把座椅加热开到三档
+导航回家
+今天天气不错啊。
+ mixed 中英文 mixed 测试 
+A,B,,C...D
+（括号）【方括号】《书名号》
+emoji测试🎬演示
+tab	分隔
+多个   空格
+Very long sentence that should be tokenized into many wordpiece tokens including some subwords like tokenization and internationalization
+数字123和字母abc混排
+标点符号：分号；冒号:逗号,句号.问号?感叹号!
+ünïcödé àccénts
+日本語のテキスト
+한국어 텍스트

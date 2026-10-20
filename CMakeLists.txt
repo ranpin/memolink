@@ -124,6 +124,7 @@ set(SOURCES
     src/models/TextEmbeddingGenerator.cpp
     src/models/VectorSearchManager.cpp
     src/models/EmbeddingIndexManager.cpp
+    src/models/WordPieceTokenizer.cpp
     # ---- Agent ----
     src/agents/AgentManager.cpp
     src/agents/AgentWrapper.cpp
@@ -227,6 +228,7 @@ set(MIRIX_ALWAYS_TESTS
     test_system_initialization
     test_embedding_comprehensive
     test_chat_with_model
+    test_tokenizer_parity
 )
 foreach(t ${MIRIX_ALWAYS_TESTS})
     add_executable(${t} test/${t}.cpp)
