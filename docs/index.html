@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>端侧 Agent 记忆系统 · Jetson Orin</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🧠</text></svg>">
+<link rel="stylesheet" href="https://ranpin.github.io/demo-shell.css">
+<script src="https://ranpin.github.io/theme.js"></script>
+<style>
+  .eam-badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:.95rem 0 0}
+  .eam-badge{font-size:12px;color:var(--ds-accent-strong);background:var(--ds-accent-soft);
+    border:1px solid var(--ds-accent-ring);padding:3px 11px;border-radius:999px}
+  .eam-badge.green{color:#047857;background:#ecfdf5;border-color:#a7f3d0}
+  [data-theme="dark"] .eam-badge.green{color:#6ee7b7;background:#06301f;border-color:#065f46}
+  .eam-badge.warn{color:var(--ds-warn);background:var(--ds-warn-soft);border-color:var(--ds-warn-ring)}
+  .sec-note{color:var(--ds-muted);font-size:13.5px;margin:0 0 16px;line-height:1.6}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:4px 0 0}
+  @media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);
+    padding:16px 14px;text-align:center}
+  .stat .v{font-size:24px;font-weight:700;color:var(--ds-accent);line-height:1.1;font-variant-numeric:tabular-nums}
+  .stat .v small{font-size:13px;font-weight:600}
+  .stat .k{font-size:12px;color:var(--ds-muted);margin-top:6px;line-height:1.4}
+
+  .tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 0;
+    background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);overflow:hidden}
+  .tbl th,.tbl td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--ds-border);font-variant-numeric:tabular-nums}
+  .tbl th{background:var(--ds-code-bg);font-weight:600;font-size:12.5px;color:var(--ds-muted)}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl td.num{text-align:right}
+  .tbl .hl{color:var(--ds-accent-strong);font-weight:700}
+  .tbl-wrap{overflow-x:auto}
+
+  .arch{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:var(--ds-radius);
+    padding:16px;overflow-x:auto;margin:6px 0 0}
+  .arch pre{margin:0;font-family:var(--ds-mono);font-size:12px;line-height:1.6;color:var(--ds-text);background:none;border:none;padding:0}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:6px 0 0}
+  @media (max-width:720px){.cols{grid-template-columns:1fr}}
+  .card{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:16px}
+  .card h3{font-size:13px;font-weight:700;margin:0 0 8px;color:var(--ds-accent-strong)}
+  .card .f{font-size:11.5px;color:var(--ds-faint);font-family:var(--ds-mono);margin:0 0 8px;word-break:break-all}
+  .card p{font-size:13px;color:var(--ds-muted);margin:0;line-height:1.6}
+
+  .limits{counter-reset:l;margin:6px 0 0;padding:0;list-style:none}
+  .limits li{counter-increment:l;position:relative;padding:10px 12px 10px 40px;margin:8px 0;
+    background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:10px;font-size:13.5px;line-height:1.6}
+  .limits li::before{content:counter(l);position:absolute;left:12px;top:10px;width:20px;height:20px;
+    border-radius:50%;background:var(--ds-warn-soft);color:var(--ds-warn);border:1px solid var(--ds-warn-ring);
+    font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+  pre.cmd{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:10px;
+    padding:14px 16px;overflow-x:auto;font-family:var(--ds-mono);font-size:12.5px;line-height:1.65;margin:6px 0 0}
+  code{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:5px;padding:1px 6px;
+    font-family:var(--ds-mono);font-size:12.5px;color:var(--ds-accent-strong)}
+  .note{font-size:12.5px;color:var(--ds-faint);margin-top:12px;line-height:1.55}
+</style>
+</head>
+<body>
+  <header class="ds-header">
+    <div class="ds-header__inner">
+      <div class="ds-header__row">
+        <a class="ds-home" href="https://ranpin.github.io/">← 返回主页</a>
+        <h1>端侧 Agent 记忆系统</h1>
+        <button class="ds-theme-btn" type="button" onclick="toggleTheme()" aria-label="切换明暗主题"><span class="ds-theme-icon">🌙</span></button>
+      </div>
+      <p class="ds-header__sub">在 Jetson Orin 上离线跑通的 Agent 记忆系统——<b>写入 → 本地编码 → 跨类型检索 → 分类型有界淘汰</b>，全程不依赖云端。C++ 实现，自写分词器与 ONNX 推理，复用 mirix-cpp 的记忆存储层。</p>
+      <div class="eam-badges">
+        <span class="eam-badge green">Jetson Orin · 全程离线</span>
+        <span class="eam-badge">三域零改码</span>
+        <span class="eam-badge">recall@4 ≥ 0.967</span>
+        <span class="eam-badge">分词对拍 25/25</span>
+        <span class="eam-badge warn">INT8 端侧推理</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="ds-wrap">
+
+    <section class="ds-section" id="results">
+      <h2 class="ds-h2">核心结果</h2>
+      <p class="sec-note">全部数字来自 <code>bench/results/*.json</code>，由仓库内程序在 Orin 上实跑生成、可复现。</p>
+      <div class="stats">
+        <div class="stat"><div class="v">3<small> 域</small></div><div class="k">同一二进制<br>零代码改动</div></div>
+        <div class="stat"><div class="v">1.00<small>00</small></div><div class="k">FP32 对拍余弦<br>C++ vs Python</div></div>
+        <div class="stat"><div class="v">25<small>/25</small></div><div class="k">分词逐 token<br>与 HF 一致</div></div>
+        <div class="stat"><div class="v">11<small>/11</small></div><div class="k">记忆编排<br>测试全过</div></div>
+      </div>
+    </section>
+
+    <section class="ds-section" id="eval">
+      <h2 class="ds-h2">三域检索评测</h2>
+      <p class="sec-note">同一个二进制、同一套代码，只换语料跑通三个域——这是「换域只换语料」的物证。评测对象是<b>记忆检索质量</b>，与 LLM 生成解耦。</p>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>域</th><th class="num">语料</th><th class="num">recall@4</th><th class="num">MRR</th><th class="num">hit@1</th><th class="num">全命中</th></tr></thead>
+        <tbody>
+          <tr><td>座舱 cockpit</td><td class="num">40</td><td class="num">0.9667</td><td class="num hl">1.0000</td><td class="num hl">15/15</td><td class="num">14/15</td></tr>
+          <tr><td>机器人 robot</td><td class="num">25</td><td class="num hl">1.0000</td><td class="num">0.9667</td><td class="num">14/15</td><td class="num hl">15/15</td></tr>
+          <tr><td>自动驾驶 av</td><td class="num">25</td><td class="num hl">1.0000</td><td class="num hl">1.0000</td><td class="num hl">15/15</td><td class="num hl">15/15</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">标注规则：只标真正回答该查询的记忆；查询刻意用改写/口语化表述（非原文关键词），以测语义检索而非字面匹配。</p>
+    </section>
+
+    <section class="ds-section" id="arch">
+      <h2 class="ds-h2">架构</h2>
+      <div class="arch"><pre>┌──────────────────── Jetson Orin（全程离线）────────────────────┐
+│                                                                │
+│  写入 write(type, content, sensitive)                          │
+│    └─ WordPiece 分词 → ONNX INT8 编码 → recall_memory 落库      │
+│       → saveEmbedding → 分类型 FIFO 淘汰                        │
+│                                                                │
+│  检索 retrieve(query, topK)                                    │
+│    └─ 编码查询 → searchByEmbedding（暴力余弦）→ 重算分数 → 排序  │
+│                                                                │
+│  存储：SQLite（recall_memory 带 embedding BLOB）                │
+│  编排：MemoryOrchestrator（原为 4 个空壳，本项目填实）           │
+└────────────────────────────────────────────────────────────────┘</pre></div>
+      <p class="note">记忆类型存进 <code>message_type</code>、敏感标记存进 <code>metadata</code>，从而复用 mirix-cpp 原有的 ~2,600 行记忆存储层（manager / StorageManager / InitDB schema），未改动。</p>
+    </section>
+
+    <section class="ds-section" id="components">
+      <h2 class="ds-h2">端侧三件套（本项目新写）</h2>
+      <div class="cols">
+        <div class="card">
+          <h3>① C++ WordPiece 分词器</h3>
+          <p class="f">src/models/WordPieceTokenizer</p>
+          <p>自写 UTF-8 解码 + BertNormalizer + BertPreTokenizer + WordPiece 贪心，配置读自 tokenizer.json。不依赖 Rust tokenizers。与 HF 逐 token 对拍 25/25 一致。</p>
+        </div>
+        <div class="card">
+          <h3>② ONNX Runtime C++ 推理</h3>
+          <p class="f">src/models/OnnxEmbedder</p>
+          <p>onnxruntime 原生 C++ API（pImpl 隔离头），跑 bge-small-zh INT8。CPU-only——刻意把 GPU 整块留给 LLM。FP32 对拍 Python 余弦 1.00000000。</p>
+        </div>
+        <div class="card">
+          <h3>③ 记忆编排器</h3>
+          <p class="f">src/database/managers/MemoryOrchestrator</p>
+          <p>原为 4 个空壳（return true/""）。填实为：按类型写入 + 跨类型检索合并 + 实时写入 + 分类型有界 FIFO 淘汰 + 敏感标记传播。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-section" id="quant">
+      <h2 class="ds-h2">INT8 vs FP32：量化对检索的影响</h2>
+      <p class="sec-note">F1 只测了 embedding 余弦（0.99），没测排序会不会翻转。这里直接比 top-k 命中集合。</p>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>域</th><th class="num">顺序完全一致</th><th class="num">集合一致</th><th class="num">recall/MRR/hit@1</th></tr></thead>
+        <tbody>
+          <tr><td>cockpit</td><td class="num">10/15</td><td class="num">11/15</td><td class="num hl">完全相同</td></tr>
+          <tr><td>robot</td><td class="num">11/15</td><td class="num">13/15</td><td class="num hl">完全相同</td></tr>
+          <tr><td>av</td><td class="num">6/15</td><td class="num">10/15</td><td class="num hl">完全相同</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note"><b>结论</b>：聚合指标完全相同，expected id 的排名不变（hit@1 全同）；差异只出现在 top-k 尾部（rank 3-4 的无关项）——这些项本来相似度就接近，INT8 的微小扰动会翻转它们的顺序，但<b>不影响检索质量</b>。</p>
+    </section>
+
+    <section class="ds-section" id="limits">
+      <h2 class="ds-h2">诚实边界</h2>
+      <ol class="limits">
+        <li><b>语料与标注均由本人手写</b>，GT 是自定义的——证明的是「检索能按语义找回该找回的」，不是与公开基准对比。</li>
+        <li><b>检索评测与 LLM 生成解耦</b>：本项目只评测记忆检索质量，不含生成质量评测。</li>
+        <li><b>embedding 走 CPU</b>（onnxruntime 在 Orin 上是 CPU-only），未测 GPU embedding。</li>
+        <li><b>INT8 量化来自 onnx-community 的预量化模型</b>，非本项目量化。</li>
+        <li><b>单设备、未测热降频与功耗</b>；数字是冷启动/短负载下的。</li>
+      </ol>
+    </section>
+
+    <section class="ds-section" id="run">
+      <h2 class="ds-h2">复现</h2>
+      <div class="card">
+<pre class="cmd">sudo apt install -y libsqlite3-dev libcurl4-openssl-dev libjsoncpp-dev
+# config.ini 的 [edge] 段填上 model_quantized.onnx 与 tokenizer.json 路径
+mkdir build && cd build
+cmake .. -DMIRIX_ENABLE_EDGE=ON && make -j8 test_retrieval_eval
+./test_retrieval_eval ../bench/corpus/cockpit.json ../bench/eval/cockpit_eval.json eval.db out.json 4</pre>
+        <p class="note">代码与完整文档见 <a href="https://github.com/ranpin/mirix-cpp/tree/orin-edge">github.com/ranpin/mirix-cpp（orin-edge 分支）</a>。记忆分层架构参考自 <a href="https://github.com/Mirix-AI/MIRIX">Mirix-AI/MIRIX</a>（Apache-2.0）。</p>
+      </div>
+    </section>
+
+    <footer class="ds-footer">
+      MIRIX-CPP · 端侧 Agent 记忆系统（Jetson Orin，全程离线实测）<br>
+      代码见 <a href="https://github.com/ranpin/mirix-cpp">github.com/ranpin/mirix-cpp</a>
+    </footer>
+  </div>
+</body>
+</html>

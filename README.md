@@ -1,173 +1,88 @@
-# MIRIX-CPP - 多模态 Agent 记忆系统
+# MIRIX-CPP — 端侧 Agent 记忆系统（Jetson Orin）
 
-## 项目概述
+> 🎬 **在线演示**：<https://ranpin.github.io/mirix-cpp/>
 
-MIRIX-CPP 是一个 C++ 实现的多模态 Agent 记忆系统，模拟人类记忆机制，实现对文本、图像、音频等多种模态信息的存储、检索和关联。记忆分层架构（Core / Episodic / Semantic / Procedural / Resource / Knowledge Vault，外加 Recall 回忆记忆）参考自开源项目 [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX)（Apache-2.0），本仓库是其 C++ 侧实现与多模态采集扩展。
+在 **Jetson Orin** 上离线跑通的 Agent 记忆系统：**写入 → 本地编码 → 跨类型检索 → 分类型有界淘汰**，全程不依赖云端。记忆分层架构参考自开源项目 [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX)（Apache-2.0），本仓库在其 C++ 记忆存储层之上，新写了端侧推理与记忆编排。
 
-**定位与边界（如实说明）**：
-- 这是一个**桌面端**（macOS/Linux）的 Agent 记忆系统，不是端侧/嵌入式部署——无量化、无受限硬件、无内存/热预算。
-- 推理后端是**配置级二选一**：本地 OpenAI 兼容 sidecar（`config.ini` 的 `local_url`）或云端 DashScope（Qwen），由 `QwenAPI` 在启动时按配置选定，**不是端云融合路由**。
-- 向量检索目前是**对 SQLite 中存储的 embedding 做暴力余弦相似度**（见 `src/models/VectorSearchManager.cpp`）；`EmbeddingIndexManager` 中的 FAISS 方法仍为占位符，尚未接入真正的 FAISS 索引。
+## 核心结果（Orin 实测）
 
-## 系统架构
+**三域检索评测**——同一个二进制、零代码改动，只换语料跑通三个域：
 
-```
-graph TD
-    A[用户接口层] --> B[模型与AI管理层]
-    B --> C[记忆处理层]
-    C --> D[存储管理层]
-    D --> E[数据库层]
-    
-    F[CLIP模型] --> B
-    G[文本嵌入模型] --> B
-    H[多模态数据处理] --> C
-    I[记忆管理器] --> C
-    J[SQLite数据库] --> E
-    
-    style A fill:#ffe4c4,stroke:#333
-    style B fill:#d8bfd8,stroke:#333
-    style C fill:#98fb98,stroke:#333
-    style D fill:#87ceeb,stroke:#333
-    style E fill:#ffa07a,stroke:#333
-    style F fill:#dda0dd,stroke:#333
-    style G fill:#dda0dd,stroke:#333
-    style H fill:#98fb98,stroke:#333
-    style I fill:#98fb98,stroke:#333
-    style J fill:#ffa07a,stroke:#333
-```
+| 域 | 语料 | recall@4 | MRR | hit@1 |
+|---|---|---|---|---|
+| 座舱 cockpit | 40 条 | 0.9667 | 1.0000 | 15/15 |
+| 机器人 robot | 25 条 | 1.0000 | 0.9667 | 14/15 |
+| 自动驾驶 av | 25 条 | 1.0000 | 1.0000 | 15/15 |
 
-## 项目结构
+**端侧推理对拍**：
 
-```
-mirix-cpp/
-├── CMakeLists.txt              # CMake构建配置文件
-├── README.md                   # 项目说明文档
-├── DETAILS.md                  # 详细设计文档
-├── config.ini                  # 运行配置文件（API/模型/数据库）
-├── captures/                   # 多模态数据捕获目录（运行时生成，不入库）
-│   ├── camera/                 # 摄像头图像捕获存储目录
-│   └── screen/                 # 屏幕截图捕获存储目录
-├── database/                   # 数据库存储目录
-│   └── mirix.db               # 默认SQLite数据库文件
-├── docs/                       # 项目文档目录
-│   ├── architecture.md         # 系统架构文档
-│   ├── database.md             # 数据库设计文档
-│   ├── memory.md               # 记忆系统文档
-│   ├── multimodal.md           # 多模态处理文档
-│   ├── testing.md              # 测试文档
-│   └── improvements.md         # 改进建议文档
-├── models/                     # 模型文件目录（CLIP配置、ONNX模型）
-├── scripts/                    # 辅助脚本（CLIP处理、模型下载）
-├── src/                        # 源代码目录
-│   ├── agents/                 # 智能代理模块
-│   ├── api/                    # API服务模块
-│   ├── capture/                # 多模态数据捕获模块
-│   ├── cli/                    # 命令行交互模块
-│   ├── database/               # 数据库相关模块
-│   │   ├── core/              # 数据库核心模块
-│   │   ├── initialization/    # 数据库初始化模块
-│   │   └── managers/          # 数据库管理器模块
-│   ├── gui/                    # GUI模块
-│   ├── models/                 # AI模型接口模块
-│   ├── storage/                # 存储模块
-│   └── utils/                 # 工具类模块
-├── test_images/                # 测试用图像素材
-└── test/                       # 测试代码目录
-    └── test_*.cpp              # 各类测试程序
-```
+- **C++ WordPiece 分词器**：与 HuggingFace `tokenizers` **逐 token 对拍 25/25 完全一致**（覆盖中英混排/标点/连续标点/emoji/日韩/带音调拉丁）。
+- **ONNX Runtime C++ 推理**：FP32 与 Python onnxruntime **余弦 1.00000000**（max diff 2.9e-7），证明 C++ 实现正确。
+- **INT8 vs FP32 top-k 一致性**：聚合指标（recall@k/MRR/hit@1）**完全相同**；top-k 尾部（rank 3-4 的无关项）会重排，但 expected id 的排名不变（hit@1 全同）⇒ **INT8 保住检索质量，只扰动无关尾部**。
 
+## 端侧三件套（本项目新写）
 
-## 安装与构建
+| 组件 | 文件 | 说明 |
+|---|---|---|
+| C++ WordPiece 分词器 | `src/models/WordPieceTokenizer.{h,cpp}` | 自写 UTF-8 解码 + BertNormalizer + BertPreTokenizer + WordPiece 贪心，配置读自 `tokenizer.json`，不依赖 Rust `tokenizers` |
+| ONNX Runtime C++ 推理 | `src/models/OnnxEmbedder.{h,cpp}` | onnxruntime 原生 C++ API（pImpl 隔离头），跑 bge-small-zh INT8，CPU-only（刻意把 GPU 留给 LLM） |
+| 记忆编排器 | `src/database/managers/MemoryOrchestrator.{h,cpp}` | 写入/跨类型检索/敏感标记传播/实时写入/分类型 FIFO 淘汰 |
 
-### 系统要求
-- C++17 或更高版本
-- CMake 3.10 或更高版本
-- SQLite3
-- OpenSSL
-- cURL
-- JsonCpp
-- PortAudio
-- OpenCV
+**复用的部分**：mirix-cpp 原有的 ~2,600 行记忆存储层（`recall_memory` 等表的 manager、`StorageManager`、`InitDB` schema）原样复用，未改动。
 
-> **FAISS 不是构建依赖**：当前向量检索走 SQLite 上的暴力余弦相似度，未链接 FAISS
-> （`EmbeddingIndexManager` 里的 FAISS 方法仍是占位符，接入是后续工作）。
-> **Qt5 目前也不需要**：GUI 目标 `mirix_gui` 的入口 `src/gui_main.cpp` 尚未提供，
-> 该目标已在 CMake 中注释停用。
+## 跨域可扩展性
 
-### 构建步骤
+三个域用**完全一致的类型体系**（fact / preference / episodic / procedural），只换语料、不改代码。这是「换域只换语料」的物证：
 
-1. 克隆项目仓库：
+- 语料：`bench/corpus/{cockpit,robot,av}.json`
+- 标注评测集：`bench/eval/{cockpit,robot,av}_eval.json`（每条查询带 `expected_ids`）
+- 评测程序：`test/test_retrieval_eval.cpp`（算 recall@k / MRR / hit@1，与 LLM 生成解耦）
+- INT8/FP32 top-k 对比：`bench/compare_topk.py`
+
+## 诚实边界
+
+- **语料与标注均由本人手写**，GT 是自定义的——证明的是「检索能按语义找回该找回的」，不是与公开基准对比。
+- **检索评测与 LLM 生成解耦**：本项目只评测记忆检索质量，不含生成质量评测。
+- **embedding 走 CPU**（onnxruntime 在 Orin 上是 CPU-only），未测 GPU embedding。
+- **INT8 量化来自 onnx-community 的预量化模型**，非本项目量化。
+- **`recall_memory` 有 user/agent/session 外键**，编排器用幂等默认实体行满足约束（不关外键）。
+
+## 构建与复现（Orin）
+
 ```bash
-git clone <repository_url>
-cd mirix-cpp
+# 依赖：sqlite3 / curl / jsoncpp 开发头（apt）；onnxruntime aarch64 release
+sudo apt install -y libsqlite3-dev libcurl4-openssl-dev libjsoncpp-dev
+
+# config.ini 的 [edge] 段填上模型与分词器路径
+#   embedding_model_path = .../model_quantized.onnx   (INT8)
+#   tokenizer_path       = .../tokenizer.json
+
+mkdir build && cd build
+cmake .. -DMIRIX_ENABLE_EDGE=ON
+make -j8 test_retrieval_eval test_memory_orchestrator
+
+# 三域检索评测
+./test_retrieval_eval ../bench/corpus/cockpit.json ../bench/eval/cockpit_eval.json eval.db out.json 4
 ```
 
-2. 创建构建目录并进入：
+## 桌面版（多模态采集 / GUI / API）
+
+桌面功能（相机/音频/截屏采集、Qt GUI、HTTP API）通过 CMake 开关保留，默认关闭：
+
 ```bash
-mkdir build
-cd build
+cmake .. -DMIRIX_ENABLE_CAPTURE=ON -DMIRIX_ENABLE_GUI=ON -DMIRIX_ENABLE_API=ON
 ```
 
-3. 运行CMake配置：
-```bash
-cmake ..
-```
+> 桌面版的向量检索走 SQLite 暴力余弦；`EmbeddingIndexManager` 的 FAISS 方法仍是占位符。
+> 桌面版定位与边界见 git 历史（`main` 分支）。
 
-4. 编译项目：
-```bash
-make
-```
+## 与 MIRIX 上游的关系
 
-## 使用方法
-
-构建完成后，可以在build目录下找到以下可执行文件：
-
-- `real_multimodal_demo` - 多模态演示程序
-- `initialize_memories` - 初始化记忆系统
-- `test_embedding` - 基础嵌入功能测试
-- `test_vector_serializer` - 向量序列化测试
-- `test_embedding_comprehensive` - 综合嵌入功能测试
-- `test_clip_processor` - CLIP处理器测试
-- `test_chat_with_model` - 模型对话测试
-- `test_chat_with_auto_capture` - 自动捕获功能测试
-- `test_initialize_memories` - 初始化记忆测试
-- `test_system_initialization` - 系统初始化测试
-
-运行任一程序：
-```bash
-./<executable_name>
-```
-
-## 配置说明
-
-项目使用 `config.ini` 文件进行配置，主要配置项包括：
-
-- API密钥设置
-- 模型名称配置
-- 数据库路径设置
-
-确保在运行程序前正确配置该文件。
+记忆分层架构（Core / Episodic / Semantic / Procedural / Resource / Knowledge Vault + Recall）参考自 [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX)（Apache-2.0）。本仓库复用其记忆存储层设计，端侧推理与记忆编排为本仓库新写。
 
 ## 文档
-
-详细的系统文档可以在 `docs/` 目录中找到：
 
 - [架构文档](docs/architecture.md)
 - [数据库设计](docs/database.md)
 - [记忆系统](docs/memory.md)
-- [多模态处理](docs/multimodal.md)
 - [测试说明](docs/testing.md)
-- [改进建议](docs/improvements.md)
-
-## 测试
-
-项目包含完整的测试套件，可以使用以下命令运行测试：
-
-```bash
-make test
-```
-
-或者单独运行某个测试程序：
-```bash
-./<test_executable_name>
-```
