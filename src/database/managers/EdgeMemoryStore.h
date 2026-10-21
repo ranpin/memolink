@@ -71,17 +71,30 @@ public:
     const std::string& embedModelTag() const { return embedModelTag_; }
 
     // ---- 写入（Q1：直接 CREATE；Q2 加五操作消解）----
+    // validFrom 留空则用 datetime('now')；Q3 基准载入 episodic 记忆时显式传事件时间，
+    // 供 recallTyped 的时间衰减用。
     IngestResult ingestText(const std::string& text, MemoryType type,
                             const std::string& owner = "user",
                             const std::string& scope = "private",
                             const std::string& authority = "asserted",
                             const std::string& sourceSession = "",
-                            int sourceTurn = 0);
+                            int sourceTurn = 0,
+                            const std::string& validFrom = "");
 
     // ---- 检索 ----
     std::vector<Memory> recall(const std::string& query, int topK = 4,
                                std::optional<MemoryType> filter = std::nullopt,
                                bool includeHistory = false);
+
+    // ---- Q3：类型特化检索（docs/memory_v2_design.md §7）----
+    // detectQueryIntent：关键词判查询意图（优先级 episodic > procedural > semantic）。
+    // recallTyped：按意图给同类型记忆加权（×kTypeBoost）+ episodic 时间衰减后重排；
+    //   对照基线是 recall()（纯余弦、全类型一起搜、不加权）。
+    static MemoryType detectQueryIntent(const std::string& query);
+    std::vector<Memory> recallTyped(const std::string& query, int topK = 4,
+                                    bool includeHistory = false);
+    static constexpr float kTypeBoost = 1.6f;         // 同类型加权系数
+    static constexpr float kEpisodicTauDays = 365.f;  // episodic 时间衰减时间常数（天）
 
     // ---- Q2：供消解器（MemoryResolver）用的无副作用接口 ----
     // embedText：embed() 的公开包装。

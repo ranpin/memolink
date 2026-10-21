@@ -1,0 +1,57 @@
+{
+  "_comment": "Q3 类型特化检索基准。对照「单一策略基线（纯余弦，全类型一起搜）」与「类型特化（查询意图识别 + 同类型加权 + episodic 时间衰减）」的 Recall@1。",
+  "_design": "语料 24 条，semantic/episodic/procedural 各 8，刻意让同一话题跨类型出现（保养=事件e9+技能p17；充电=事件e11+技能p23+事实s2；轮胎=事实s5+技能p24+事件e16；空调=偏好s3+技能p18+p22；通勤=事实s6+事件e13/e14+技能p21；座椅加热=技能p18+p20+偏好s3）。查询带明确意图，期望命中=真正回答该查询的记忆。跨类型干扰项让纯余弦可能把错类型的近邻排到第一，类型路由把它压下去——这正是要测的提升点。",
+  "_labeling_rule": "intent = 查询的类型意图（episodic 问过去事件/时间、procedural 问怎么做、semantic 问事实/偏好值）。expected_ids 只标真正回答该查询的记忆。⚠️ 语料与标注均本人手写，GT 自定义——证明的是「类型路由能否按意图找回对类型的记忆」，不是与公开基准对比。",
+  "_intent_keywords": "episodic: 上次/什么时候/最近/今天/上周/几天前/上个月/还记得；procedural: 怎么/如何/怎么办/做什么/步骤/流程/方法；semantic: 默认（是什么/我喜欢/多少/偏好）",
+  "now": "2026-10-21",
+  "corpus": [
+    {"id": 1,  "type": "semantic",   "text": "用户喜欢深蓝色的车，尤其是深蓝和墨蓝这两种。"},
+    {"id": 2,  "type": "semantic",   "text": "车辆是纯电动 SUV，电池容量 100 度，满电续航约 620 公里。"},
+    {"id": 3,  "type": "semantic",   "text": "空调偏好：夏季 22 度、风量 2 档，喜欢开座椅通风。"},
+    {"id": 4,  "type": "semantic",   "text": "用户住在杭州西湖区，家庭地址已存入导航常用地点。"},
+    {"id": 5,  "type": "semantic",   "text": "轮胎规格是 255/45 R20，建议胎压 2.5 bar。"},
+    {"id": 6,  "type": "semantic",   "text": "用户通勤路线固定：从西湖区到滨江，早高峰约 40 分钟。"},
+    {"id": 7,  "type": "semantic",   "text": "用户喜欢把驾驶模式设为舒适模式，动能回收调到中。"},
+    {"id": 8,  "type": "semantic",   "text": "车机流量套餐每月 20G，主要用在音乐和导航上。"},
+
+    {"id": 9,  "type": "episodic", "ts": "2026-08-15", "text": "车辆上次保养是 2026 年 8 月，里程 12000 公里，在 4S 店做的。"},
+    {"id": 10, "type": "episodic", "ts": "2026-10-15", "text": "用户上周参加了一次车友会自驾活动，去了莫干山。"},
+    {"id": 11, "type": "episodic", "ts": "2026-10-08", "text": "上次充电是在公司楼下快充站，充到 90%，花了 45 分钟。"},
+    {"id": 12, "type": "episodic", "ts": "2026-10-01", "text": "国庆假期用户自驾去了千岛湖，提前查询过路线和充电桩。"},
+    {"id": 13, "type": "episodic", "ts": "2026-09-28", "text": "用户上周五下班路上遇到严重拥堵，改走了之江路。"},
+    {"id": 14, "type": "episodic", "ts": "2026-10-21", "text": "今天早上用户出门晚了，让助手规划了最快路线并提前开启空调。"},
+    {"id": 15, "type": "episodic", "ts": "2026-09-20", "text": "车辆上个月 OTA 升级后新增了城市领航辅助功能。"},
+    {"id": 16, "type": "episodic", "ts": "2026-10-18", "text": "用户三天前补了一次胎，位置在右后轮。"},
+
+    {"id": 17, "type": "procedural", "text": "保养流程：先检查机油，再检查刹车片和轮胎磨损情况。"},
+    {"id": 18, "type": "procedural", "text": "用户说「我有点冷」时应把空调调高两度并打开座椅加热。"},
+    {"id": 19, "type": "procedural", "text": "停车后车机自动关窗、折叠后视镜并开启哨兵模式。"},
+    {"id": 20, "type": "procedural", "text": "用户用语音「把座椅加热开到三档」来打开座椅加热。"},
+    {"id": 21, "type": "procedural", "text": "「导航回家」指令默认走避开高速的路线。"},
+    {"id": 22, "type": "procedural", "text": "「打开露营模式」让空调低功耗运行并关闭锁车提示音。"},
+    {"id": 23, "type": "procedural", "text": "充电流程：先插充电枪，再在车机屏幕确认开始充电。"},
+    {"id": 24, "type": "procedural", "text": "换轮胎步骤：先松螺母，再用千斤顶顶起车身。"}
+  ],
+  "queries": [
+    {"query": "上次保养是什么时候做的", "intent": "episodic",   "expected_ids": [9]},
+    {"query": "最近去哪里自驾玩了", "intent": "episodic",       "expected_ids": [10, 12]},
+    {"query": "上次充电在哪里充的", "intent": "episodic",       "expected_ids": [11]},
+    {"query": "今天早上发生了什么", "intent": "episodic",       "expected_ids": [14]},
+    {"query": "上次补胎是什么时候", "intent": "episodic",       "expected_ids": [16]},
+    {"query": "上周五通勤路上遇到什么情况", "intent": "episodic", "expected_ids": [13]},
+
+    {"query": "怎么做车辆保养", "intent": "procedural",         "expected_ids": [17]},
+    {"query": "我有点冷该怎么办", "intent": "procedural",       "expected_ids": [18]},
+    {"query": "怎么给车充电", "intent": "procedural",           "expected_ids": [23]},
+    {"query": "停车之后车机会自动做什么", "intent": "procedural", "expected_ids": [19]},
+    {"query": "怎么换轮胎", "intent": "procedural",             "expected_ids": [24]},
+    {"query": "怎么打开座椅加热", "intent": "procedural",       "expected_ids": [20]},
+
+    {"query": "我的车是什么颜色偏好", "intent": "semantic",     "expected_ids": [1]},
+    {"query": "空调一般喜欢设多少度", "intent": "semantic",     "expected_ids": [3]},
+    {"query": "轮胎规格和建议胎压是多少", "intent": "semantic", "expected_ids": [5]},
+    {"query": "我固定的通勤路线是什么", "intent": "semantic",   "expected_ids": [6]},
+    {"query": "电池容量和满电续航是多少", "intent": "semantic", "expected_ids": [2]},
+    {"query": "车机流量套餐是多少", "intent": "semantic",       "expected_ids": [8]}
+  ]
+}

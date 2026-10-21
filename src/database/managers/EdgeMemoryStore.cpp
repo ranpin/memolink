@@ -3,6 +3,8 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <cstdio>
+#include <ctime>
 #include <optional>
 #include <sqlite3.h>
 #include "EdgeMemoryStore.h"
@@ -58,6 +60,33 @@ float cosineSim(const std::vector<float>& a, const std::vector<float>& b) {
     }
     if (na <= 0.f || nb <= 0.f) return 0.f;
     return dot / (std::sqrt(na) * std::sqrt(nb));
+}
+
+// 当前 UTC 时间，格式与 SQLite datetime('now') 一致（YYYY-MM-DD HH:MM:SS）。
+// ingestText 的 validFrom 留空时用这个，保证与 datetime('now') 同口径。
+std::string currentUtcTime() {
+    time_t now = time(nullptr);
+    struct tm tmv;
+    gmtime_r(&now, &tmv);
+    char buf[32];
+    strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tmv);
+    return std::string(buf);
+}
+
+// episodic 时间衰减：exp(-age_days / tau)。越近的事件权重越高（§7「时间衰减加权」）。
+// validFrom 形如 "YYYY-MM-DD"（或带时分秒）；解析失败或未来时间一律不衰减（返回 1）。
+float episodicDecay(const std::string& validFrom, float tauDays) {
+    if (validFrom.size() < 10) return 1.0f;
+    struct tm tmv = {};
+    if (sscanf(validFrom.c_str(), "%d-%d-%d", &tmv.tm_year, &tmv.tm_mon, &tmv.tm_mday) != 3)
+        return 1.0f;
+    tmv.tm_year -= 1900;
+    tmv.tm_mon  -= 1;
+    tmv.tm_isdst = -1;
+    const time_t event = mktime(&tmv);
+    if (event == static_cast<time_t>(-1)) return 1.0f;
+    const double ageDays = difftime(time(nullptr), event) / 86400.0;
+    return static_cast<float>(std::exp(-(ageDays < 0 ? 0.0 : ageDays) / tauDays));
 }
 
 // SELECT 的列顺序必须与此处下标严格一致
@@ -139,7 +168,8 @@ std::vector<float> EdgeMemoryStore::embedText(const std::string& text) {
 IngestResult EdgeMemoryStore::ingestText(const std::string& text, MemoryType type,
                                          const std::string& owner, const std::string& scope,
                                          const std::string& authority,
-                                         const std::string& sourceSession, int sourceTurn) {
+                                         const std::string& sourceSession, int sourceTurn,
+                                         const std::string& validFrom) {
     IngestResult result;
     if (text.empty()) {
         result.action = MemoryAction::Failed;
@@ -165,7 +195,7 @@ IngestResult EdgeMemoryStore::ingestText(const std::string& text, MemoryType typ
     static const char* kSql =
         "INSERT INTO memory (type, content, embedding, embed_model, strength, "
         " owner, scope, authority, valid_from, source_session, source_turn) "
-        "VALUES (?, ?, ?, ?, 1.0, ?, ?, ?, datetime('now'), ?, ?);";
+        "VALUES (?, ?, ?, ?, 1.0, ?, ?, ?, ?, ?, ?);";
 
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(db, kSql, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -173,6 +203,7 @@ IngestResult EdgeMemoryStore::ingestText(const std::string& text, MemoryType typ
         result.reason = std::string("prepare failed: ") + sqlite3_errmsg(db);
         return result;
     }
+    const std::string validFromVal = validFrom.empty() ? currentUtcTime() : validFrom;
     sqlite3_bind_text(stmt, 1, memoryTypeName(type), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 2, text.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_blob(stmt, 3, blob.data(), static_cast<int>(blob.size()), SQLITE_TRANSIENT);
@@ -180,8 +211,9 @@ IngestResult EdgeMemoryStore::ingestText(const std::string& text, MemoryType typ
     sqlite3_bind_text(stmt, 5, owner.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 6, scope.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 7, authority.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 8, sourceSession.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_int(stmt, 9, sourceTurn);
+    sqlite3_bind_text(stmt, 8, validFromVal.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 9, sourceSession.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 10, sourceTurn);
 
     const bool ok = (sqlite3_step(stmt) == SQLITE_DONE);
     sqlite3_finalize(stmt);
@@ -254,6 +286,68 @@ std::vector<Memory> EdgeMemoryStore::recall(const std::string& query, int topK,
     std::vector<Memory> results = searchByEmbedding(qemb, topK, filter, includeHistory);
 
     // 命中的记忆 access_count +1（为 Q7 的 LRU/强度衰减留数据）——真实召回的副作用
+    sqlite3* db = storage_.getDatabase();
+    if (db) {
+        sqlite3_stmt* us = nullptr;
+        if (sqlite3_prepare_v2(db, "UPDATE memory SET access_count = access_count + 1 WHERE id = ?",
+                               -1, &us, nullptr) == SQLITE_OK) {
+            for (const auto& m : results) {
+                sqlite3_reset(us);
+                sqlite3_bind_int(us, 1, m.id);
+                sqlite3_step(us);
+            }
+            sqlite3_finalize(us);
+        }
+    }
+    return results;
+}
+
+// ---------------------------------------------------------------------------
+// Q3：类型特化检索（docs/memory_v2_design.md §7）
+// ---------------------------------------------------------------------------
+// 关键词判查询意图，优先级 episodic > procedural > semantic（默认）。
+// 刻意不收「怎样」——它在「路线是怎样的」这类描述性问句里是 semantic 意图，
+// 收进来会把 semantic 查询误判成 procedural（typed_retrieval.json 的 q16 就是为此改写的）。
+MemoryType EdgeMemoryStore::detectQueryIntent(const std::string& query) {
+    static const char* kEpisodic[] = {
+        "上次", "上一次", "什么时候", "何时", "几天前", "前几天", "上周", "上个星期",
+        "昨天", "今天", "今早", "最近", "还记得", "那次", "哪次", "曾经", "之前",
+        "上个月", "刚才", "发生过", "遇到"
+    };
+    static const char* kProcedural[] = {
+        "怎么", "如何", "咋", "怎么办", "该怎么", "方法", "步骤", "流程", "教我",
+        "做什么", "哪些操作", "该如何"
+    };
+    for (const char* kw : kEpisodic)
+        if (query.find(kw) != std::string::npos) return MemoryType::Episodic;
+    for (const char* kw : kProcedural)
+        if (query.find(kw) != std::string::npos) return MemoryType::Procedural;
+    return MemoryType::Semantic;
+}
+
+// 类型特化检索：全类型余弦检索后，按查询意图给同类型记忆加权（×kTypeBoost），
+// episodic 再乘时间衰减，然后重排。对照基线是 recall()（纯余弦、不加权）。
+std::vector<Memory> EdgeMemoryStore::recallTyped(const std::string& query, int topK,
+                                                 bool includeHistory) {
+    const MemoryType intent = detectQueryIntent(query);
+    const std::vector<float> qemb = embed(query);
+    // topK=0 → 取全部，加权重排后再截取
+    std::vector<Memory> all = searchByEmbedding(qemb, 0, std::nullopt, includeHistory);
+
+    for (auto& m : all) {
+        float w = (m.type == intent) ? kTypeBoost : 1.0f;
+        if (m.type == MemoryType::Episodic)
+            w *= episodicDecay(m.validFrom, kEpisodicTauDays);
+        m.score *= w;
+    }
+    std::sort(all.begin(), all.end(),
+              [](const Memory& a, const Memory& b) { return a.score > b.score; });
+
+    const size_t n = (topK > 0) ? std::min<size_t>(all.size(), static_cast<size_t>(topK))
+                                : all.size();
+    std::vector<Memory> results(all.begin(), all.begin() + n);
+
+    // 与 recall 一致：命中的记忆 access_count +1
     sqlite3* db = storage_.getDatabase();
     if (db) {
         sqlite3_stmt* us = nullptr;

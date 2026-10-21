@@ -265,6 +265,10 @@ if(MIRIX_ENABLE_EDGE)
     # Q2：五操作消解（三层判定 + System-1 覆盖率 + 五分类准确率）
     add_executable(test_memory_resolver test/test_memory_resolver.cpp)
     target_link_libraries(test_memory_resolver mirix_lib)
+
+    # Q3：类型特化检索 vs 单一策略基线（hit@1 对照 + 意图识别准确率）
+    add_executable(test_typed_retrieval test/test_typed_retrieval.cpp)
+    target_link_libraries(test_typed_retrieval mirix_lib)
 endif()
 
 # ---- 依赖多模态采集 / CLIP（随 MIRIX_ENABLE_CAPTURE 开关）----

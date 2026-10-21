@@ -1,0 +1,48 @@
+{
+  "_comment": "Q3 类型特化检索基准 v2（硬）。v1（typed_retrieval.json）基线纯余弦已触顶 100%、测不出提升，因为真实查询的意图词恰好和正确类型记忆的措辞相关、embedding 已隐式路由对。v2 专攻 v1 漏测的一半：episodic 时间衰减。",
+  "_design": "4 话题，每话题 4 条：1 semantic（事实/偏好）+ 2 episodic（同一类事件的『近期 vs 久远』近重复对，仅时间戳与细节不同）+ 1 procedural（技能）。8 条 episodic 查询问『上次/最近/今天早上』——正确答案是时间戳最近的那条。关键：事件时间只在 ts 字段、不在 content 里，所以纯余弦看不见时间、面对近重复事件只能掷硬币；类型特化的 episodic 时间衰减（exp(-age/365d)）能稳定选中最近的。semantic/procedural 查询作对照（预期与 v1 一样基线也能对）。",
+  "_labeling_rule": "『上次/最近 X』= 时间戳最新的 X 事件（旧事件被新的取代，只标最新那条）。intent 标注同 v1。⚠️ 语料与标注均本人手写，GT 自定义。",
+  "_why_not_rigged": "近重复事件对是真实记忆系统的常态（同一用户反复充电/保养/通勤，每次存一条事件）；『上次X』要取最近一条也是真实查询语义。时间衰减正是 §7 给 episodic 设计的检索加权，v1 没测到，v2 补上。",
+  "now": "2026-10-21",
+  "corpus": [
+    {"id": 1,  "type": "semantic",   "text": "车辆支持快充，最大充电功率 120 千瓦，电池容量 100 度。"},
+    {"id": 2,  "type": "episodic", "ts": "2026-10-15", "text": "在公司楼下快充站充过电，充到 90%，花了 40 分钟。"},
+    {"id": 3,  "type": "episodic", "ts": "2026-04-20", "text": "在小区慢充桩充过电，充到 80%，充了一整晚。"},
+    {"id": 4,  "type": "procedural", "text": "充电流程：先插充电枪，再在车机屏幕确认开始充电。"},
+
+    {"id": 5,  "type": "semantic",   "text": "车辆保养周期是每 12 个月或 1 万公里一次。"},
+    {"id": 6,  "type": "episodic", "ts": "2026-10-10", "text": "在 4S 店做过保养，里程 18000 公里，换了机油机滤。"},
+    {"id": 7,  "type": "episodic", "ts": "2026-03-10", "text": "在 4S 店做过保养，里程 8000 公里，换了机油机滤。"},
+    {"id": 8,  "type": "procedural", "text": "保养流程：先检查机油，再检查刹车片和轮胎磨损。"},
+
+    {"id": 9,  "type": "semantic",   "text": "用户通勤路线固定：从西湖区到滨江，早高峰约 40 分钟。"},
+    {"id": 10, "type": "episodic", "ts": "2026-10-16", "text": "通勤路上遇到严重拥堵，改走之江路，花了 70 分钟。"},
+    {"id": 11, "type": "episodic", "ts": "2026-05-05", "text": "通勤路上遇到交通事故，绕行钱塘江大桥，花了 90 分钟。"},
+    {"id": 12, "type": "procedural", "text": "「导航回家」指令默认走避开高速的路线。"},
+
+    {"id": 13, "type": "semantic",   "text": "用户偏好空调温度设在 22 度、风量 2 档。"},
+    {"id": 14, "type": "episodic", "ts": "2026-10-21", "text": "上车后提前开启了空调，设成了 22 度降温。"},
+    {"id": 15, "type": "episodic", "ts": "2026-06-01", "text": "上车后开了空调，设成 24 度制冷。"},
+    {"id": 16, "type": "procedural", "text": "用户说「我有点冷」时应把空调调高两度并打开座椅加热。"}
+  ],
+  "queries": [
+    {"query": "上次充电在哪充的", "intent": "episodic",     "expected_ids": [2]},
+    {"query": "上次充电充到多少", "intent": "episodic",     "expected_ids": [2]},
+    {"query": "上次保养里程是多少", "intent": "episodic",   "expected_ids": [6]},
+    {"query": "上次保养换了什么", "intent": "episodic",     "expected_ids": [6]},
+    {"query": "上次通勤遇到什么情况", "intent": "episodic", "expected_ids": [10]},
+    {"query": "最近一次通勤花了多久", "intent": "episodic", "expected_ids": [10]},
+    {"query": "今天早上空调设了多少度", "intent": "episodic", "expected_ids": [14]},
+    {"query": "上次开空调设了几度", "intent": "episodic",   "expected_ids": [14]},
+
+    {"query": "怎么给车充电", "intent": "procedural",       "expected_ids": [4]},
+    {"query": "怎么做车辆保养", "intent": "procedural",     "expected_ids": [8]},
+    {"query": "导航回家默认怎么走", "intent": "procedural", "expected_ids": [12]},
+    {"query": "我有点冷该怎么办", "intent": "procedural",   "expected_ids": [16]},
+
+    {"query": "车的充电功率是多少", "intent": "semantic",   "expected_ids": [1]},
+    {"query": "保养周期是多久", "intent": "semantic",       "expected_ids": [5]},
+    {"query": "固定通勤路线是什么", "intent": "semantic",   "expected_ids": [9]},
+    {"query": "空调温度偏好是多少", "intent": "semantic",   "expected_ids": [13]}
+  ]
+}
