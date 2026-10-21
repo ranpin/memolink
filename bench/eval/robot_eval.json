@@ -1,0 +1,22 @@
+{
+  "_comment": "机器人域检索评测集。expected_ids = 该查询语义上应命中的记忆 id（可多个）。标注规则同座舱域：只标真正回答该查询的记忆；查询用改写/口语化表述以测语义检索。⚠️ 语料与标注均由本人手写，GT 是自定义的。",
+  "domain": "robot",
+  "topk": 4,
+  "queries": [
+    {"query": "夹爪最大能张开多大？", "expected_ids": [3]},
+    {"query": "上次抓取为什么失败了？", "expected_ids": [9]},
+    {"query": "抓取物体的流程是什么？", "expected_ids": [13]},
+    {"query": "任务失败时用户希望怎么处理？", "expected_ids": [8]},
+    {"query": "红色方块现在在哪里？", "expected_ids": [1]},
+    {"query": "遇到障碍物应该怎么办？", "expected_ids": [15]},
+    {"query": "机械臂有几个关节？", "expected_ids": [18]},
+    {"query": "堆叠任务的先后顺序是什么？", "expected_ids": [24]},
+    {"query": "用户对接持力有什么要求？", "expected_ids": [6]},
+    {"query": "今天早上完成了什么任务？", "expected_ids": [19]},
+    {"query": "相机安装在什么位置？", "expected_ids": [17]},
+    {"query": "什么情况下会触发急停？", "expected_ids": [23, 11]},
+    {"query": "视觉伺服一直失败该怎么办？", "expected_ids": [20]},
+    {"query": "任务开始前要先做什么？", "expected_ids": [16]},
+    {"query": "目标盒子放在哪里？", "expected_ids": [5]}
+  ]
+}

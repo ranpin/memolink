@@ -1,0 +1,31 @@
+{
+  "_comment": "自动驾驶域记忆语料（合成，贴近乘用车行车场景）。类型体系与座舱域完全一致（fact/preference/episodic/procedural），用于验证「换域只换语料、不改代码」。sensitive=true 表示含隐私/安全敏感信息。",
+  "domain": "av",
+  "memories": [
+    {"id": 1,  "type": "fact",       "sensitive": false, "ts": "2026-10-20 18:00", "text": "当前路段限速 60 公里每小时。"},
+    {"id": 2,  "type": "fact",       "sensitive": false, "ts": "2026-10-20 18:05", "text": "前方 500 米是学校区域，限速 30 公里每小时。"},
+    {"id": 3,  "type": "fact",       "sensitive": false, "ts": "2026-10-20 17:50", "text": "车辆电池剩余 80%，续航约 400 公里。"},
+    {"id": 4,  "type": "fact",       "sensitive": false, "ts": "2026-10-20 18:02", "text": "当前行驶在中间车道，左侧车道有施工。"},
+    {"id": 5,  "type": "fact",       "sensitive": false, "ts": "2026-08-10 09:00", "text": "车辆配备 6 个摄像头，前视主相机视角 120 度。"},
+    {"id": 6,  "type": "preference", "sensitive": false, "ts": "2026-09-02 08:30", "text": "驾驶员不喜欢急加速和急刹车。"},
+    {"id": 7,  "type": "preference", "sensitive": false, "ts": "2026-09-02 08:35", "text": "驾驶员偏好保持 100 米跟车距离。"},
+    {"id": 8,  "type": "preference", "sensitive": false, "ts": "2026-09-10 19:00", "text": "驾驶员要求变道前必须打转向灯至少 3 秒。"},
+    {"id": 9,  "type": "episodic",   "sensitive": false, "ts": "2026-10-17 08:45", "text": "上次在这个路口急刹过，原因是前车突然变道。"},
+    {"id": 10, "type": "episodic",   "sensitive": false, "ts": "2026-10-19 17:30", "text": "昨天暴雨时该路段有积水，车速降到了 40。"},
+    {"id": 11, "type": "episodic",   "sensitive": false, "ts": "2026-10-12 06:50", "text": "上周在高速上遇到大雾，开启了雾灯和双闪。"},
+    {"id": 12, "type": "episodic",   "sensitive": false, "ts": "2026-10-20 08:40", "text": "今天早上通勤用时 42 分钟，比平时多 10 分钟。"},
+    {"id": 13, "type": "procedural", "sensitive": false, "ts": "2026-09-05 10:00", "text": "雨天提前 100 米减速，并保持更大的跟车距离。"},
+    {"id": 14, "type": "procedural", "sensitive": false, "ts": "2026-09-05 10:10", "text": "遇到施工路段提前变到最左道。"},
+    {"id": 15, "type": "procedural", "sensitive": false, "ts": "2026-09-08 15:00", "text": "通过学校区域时降到 30 以下并随时准备刹车。"},
+    {"id": 16, "type": "procedural", "sensitive": false, "ts": "2026-09-08 15:10", "text": "变道流程：打转向灯，观察后视镜，确认盲区，然后变道。"},
+    {"id": 17, "type": "fact",       "sensitive": false, "ts": "2026-10-20 17:55", "text": "当前天气小雨，路面湿滑系数 0.4。"},
+    {"id": 18, "type": "fact",       "sensitive": false, "ts": "2026-08-10 09:10", "text": "车辆最高时速 180 公里，百公里加速 5.2 秒。"},
+    {"id": 19, "type": "episodic",   "sensitive": false, "ts": "2026-10-14 20:15", "text": "上次自动泊车失败，因为车位线不清晰。"},
+    {"id": 20, "type": "procedural", "sensitive": false, "ts": "2026-09-12 11:00", "text": "泊车失败两次后提示驾驶员手动接管。"},
+    {"id": 21, "type": "preference", "sensitive": true,  "ts": "2026-09-20 09:30", "text": "驾驶员不允许在高速上连续使用自动驾驶超过 2 小时不接管。"},
+    {"id": 22, "type": "fact",       "sensitive": true,  "ts": "2026-10-20 17:45", "text": "当前目的地是公司，预计到达时间 18:30。"},
+    {"id": 23, "type": "episodic",   "sensitive": false, "ts": "2026-10-19 09:20", "text": "昨天在收费站排队 15 分钟。"},
+    {"id": 24, "type": "procedural", "sensitive": false, "ts": "2026-09-15 16:00", "text": "电量低于 20% 时主动提示寻找充电桩。"},
+    {"id": 25, "type": "fact",       "sensitive": false, "ts": "2026-08-10 09:20", "text": "激光雷达探测距离 200 米，点云频率 10Hz。"}
+  ]
+}

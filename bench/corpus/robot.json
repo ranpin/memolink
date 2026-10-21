@@ -1,0 +1,31 @@
+{
+  "_comment": "机器人域记忆语料（合成，贴近桌面机械臂操作场景）。类型体系与座舱域完全一致（fact/preference/episodic/procedural），用于验证「换域只换语料、不改代码」。sensitive=true 表示含隐私/安全敏感信息。",
+  "domain": "robot",
+  "memories": [
+    {"id": 1,  "type": "fact",       "sensitive": false, "ts": "2026-10-20 09:00", "text": "红色方块当前在桌子左侧，距离机械臂基座约 40 厘米。"},
+    {"id": 2,  "type": "fact",       "sensitive": false, "ts": "2026-10-20 09:00", "text": "蓝色杯子在桌子右前方，杯口朝上。"},
+    {"id": 3,  "type": "fact",       "sensitive": false, "ts": "2026-09-01 10:00", "text": "夹爪最大开口 8 厘米，最大夹持力 20 牛。"},
+    {"id": 4,  "type": "fact",       "sensitive": false, "ts": "2026-09-01 10:00", "text": "工作台面高度 75 厘米，机械臂基座固定在台面中心。"},
+    {"id": 5,  "type": "fact",       "sensitive": false, "ts": "2026-10-20 09:05", "text": "目标盒子位于桌子右后角，开口尺寸 15 厘米见方。"},
+    {"id": 6,  "type": "preference", "sensitive": false, "ts": "2026-09-15 14:00", "text": "用户要求轻拿轻放，夹持力不超过 10 牛。"},
+    {"id": 7,  "type": "preference", "sensitive": false, "ts": "2026-09-15 14:05", "text": "用户偏好机械臂运动速度设为中速，约 0.3 米每秒。"},
+    {"id": 8,  "type": "preference", "sensitive": false, "ts": "2026-09-20 11:00", "text": "任务失败时用户希望先停下并报告，不要自动重试。"},
+    {"id": 9,  "type": "episodic",   "sensitive": false, "ts": "2026-10-18 16:30", "text": "上次抓取蓝色杯子失败，原因是夹爪角度偏了 15 度。"},
+    {"id": 10, "type": "episodic",   "sensitive": false, "ts": "2026-10-19 15:00", "text": "2026 年 10 月 19 日完成了 3 次成功的方块堆叠。"},
+    {"id": 11, "type": "episodic",   "sensitive": false, "ts": "2026-10-19 17:20", "text": "昨天碰撞到桌沿，触发力矩保护停机。"},
+    {"id": 12, "type": "episodic",   "sensitive": false, "ts": "2026-10-13 09:40", "text": "上周标定相机时发现手眼标定偏差 2 毫米。"},
+    {"id": 13, "type": "procedural", "sensitive": false, "ts": "2026-09-01 10:30", "text": "抓取流程：移动到目标上方，下降，闭合夹爪，然后抬起。"},
+    {"id": 14, "type": "procedural", "sensitive": false, "ts": "2026-09-01 10:35", "text": "放置流程：移动到目标上方，下降，张开夹爪，然后抬起。"},
+    {"id": 15, "type": "procedural", "sensitive": false, "ts": "2026-09-05 13:00", "text": "遇到障碍物先停下再重新规划路径。"},
+    {"id": 16, "type": "procedural", "sensitive": false, "ts": "2026-09-05 13:10", "text": "每次任务开始前先回零位并自检各关节力矩。"},
+    {"id": 17, "type": "fact",       "sensitive": false, "ts": "2026-09-01 10:10", "text": "相机分辨率 640×480，帧率 30fps，安装在机械臂末端。"},
+    {"id": 18, "type": "fact",       "sensitive": false, "ts": "2026-09-01 10:15", "text": "机械臂有 7 个旋转关节，工作半径 85 厘米。"},
+    {"id": 19, "type": "episodic",   "sensitive": false, "ts": "2026-10-20 08:30", "text": "今天早上成功把红色方块放进了盒子。"},
+    {"id": 20, "type": "procedural", "sensitive": false, "ts": "2026-09-25 15:30", "text": "视觉伺服连续失败三次后切换到盲抓模式。"},
+    {"id": 21, "type": "preference", "sensitive": true,  "ts": "2026-09-20 11:20", "text": "用户不允许机械臂进入工作区左侧的人员活动区域。"},
+    {"id": 22, "type": "fact",       "sensitive": false, "ts": "2026-10-20 08:00", "text": "当前电池电量 85%，可连续工作约 2 小时。"},
+    {"id": 23, "type": "episodic",   "sensitive": true,  "ts": "2026-10-15 10:10", "text": "上次急停是因为检测到人手进入工作区。"},
+    {"id": 24, "type": "procedural", "sensitive": false, "ts": "2026-09-28 14:20", "text": "堆叠任务要先放大的再放小的。"},
+    {"id": 25, "type": "fact",       "sensitive": false, "ts": "2026-09-01 10:20", "text": "力传感器量程 0 到 100 牛，分辨率 0.01 牛。"}
+  ]
+}

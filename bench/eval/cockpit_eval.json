@@ -1,0 +1,22 @@
+{
+  "_comment": "座舱域检索评测集。expected_ids = 该查询语义上应命中的记忆 id（可多个）。标注规则：① 只标真正回答了该查询的记忆，不标 merely 相关的；② 查询刻意用改写/口语化表述（非原文关键词），以测语义检索而非字面匹配。⚠️ 语料与标注均由本人手写，GT 是自定义的——这证明的是「检索能按语义找回该找回的」，不是与公开基准对比。",
+  "domain": "cockpit",
+  "topk": 4,
+  "queries": [
+    {"query": "我的车是什么颜色偏好？", "expected_ids": [1]},
+    {"query": "上次保养是什么时候？", "expected_ids": [2]},
+    {"query": "我住在哪里？", "expected_ids": [3]},
+    {"query": "空调一般喜欢设多少度？", "expected_ids": [4]},
+    {"query": "我有点冷该怎么办？", "expected_ids": [30, 8]},
+    {"query": "停车之后车机会自动做什么？", "expected_ids": [19]},
+    {"query": "早上通勤喜欢听什么？", "expected_ids": [7]},
+    {"query": "轮胎规格和建议胎压是多少？", "expected_ids": [16]},
+    {"query": "保险什么时候到期？", "expected_ids": [34]},
+    {"query": "我说准备出发时助手应该做什么？", "expected_ids": [35]},
+    {"query": "太阳太晒了怎么处理？", "expected_ids": [40]},
+    {"query": "我最近去哪里自驾玩了？", "expected_ids": [25, 5]},
+    {"query": "电池容量和满电续航是多少？", "expected_ids": [9]},
+    {"query": "我的通勤路线是怎样的？", "expected_ids": [26]},
+    {"query": "晚上开车界面有什么偏好？", "expected_ids": [22]}
+  ]
+}

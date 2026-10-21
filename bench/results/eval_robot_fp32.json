@@ -1,0 +1,254 @@
+{
+  "domain" : "robot",
+  "hit_at_1" : 0.93333333333333335,
+  "mrr" : 0.96666666666666667,
+  "n_corpus" : 25,
+  "n_queries" : 15,
+  "perfect_rate" : 1.0,
+  "queries" : 
+  [
+    {
+      "expected" : 
+      [
+        3
+      ],
+      "query" : "\u5939\u722a\u6700\u5927\u80fd\u5f20\u5f00\u591a\u5927\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        3,
+        14,
+        13,
+        6
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        9
+      ],
+      "query" : "\u4e0a\u6b21\u6293\u53d6\u4e3a\u4ec0\u4e48\u5931\u8d25\u4e86\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        9,
+        13,
+        23,
+        8
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        13
+      ],
+      "query" : "\u6293\u53d6\u7269\u4f53\u7684\u6d41\u7a0b\u662f\u4ec0\u4e48\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        13,
+        14,
+        24,
+        23
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        8
+      ],
+      "query" : "\u4efb\u52a1\u5931\u8d25\u65f6\u7528\u6237\u5e0c\u671b\u600e\u4e48\u5904\u7406\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        8,
+        20,
+        24,
+        6
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        1
+      ],
+      "query" : "\u7ea2\u8272\u65b9\u5757\u73b0\u5728\u5728\u54ea\u91cc\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        19,
+        1,
+        10,
+        5
+      ],
+      "rr" : 0.5
+    },
+    {
+      "expected" : 
+      [
+        15
+      ],
+      "query" : "\u9047\u5230\u969c\u788d\u7269\u5e94\u8be5\u600e\u4e48\u529e\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        15,
+        11,
+        13,
+        14
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        18
+      ],
+      "query" : "\u673a\u68b0\u81c2\u6709\u51e0\u4e2a\u5173\u8282\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        18,
+        7,
+        21,
+        4
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        24
+      ],
+      "query" : "\u5806\u53e0\u4efb\u52a1\u7684\u5148\u540e\u987a\u5e8f\u662f\u4ec0\u4e48\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        24,
+        10,
+        16,
+        15
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        6
+      ],
+      "query" : "\u7528\u6237\u5bf9\u63a5\u6301\u529b\u6709\u4ec0\u4e48\u8981\u6c42\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        6,
+        8,
+        7,
+        25
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        19
+      ],
+      "query" : "\u4eca\u5929\u65e9\u4e0a\u5b8c\u6210\u4e86\u4ec0\u4e48\u4efb\u52a1\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        19,
+        10,
+        16,
+        24
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        17
+      ],
+      "query" : "\u76f8\u673a\u5b89\u88c5\u5728\u4ec0\u4e48\u4f4d\u7f6e\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        17,
+        4,
+        14,
+        5
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        11,
+        23
+      ],
+      "query" : "\u4ec0\u4e48\u60c5\u51b5\u4e0b\u4f1a\u89e6\u53d1\u6025\u505c\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        23,
+        11,
+        15,
+        8
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        20
+      ],
+      "query" : "\u89c6\u89c9\u4f3a\u670d\u4e00\u76f4\u5931\u8d25\u8be5\u600e\u4e48\u529e\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        20,
+        8,
+        15,
+        14
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        16
+      ],
+      "query" : "\u4efb\u52a1\u5f00\u59cb\u524d\u8981\u5148\u505a\u4ec0\u4e48\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        16,
+        24,
+        8,
+        15
+      ],
+      "rr" : 1.0
+    },
+    {
+      "expected" : 
+      [
+        5
+      ],
+      "query" : "\u76ee\u6807\u76d2\u5b50\u653e\u5728\u54ea\u91cc\uff1f",
+      "recall" : 1.0,
+      "retrieved" : 
+      [
+        5,
+        19,
+        14,
+        13
+      ],
+      "rr" : 1.0
+    }
+  ],
+  "recall_at_k" : 1.0,
+  "topk" : 4
+}

@@ -1,0 +1,22 @@
+{
+  "_comment": "自动驾驶域检索评测集。expected_ids = 该查询语义上应命中的记忆 id（可多个）。标注规则同座舱域：只标真正回答该查询的记忆；查询用改写/口语化表述以测语义检索。⚠️ 语料与标注均由本人手写，GT 是自定义的。",
+  "domain": "av",
+  "topk": 4,
+  "queries": [
+    {"query": "当前路段限速是多少？", "expected_ids": [1]},
+    {"query": "前面有学校区域吗？", "expected_ids": [2]},
+    {"query": "驾驶员对加速刹车有什么偏好？", "expected_ids": [6]},
+    {"query": "上次为什么急刹车？", "expected_ids": [9]},
+    {"query": "下雨天应该怎么开？", "expected_ids": [13, 17]},
+    {"query": "遇到施工路段怎么办？", "expected_ids": [14, 4]},
+    {"query": "变道的完整步骤是什么？", "expected_ids": [16, 8]},
+    {"query": "电池还剩多少电？", "expected_ids": [3]},
+    {"query": "自动泊车失败了怎么办？", "expected_ids": [20, 19]},
+    {"query": "今天通勤花了多长时间？", "expected_ids": [12]},
+    {"query": "电量低到多少会提示充电？", "expected_ids": [24]},
+    {"query": "激光雷达能探测多远？", "expected_ids": [25]},
+    {"query": "通过学校区域要注意什么？", "expected_ids": [15, 2]},
+    {"query": "现在的目的地是哪里？", "expected_ids": [22]},
+    {"query": "上次遇到大雾是怎么处理的？", "expected_ids": [11]}
+  ]
+}
