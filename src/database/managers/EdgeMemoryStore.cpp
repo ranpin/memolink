@@ -129,6 +129,10 @@ std::vector<float> EdgeMemoryStore::embed(const std::string& text) {
     return embedder_->generateTextEmbedding(text);
 }
 
+std::vector<float> EdgeMemoryStore::embedText(const std::string& text) {
+    return embed(text);
+}
+
 // ---------------------------------------------------------------------------
 // 写入（Q1：直接 CREATE。Q2 会在这里加五操作消解）
 // ---------------------------------------------------------------------------
@@ -197,11 +201,11 @@ IngestResult EdgeMemoryStore::ingestText(const std::string& text, MemoryType typ
 // ---------------------------------------------------------------------------
 // 检索：暴力余弦（F2 已证明在 agent 记忆量级下精确检索足够，ANN 是过度设计）
 // ---------------------------------------------------------------------------
-std::vector<Memory> EdgeMemoryStore::recall(const std::string& query, int topK,
-                                            std::optional<MemoryType> filter,
-                                            bool includeHistory) {
+// 无副作用的相似度检索（不递增 access_count）。recall() 与消解器共用它。
+std::vector<Memory> EdgeMemoryStore::searchByEmbedding(const std::vector<float>& qemb, int topK,
+                                                       std::optional<MemoryType> filter,
+                                                       bool includeHistory) {
     std::vector<Memory> results;
-    const std::vector<float> qemb = embed(query);
     if (qemb.empty()) return results;
 
     std::string sql = std::string("SELECT ") + kSelectCols + " FROM memory WHERE 1=1";
@@ -213,7 +217,7 @@ std::vector<Memory> EdgeMemoryStore::recall(const std::string& query, int topK,
 
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "[EdgeMemoryStore] recall prepare failed: " << sqlite3_errmsg(db) << std::endl;
+        std::cerr << "[EdgeMemoryStore] searchByEmbedding prepare failed: " << sqlite3_errmsg(db) << std::endl;
         return results;
     }
     if (filter.has_value())
@@ -240,17 +244,28 @@ std::vector<Memory> EdgeMemoryStore::recall(const std::string& query, int topK,
                                 : scored.size();
     results.reserve(n);
     for (size_t i = 0; i < n; ++i) results.push_back(scored[i].second);
+    return results;
+}
 
-    // 命中的记忆 access_count +1（为 Q7 的 LRU/强度衰减留数据）
-    sqlite3_stmt* us = nullptr;
-    if (sqlite3_prepare_v2(db, "UPDATE memory SET access_count = access_count + 1 WHERE id = ?",
-                           -1, &us, nullptr) == SQLITE_OK) {
-        for (const auto& m : results) {
-            sqlite3_reset(us);
-            sqlite3_bind_int(us, 1, m.id);
-            sqlite3_step(us);
+std::vector<Memory> EdgeMemoryStore::recall(const std::string& query, int topK,
+                                            std::optional<MemoryType> filter,
+                                            bool includeHistory) {
+    const std::vector<float> qemb = embed(query);
+    std::vector<Memory> results = searchByEmbedding(qemb, topK, filter, includeHistory);
+
+    // 命中的记忆 access_count +1（为 Q7 的 LRU/强度衰减留数据）——真实召回的副作用
+    sqlite3* db = storage_.getDatabase();
+    if (db) {
+        sqlite3_stmt* us = nullptr;
+        if (sqlite3_prepare_v2(db, "UPDATE memory SET access_count = access_count + 1 WHERE id = ?",
+                               -1, &us, nullptr) == SQLITE_OK) {
+            for (const auto& m : results) {
+                sqlite3_reset(us);
+                sqlite3_bind_int(us, 1, m.id);
+                sqlite3_step(us);
+            }
+            sqlite3_finalize(us);
         }
-        sqlite3_finalize(us);
     }
     return results;
 }
@@ -297,7 +312,7 @@ bool EdgeMemoryStore::remove(int id) {
 
 // 非破坏性替换：新记录写入并 supersedes=oldId，旧记录标 valid_until + superseded_by。
 // 依据 Graphiti 的边失效（32k⭐）；绕开 Mem0 论文 DELETE 分支不插入新事实的缺口。
-bool EdgeMemoryStore::supersede(int oldId, const std::string& newContent) {
+bool EdgeMemoryStore::supersede(int oldId, const std::string& newContent, int* newIdOut) {
     const Memory old = get(oldId);
     if (old.id == 0) return false;
     if (newContent.empty()) return false;
@@ -333,6 +348,7 @@ bool EdgeMemoryStore::supersede(int oldId, const std::string& newContent) {
     if (!inserted) return false;
 
     const int newId = static_cast<int>(sqlite3_last_insert_rowid(db));
+    if (newIdOut) *newIdOut = newId;
 
     sqlite3_stmt* us = nullptr;
     if (sqlite3_prepare_v2(db,
@@ -344,6 +360,23 @@ bool EdgeMemoryStore::supersede(int oldId, const std::string& newContent) {
     const bool marked = (sqlite3_step(us) == SQLITE_DONE);
     sqlite3_finalize(us);
     return marked;
+}
+
+// 等价重述：只提升 strength（+ 递增 access_count），不改内容、不重算 embedding。
+// 依据 Mem0：等价事实不新增记录，只强化已有记忆。只强化当前有效的记忆。
+bool EdgeMemoryStore::reinforce(int id, float strengthDelta) {
+    sqlite3* db = storage_.getDatabase();
+    if (!db) return false;
+    static const char* kSql =
+        "UPDATE memory SET strength = strength + ?, access_count = access_count + 1, "
+        " updated_at = datetime('now') WHERE id = ? AND valid_until IS NULL;";
+    sqlite3_stmt* stmt = nullptr;
+    if (sqlite3_prepare_v2(db, kSql, -1, &stmt, nullptr) != SQLITE_OK) return false;
+    sqlite3_bind_double(stmt, 1, strengthDelta);
+    sqlite3_bind_int(stmt, 2, id);
+    const bool ok = (sqlite3_step(stmt) == SQLITE_DONE);
+    sqlite3_finalize(stmt);
+    return ok && sqlite3_changes(db) > 0;
 }
 
 // ---------------------------------------------------------------------------

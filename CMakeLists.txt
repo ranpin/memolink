@@ -119,6 +119,7 @@ set(SOURCES
     src/database/managers/VisualizationManager.cpp
     src/database/managers/MemoryOrchestrator.cpp
     src/database/managers/EdgeMemoryStore.cpp
+    src/database/managers/MemoryResolver.cpp
     # ---- 模型接口 ----
     src/models/ModelManager.cpp
     src/models/QwenAPI.cpp
@@ -260,6 +261,10 @@ if(MIRIX_ENABLE_EDGE)
     # Q1：v2 记忆存储（独立 memory 表 + 显式 CRUD + 非破坏性版本化）
     add_executable(test_edge_memory_store test/test_edge_memory_store.cpp)
     target_link_libraries(test_edge_memory_store mirix_lib)
+
+    # Q2：五操作消解（三层判定 + System-1 覆盖率 + 五分类准确率）
+    add_executable(test_memory_resolver test/test_memory_resolver.cpp)
+    target_link_libraries(test_memory_resolver mirix_lib)
 endif()
 
 # ---- 依赖多模态采集 / CLIP（随 MIRIX_ENABLE_CAPTURE 开关）----

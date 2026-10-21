@@ -83,10 +83,20 @@ public:
                                std::optional<MemoryType> filter = std::nullopt,
                                bool includeHistory = false);
 
+    // ---- Q2：供消解器（MemoryResolver）用的无副作用接口 ----
+    // embedText：embed() 的公开包装。
+    // searchByEmbedding：按给定向量做暴力余弦检索，**不**递增 access_count
+    //   （recall 会递增；消解只是比对，不应算作一次真实召回）。
+    std::vector<float> embedText(const std::string& text);
+    std::vector<Memory> searchByEmbedding(const std::vector<float>& qemb, int topK,
+                                          std::optional<MemoryType> filter = std::nullopt,
+                                          bool includeHistory = false);
+
     // ---- 显式 CRUD ----
     bool update(int id, const std::string& newContent);   // 原地改内容 + 重算 embedding
     bool remove(int id);                                  // 物理删除（记录级，非 unlearning）
-    bool supersede(int oldId, const std::string& newContent);  // 非破坏性替换
+    bool supersede(int oldId, const std::string& newContent, int* newIdOut = nullptr);  // 非破坏性替换
+    bool reinforce(int id, float strengthDelta = 1.0f);   // 等价重述：只提升 strength，不改内容
 
     // ---- 浏览 ----
     std::vector<Memory> list(std::optional<MemoryType> type = std::nullopt,
