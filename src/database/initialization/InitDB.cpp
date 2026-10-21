@@ -270,6 +270,44 @@ bool InitDB::initializeDatabase(const std::string& dbPath) {
         return false;
     }
 
+    // ---- v2 端侧记忆表（docs/memory_v2_design.md §10）----
+    // 刻意**不加** user/agent/session 外键：recall_memory 那三个外键配合
+    // StorageManager::initialize() 里的 PRAGMA foreign_keys=ON，曾让 P3 首跑
+    // 40/40 条写入全部违约失败（修法见 MemoryOrchestrator::ensureDefaultEntities）。
+    // v2 表自成一体，不依赖那三张表，从根上避开这个坑。
+    std::string createMemoryTable = R"(
+        CREATE TABLE IF NOT EXISTS memory (
+            id              INTEGER PRIMARY KEY AUTOINCREMENT,
+            type            TEXT NOT NULL,
+            content         TEXT NOT NULL,
+            embedding       BLOB,
+            embed_model     TEXT,
+            strength        REAL DEFAULT 1.0,
+            access_count    INTEGER DEFAULT 0,
+            owner           TEXT DEFAULT 'user',
+            scope           TEXT DEFAULT 'private',
+            authority       TEXT DEFAULT 'asserted',
+            valid_from      TEXT,
+            valid_until     TEXT,
+            superseded_by   INTEGER,
+            supersedes      INTEGER,
+            source_session  TEXT,
+            source_turn     INTEGER DEFAULT 0,
+            created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+    )";
+    if (!storage.executeNonQuery(createMemoryTable)) {
+        std::cerr << "Failed to create memory table" << std::endl;
+        return false;
+    }
+    for (const char* idx : {
+             "CREATE INDEX IF NOT EXISTS idx_memory_type_valid ON memory(type, valid_until);",
+             "CREATE INDEX IF NOT EXISTS idx_memory_superseded_by ON memory(superseded_by);",
+             "CREATE INDEX IF NOT EXISTS idx_memory_scope ON memory(scope);" }) {
+        storage.executeNonQuery(idx);
+    }
+
     // 为其他表也添加用户ID索引
     std::vector<std::string> indexStatements = {
         "CREATE INDEX IF NOT EXISTS idx_resource_memory_user_id ON resource_memory(user_id);",

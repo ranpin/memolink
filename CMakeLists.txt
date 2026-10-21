@@ -118,6 +118,7 @@ set(SOURCES
     src/database/managers/AuditLogManager.cpp
     src/database/managers/VisualizationManager.cpp
     src/database/managers/MemoryOrchestrator.cpp
+    src/database/managers/EdgeMemoryStore.cpp
     # ---- 模型接口 ----
     src/models/ModelManager.cpp
     src/models/QwenAPI.cpp
@@ -255,6 +256,10 @@ if(MIRIX_ENABLE_EDGE)
     # P4：三域带标注检索评测（recall@k / MRR / hit@1），与 LLM 生成解耦
     add_executable(test_retrieval_eval test/test_retrieval_eval.cpp)
     target_link_libraries(test_retrieval_eval mirix_lib)
+
+    # Q1：v2 记忆存储（独立 memory 表 + 显式 CRUD + 非破坏性版本化）
+    add_executable(test_edge_memory_store test/test_edge_memory_store.cpp)
+    target_link_libraries(test_edge_memory_store mirix_lib)
 endif()
 
 # ---- 依赖多模态采集 / CLIP（随 MIRIX_ENABLE_CAPTURE 开关）----
