@@ -397,7 +397,7 @@ mirix-mem stats
 | **Q3** | 类型特化检索（3 类各自策略） | 对照「单一策略」基线，Recall@1 是否提升 | ✅ 条件性提升：v1 触顶 +0 / v2 +31.2pp（episodic 3/8→8/8），见 §7 |
 | **Q4** | **提取阶段**（受约束结构化输出） | 用 LongMemEval `has_answer` 金标测查全/查准 + **编造率** | ✅ 编造率 3.7%（上界）、查全 56.7%、JSON 解析 98.4%（见 §6） |
 | **Q5** | **LongMemEval 接入**：英文模型（bge-small-en-v1.5 INT8）+ 数据加载 + turn/session 级召回评测 | 跑出 recall@k / MRR；**同一二进制只改 config 即切换中英** | ✅ config-swap 验证（test_edge_embedding 5/5、dim=384）+ s 变体 recall@10=0.7822 / MRR=0.6203（见 §12.1） |
-| **Q6** | CLI 八命令 + 在 Orin 录真实转录 → demo 页重建为**生命周期演示**（分步回放，非指标陈列） | 命令全跑通；线上 URL + Playwright 验证 | — |
+| **Q6** | CLI 八命令 + 在 Orin 录真实转录 → demo 页重建为**生命周期演示**（分步回放，非指标陈列） | 命令全跑通；线上 URL + Playwright 验证 | ✅ 八命令 Orin 全跑通（含 System-2 SUPERSEDE sim=0.767 + 非破坏性版本链）；demo 页重建为 11 步真实转录分步回放，线上 URL Playwright 23/23 无控制台错误 |
 | Q7（可选） | 治理标签三元组 + 强度衰减淘汰 | 看时间 | — |
 
 **Q2 与 Q4 是技术风险所在**（本地 4B 的分类与提取准确率未知，已知它会编造）。Q5 是可信度跃升最大的一环（自证 GT → 公开基准）。
