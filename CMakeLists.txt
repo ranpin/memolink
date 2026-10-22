@@ -120,6 +120,7 @@ set(SOURCES
     src/database/managers/MemoryOrchestrator.cpp
     src/database/managers/EdgeMemoryStore.cpp
     src/database/managers/MemoryResolver.cpp
+    src/database/managers/MemoryExtractor.cpp
     # ---- 模型接口 ----
     src/models/ModelManager.cpp
     src/models/QwenAPI.cpp
@@ -273,6 +274,10 @@ if(MIRIX_ENABLE_EDGE)
     # Q5：LongMemEval turn 级检索评测（recall@k / MRR），英文模型 config-only swap
     add_executable(test_longmemeval_retrieval test/test_longmemeval_retrieval.cpp)
     target_link_libraries(test_longmemeval_retrieval mirix_lib)
+
+    # Q6：mirix-mem CLI——八命令串完整管线（提取→消解→存储→检索→更新→删除→历史→统计）
+    add_executable(mirix-mem src/cli/MemoryCLI.cpp)
+    target_link_libraries(mirix-mem mirix_lib)
 endif()
 
 # ---- 依赖多模态采集 / CLIP（随 MIRIX_ENABLE_CAPTURE 开关）----

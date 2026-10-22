@@ -16,6 +16,73 @@
   .eam-badge.warn{color:var(--ds-warn);background:var(--ds-warn-soft);border-color:var(--ds-warn-ring)}
   .sec-note{color:var(--ds-muted);font-size:13.5px;margin:0 0 16px;line-height:1.6}
 
+  /* ===== 生命周期演示：分步回放 ===== */
+  .player{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin:6px 0 0}
+  @media (max-width:860px){.player{grid-template-columns:1fr}}
+
+  .term{background:#0d1117;border:1px solid #30363d;border-radius:var(--ds-radius);
+    overflow:hidden;display:flex;flex-direction:column;min-height:300px}
+  [data-theme="dark"] .term{background:#010409;border-color:#30363d}
+  .term__bar{display:flex;align-items:center;gap:8px;padding:9px 14px;
+    background:#161b22;border-bottom:1px solid #30363d}
+  .term__dot{width:11px;height:11px;border-radius:50%}
+  .term__dot.r{background:#ff5f56}.term__dot.y{background:#ffbd2e}.term__dot.g{background:#27c93f}
+  .term__title{margin-left:8px;font-size:12px;color:#8b949e;font-family:var(--ds-mono)}
+  .term__body{padding:14px 16px;font-family:var(--ds-mono);font-size:12.5px;line-height:1.7;
+    color:#e6edf3;overflow-x:auto;flex:1;white-space:pre-wrap;word-break:break-word}
+  .term__cmd{color:#7ee787;font-weight:600}
+  .term__cmd::before{content:"$ ";color:#8b949e}
+  .term__out{color:#c9d1d9;margin-top:8px;display:block}
+  .term__out .hl{color:#ffa657}
+  .term__out .dim{color:#8b949e}
+  .term__out .ok{color:#7ee787}
+  .term__out .bad{color:#ff7b72;text-decoration:line-through;opacity:.75}
+
+  .store{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);
+    padding:14px;display:flex;flex-direction:column;gap:10px;min-height:300px}
+  .store__h{font-size:12px;font-weight:700;color:var(--ds-muted);text-transform:uppercase;
+    letter-spacing:.06em;display:flex;justify-content:space-between;align-items:center}
+  .store__h .cnt{font-size:11px;color:var(--ds-faint);font-weight:500;text-transform:none;letter-spacing:0}
+  .store__list{display:flex;flex-direction:column;gap:8px;flex:1}
+  .mem{border:1px solid var(--ds-border);border-radius:9px;padding:9px 11px;background:var(--ds-code-bg);
+    transition:all .25s ease;position:relative}
+  .mem.invalid{opacity:.55;border-style:dashed}
+  .mem.invalid .mem__content{text-decoration:line-through}
+  .mem.flash{animation:flash .7s ease}
+  @keyframes flash{0%{box-shadow:0 0 0 2px var(--ds-accent);transform:scale(1.02)}100%{box-shadow:0 0 0 0 transparent;transform:scale(1)}}
+  .mem__top{display:flex;align-items:center;gap:7px;margin-bottom:5px;flex-wrap:wrap}
+  .mem__id{font-family:var(--ds-mono);font-size:11.5px;font-weight:700;color:var(--ds-accent-strong)}
+  .mem__type{font-size:10.5px;padding:1px 7px;border-radius:999px;font-weight:600}
+  .mem__type.semantic{color:#1d4ed8;background:#dbeafe;border:1px solid #bfdbfe}
+  .mem__type.episodic{color:#9333ea;background:#f3e8ff;border:1px solid #e9d5ff}
+  .mem__type.procedural{color:#0f766e;background:#ccfbf1;border:1px solid #99f6e4}
+  [data-theme="dark"] .mem__type.semantic{color:#93c5fd;background:#172554;border-color:#1e40af}
+  [data-theme="dark"] .mem__type.episodic{color:#d8b4fe;background:#3b0764;border-color:#6b21a8}
+  [data-theme="dark"] .mem__type.procedural{color:#5eead4;background:#042f2e;border-color:#115e59}
+  .mem__status{font-size:10.5px;color:var(--ds-faint);margin-left:auto}
+  .mem__status.inv{color:var(--ds-warn);font-weight:600}
+  .mem__content{font-size:12.5px;color:var(--ds-text);line-height:1.5}
+  .store__empty{font-size:12.5px;color:var(--ds-faint);text-align:center;padding:30px 10px;
+    border:1px dashed var(--ds-border);border-radius:9px}
+
+  .explain{grid-column:1/-1;background:var(--ds-accent-soft);border:1px solid var(--ds-accent-ring);
+    border-radius:10px;padding:12px 15px;font-size:13.5px;line-height:1.65;color:var(--ds-text)}
+  .explain b{color:var(--ds-accent-strong)}
+
+  .ctrl{grid-column:1/-1;display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap}
+  .ctrl button{font-size:13px;font-weight:600;padding:7px 18px;border-radius:8px;cursor:pointer;
+    border:1px solid var(--ds-border);background:var(--ds-panel);color:var(--ds-text);transition:all .15s}
+  .ctrl button:hover:not(:disabled){border-color:var(--ds-accent);color:var(--ds-accent-strong)}
+  .ctrl button:disabled{opacity:.4;cursor:not-allowed}
+  .ctrl button.primary{background:var(--ds-accent);color:#fff;border-color:var(--ds-accent)}
+  .ctrl button.primary:hover:not(:disabled){opacity:.88;color:#fff}
+  .ctrl__step{font-size:12.5px;color:var(--ds-muted);font-variant-numeric:tabular-nums;min-width:90px;text-align:center}
+  .dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ds-border);cursor:pointer;transition:all .2s}
+  .dot.active{background:var(--ds-accent);transform:scale(1.35)}
+  .dot.done{background:var(--ds-accent-ring)}
+
+  /* ===== 指标（次要）===== */
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:4px 0 0}
   @media (max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
   .stat{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);
@@ -33,17 +100,6 @@
   .tbl .hl{color:var(--ds-accent-strong);font-weight:700}
   .tbl-wrap{overflow-x:auto}
 
-  .arch{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:var(--ds-radius);
-    padding:16px;overflow-x:auto;margin:6px 0 0}
-  .arch pre{margin:0;font-family:var(--ds-mono);font-size:12px;line-height:1.6;color:var(--ds-text);background:none;border:none;padding:0}
-
-  .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:6px 0 0}
-  @media (max-width:720px){.cols{grid-template-columns:1fr}}
-  .card{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:16px}
-  .card h3{font-size:13px;font-weight:700;margin:0 0 8px;color:var(--ds-accent-strong)}
-  .card .f{font-size:11.5px;color:var(--ds-faint);font-family:var(--ds-mono);margin:0 0 8px;word-break:break-all}
-  .card p{font-size:13px;color:var(--ds-muted);margin:0;line-height:1.6}
-
   .limits{counter-reset:l;margin:6px 0 0;padding:0;list-style:none}
   .limits li{counter-increment:l;position:relative;padding:10px 12px 10px 40px;margin:8px 0;
     background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:10px;font-size:13.5px;line-height:1.6}
@@ -56,6 +112,7 @@
   code{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:5px;padding:1px 6px;
     font-family:var(--ds-mono);font-size:12.5px;color:var(--ds-accent-strong)}
   .note{font-size:12.5px;color:var(--ds-faint);margin-top:12px;line-height:1.55}
+  .card{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:16px}
 </style>
 </head>
 <body>
@@ -66,12 +123,12 @@
         <h1>端侧 Agent 记忆系统</h1>
         <button class="ds-theme-btn" type="button" onclick="toggleTheme()" aria-label="切换明暗主题"><span class="ds-theme-icon">🌙</span></button>
       </div>
-      <p class="ds-header__sub">在 Jetson Orin 上离线跑通的 Agent 记忆系统——<b>写入 → 本地编码 → 跨类型检索 → 分类型有界淘汰</b>，全程不依赖云端。C++ 实现，自写分词器与 ONNX 推理，复用 mirix-cpp 的记忆存储层。</p>
+      <p class="ds-header__sub">在 Jetson Orin 上离线跑通的 Agent 记忆系统——<b>提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯</b>，全程不依赖云端。C++ 实现，自写分词器与 ONNX 推理。下面是<b>真实 CLI 转录的分步回放</b>（非模拟、非指标陈列）。</p>
       <div class="eam-badges">
         <span class="eam-badge green">Jetson Orin · 全程离线</span>
-        <span class="eam-badge">三域零改码</span>
-        <span class="eam-badge">recall@4 ≥ 0.967</span>
-        <span class="eam-badge">分词对拍 25/25</span>
+        <span class="eam-badge">五操作消解</span>
+        <span class="eam-badge">非破坏性版本化</span>
+        <span class="eam-badge">类型特化检索</span>
         <span class="eam-badge warn">INT8 端侧推理</span>
       </div>
     </div>
@@ -79,91 +136,58 @@
 
   <div class="ds-wrap">
 
+    <section class="ds-section" id="demo">
+      <h2 class="ds-h2">生命周期演示（真实 CLI 转录回放）</h2>
+      <p class="sec-note">以下每一步都是 <code>mirix-mem</code> 在 Orin 上的<b>真实输出</b>（2026-10-22 录制）。点「下一步」逐条回放，右侧记忆库随每步实时变化。完整生命周期：提取 → 写入 → 检索 → 矛盾更新（SUPERSEDE）→ 版本回溯 → 显式更新 → 删除 → 统计。</p>
+
+      <div class="player">
+        <div class="term">
+          <div class="term__bar">
+            <span class="term__dot r"></span><span class="term__dot y"></span><span class="term__dot g"></span>
+            <span class="term__title">vision@orin-dog ~/chenrunbin/mirix-cpp/build</span>
+          </div>
+          <div class="term__body" id="termBody"></div>
+        </div>
+
+        <div class="store">
+          <div class="store__h"><span>记忆库状态</span><span class="cnt" id="storeCnt"></span></div>
+          <div class="store__list" id="storeList"></div>
+        </div>
+
+        <div class="explain" id="explain"></div>
+
+        <div class="ctrl">
+          <button id="btnPrev" onclick="step(-1)">← 上一步</button>
+          <button id="btnPlay" class="primary" onclick="togglePlay()">▶ 自动播放</button>
+          <button id="btnNext" onclick="step(1)">下一步 →</button>
+          <span class="ctrl__step" id="stepLabel"></span>
+        </div>
+        <div class="ctrl" style="margin-top:-4px">
+          <div class="dots" id="dots"></div>
+        </div>
+      </div>
+    </section>
+
     <section class="ds-section" id="results">
-      <h2 class="ds-h2">核心结果</h2>
-      <p class="sec-note">全部数字来自 <code>bench/results/*.json</code>，由仓库内程序在 Orin 上实跑生成、可复现。</p>
+      <h2 class="ds-h2">核心结果（次要 · 量化指标）</h2>
+      <p class="sec-note">上面的演示是「能看见功能在跑」；这里是「跑得多好」的量化证据。全部数字由仓库内程序在 Orin 上实跑生成、可复现（<code>bench/results/*.json</code>）。</p>
       <div class="stats">
-        <div class="stat"><div class="v">3<small> 域</small></div><div class="k">同一二进制<br>零代码改动</div></div>
-        <div class="stat"><div class="v">1.00<small>00</small></div><div class="k">FP32 对拍余弦<br>C++ vs Python</div></div>
-        <div class="stat"><div class="v">25<small>/25</small></div><div class="k">分词逐 token<br>与 HF 一致</div></div>
-        <div class="stat"><div class="v">11<small>/11</small></div><div class="k">记忆编排<br>测试全过</div></div>
+        <div class="stat"><div class="v">5<small> 操作</small></div><div class="k">CREATE/UPDATE<br>REINFORCE/SUPERSEDE/NOOP</div></div>
+        <div class="stat"><div class="v">70<small>%</small></div><div class="k">System-2 消解<br>五分类准确率（30 场景）</div></div>
+        <div class="stat"><div class="v">3.7<small>%</small></div><div class="k">提取编造率上界<br>（受约束 JSON，LongMemEval）</div></div>
+        <div class="stat"><div class="v">0.96<small>7</small></div><div class="k">三域 recall@4<br>同一二进制零改码</div></div>
       </div>
-    </section>
-
-    <section class="ds-section" id="eval">
-      <h2 class="ds-h2">三域检索评测</h2>
-      <p class="sec-note">同一个二进制、同一套代码，只换语料跑通三个域——这是「换域只换语料」的物证。评测对象是<b>记忆检索质量</b>，与 LLM 生成解耦。</p>
-      <div class="tbl-wrap"><table class="tbl">
-        <thead><tr><th>域</th><th class="num">语料</th><th class="num">recall@4</th><th class="num">MRR</th><th class="num">hit@1</th><th class="num">全命中</th></tr></thead>
-        <tbody>
-          <tr><td>座舱 cockpit</td><td class="num">40</td><td class="num">0.9667</td><td class="num hl">1.0000</td><td class="num hl">15/15</td><td class="num">14/15</td></tr>
-          <tr><td>机器人 robot</td><td class="num">25</td><td class="num hl">1.0000</td><td class="num">0.9667</td><td class="num">14/15</td><td class="num hl">15/15</td></tr>
-          <tr><td>自动驾驶 av</td><td class="num">25</td><td class="num hl">1.0000</td><td class="num hl">1.0000</td><td class="num hl">15/15</td><td class="num hl">15/15</td></tr>
-        </tbody>
-      </table></div>
-      <p class="note">标注规则：只标真正回答该查询的记忆；查询刻意用改写/口语化表述（非原文关键词），以测语义检索而非字面匹配。</p>
-    </section>
-
-    <section class="ds-section" id="arch">
-      <h2 class="ds-h2">架构</h2>
-      <div class="arch"><pre>┌──────────────────── Jetson Orin（全程离线）────────────────────┐
-│                                                                │
-│  写入 write(type, content, sensitive)                          │
-│    └─ WordPiece 分词 → ONNX INT8 编码 → recall_memory 落库      │
-│       → saveEmbedding → 分类型 FIFO 淘汰                        │
-│                                                                │
-│  检索 retrieve(query, topK)                                    │
-│    └─ 编码查询 → searchByEmbedding（暴力余弦）→ 重算分数 → 排序  │
-│                                                                │
-│  存储：SQLite（recall_memory 带 embedding BLOB）                │
-│  编排：MemoryOrchestrator（原为 4 个空壳，本项目填实）           │
-└────────────────────────────────────────────────────────────────┘</pre></div>
-      <p class="note">记忆类型存进 <code>message_type</code>、敏感标记存进 <code>metadata</code>，从而复用 mirix-cpp 原有的 ~2,600 行记忆存储层（manager / StorageManager / InitDB schema），未改动。</p>
-    </section>
-
-    <section class="ds-section" id="components">
-      <h2 class="ds-h2">端侧三件套（本项目新写）</h2>
-      <div class="cols">
-        <div class="card">
-          <h3>① C++ WordPiece 分词器</h3>
-          <p class="f">src/models/WordPieceTokenizer</p>
-          <p>自写 UTF-8 解码 + BertNormalizer + BertPreTokenizer + WordPiece 贪心，配置读自 tokenizer.json。不依赖 Rust tokenizers。与 HF 逐 token 对拍 25/25 一致。</p>
-        </div>
-        <div class="card">
-          <h3>② ONNX Runtime C++ 推理</h3>
-          <p class="f">src/models/OnnxEmbedder</p>
-          <p>onnxruntime 原生 C++ API（pImpl 隔离头），跑 bge-small-zh INT8。CPU-only——刻意把 GPU 整块留给 LLM。FP32 对拍 Python 余弦 1.00000000。</p>
-        </div>
-        <div class="card">
-          <h3>③ 记忆编排器</h3>
-          <p class="f">src/database/managers/MemoryOrchestrator</p>
-          <p>原为 4 个空壳（return true/""）。填实为：按类型写入 + 跨类型检索合并 + 实时写入 + 分类型有界 FIFO 淘汰 + 敏感标记传播。</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="ds-section" id="quant">
-      <h2 class="ds-h2">INT8 vs FP32：量化对检索的影响</h2>
-      <p class="sec-note">F1 只测了 embedding 余弦（0.99），没测排序会不会翻转。这里直接比 top-k 命中集合。</p>
-      <div class="tbl-wrap"><table class="tbl">
-        <thead><tr><th>域</th><th class="num">顺序完全一致</th><th class="num">集合一致</th><th class="num">recall/MRR/hit@1</th></tr></thead>
-        <tbody>
-          <tr><td>cockpit</td><td class="num">10/15</td><td class="num">11/15</td><td class="num hl">完全相同</td></tr>
-          <tr><td>robot</td><td class="num">11/15</td><td class="num">13/15</td><td class="num hl">完全相同</td></tr>
-          <tr><td>av</td><td class="num">6/15</td><td class="num">10/15</td><td class="num hl">完全相同</td></tr>
-        </tbody>
-      </table></div>
-      <p class="note"><b>结论</b>：聚合指标完全相同，expected id 的排名不变（hit@1 全同）；差异只出现在 top-k 尾部（rank 3-4 的无关项）——这些项本来相似度就接近，INT8 的微小扰动会翻转它们的顺序，但<b>不影响检索质量</b>。</p>
+      <p class="note">Q1–Q5 闸门全部在 Orin 真机跑通：五操作消解（Q2）、类型特化检索（Q3，v2 基准 +31.2pp）、受约束提取（Q4，编造率 3.7%）、LongMemEval 英文模型 config-only swap（Q5，dim 384，5/5 验证）。详见 <a href="https://github.com/ranpin/mirix-cpp/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>。</p>
     </section>
 
     <section class="ds-section" id="limits">
       <h2 class="ds-h2">诚实边界</h2>
       <ol class="limits">
-        <li><b>语料与标注均由本人手写</b>，GT 是自定义的——证明的是「检索能按语义找回该找回的」，不是与公开基准对比。</li>
-        <li><b>检索评测与 LLM 生成解耦</b>：本项目只评测记忆检索质量，不含生成质量评测。</li>
-        <li><b>embedding 走 CPU</b>（onnxruntime 在 Orin 上是 CPU-only），未测 GPU embedding。</li>
-        <li><b>INT8 量化来自 onnx-community 的预量化模型</b>，非本项目量化。</li>
-        <li><b>单设备、未测热降频与功耗</b>；数字是冷启动/短负载下的。</li>
+        <li><b>System-1 覆盖率实测 ≈32%</b>（非设计文档声称的 70–80%）——新颖度信号无法区分 UPDATE/SUPERSEDE/REINFORCE，矛盾是语义量，故模糊地带必须交给 System-2 本地 LLM。</li>
+        <li><b>类型特化检索的收益是有条件的</b>：v1 基准饱和（+0），v2 基准 +31.2pp——不是普适提升，取决于语料是否可分。</li>
+        <li><b>提取编造率 3.7% 是上界</b>，多为改写非捏造；受约束 JSON 输出规避了 P2 实测的开放式生成编造。</li>
+        <li><b>检索评测与 LLM 生成解耦</b>：本项目只评测记忆检索/消解质量，不含生成质量评测。</li>
+        <li><b>embedding 走 CPU</b>（onnxruntime 在 Orin 上是 CPU-only），GPU 整块留给 LLM；单设备、未测热降频与功耗。</li>
       </ol>
     </section>
 
@@ -171,11 +195,13 @@
       <h2 class="ds-h2">复现</h2>
       <div class="card">
 <pre class="cmd">sudo apt install -y libsqlite3-dev libcurl4-openssl-dev libjsoncpp-dev
-# config.ini 的 [edge] 段填上 model_quantized.onnx 与 tokenizer.json 路径
+# config.ini 的 [edge] 段填 model_quantized.onnx 与 tokenizer.json 路径
+# config.ini 的 local_url 填本地 llama-server 地址（如 http://127.0.0.1:8099）
 mkdir build && cd build
-cmake .. -DMIRIX_ENABLE_EDGE=ON && make -j8 test_retrieval_eval
-./test_retrieval_eval ../bench/corpus/cockpit.json ../bench/eval/cockpit_eval.json eval.db out.json 4</pre>
-        <p class="note">代码与完整文档见 <a href="https://github.com/ranpin/mirix-cpp/tree/orin-edge">github.com/ranpin/mirix-cpp（orin-edge 分支）</a>。记忆分层架构参考自 <a href="https://github.com/Mirix-AI/MIRIX">Mirix-AI/MIRIX</a>（Apache-2.0）。</p>
+cmake .. -DMIRIX_ENABLE_EDGE=ON && make -j8 mirix-mem
+./mirix-mem ingest "用户喜欢深蓝色的车" --type semantic
+./mirix-mem recall "我的车是什么颜色偏好" --top 3</pre>
+        <p class="note">代码与完整文档见 <a href="https://github.com/ranpin/mirix-cpp">github.com/ranpin/mirix-cpp</a>。记忆分层架构参考自 <a href="https://github.com/Mirix-AI/MIRIX">Mirix-AI/MIRIX</a>（Apache-2.0）。</p>
       </div>
     </section>
 
@@ -184,5 +210,162 @@ cmake .. -DMIRIX_ENABLE_EDGE=ON && make -j8 test_retrieval_eval
       代码见 <a href="https://github.com/ranpin/mirix-cpp">github.com/ranpin/mirix-cpp</a>
     </footer>
   </div>
+
+<script>
+// ===== 真实 CLI 转录（2026-10-22 录制于 Orin dog）=====
+const STEPS = [
+  {
+    cmd: 'mirix-mem extract --user "我下周三要去北京出差，帮我看看天气" --assistant "好的，北京下周三晴，气温 5 到 12 度，建议带件外套"',
+    out: '提取出 1 条候选事实:\n  [episodic/user/shared] 北京下周三天气晴朗，气温约5至12摄氏度',
+    explain: '<b>① 提取（Q4）</b>：本地 4B 模型从对话轮提取候选事实，输出受约束为 JSON 数组（编造率 3.7% 上界）。此步只提取、不写库——寒暄/闲聊会被过滤为 []。',
+    store: []
+  },
+  {
+    cmd: 'mirix-mem ingest "用户喜欢深蓝色的车" --type semantic',
+    out: '动作=CREATED id=1 sim=0.000 [System-1]\n  理由: System-1: 空库/无同类型记忆 → CREATE',
+    explain: '<b>② 消解 + 写入（Q2）</b>：System-1 确定性判定——空库无同类型记忆 → CREATE。写入 #1，无需调 LLM。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem ingest "北京下周三晴，气温 5 到 12 度" --type episodic',
+    out: '动作=CREATED id=2 sim=0.000 [System-1]\n  理由: System-1: 空库/无同类型记忆 → CREATE',
+    explain: '<b>② 消解 + 写入</b>：episodic 类型（带时间的事件），空库 → CREATE。写入 #2。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:true},
+            {id:2, type:'episodic', content:'北京下周三晴，气温 5 到 12 度', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem recall "我的车是什么颜色偏好" --top 3',
+    out: '查询「我的车是什么颜色偏好」 top-3:\n  #  1 [semantic] score=0.590  用户喜欢深蓝色的车\n  #  2 [episodic] score=0.212  北京下周三晴，气温 5 到 12 度',
+    explain: '<b>③ 检索（Q3）</b>：类型特化检索——查询意图识别为 semantic，同类型 boost ×1.6，故 semantic #1（0.590）排在 episodic #2（0.212）前。即使 episodic 的原始余弦不低，类型不匹配也会被压后。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:true},
+            {id:2, type:'episodic', content:'北京下周三晴，气温 5 到 12 度', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem ingest "用户现在喜欢红色的车" --type semantic   # 矛盾事实',
+    out: '动作=SUPERSEDED id=3 sim=0.767 [System-2]\n  理由: System-2: {"action":"SUPERSEDE","target_id":1}',
+    explain: '<b>④ 矛盾更新（Q2 核心）</b>：「深蓝→红」是矛盾事实，相似度 0.767 落入模糊地带（θ_new=0.50 ≤ 0.767 < θ_dup=0.999），System-1 无法判定 → 调 System-2 本地 4B 四选一分类，判为 <b>SUPERSEDE</b>。#1 标记失效（非破坏性），写入 #3。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
+            {id:2, type:'episodic', content:'北京下周三晴，气温 5 到 12 度', valid:true},
+            {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem recall "我的车是什么颜色偏好" --top 3   # 应返回红色',
+    out: '查询「我的车是什么颜色偏好」 top-3:\n  #  3 [semantic] score=0.592  用户现在喜欢红色的车\n  #  2 [episodic] score=0.212  北京下周三晴，气温 5 到 12 度',
+    explain: '<b>③ 检索（更新后）</b>：SUPERSEDE 后，recall 返回新事实 #3（红色），失效的 #1 不再出现在结果里——记忆系统「知道」偏好已经变了。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
+            {id:2, type:'episodic', content:'北京下周三晴，气温 5 到 12 度', valid:true},
+            {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem history 1   # 版本链（非破坏性）',
+    out: '#1 的版本链（旧→新）:\n  #  1 [semantic] [失效]  用户喜欢深蓝色的车\n  #  3 [semantic]  用户现在喜欢红色的车',
+    explain: '<b>⑤ 版本回溯（Q1）</b>：非破坏性版本化——#1 失效但<b>保留</b>，#3 是其后继（supersedes 链）。可追溯记忆的完整演变历史，而非覆盖丢失。这是 Graphiti 式边失效的端侧落地。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
+            {id:2, type:'episodic', content:'北京下周三晴，气温 5 到 12 度', valid:true},
+            {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem update 2 "北京下周三晴转多云，气温 6 到 13 度"',
+    out: '已更新 #2',
+    explain: '<b>⑥ 显式更新</b>：直接修改 #2 的内容（不经过消解，用于用户/系统明确知道要改哪条的场景）。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
+            {id:2, type:'episodic', content:'北京下周三晴转多云，气温 6 到 13 度', valid:true},
+            {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem list',
+    out: '共 2 条:\n  #  3 [semantic]  用户现在喜欢红色的车\n  #  2 [episodic]  北京下周三晴转多云，气温 6 到 13 度',
+    explain: '<b>⑦ 列举</b>：显示所有<b>有效</b>记忆（失效的 #1 不显示，可用 --invalid 查看）。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
+            {id:2, type:'episodic', content:'北京下周三晴转多云，气温 6 到 13 度', valid:true},
+            {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem remove 2',
+    out: '已删除 #2',
+    explain: '<b>⑧ 记录级删除</b>：删除 #2（物理删除，区别于 SUPERSEDE 的标记失效）。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
+            {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
+  },
+  {
+    cmd: 'mirix-mem stats',
+    out: 'total=2 valid=1 invalid=1\n  semantic=1 episodic=0 procedural=0',
+    explain: '<b>⑨ 统计</b>：total=2（#1 失效 + #3 有效），valid=1，invalid=1。类型分布只计有效记忆（semantic=1 即 #3）。完整生命周期回放结束。',
+    store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
+            {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
+  }
+];
+
+let cur = 0, playing = false, timer = null;
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function renderTerm(s){
+  const body = document.getElementById('termBody');
+  body.innerHTML = '<span class="term__cmd">'+esc(s.cmd)+'</span><span class="term__out">'+esc(s.out)+'</span>';
+}
+
+function renderStore(s, prev){
+  const list = document.getElementById('storeList');
+  const cnt = document.getElementById('storeCnt');
+  const valid = s.store.filter(m=>m.valid).length;
+  cnt.textContent = s.store.length ? (valid+' 有效 / '+s.store.length+' 总') : '空库';
+  if(!s.store.length){
+    list.innerHTML = '<div class="store__empty">记忆库为空<br><span style="font-size:11px">（提取阶段不写库）</span></div>';
+    return;
+  }
+  list.innerHTML = s.store.map(m=>{
+    const changed = prev && JSON.stringify(prev.store.find(x=>x.id===m.id)) !== JSON.stringify(m);
+    const isNew = prev && !prev.store.find(x=>x.id===m.id);
+    return '<div class="mem '+(m.valid?'':'invalid')+' '+((changed||isNew)?'flash':'')+'">'+
+      '<div class="mem__top">'+
+        '<span class="mem__id">#'+m.id+'</span>'+
+        '<span class="mem__type '+m.type+'">'+m.type+'</span>'+
+        '<span class="mem__status '+(m.valid?'':'inv')+'">'+(m.valid?'有效':'失效')+'</span>'+
+      '</div>'+
+      '<div class="mem__content">'+esc(m.content)+'</div>'+
+    '</div>';
+  }).join('');
+}
+
+function render(){
+  const s = STEPS[cur], prev = cur>0 ? STEPS[cur-1] : null;
+  renderTerm(s);
+  renderStore(s, prev);
+  document.getElementById('explain').innerHTML = s.explain;
+  document.getElementById('stepLabel').textContent = '步骤 '+(cur+1)+' / '+STEPS.length;
+  document.getElementById('btnPrev').disabled = cur===0;
+  document.getElementById('btnNext').disabled = cur===STEPS.length-1;
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.className = 'dot'+(i===cur?' active':(i<cur?' done':''));
+  });
+}
+
+function step(d){
+  const n = cur+d;
+  if(n<0||n>=STEPS.length) return;
+  cur=n; render();
+  if(playing && cur===STEPS.length-1) stopPlay();
+}
+
+function goto(i){ cur=i; render(); if(playing) stopPlay(); }
+
+function togglePlay(){ playing ? stopPlay() : startPlay(); }
+function startPlay(){
+  if(cur===STEPS.length-1) cur=0;
+  playing=true;
+  document.getElementById('btnPlay').textContent='⏸ 暂停';
+  render();
+  timer=setInterval(()=>{ if(cur<STEPS.length-1){cur++;render();} else stopPlay(); }, 3200);
+}
+function stopPlay(){
+  playing=false; clearInterval(timer);
+  document.getElementById('btnPlay').textContent='▶ 自动播放';
+}
+
+// build dots
+document.getElementById('dots').innerHTML = STEPS.map((_,i)=>'<span class="dot" onclick="goto('+i+')"></span>').join('');
+render();
+</script>
 </body>
 </html>
