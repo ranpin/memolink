@@ -121,6 +121,7 @@ set(SOURCES
     src/database/managers/EdgeMemoryStore.cpp
     src/database/managers/MemoryResolver.cpp
     src/database/managers/MemoryExtractor.cpp
+    src/database/managers/MemorySystem.cpp
     # ---- 模型接口 ----
     src/models/ModelManager.cpp
     src/models/QwenAPI.cpp

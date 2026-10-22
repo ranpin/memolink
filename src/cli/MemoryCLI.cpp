@@ -11,6 +11,7 @@
 //   mirix-mem stats                                     # 统计
 //
 // 这是 demo 能被看见的前提（§11）：demo 页的「生命周期演示」就是回放这些命令的真实输出。
+// 应用层只依赖接口层门面 MemorySystem，不直接碰 core 三件套（Store/Resolver/Extractor）。
 // ============================================================================
 
 #include <string>
@@ -20,9 +21,7 @@
 #include <filesystem>
 #include "database/initialization/InitDB.h"
 #include "database/core/StorageManager.h"
-#include "database/managers/EdgeMemoryStore.h"
-#include "database/managers/MemoryResolver.h"
-#include "database/managers/MemoryExtractor.h"
+#include "database/managers/MemorySystem.h"
 #include "models/QwenAPI.h"
 
 static void usage() {
@@ -71,17 +70,16 @@ int main(int argc, char** argv) {
     }
     StorageManager storage(dbPath);
     if (!storage.initialize()) { std::cerr << "storage init failed\n"; return 1; }
-    EdgeMemoryStore store(storage);
-    if (!store.ready()) { std::cerr << "store 未就绪（config.ini [edge] 没配模型？）\n"; return 1; }
 
     QwenAPI llm;   // 走 config.ini 的 local_url（本地 llama-server）
-    MemoryResolver resolver(store, &llm);
-    MemoryExtractor extractor(&llm);
+    // 接口层门面：内部按 store_ → resolver_ → extractor_ 顺序组装 core 三件套
+    MemorySystem mem(storage, &llm);
+    if (!mem.ready()) { std::cerr << "store 未就绪（config.ini [edge] 没配模型？）\n"; return 1; }
 
     if (cmd == "extract") {
         const std::string user = getOpt(args, "--user");
         const std::string assistant = getOpt(args, "--assistant");
-        auto facts = extractor.extract(user, assistant);
+        auto facts = mem.extract(user, assistant);
         std::cout << "提取出 " << facts.size() << " 条候选事实:\n";
         for (const auto& f : facts)
             std::cout << "  [" << memoryTypeName(f.type) << "/" << f.owner << "/" << f.scope
@@ -95,7 +93,7 @@ int main(int argc, char** argv) {
         const std::string text = args[0];
         MemoryType type = MemoryType::Semantic;
         memoryTypeFromName(getOpt(args, "--type", "semantic"), type);
-        IngestResult r = resolver.ingest(text, type);
+        IngestResult r = mem.ingest(text, type);
         std::cout << "动作=" << actionName(r.action)
                   << " id=" << r.id
                   << " sim=" << std::fixed << std::setprecision(3) << r.similarity
@@ -115,7 +113,7 @@ int main(int argc, char** argv) {
             if (memoryTypeFromName(tname, t)) filter = t;
         }
         const bool history = hasFlag(args, "--history");
-        auto hits = store.recall(query, top, filter, history);
+        auto hits = mem.recall(query, top, filter, history);
         std::cout << "查询「" << query << "」 top-" << top << ":\n";
         for (const auto& m : hits) printMemory(m, /*withScore=*/true);
         if (hits.empty()) std::cout << "  （无命中）\n";
@@ -126,7 +124,7 @@ int main(int argc, char** argv) {
         if (args.size() < 2) { usage(); return 1; }
         const int id = std::stoi(args[0]);
         const std::string text = args[1];
-        const bool ok = store.update(id, text);
+        const bool ok = mem.update(id, text);
         std::cout << (ok ? "已更新 #" : "更新失败 #") << id << "\n";
         return ok ? 0 : 1;
     }
@@ -134,7 +132,7 @@ int main(int argc, char** argv) {
     if (cmd == "remove") {
         if (args.empty()) { usage(); return 1; }
         const int id = std::stoi(args[0]);
-        const bool ok = store.remove(id);
+        const bool ok = mem.remove(id);
         std::cout << (ok ? "已删除 #" : "删除失败 #") << id << "\n";
         return ok ? 0 : 1;
     }
@@ -147,16 +145,16 @@ int main(int argc, char** argv) {
             if (memoryTypeFromName(tname, t)) filter = t;
         }
         const bool invalid = hasFlag(args, "--invalid");
-        auto mems = store.list(filter, 0, invalid);
-        std::cout << "共 " << mems.size() << " 条" << (invalid ? "（含失效）" : "") << ":\n";
-        for (const auto& m : mems) printMemory(m);
+        auto rows = mem.list(filter, 0, invalid);
+        std::cout << "共 " << rows.size() << " 条" << (invalid ? "（含失效）" : "") << ":\n";
+        for (const auto& m : rows) printMemory(m);
         return 0;
     }
 
     if (cmd == "history") {
         if (args.empty()) { usage(); return 1; }
         const int id = std::stoi(args[0]);
-        auto chain = store.history(id);
+        auto chain = mem.history(id);
         std::cout << "#" << id << " 的版本链（旧→新）:\n";
         for (const auto& m : chain) printMemory(m);
         if (chain.empty()) std::cout << "  （无此记忆或无版本链）\n";
@@ -164,7 +162,7 @@ int main(int argc, char** argv) {
     }
 
     if (cmd == "stats") {
-        auto st = store.stats();
+        auto st = mem.stats();
         std::cout << "total=" << st.total << " valid=" << st.valid << " invalid=" << st.invalid
                   << "\n  semantic=" << st.semantic << " episodic=" << st.episodic
                   << " procedural=" << st.procedural << "\n";
