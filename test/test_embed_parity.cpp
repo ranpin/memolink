@@ -5,8 +5,8 @@
 #include <iomanip>
 #include <cstdlib>
 #include <algorithm>
-#include "models/WordPieceTokenizer.h"
-#include "models/OnnxEmbedder.h"
+#include "infra/embedding/WordPieceTokenizer.h"
+#include "infra/embedding/OnnxEmbedder.h"
 
 // P2 embedding 对拍：C++ (WordPieceTokenizer + OnnxEmbedder) vs Python (tokenizers + onnxruntime)
 // 两边用**同一个 INT8 模型**，所以期望余弦 ≈1.0000；明显低于 1 说明 C++ 侧推理有 bug。

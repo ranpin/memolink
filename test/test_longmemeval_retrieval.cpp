@@ -9,9 +9,9 @@
 #include <cstdlib>
 #include <sqlite3.h>
 #include <json/json.h>
-#include "database/initialization/InitDB.h"
-#include "database/core/StorageManager.h"
-#include "database/managers/EdgeMemoryStore.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/StorageManager.h"
+#include "memory/core/MemoryStore.h"
 
 // ============================================================================
 // Q5 验证：LongMemEval turn 级检索评测（recall@k / MRR），用英文模型跑。
@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
     if (!InitDB::initializeDatabase(dbPath)) { std::cerr << "DB init failed\n"; return 1; }
     StorageManager storage(dbPath);
     if (!storage.initialize()) { std::cerr << "storage init failed\n"; return 1; }
-    EdgeMemoryStore store(storage);
+    MemoryStore store(storage);
     if (!store.ready()) { std::cerr << "store 未就绪（[edge] 模型路径没配？）\n"; return 1; }
 
     std::cout << "=== Q5 LongMemEval turn 级检索评测 ===\n"

@@ -2,11 +2,11 @@
 #include <vector>
 #include <iostream>
 #include <filesystem>
-#include "database/initialization/InitDB.h"
-#include "database/core/StorageManager.h"
-#include "database/managers/EdgeMemoryStore.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/StorageManager.h"
+#include "memory/core/MemoryStore.h"
 
-// Q1 验证：EdgeMemoryStore 的基础 CRUD + 非破坏性版本化。
+// Q1 验证：MemoryStore 的基础 CRUD + 非破坏性版本化。
 // 用法: test_edge_memory_store [db路径]
 // 前置：config.ini 的 [edge] 段须配好模型与分词器路径（否则 embedding 会走云端/模拟回退）
 
@@ -27,8 +27,8 @@ int main(int argc, char** argv) {
     StorageManager storage(dbPath);
     if (!storage.initialize()) { std::cerr << "storage init failed\n"; return 1; }
 
-    EdgeMemoryStore store(storage);
-    std::cout << "=== Q1 EdgeMemoryStore 验证 ===" << std::endl;
+    MemoryStore store(storage);
+    std::cout << "=== Q1 MemoryStore 验证 ===" << std::endl;
     std::cout << "  db=" << dbPath << "\n  embed_model=" << store.embedModelTag() << std::endl;
     check(store.ready(), "store ready");
     check(store.dim() == 512, "embedding 维度 == 512", "实际 " + std::to_string(store.dim()));

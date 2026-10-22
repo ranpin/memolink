@@ -1,11 +1,11 @@
 #include <string>
 #include <iostream>
 #include <filesystem>
-#include "database/initialization/InitDB.h"
-#include "database/core/StorageManager.h"
-#include "database/managers/UserManager.h"
-#include "database/managers/CoreMemoryBlockManager.h"
-#include "database/initialization/ConfigManager/ConfigManager.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/StorageManager.h"
+#include "legacy/core-v1/UserManager.h"
+#include "legacy/core-v1/CoreMemoryBlockManager.h"
+#include "infra/storage/ConfigManager.h"
 
 int main() {
     std::cout << "=== 系统初始化测试 ===" << std::endl;

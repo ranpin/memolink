@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
-#include "models/WordPieceTokenizer.h"
+#include "infra/embedding/WordPieceTokenizer.h"
 
 // P2 对拍工具：读入字符串文件，逐行输出 token id，格式与 bench/tokenizer_parity.py 一致。
 // 用法: test_tokenizer_parity <tokenizer.json> <strings.txt> [max_len]

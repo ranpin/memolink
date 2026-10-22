@@ -1,6 +1,6 @@
 #include <cmath>
 #include <string>
-#include "utils/VectorSerializer.h"
+#include "infra/storage/VectorSerializer.h"
 #include <iostream>
 #include <vector>
 #include <cassert>

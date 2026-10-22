@@ -1,8 +1,8 @@
 #include <string>
-#include "models/CLIPProcessor.h"
-#include "capture/MultimodalDataManager.h"
-#include "database/initialization/InitDB.h"
-#include "utils/VectorSerializer.h"
+#include "legacy/infra-alt/CLIPProcessor.h"
+#include "legacy/desktop/capture/MultimodalDataManager.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/VectorSerializer.h"
 #include <iostream>
 #include <vector>
 #include <filesystem>

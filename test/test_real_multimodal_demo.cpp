@@ -6,15 +6,15 @@
 #include <chrono>
 #include <atomic>
 #include <ctime>
-#include "capture/CameraCaptureManager.h"
-#include "capture/AudioCaptureManager.h"
-#include "capture/ScreenActivityTracker.h"
-#include "capture/MultimodalDataManager.h"
-#include "models/ModelManager.h"
-#include "database/core/StorageManager.h"
-#include "database/initialization/InitDB.h"
-#include "database/initialization/ConfigManager/ConfigManager.h"
-#include "database/managers/ResourceMemoryManager.h"
+#include "legacy/desktop/capture/CameraCaptureManager.h"
+#include "legacy/desktop/capture/AudioCaptureManager.h"
+#include "legacy/desktop/capture/ScreenActivityTracker.h"
+#include "legacy/desktop/capture/MultimodalDataManager.h"
+#include "legacy/infra-alt/ModelManager.h"
+#include "infra/storage/StorageManager.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/ConfigManager.h"
+#include "legacy/core-v1/ResourceMemoryManager.h"
 
 // 全局变量
 std::atomic<bool> g_is_running(true);

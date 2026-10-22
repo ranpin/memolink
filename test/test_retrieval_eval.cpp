@@ -8,10 +8,10 @@
 #include <cstdlib>
 #include <iomanip>
 #include <json/json.h>
-#include "database/initialization/InitDB.h"
-#include "database/core/StorageManager.h"
-#include "database/managers/MemoryOrchestrator.h"
-#include "models/ModelManager.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/StorageManager.h"
+#include "legacy/core-v1/MemoryOrchestrator.h"
+#include "legacy/infra-alt/ModelManager.h"
 
 // P4 三域检索评测：加载语料 → 跑带标注查询 → 算 recall@k / MRR / hit@1。
 //

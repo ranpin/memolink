@@ -6,11 +6,11 @@
 #include <map>
 #include <sqlite3.h>
 #include <json/json.h>
-#include "database/initialization/InitDB.h"
-#include "database/core/StorageManager.h"
-#include "database/managers/EdgeMemoryStore.h"
-#include "database/managers/MemoryResolver.h"
-#include "models/QwenAPI.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/StorageManager.h"
+#include "memory/core/MemoryStore.h"
+#include "memory/core/MemoryResolver.h"
+#include "infra/llm/QwenAPI.h"
 
 // ============================================================================
 // Q2 验证：MemoryResolver 五操作消解。
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
     StorageManager storage(dbPath);
     if (!storage.initialize()) { std::cerr << "storage init failed\n"; return 1; }
 
-    EdgeMemoryStore store(storage);
+    MemoryStore store(storage);
     if (!store.ready()) { std::cerr << "store 未就绪（[edge] 模型路径没配？）\n"; return 1; }
 
     QwenAPI llm;                       // 走 config.ini 的 local_url（本地 llama-server）

@@ -7,9 +7,9 @@
 #include <set>
 #include <iomanip>
 #include <json/json.h>
-#include "database/initialization/InitDB.h"
-#include "database/core/StorageManager.h"
-#include "database/managers/EdgeMemoryStore.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/StorageManager.h"
+#include "memory/core/MemoryStore.h"
 
 // ============================================================================
 // Q3 验证：类型特化检索 vs 单一策略基线，比 hit@1（Recall@1）。
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
     if (!InitDB::initializeDatabase(dbPath)) { std::cerr << "DB init failed\n"; return 1; }
     StorageManager storage(dbPath);
     if (!storage.initialize()) { std::cerr << "storage init failed\n"; return 1; }
-    EdgeMemoryStore store(storage);
+    MemoryStore store(storage);
     if (!store.ready()) { std::cerr << "store 未就绪（[edge] 模型路径没配？）\n"; return 1; }
 
     // ---- 灌语料（corpus id → store id 映射；episodic 传 ts 作 valid_from）----
@@ -66,8 +66,8 @@ int main(int argc, char** argv) {
     std::cout << "=== Q3 类型特化检索 vs 单一策略基线 ===\n"
               << "  corpus=" << corpus.size() << "  queries=" << queries.size()
               << "  embed=" << store.embedModelTag()
-              << "  kTypeBoost=" << EdgeMemoryStore::kTypeBoost
-              << "  tau=" << EdgeMemoryStore::kEpisodicTauDays << "天\n\n";
+              << "  kTypeBoost=" << MemoryStore::kTypeBoost
+              << "  tau=" << MemoryStore::kEpisodicTauDays << "天\n\n";
 
     int baseHit = 0, typedHit = 0, intentOk = 0;
     const int nq = static_cast<int>(queries.size());
@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
         for (const auto& e : q["expected_ids"]) expected.insert(idMap[e.asInt()]);
 
         // 意图识别
-        const MemoryType detected = EdgeMemoryStore::detectQueryIntent(query);
+        const MemoryType detected = MemoryStore::detectQueryIntent(query);
         MemoryType labeled = MemoryType::Semantic;
         memoryTypeFromName(intentLabel, labeled);
         const bool intentCorrect = (detected == labeled);

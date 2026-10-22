@@ -2,10 +2,10 @@
 #include <vector>
 #include <iostream>
 #include <filesystem>
-#include "database/initialization/InitDB.h"
-#include "database/core/StorageManager.h"
-#include "database/managers/MemoryOrchestrator.h"
-#include "models/ModelManager.h"
+#include "infra/storage/InitDB.h"
+#include "infra/storage/StorageManager.h"
+#include "legacy/core-v1/MemoryOrchestrator.h"
+#include "legacy/infra-alt/ModelManager.h"
 
 // P3 验证：MemoryOrchestrator 的写入 / 跨类型检索 / 敏感标记 / 实时写入 / 分类型 FIFO 淘汰。
 //

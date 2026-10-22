@@ -2,8 +2,8 @@
 #include <string>
 #include <iostream>
 #include <cmath>
-#include "models/TextEmbeddingGenerator.h"
-#include "database/initialization/ConfigManager/ConfigManager.h"
+#include "infra/embedding/TextEmbeddingGenerator.h"
+#include "infra/storage/ConfigManager.h"
 
 // P2 接线验证：TextEmbeddingGenerator 是否真的走上了本地 ONNX。
 //
