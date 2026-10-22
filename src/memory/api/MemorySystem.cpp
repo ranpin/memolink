@@ -18,13 +18,14 @@ IngestResult MemorySystem::ingest(const std::string& text, MemoryType type,
 }
 
 std::vector<Memory> MemorySystem::recall(const std::string& query, int topK,
-                                         std::optional<MemoryType> filter, bool includeHistory) {
-    return store_.recall(query, topK, filter, includeHistory);
+                                         std::optional<MemoryType> filter, bool includeHistory,
+                                         const GovernanceFilter& gov) {
+    return store_.recall(query, topK, filter, includeHistory, gov);
 }
 
 std::vector<Memory> MemorySystem::recallTyped(const std::string& query, int topK,
-                                              bool includeHistory) {
-    return store_.recallTyped(query, topK, includeHistory);
+                                              bool includeHistory, const GovernanceFilter& gov) {
+    return store_.recallTyped(query, topK, includeHistory, gov);
 }
 
 bool MemorySystem::update(int id, const std::string& newContent) {
@@ -34,9 +35,11 @@ bool MemorySystem::update(int id, const std::string& newContent) {
 bool MemorySystem::remove(int id) { return store_.remove(id); }
 
 std::vector<Memory> MemorySystem::list(std::optional<MemoryType> type, int limit,
-                                       bool includeInvalid) {
-    return store_.list(type, limit, includeInvalid);
+                                       bool includeInvalid, const GovernanceFilter& gov) {
+    return store_.list(type, limit, includeInvalid, gov);
 }
+
+int MemorySystem::evictToCapacity(int capacity) { return store_.evictToCapacity(capacity); }
 
 std::vector<Memory> MemorySystem::history(int id) { return store_.history(id); }
 

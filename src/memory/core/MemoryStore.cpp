@@ -73,12 +73,12 @@ std::string currentUtcTime() {
     return std::string(buf);
 }
 
-// episodic 时间衰减：exp(-age_days / tau)。越近的事件权重越高（§7「时间衰减加权」）。
-// validFrom 形如 "YYYY-MM-DD"（或带时分秒）；解析失败或未来时间一律不衰减（返回 1）。
-float episodicDecay(const std::string& validFrom, float tauDays) {
-    if (validFrom.size() < 10) return 1.0f;
+// 时间衰减：exp(-age_days / tau)。ts 形如 "YYYY-MM-DD"（或带时分秒，只取日期部分）；
+// 解析失败或未来时间一律不衰减（返回 1）。Q3 episodic 检索加权与 Q7 强度衰减共用它。
+float timeDecay(const std::string& ts, float tauDays) {
+    if (ts.size() < 10) return 1.0f;
     struct tm tmv = {};
-    if (sscanf(validFrom.c_str(), "%d-%d-%d", &tmv.tm_year, &tmv.tm_mon, &tmv.tm_mday) != 3)
+    if (sscanf(ts.c_str(), "%d-%d-%d", &tmv.tm_year, &tmv.tm_mon, &tmv.tm_mday) != 3)
         return 1.0f;
     tmv.tm_year -= 1900;
     tmv.tm_mon  -= 1;
@@ -236,13 +236,17 @@ IngestResult MemoryStore::ingestText(const std::string& text, MemoryType type,
 // 无副作用的相似度检索（不递增 access_count）。recall() 与消解器共用它。
 std::vector<Memory> MemoryStore::searchByEmbedding(const std::vector<float>& qemb, int topK,
                                                        std::optional<MemoryType> filter,
-                                                       bool includeHistory) {
+                                                       bool includeHistory,
+                                                       const GovernanceFilter& gov) {
     std::vector<Memory> results;
     if (qemb.empty()) return results;
 
     std::string sql = std::string("SELECT ") + kSelectCols + " FROM memory WHERE 1=1";
     if (!includeHistory) sql += " AND valid_until IS NULL";
     if (filter.has_value()) sql += " AND type = ?";
+    if (gov.owner)     sql += " AND owner = ?";       // Q7 治理过滤
+    if (gov.scope)     sql += " AND scope = ?";
+    if (gov.authority) sql += " AND authority = ?";
 
     sqlite3* db = storage_.getDatabase();
     if (!db) return results;
@@ -252,8 +256,11 @@ std::vector<Memory> MemoryStore::searchByEmbedding(const std::vector<float>& qem
         std::cerr << "[MemoryStore] searchByEmbedding prepare failed: " << sqlite3_errmsg(db) << std::endl;
         return results;
     }
-    if (filter.has_value())
-        sqlite3_bind_text(stmt, 1, memoryTypeName(*filter), -1, SQLITE_TRANSIENT);
+    int bi = 1;   // 绑定下标必须与 WHERE 里 ? 的出现顺序严格一致
+    if (filter.has_value()) sqlite3_bind_text(stmt, bi++, memoryTypeName(*filter), -1, SQLITE_TRANSIENT);
+    if (gov.owner)     sqlite3_bind_text(stmt, bi++, gov.owner->c_str(), -1, SQLITE_TRANSIENT);
+    if (gov.scope)     sqlite3_bind_text(stmt, bi++, gov.scope->c_str(), -1, SQLITE_TRANSIENT);
+    if (gov.authority) sqlite3_bind_text(stmt, bi++, gov.authority->c_str(), -1, SQLITE_TRANSIENT);
 
     std::vector<std::pair<float, Memory>> scored;
     while (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -281,9 +288,10 @@ std::vector<Memory> MemoryStore::searchByEmbedding(const std::vector<float>& qem
 
 std::vector<Memory> MemoryStore::recall(const std::string& query, int topK,
                                             std::optional<MemoryType> filter,
-                                            bool includeHistory) {
+                                            bool includeHistory,
+                                            const GovernanceFilter& gov) {
     const std::vector<float> qemb = embed(query);
-    std::vector<Memory> results = searchByEmbedding(qemb, topK, filter, includeHistory);
+    std::vector<Memory> results = searchByEmbedding(qemb, topK, filter, includeHistory, gov);
 
     // 命中的记忆 access_count +1（为 Q7 的 LRU/强度衰减留数据）——真实召回的副作用
     sqlite3* db = storage_.getDatabase();
@@ -328,16 +336,17 @@ MemoryType MemoryStore::detectQueryIntent(const std::string& query) {
 // 类型特化检索：全类型余弦检索后，按查询意图给同类型记忆加权（×kTypeBoost），
 // episodic 再乘时间衰减，然后重排。对照基线是 recall()（纯余弦、不加权）。
 std::vector<Memory> MemoryStore::recallTyped(const std::string& query, int topK,
-                                                 bool includeHistory) {
+                                                 bool includeHistory,
+                                                 const GovernanceFilter& gov) {
     const MemoryType intent = detectQueryIntent(query);
     const std::vector<float> qemb = embed(query);
     // topK=0 → 取全部，加权重排后再截取
-    std::vector<Memory> all = searchByEmbedding(qemb, 0, std::nullopt, includeHistory);
+    std::vector<Memory> all = searchByEmbedding(qemb, 0, std::nullopt, includeHistory, gov);
 
     for (auto& m : all) {
         float w = (m.type == intent) ? kTypeBoost : 1.0f;
         if (m.type == MemoryType::Episodic)
-            w *= episodicDecay(m.validFrom, kEpisodicTauDays);
+            w *= timeDecay(m.validFrom, kEpisodicTauDays);
         m.score *= w;
     }
     std::sort(all.begin(), all.end(),
@@ -474,14 +483,56 @@ bool MemoryStore::reinforce(int id, float strengthDelta) {
 }
 
 // ---------------------------------------------------------------------------
+// Q7：强度衰减 + 按强度淘汰（docs/memory_v2_design.md §9）
+// ---------------------------------------------------------------------------
+// 有效强度 = strength × exp(-age_days/τ)，age 从 updated_at 算（reinforce/update 刷新它，
+// 被强化的记忆衰减更慢）；updated_at 缺则退 created_at，再缺退 valid_from。
+float MemoryStore::effectiveStrength(const Memory& m) {
+    const std::string& ref = !m.updatedAt.empty() ? m.updatedAt
+                           : (!m.createdAt.empty() ? m.createdAt : m.validFrom);
+    return m.strength * timeDecay(ref, kStrengthTauDays);
+}
+
+int MemoryStore::evictToCapacity(int capacity) {
+    if (capacity < 0) return 0;
+    std::vector<Memory> all = list(std::nullopt, 0, /*includeInvalid=*/false);
+    if (static_cast<int>(all.size()) <= capacity) return 0;
+
+    // 淘汰优先级：episodic 最先（事件会过时）< semantic < procedural 最后（技能不该被忘）。
+    auto prio = [](MemoryType t) {
+        switch (t) {
+            case MemoryType::Episodic:   return 0;
+            case MemoryType::Semantic:   return 1;
+            case MemoryType::Procedural: return 2;
+        }
+        return 1;
+    };
+    // 排序：类型优先级升序 → 同类型内有效强度升序；排在最前的最该淘汰。
+    std::sort(all.begin(), all.end(), [&](const Memory& a, const Memory& b) {
+        const int pa = prio(a.type), pb = prio(b.type);
+        if (pa != pb) return pa < pb;
+        return effectiveStrength(a) < effectiveStrength(b);
+    });
+
+    const int toEvict = static_cast<int>(all.size()) - capacity;
+    int evicted = 0;
+    for (int i = 0; i < toEvict; ++i)
+        if (remove(all[i].id)) ++evicted;
+    return evicted;
+}
+
+// ---------------------------------------------------------------------------
 // 浏览
 // ---------------------------------------------------------------------------
 std::vector<Memory> MemoryStore::list(std::optional<MemoryType> type, int limit,
-                                          bool includeInvalid) {
+                                          bool includeInvalid, const GovernanceFilter& gov) {
     std::vector<Memory> results;
     std::string sql = std::string("SELECT ") + kSelectCols + " FROM memory WHERE 1=1";
     if (!includeInvalid) sql += " AND valid_until IS NULL";
     if (type.has_value()) sql += " AND type = ?";
+    if (gov.owner)     sql += " AND owner = ?";       // Q7 治理过滤
+    if (gov.scope)     sql += " AND scope = ?";
+    if (gov.authority) sql += " AND authority = ?";
     sql += " ORDER BY id DESC";
     if (limit > 0) sql += " LIMIT " + std::to_string(limit);
 
@@ -489,8 +540,11 @@ std::vector<Memory> MemoryStore::list(std::optional<MemoryType> type, int limit,
     if (!db) return results;
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr) != SQLITE_OK) return results;
-    if (type.has_value())
-        sqlite3_bind_text(stmt, 1, memoryTypeName(*type), -1, SQLITE_TRANSIENT);
+    int bi = 1;   // 绑定下标与 WHERE 里 ? 顺序一致
+    if (type.has_value()) sqlite3_bind_text(stmt, bi++, memoryTypeName(*type), -1, SQLITE_TRANSIENT);
+    if (gov.owner)     sqlite3_bind_text(stmt, bi++, gov.owner->c_str(), -1, SQLITE_TRANSIENT);
+    if (gov.scope)     sqlite3_bind_text(stmt, bi++, gov.scope->c_str(), -1, SQLITE_TRANSIENT);
+    if (gov.authority) sqlite3_bind_text(stmt, bi++, gov.authority->c_str(), -1, SQLITE_TRANSIENT);
     while (sqlite3_step(stmt) == SQLITE_ROW) results.push_back(rowToMemory(stmt));
     sqlite3_finalize(stmt);
     return results;

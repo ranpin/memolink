@@ -48,11 +48,14 @@ public:
                         int sourceTurn = 0);
 
     // ④ 检索：recall 纯余弦；recallTyped 类型特化（意图路由 + 加权 + 时间衰减）
+    //    gov 为 Q7 治理过滤器（owner/scope/authority），默认空 = 不过滤（向后兼容）。
     std::vector<Memory> recall(const std::string& query, int topK = 4,
                                std::optional<MemoryType> filter = std::nullopt,
-                               bool includeHistory = false);
+                               bool includeHistory = false,
+                               const GovernanceFilter& gov = {});
     std::vector<Memory> recallTyped(const std::string& query, int topK = 4,
-                                    bool includeHistory = false);
+                                    bool includeHistory = false,
+                                    const GovernanceFilter& gov = {});
 
     // ⑤ 显式变更
     bool update(int id, const std::string& newContent);
@@ -60,10 +63,15 @@ public:
 
     // 浏览
     std::vector<Memory> list(std::optional<MemoryType> type = std::nullopt,
-                             int limit = 0, bool includeInvalid = false);
+                             int limit = 0, bool includeInvalid = false,
+                             const GovernanceFilter& gov = {});
     std::vector<Memory> history(int id);
     Memory get(int id);
     MemoryStats stats();
+
+    // Q7：强度衰减淘汰——有效记忆数超过 capacity 时，按「类型优先级（episodic 先 /
+    // procedural 后）+ 有效强度最低优先」物理删除最弱者，返回删除条数。
+    int evictToCapacity(int capacity);
 
     // 细粒度入口（评测/高级用法）：直接访问底层 store，不经门面收敛
     MemoryStore& store() { return store_; }

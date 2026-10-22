@@ -276,6 +276,10 @@ if(MEMOLINK_ENABLE_EDGE)
     add_executable(test_longmemeval_retrieval test/test_longmemeval_retrieval.cpp)
     target_link_libraries(test_longmemeval_retrieval memolink_lib)
 
+    # Q7：治理三元标签过滤 + 强度衰减淘汰（episodic 先淘汰 / procedural 最后）
+    add_executable(test_memory_governance test/test_memory_governance.cpp)
+    target_link_libraries(test_memory_governance memolink_lib)
+
     # Q6：memolink CLI——八命令串完整管线（提取→消解→存储→检索→更新→删除→历史→统计）
     add_executable(memolink src/app/cli/MemoryCLI.cpp)
     target_link_libraries(memolink memolink_lib)

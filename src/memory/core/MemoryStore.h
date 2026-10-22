@@ -61,6 +61,16 @@ const char* memoryTypeName(MemoryType t);
 bool memoryTypeFromName(const std::string& s, MemoryType& out);
 const char* memoryActionName(MemoryAction a);
 
+// Q7：治理三元标签过滤器（docs/memory_v2_design.md §8）。三字段均可选，
+// empty() 时不过滤（向后兼容）。检索/列举时按 owner/scope/authority 做访问控制，
+// 是「命中 scope=private → 原文不出设备」这条隐私路由的第一道闸。
+struct GovernanceFilter {
+    std::optional<std::string> owner;
+    std::optional<std::string> scope;
+    std::optional<std::string> authority;
+    bool empty() const { return !owner && !scope && !authority; }
+};
+
 class MemoryStore {
 public:
     explicit MemoryStore(StorageManager& storage);
@@ -82,9 +92,11 @@ public:
                             const std::string& validFrom = "");
 
     // ---- 检索 ----
+    // gov 为治理过滤器（Q7）：默认空 = 不过滤，向后兼容。
     std::vector<Memory> recall(const std::string& query, int topK = 4,
                                std::optional<MemoryType> filter = std::nullopt,
-                               bool includeHistory = false);
+                               bool includeHistory = false,
+                               const GovernanceFilter& gov = {});
 
     // ---- Q3：类型特化检索（docs/memory_v2_design.md §7）----
     // detectQueryIntent：关键词判查询意图（优先级 episodic > procedural > semantic）。
@@ -92,9 +104,11 @@ public:
     //   对照基线是 recall()（纯余弦、全类型一起搜、不加权）。
     static MemoryType detectQueryIntent(const std::string& query);
     std::vector<Memory> recallTyped(const std::string& query, int topK = 4,
-                                    bool includeHistory = false);
+                                    bool includeHistory = false,
+                                    const GovernanceFilter& gov = {});
     static constexpr float kTypeBoost = 1.6f;         // 同类型加权系数
     static constexpr float kEpisodicTauDays = 365.f;  // episodic 时间衰减时间常数（天）
+    static constexpr float kStrengthTauDays = 90.f;   // Q7 强度衰减时间常数（天）
 
     // ---- Q2：供消解器（MemoryResolver）用的无副作用接口 ----
     // embedText：embed() 的公开包装。
@@ -103,7 +117,8 @@ public:
     std::vector<float> embedText(const std::string& text);
     std::vector<Memory> searchByEmbedding(const std::vector<float>& qemb, int topK,
                                           std::optional<MemoryType> filter = std::nullopt,
-                                          bool includeHistory = false);
+                                          bool includeHistory = false,
+                                          const GovernanceFilter& gov = {});
 
     // ---- 显式 CRUD ----
     bool update(int id, const std::string& newContent);   // 原地改内容 + 重算 embedding
@@ -111,9 +126,19 @@ public:
     bool supersede(int oldId, const std::string& newContent, int* newIdOut = nullptr);  // 非破坏性替换
     bool reinforce(int id, float strengthDelta = 1.0f);   // 等价重述：只提升 strength，不改内容
 
+    // ---- Q7：强度衰减 + 按强度淘汰（docs/memory_v2_design.md §9）----
+    // 有效强度 = strength × exp(-age_days / kStrengthTauDays)，age 从 updated_at 算
+    // （reinforce/update 会刷新 updated_at ⇒ 被强化的记忆衰减更慢、更耐淘汰）。
+    static float effectiveStrength(const Memory& m);
+    // 有效记忆数超过 capacity 时，按「类型优先级（episodic 先淘汰 → semantic → procedural
+    // 最后）+ 同类型内有效强度最低优先」物理删除最弱者，直到不超过 capacity。返回删除条数。
+    // 这是把 v1 的纯 FIFO 淘汰升级成强度淘汰（旁证 RSPM 2610.25561：衰减未强化规则）。
+    int evictToCapacity(int capacity);
+
     // ---- 浏览 ----
     std::vector<Memory> list(std::optional<MemoryType> type = std::nullopt,
-                             int limit = 0, bool includeInvalid = false);
+                             int limit = 0, bool includeInvalid = false,
+                             const GovernanceFilter& gov = {});
     std::vector<Memory> history(int id);   // 沿 supersedes/superseded_by 链回溯整条演化
     Memory get(int id);
     int count(std::optional<MemoryType> type = std::nullopt, bool validOnly = true);
