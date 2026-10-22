@@ -1,6 +1,6 @@
-# MIRIX-CPP — 端侧 Agent 记忆系统（Jetson Orin）
+# memolink — 端侧 Agent 记忆系统（Jetson Orin）
 
-> 🎬 **在线演示**：<https://ranpin.github.io/mirix-cpp/> —— 真实 CLI 转录的**生命周期分步回放**（提取 → 消解 → 检索 → 矛盾更新 → 版本回溯 → 删除），非模拟、非指标陈列。
+> 🎬 **在线演示**：<https://ranpin.github.io/memolink/> —— 真实 CLI 转录的**生命周期分步回放**（提取 → 消解 → 检索 → 矛盾更新 → 版本回溯 → 删除），非模拟、非指标陈列。
 
 在 **Jetson Orin** 上离线跑通的**多类型 Agent 记忆系统**：记忆的**提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯**全程在本地完成，不依赖云端。C++ 实现——自写 WordPiece 分词器 + ONNX INT8 推理做本地 embedding，本地 4B LLM 做矛盾消解与事实提取。记忆分层架构参考自 [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX)（Apache-2.0），**v2 记忆系统本体与端侧推理为本仓库新写**。
 

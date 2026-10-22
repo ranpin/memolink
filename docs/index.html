@@ -177,7 +177,7 @@
         <div class="stat"><div class="v">3.7<small>%</small></div><div class="k">提取编造率上界<br>（受约束 JSON，LongMemEval）</div></div>
         <div class="stat"><div class="v">0.96<small>7</small></div><div class="k">三域 recall@4<br>同一二进制零改码</div></div>
       </div>
-      <p class="note">Q1–Q5 闸门全部在 Orin 真机跑通：五操作消解（Q2）、类型特化检索（Q3，v2 基准 +31.2pp）、受约束提取（Q4，编造率 3.7%）、LongMemEval 英文模型 config-only swap（Q5，dim 384，5/5 验证）。详见 <a href="https://github.com/ranpin/mirix-cpp/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>。</p>
+      <p class="note">Q1–Q5 闸门全部在 Orin 真机跑通：五操作消解（Q2）、类型特化检索（Q3，v2 基准 +31.2pp）、受约束提取（Q4，编造率 3.7%）、LongMemEval 英文模型 config-only swap（Q5，dim 384，5/5 验证）。详见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>。</p>
     </section>
 
     <section class="ds-section" id="limits">
@@ -201,13 +201,13 @@ mkdir build && cd build
 cmake .. -DMIRIX_ENABLE_EDGE=ON && make -j8 mirix-mem
 ./mirix-mem ingest "用户喜欢深蓝色的车" --type semantic
 ./mirix-mem recall "我的车是什么颜色偏好" --top 3</pre>
-        <p class="note">代码与完整文档见 <a href="https://github.com/ranpin/mirix-cpp">github.com/ranpin/mirix-cpp</a>。记忆分层架构参考自 <a href="https://github.com/Mirix-AI/MIRIX">Mirix-AI/MIRIX</a>（Apache-2.0）。</p>
+        <p class="note">代码与完整文档见 <a href="https://github.com/ranpin/memolink">github.com/ranpin/memolink</a>。记忆分层架构参考自 <a href="https://github.com/Mirix-AI/MIRIX">Mirix-AI/MIRIX</a>（Apache-2.0）。</p>
       </div>
     </section>
 
     <footer class="ds-footer">
-      MIRIX-CPP · 端侧 Agent 记忆系统（Jetson Orin，全程离线实测）<br>
-      代码见 <a href="https://github.com/ranpin/mirix-cpp">github.com/ranpin/mirix-cpp</a>
+      memolink · 端侧 Agent 记忆系统（Jetson Orin，全程离线实测）<br>
+      代码见 <a href="https://github.com/ranpin/memolink">github.com/ranpin/memolink</a>
     </footer>
   </div>
 

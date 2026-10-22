@@ -202,7 +202,7 @@ make test
 为了更好地组织测试文件，我们采用了以下目录结构：
 
 ```
-mirix-cpp/
+memolink/
 ├── database/                   # 测试数据库文件目录
 │   ├── test_chat_with_model.db
 │   ├── test_embedding.db

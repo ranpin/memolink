@@ -1,4 +1,4 @@
-# mirix-cpp → Orin 端侧记忆系统演进计划
+# memolink → Orin 端侧记忆系统演进计划
 
 - **分支**：`orin-edge`（`main` 保留桌面版，不删任何桌面代码）
 - **定案**：2026-10-20，用户已批准全部架构决策 + `apt` 装包 + 分支策略
@@ -24,12 +24,12 @@
 | LLM 生成质量优化 | 生成只是跑通闭环的**配角** |
 | 端云融合的云端实测 | 无 API key；云端路径只实现接口、不出对比数据 |
 
-### 1.3 为什么是 C++、为什么在 mirix-cpp 上演进
+### 1.3 为什么是 C++、为什么在 memolink 上演进
 
 **诚实前提：C++ 重写买不到吞吐。** Python 原型实测端到端 929ms，其中生成占 920ms（99%）；
 重写外围只影响那 9ms。C++ 的真实收益是：
 
-1. **记忆系统本体就是那 2,618 行 C++**（mirix-cpp 的 6+1 类 manager 是真实现）——复用它比在 Python 里重写一遍更合理；
+1. **记忆系统本体就是那 2,618 行 C++**（memolink 的 6+1 类 manager 是真实现）——复用它比在 Python 里重写一遍更合理；
 2. **依赖面最小化**：无 Python 运行时、无 Rust tokenizer、无 FAISS，只剩 onnxruntime + sqlite3；
 3. **冷启动**：Python 要 import numpy/onnxruntime/tokenizers/faiss（实测进程 RSS 126MB），C++ 加载 ONNX session 仅 0.03–0.12s。⚠️ **此项尚未实测，不得先声称**；
 4. 对上求职定位（C++ / 端侧系统）。
@@ -96,7 +96,7 @@
 
 ### 2.3 跨域可扩展性（用户 2026-10-20 要求，属记忆系统本职）
 
-mirix-cpp 的 6+1 类记忆源自认知科学分类，**本就领域无关**：
+memolink 的 6+1 类记忆源自认知科学分类，**本就领域无关**：
 
 | 类型 | 座舱 | 机器人 | 自动驾驶 |
 |---|---|---|---|
@@ -150,7 +150,7 @@ option(MIRIX_ENABLE_EDGE    "Orin 端侧推理（ONNX+llama）"  ON)
 
 ### ❌ 不需要
 
-- **FAISS**：F2 已证明精确检索够（见 §6），且 mirix-cpp 的 `VectorSearchManager` 本来就是暴力余弦。
+- **FAISS**：F2 已证明精确检索够（见 §6），且 memolink 的 `VectorSearchManager` 本来就是暴力余弦。
   连带 **Eigen3 也不需要**（dog 上没有）。`EmbeddingIndexManager` 的 4 个 FAISS 占位符方法保持占位、不接。
 
 ---
@@ -159,7 +159,7 @@ option(MIRIX_ENABLE_EDGE    "Orin 端侧推理（ONNX+llama）"  ON)
 
 | 闸门 | 内容 | 判据（可验证） |
 |---|---|---|
-| **P0** | 依赖 + 构建基线：`apt install libsqlite3-dev`；下 onnxruntime aarch64 C release（含头）；mirix-cpp 同步到 dog | `cmake` configure 通过 |
+| **P0** | 依赖 + 构建基线：`apt install libsqlite3-dev`；下 onnxruntime aarch64 C release（含头）；memolink 同步到 dog | `cmake` configure 通过 |
 | **P1** | CMake 开关化（桌面代码保留、默认不编）；Orin 编译过 | `MIRIX_ENABLE_EDGE=ON` 在 Orin 编译通过，**且桌面配置在 Mac 上仍能编**（没破坏桌面版） |
 | **P2** | C++ WordPiece 分词器 + ONNX C API 跑 INT8，替换 `TextEmbeddingGenerator` 实现（接口不变） | 与 Python `tokenizers` **逐 token 对拍一致**；embedding 与 Python 参考**余弦 ~0.99** |
 | **P3** | 实现 `MemoryOrchestrator`：按类型写入 + 跨类型检索合并（C）+ 实时写入（B2）+ 分类型有界淘汰（B3）+ embedding 持久化与内存缓存（B1）+ 语料配置驱动（D） | 写入→检索→淘汰闭环跑通；重启后 embedding 从库恢复、不重算 |
