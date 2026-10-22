@@ -16,19 +16,7 @@
 | **Q6** | `memolink` CLI 八命令 + 生命周期 demo | 八命令 Orin 全跑通；线上 Playwright 23/23 |
 | **Q7** | 治理标签过滤 + 强度衰减淘汰 | test_memory_governance 21/21（owner/scope/authority 过滤 + episodic 先淘汰 / procedural 最后） |
 
-数字均由仓库内程序在 Orin 实跑生成、可复现，与 LLM 生成解耦。**关键机制、诚实边界、跨域扩展**详见 [v2 设计文档](docs/memory_v2_design.md)。
-
-## 记忆生命周期
-
-```
-① 提取 (Q4)    对话轮 ──▶ 候选事实   （本地 4B，受约束 JSON 数组）
-② 消解 (Q2)    候选事实 ──▶ 五操作之一（三层判定）
-③ 存储 (Q1)    ──▶ memory 表        （非破坏性版本化）
-④ 检索 (Q3)    query ──▶ top-k      （类型特化：意图路由 + 加权 + 时间衰减）
-⑤ CRUD (Q1)    update / remove / history（显式、可回溯）
-```
-
-**五操作** `CREATE` / `UPDATE` / `REINFORCE` / `SUPERSEDE` / `NOOP`（前四类取自 FEB-30 `2610.22209` 分类法，`NOOP` 取自 Mem0）；**非破坏性版本化**：SUPERSEDE 不删旧记忆，标记失效并建 `superseded_by`/`supersedes` 链，`history` 可回溯整条演化。
+数字均由仓库内程序在 Orin 实跑生成、可复现，与 LLM 生成解耦。**生命周期五操作、三层消解、类型特化检索、治理与淘汰等机制细节，以及诚实边界、跨域扩展**详见 [v2 设计文档](docs/memory_v2_design.md)。
 
 ## CLI：`memolink` 八命令
 
