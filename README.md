@@ -44,9 +44,9 @@ make -j8 memolink
 ./memolink recall "我的车是什么颜色偏好" --top 3
 ```
 
-> 桌面版（采集/GUI/API）经 CMake 开关 `-DMEMOLINK_ENABLE_CAPTURE=ON -DMEMOLINK_ENABLE_GUI=ON -DMEMOLINK_ENABLE_API=ON` 保留、默认关闭；端侧构建只依赖 sqlite3 + curl + jsoncpp + onnxruntime。
+> 旧 MIRIX 桌面系统（采集/GUI/API/agents）已整体移入 `src/legacy/` 并**移出构建**（2026-10-22），代码留盘仅作参考；端侧构建只依赖 sqlite3 + curl + jsoncpp + onnxruntime。
 
 ## 文档
 
 - **[v2 记忆系统设计](docs/memory_v2_design.md)** —— 权威方案 · Q1–Q7 闸门 · 实测结果 · 关键机制 · 诚实边界
-- [架构文档](docs/architecture.md) · [数据库设计](docs/database.md) · [记忆系统](docs/memory.md) · [测试说明](docs/testing.md)
+- [架构文档](docs/architecture.md) · [数据库设计](docs/database.md) · [测试说明](docs/testing.md)

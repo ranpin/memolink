@@ -1,205 +1,74 @@
-# 数据库设计文档
+# 数据库设计（v2 端侧记忆系统）
+
+> 本文描述 **memolink v2 记忆系统**的数据模型。v2 只用一张 `memory` 表；旧 MIRIX v1 的 14 张表（user/agent/session/recall_memory/…）已随 legacy 代码移出构建，其旧文档归档于 `src/legacy/docs/`。权威设计与依据见 [memory_v2_design.md](memory_v2_design.md) §10。
 
 ## 概述
 
-MIRIX系统使用SQLite作为主要的数据存储解决方案，实现了完整的数据库设计来支持仿人类记忆系统的各种功能。系统包含多个表来存储不同类型的记忆信息，并通过专门的管理器类来操作这些数据。
+v2 用 SQLite 存储记忆，核心是单张 `memory` 表。存储层由 `infra/storage/` 提供：
 
-所有数据库文件统一存储在项目根目录下的[database](../src/database)目录中，避免了在build目录中创建数据库文件的问题。
+- **StorageManager**：数据库连接与查询执行（`initialize()` 会开 `PRAGMA foreign_keys=ON`）。
+- **InitDB**：`initializeDatabase(dbPath)` 建 `memory` 表 + 索引（v2 只建这一张表）。
+- **VectorSerializer**：embedding 向量与 BLOB 的序列化 / 反序列化。
+- **ConfigManager**：读 `config.ini`（含 `[edge]` 端侧模型路径）。
 
-## 数据库表结构
+数据库文件路径由 `config.ini` 的 `[database] db_path` 指定（默认 `memolink.db`）。
 
-### 1. 用户表 (user)
-存储系统用户信息：
-- id: INTEGER PRIMARY KEY
-- name: TEXT
-- email: TEXT
-- password_hash: TEXT
-- created_at: TEXT
+## `memory` 表
 
-### 2. 会话表 (session)
-存储用户会话信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- token: TEXT
-- start_time: TEXT
-- end_time: TEXT
-- status: TEXT
-- device_info: TEXT
-- metadata: TEXT
+```sql
+CREATE TABLE IF NOT EXISTS memory (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    type            TEXT NOT NULL,        -- semantic | episodic | procedural
+    content         TEXT NOT NULL,
+    embedding       BLOB,                 -- VectorSerializer 序列化的向量
+    embed_model     TEXT,                 -- 模型版本 tag，换模型时检出失配
+    strength        REAL DEFAULT 1.0,     -- REINFORCE 累加，强度衰减淘汰用
+    access_count    INTEGER DEFAULT 0,
+    -- 治理三元标签（Q7）
+    owner           TEXT DEFAULT 'user',      -- user | agent | system
+    scope           TEXT DEFAULT 'private',   -- private | shared
+    authority       TEXT DEFAULT 'asserted',  -- asserted | observed | inferred
+    -- 非破坏性版本化（Q1）
+    valid_from      TEXT,
+    valid_until     TEXT,                 -- NULL = 当前有效
+    superseded_by   INTEGER,              -- 被哪条取代（双向链）
+    supersedes      INTEGER,              -- 取代了哪条
+    -- 溯源
+    source_session  TEXT,
+    source_turn     INTEGER DEFAULT 0,
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_memory_type_valid     ON memory(type, valid_until);
+CREATE INDEX IF NOT EXISTS idx_memory_superseded_by  ON memory(superseded_by);
+CREATE INDEX IF NOT EXISTS idx_memory_scope          ON memory(scope);
+```
 
-### 3. Agent表 (agent)
-存储AI代理信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- name: TEXT
-- description: TEXT
-- capabilities: TEXT
-- created_at: TEXT
+### 字段分组
 
-### 4. 回忆记忆表 (recall_memory)
-存储对话历史和记忆检索过程：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- session_id: INTEGER
-- message_type: TEXT
-- content: TEXT
-- metadata: TEXT
-- embedding: BLOB
-- created_at: TEXT
-- updated_at: TEXT
+| 组 | 字段 | 作用 |
+|---|---|---|
+| 基本 | `id` / `type` / `content` | 记忆主键、类型（3 类）、正文 |
+| 向量 | `embedding` / `embed_model` | 检索用向量（BLOB）+ 生成它的模型 tag |
+| 强度 | `strength` / `access_count` | REINFORCE 提升 strength；强度衰减淘汰按 `strength × exp(-age/τ)` |
+| 治理 | `owner` / `scope` / `authority` | 三元标签过滤（Q7）；`scope=private` 命中强制端侧 |
+| 版本化 | `valid_from` / `valid_until` / `superseded_by` / `supersedes` | 非破坏性版本化：SUPERSEDE 标旧记忆失效并建双向链，`history` 可回溯 |
+| 溯源 | `source_session` / `source_turn` / `created_at` / `updated_at` | 来源与时间戳；`updated_at` 是强度衰减的 age 基准 |
 
-### 5. 资源记忆表 (resource_memory)
-存储多媒体资源文件的元信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- session_id: INTEGER
-- path: TEXT
-- resource_type: TEXT
-- description: TEXT
-- size: INTEGER
-- metadata: TEXT
-- embedding: BLOB
-- created_at: TEXT
-- updated_at: TEXT
+## 关键设计：无 user/agent/session 外键
 
-### 6. 核心记忆块表 (core_memory_block)
-存储核心记忆信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- label: TEXT
-- value: TEXT
-- created_at: TEXT
-- updated_at: TEXT
+`memory` 表**刻意不带** user/agent/session 外键。原因：v1 的 `recall_memory` 对这三张表都有外键，配合 `StorageManager::initialize()` 里的 `PRAGMA foreign_keys=ON`，曾让 P3 首跑 40/40 条写入全部违约失败（修法见 legacy 的 `MemoryOrchestrator::ensureDefaultEntities`）。v2 表自成一体、不依赖那三张表，从 schema 层根除这类失败。
 
-### 7. 事件记忆表 (episodic_memory)
-存储事件记忆信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- timestamp: TEXT
-- summary: TEXT
-- details: TEXT
-- event_type: TEXT
-- metadata: TEXT
-- created_at: TEXT
-- updated_at: TEXT
+## 类型与检索
 
-### 8. 语义记忆表 (semantic_memory)
-存储语义记忆信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- name: TEXT
-- summary: TEXT
-- details: TEXT
-- metadata: TEXT
-- created_at: TEXT
-- updated_at: TEXT
+`type` 取 3 类（认知科学标准分法），并**真正驱动行为**（不是标签摆设）：
 
-### 9. 程序记忆表 (procedural_memory)
-存储程序记忆信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- title: TEXT
-- summary: TEXT
-- steps: TEXT
-- metadata: TEXT
-- created_at: TEXT
-- updated_at: TEXT
+- **semantic**：事实与偏好，可被矛盾 → SUPERSEDE。
+- **episodic**：带时间戳的事件，不可变；检索时做时间衰减、淘汰时优先。
+- **procedural**：技能/规则，可被精化 → UPDATE；淘汰时最后。
 
-### 10. 知识库表 (knowledge_vault)
-存储知识库信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- caption: TEXT
-- entry_type: TEXT
-- source: TEXT
-- sensitivity: TEXT
-- encrypted_value: TEXT
-- metadata: TEXT
-- created_at: TEXT
-- updated_at: TEXT
+类型特化检索（意图路由 + 同类型加权 + episodic 时间衰减）见 [memory_v2_design.md](memory_v2_design.md) §7，实现在 `MemoryStore::recallTyped`。
 
-### 11. 归档记忆表 (archival_memory)
-存储归档记忆信息：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- content: TEXT
-- archive_date: TEXT
-- metadata: TEXT
-- created_at: TEXT
-- updated_at: TEXT
+## 向量检索
 
-### 12. 审计日志表 (audit_log)
-存储系统操作日志：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- action_type: TEXT
-- memory_id: INTEGER
-- memory_type: TEXT
-- timestamp: TEXT
-- metadata: TEXT
-- session_id: INTEGER
-
-### 13. 备份表 (backup)
-存储备份信息：
-- id: INTEGER PRIMARY KEY
-- backup_name: TEXT
-- backup_path: TEXT
-- backup_date: TEXT
-- status: TEXT
-- metadata: TEXT
-
-### 14. 可视化数据表 (visualization_data)
-存储可视化相关数据：
-- id: INTEGER PRIMARY KEY
-- user_id: INTEGER
-- agent_id: INTEGER
-- data_type: TEXT
-- content: TEXT
-- metadata: TEXT
-- created_at: TEXT
-
-## 数据库管理器
-
-系统为每个数据表提供了专门的管理器类：
-
-- **UserManager**：管理用户信息
-- **SessionManager**：管理会话信息
-- **RecallMemoryManager**：管理回忆记忆
-- **ResourceMemoryManager**：管理资源记忆
-- **CoreMemoryBlockManager**：管理核心记忆块
-- **EpisodicMemoryManager**：管理事件记忆
-- **SemanticMemoryManager**：管理语义记忆
-- **ProceduralMemoryManager**：管理程序记忆
-- **KnowledgeVaultManager**：管理知识库
-- **ArchivalMemoryManager**：管理归档记忆
-- **AuditLogManager**：管理审计日志
-- **BackupManager**：管理备份
-- **VisualizationManager**：管理可视化数据
-
-## 数据库初始化
-
-系统通过InitDB类来初始化数据库，包括创建表结构和索引。数据库文件统一存储在项目根目录下的[database](../src/database)目录中，确保数据持久化且不会因构建目录清理而丢失。
-
-## 存储管理
-
-系统使用StorageManager类来管理数据库连接和事务处理，确保数据操作的原子性和一致性。
-
-## 向量数据存储
-
-为了支持向量检索功能，系统在需要的表中添加了embedding字段（BLOB类型），用于存储向量数据。这些向量数据通过TextEmbeddingGenerator和CLIPProcessor生成，并通过VectorSerializer进行序列化和反序列化。
-
-## 测试数据库
-
-为了避免测试数据污染主系统数据库，每个测试程序都会创建独立的测试数据库，存储在[database](../src/database)目录中，文件名根据测试程序命名，例如：
-- [test_chat_with_model.db](../database/test_chat_with_model.db)
-- [test_embedding.db](../database/test_embedding.db)
-- [system_initialization_test.db](../database/system_initialization_test.db)
+检索是对 `memory` 表中存储的 embedding 做**暴力余弦相似度**（`MemoryStore::searchByEmbedding`），未链接 FAISS。实测在 agent 记忆量级（1e3~1e4）下精确检索足够（0.79ms@1万条、recall 1.0），而 HNSW 建索引要 36s@10万条，故刻意不接 FAISS（连带不需要 Eigen3）。

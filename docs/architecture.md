@@ -1,6 +1,6 @@
 # 系统架构文档
 
-> 本文描述 **v2 端侧记忆系统（memolink）** 的分层架构。旧 MIRIX 桌面多模态系统已整体归入 `src/legacy/`（隔离不删），见文末「遗留代码」。权威设计方案与实测数据见 [memory_v2_design.md](memory_v2_design.md)。
+> 本文描述 **v2 端侧记忆系统（memolink）** 的分层架构。旧 MIRIX 桌面多模态系统已整体归入 `src/legacy/` 并**移出构建**（隔离不删），见文末「遗留代码」。权威设计方案与实测数据见 [memory_v2_design.md](memory_v2_design.md)。
 
 ## 概述
 
@@ -41,7 +41,7 @@ memolink 是跑在 **Jetson Orin** 上的端侧多类型 Agent 记忆系统：�
   遗留区  src/legacy/  —— 旧 MIRIX 桌面系统，隔离不删（见文末）
 ```
 
-依赖方向严格自上而下：`app → api → core → infra`。`infra` 是最底层，被 `core` 与 `legacy` 共享；上层永不反向依赖下层的具体实现，应用层只认 `MemorySystem` 门面。
+依赖方向严格自上而下：`app → api → core → infra`。`infra` 是最底层；上层永不反向依赖下层的具体实现，应用层只认 `MemorySystem` 门面。（`legacy` 已移出构建，不再参与依赖；活跃代码不 include 任何 legacy 头。）
 
 ## 各层职责
 
@@ -85,16 +85,28 @@ query ──────────────────④recall（类型�
 2. **非破坏性版本化**：矛盾更新走 SUPERSEDE（旧记忆失效但保留 + 双向链接），而非物理覆盖——记忆演化全程可回溯。
 3. **端侧离线**：embedding 走 CPU、LLM 走本地 llama-server，全程不依赖云端；GPU 整块留给 LLM 是刻意的异构分配。
 4. **基础设施可替换**：embedding 后端换语言只改配置（config-only swap，已实测中英互换 5/5）；存储/LLM 同理可换。
-5. **遗留隔离不删**：旧 MIRIX 桌面系统整体移入 `src/legacy/`，与活跃四层物理隔开，既保留代码又不污染主线。
+5. **legacy 移出构建、留盘隔离**：旧 MIRIX 桌面系统整体移入 `src/legacy/`，2026-10-22 起不再编译进 `memolink_lib`；与活跃四层物理隔开，既保留代码又不污染主线。
 
-## 遗留代码 `src/legacy/`
+## 遗留代码 `src/legacy/`（已移出构建）
 
-旧 MIRIX 桌面多模态系统（约占仓库 2/3 行数），整体隔离、默认不参与端侧构建（桌面部分由 `MEMOLINK_ENABLE_CAPTURE/GUI/API` 开关控制，默认 OFF）：
+旧 MIRIX 桌面多模态系统（约占仓库 2/3 行数）。2026-10-22 起**整体移出构建**——CMakeLists 不再编译其中任何文件，代码留盘仅作参考（隔离不删）。v2 主链（app → api → core → infra）不 include 任何 legacy 头。
 
-- **core-v1/**：v1 记忆路径——12 个分类型 manager + `MemoryOrchestrator` + `RecallMemoryManager`（用旧 `recall_memory` 表）。已被 v2 的 `MemoryStore` 取代；其中 12 个 manager 为零调用死代码。`test_memory_orchestrator` / `test_retrieval_eval`（早期 P3/P4 三域检索评测）仍依赖它。
-- **infra-alt/**：旧基础设施备选——`VectorSearchManager` / `EmbeddingIndexManager` / `CLIPProcessor` / `ModelManager`。可视为可替换后端的另一种实现（如 CLIP 多模态、向量索引）。
-- **agents/**：9 个 MIRIX 上游 agent 封装。**未来应用候选**——重写成调 `MemorySystem` 即可成为 agent 应用。
-- **desktop/**：桌面前端——`capture`（相机/音频/截屏）/ `gui`（Qt）/ `api`（HTTP server）/ `cli`（旧交互式 CLI）。**未来应用候选**——它们本就是记忆系统的不同前端，重写成依赖 `MemorySystem` 的薄壳即可迁入 `app/`。
-- **storage-stub/**：一个已废弃的 `StorageManager` 桩（真现在 `infra/storage/`），仅保留占位。
+- **core-v1/**：v1 记忆路径——12 个分类型 manager + `MemoryOrchestrator` + `RecallMemoryManager`（用旧 `recall_memory` 表）。已被 v2 的 `MemoryStore` 取代；12 个 manager 为零调用死代码。
+- **infra-alt/**：旧基础设施备选——`VectorSearchManager` / `EmbeddingIndexManager` / `CLIPProcessor` / `ModelManager`。
+- **agents/**：9 个 MIRIX 上游 agent 封装。
+- **desktop/**：桌面前端——capture（相机/音频/截屏）/ gui（Qt）/ api（HTTP server）/ cli（旧交互式 CLI）+ 旧资产（models/scripts/test_images）。
+- **storage-stub/**：一个已废弃的 `StorageManager` 桩（真现在 `infra/storage/`）。
+- **docs/**：v1 时代旧文档（`memory.md` / `multimodal.md` / `improvements.md`），归档于此作历史参考。
 
-> 说明：legacy 内的旧文档（`database.md` / `memory.md` / `multimodal.md` / `improvements.md`）与装饰性 "MIRIX" 字样按「隔离即可、不强制清理」保留原状。
+### v1 设计遗产与未来方向
+
+legacy 的价值在**设计思想**，不在代码复用——v2 需要的基础设施已在 `src/infra` 重写，没有任何 v1 活代码被 v2 主链调用。四个思想的参考价值与利用方式：
+
+| v1 思想 | 参考价值 | v2 现状 / 后续利用 |
+|---|---|---|
+| 记忆分类 | **高 · 已吸收** | v1 的多类型分类（认知科学分法）方向对，但当时类型不驱动行为。v2 收敛为 3 类（semantic/episodic/procedural）并让类型真正驱动检索（Q3 意图路由 + 同类型加权）与淘汰（Q7 类型优先级）。经验：**类型必须驱动行为，否则只是标签**。 |
+| 长短期记忆 | 中 | v1 有 Letta 式分层影子（Core≈工作记忆 / Recall≈温 / Archival≈冷存）。对记忆系统而言工作记忆归 agent 上下文、不是存储层的活；残留价值是 **consolidation**（episodic 蒸馏成 semantic、冷数据归档），属研究方向，非当前主线。 |
+| 多模态交互 | 有 · 大扩展 | v1 有完整一套（采集 + CLIP 图文 embedding + resource_memory + 跨模态检索）。v2 纯文本。若将来做多模态记忆，legacy 是参考实现；**偏离当前主线，若做则 against MemorySystem 重写**。 |
+| 对话应用 / agent | 有 · 应用层 | v1 的 9 个 agent 演示了「应用层怎么消费记忆」。agent 层是 memolink 的天然消费方；真要做是**基于 MemorySystem 门面重写一个新 app 层**，不复用 v1 agent 代码（绑死在 v1 死 manager 上）。 |
+
+> 原则：**思想留、代码不留**。上述未来方向都偏离当前主线（只做记忆系统层），仅作路线图参考；若启动，一律 against `MemorySystem` 门面重写，不复活 legacy 代码。

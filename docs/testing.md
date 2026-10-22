@@ -1,225 +1,64 @@
-# 测试文档
+# 测试说明（v2 端侧记忆系统）
 
-## 概述
+> 本文描述 **memolink v2 记忆系统**的测试与评测。全部数字由仓库内程序在 **Jetson Orin** 实跑生成、可复现，与 LLM 生成解耦。权威方案与判据见 [memory_v2_design.md](memory_v2_design.md) §12 / §14。旧 MIRIX v1 测试文档已随 legacy 归档至 `src/legacy/docs/`。
 
-MIRIX系统包含完整的测试套件，用于验证各个模块的功能和整体系统的集成。测试分为单元测试、集成测试和系统测试三个层次。
+## 测试分层
 
-所有测试程序生成的数据库文件都统一存储在项目根目录下的[database](../src/database)目录中，避免了在build目录中创建数据库文件的问题。
+- **闸门测试（Q1–Q7）**：v2 记忆系统各机制的验收测试，全部为 C++ 可执行程序（Q4 为 Python 评测脚本），在 Orin 上实跑。
+- **基础设施测试**：embedding / 分词器 / 向量序列化的对拍与接线验证。
+- **生命周期 demo**：`memolink` CLI 八命令 + 线上生命周期回放页（Q6）。
 
-## 测试策略
+## Q1–Q7 闸门测试矩阵
 
-### 单元测试
-针对各个独立模块进行测试，确保每个模块的功能正确性：
-- 数据库管理器测试
-- AI模型接口测试
-- 数据捕获模块测试
-- 工具类测试
+| 闸门 | 测试载体 | 内容 | 实测判据 |
+|---|---|---|---|
+| **Q1** | `test_edge_memory_store` | 版本化 CRUD（独立 `memory` 表 + 非破坏性版本化） | 41/41 单元测试 |
+| **Q2** | `test_memory_resolver` | 五操作消解（三层判定 + System-2 本地 4B） | 五分类 70%（21/30）、可记四类 84%（21/25）、目标定位 14/14、System-1 覆盖 43% |
+| **Q3** | `test_typed_retrieval` | 类型特化检索（意图路由 + 同类型加权 + 时间衰减） | 条件性提升：v2 基准 hit@1 **+31.2pp**（episodic 3/8→8/8）；v1 基准触顶 +0；意图识别 100% |
+| **Q4** | `bench/extract_eval.py` | 受约束提取（本地 4B，JSON 数组输出） | 编造率 **3.7%**（上界）、答案查全 56.7%、JSON 解析 98.4% |
+| **Q5** | `test_longmemeval_retrieval` | LongMemEval 接入 + 跨语言 config-only 切换 | s 变体 recall@10=0.7822 / MRR=0.6203；中英切换 5/5（dim 512↔384） |
+| **Q6** | `memolink` CLI + demo 页 | 八命令串完整管线 + 生命周期回放 | 八命令 Orin 全跑通；线上 Playwright 23/23 无控制台错误 |
+| **Q7** | `test_memory_governance` | 治理标签过滤 + 强度衰减淘汰 | 21/21（owner/scope/authority 过滤 + episodic 先淘汰 / procedural 最后 + reinforce 耐淘汰） |
 
-### 集成测试
-测试多个模块之间的协作和数据流：
-- 数据库与管理器的集成
-- AI模型与记忆系统的集成
-- 多模态数据处理流程
+> Q4 是 Python 评测脚本（`bench/extract_eval.py`），用 LongMemEval oracle 确定性分层子集（30 题/每题型前 5）评测本地 4B 的受约束提取；其余闸门为 C++ 测试可执行文件。
 
-### 系统测试
-测试整个系统的功能和性能：
-- 完整的用户交互流程
-- 多模态数据处理能力
-- 记忆系统的完整功能
+## 基础设施测试
 
-## 测试程序详解
+| 测试 | 内容 | 实测判据 |
+|---|---|---|
+| `test_tokenizer_parity` | 自写 C++ WordPiece 分词器 vs HuggingFace `tokenizers` | 25/25 逐 token 一致（zh/en/混排/标点/emoji/ja/ko） |
+| `test_embed_parity` | C++ ONNX Runtime vs Python `onnxruntime` embedding | FP32 余弦 1.00000000（max diff 2.9e-7） |
+| `test_edge_embedding` | TextEmbeddingGenerator 走本地 ONNX 接线 | 5/5（维度正确、norm=1、全程不打云端） |
+| `test_vector_serializer` | 向量序列化 / 反序列化 | 往返一致 |
 
-### 1. test_chat_with_model.cpp
-主要的交互测试程序，用于测试文本对话和跨会话历史查询功能。
+## 运行方式（Orin）
 
-**功能特性**：
-- 初始化数据库和系统组件
-- 创建或获取用户和Agent
-- 创建新会话
-- 读取用户输入
-- 构建上下文信息（包括历史对话和相关记忆）
-- 调用模型生成响应
-- 保存对话记录到回忆记忆
-- 输出响应给用户
-- 支持图像输入处理
-- 跨会话历史查询
-
-**测试流程**：
-1. 系统初始化
-2. 用户和会话管理
-3. 对话循环处理
-4. 上下文构建
-5. 模型调用
-6. 数据存储
-
-### 2. test_chat_with_auto_capture.cpp
-测试自动捕获功能的程序。
-
-**功能特性**：
-- 初始化数据库和系统组件
-- 创建或获取用户和Agent
-- 创建新会话
-- 自动捕获屏幕截图
-- 读取用户输入
-- 构建上下文信息（包括历史对话和相关记忆）
-- 调用模型生成响应
-- 保存对话记录到回忆记忆
-- 输出响应给用户
-
-**测试流程**：
-1. 系统初始化
-2. 用户和会话管理
-3. 自动捕获屏幕截图
-4. 对话循环处理
-5. 上下文构建
-6. 模型调用
-7. 数据存储
-
-### 3. test_embedding_functionality.cpp
-基础嵌入功能测试程序。
-
-**功能特性**：
-- 测试文本和图像嵌入生成功能
-- 测试嵌入数据的存储和检索
-- 测试基于嵌入的搜索功能
-- 验证嵌入数据的准确性和一致性
-
-### 4. test_embedding_comprehensive.cpp
-综合嵌入功能测试程序。
-
-**功能特性**：
-- 测试配置管理器
-- 测试TextEmbeddingGenerator
-- 测试VectorSearchManager
-- 测试完整的嵌入功能流程
-- 测试VectorSerializer
-
-### 5. test_vector_serializer.cpp
-向量序列化测试程序。
-
-**功能特性**：
-- 测试向量数据的序列化和反序列化
-- 验证序列化数据的准确性和一致性
-
-### 6. test_clip_processor.cpp
-CLIP处理器测试程序。
-
-**功能特性**：
-- 测试CLIP处理器的文本编码功能
-- 测试CLIP处理器的图像编码功能
-- 测试MultimodalDataManager
-- 测试向量序列化功能
-
-### 7. test_real_multimodal_demo.cpp
-多模态演示测试程序。
-
-**功能特性**：
-- 展示系统的多模态处理能力
-- 测试完整的多模态数据处理流程
-- 包含复杂的多模态交互场景
-
-### 8. test_initialize_memories.cpp
-初始化记忆测试程序。
-
-**功能特性**：
-- 测试各种记忆管理器的初始化
-- 验证记忆系统的完整性
-
-### 9. test_system_initialization.cpp
-系统初始化测试程序（新添加）。
-
-**功能特性**：
-- 测试系统核心组件的初始化
-- 验证配置管理器
-- 测试用户和会话创建
-- 验证代理管理器
-- 测试核心记忆添加
-
-## 测试数据库
-
-为了避免测试数据污染主系统数据库，每个测试程序都会创建独立的测试数据库，存储在[database](../src/database)目录中，文件名根据测试程序命名，例如：
-- [test_chat_with_model.db](../database/test_chat_with_model.db)
-- [test_embedding.db](../database/test_embedding.db)
-- [system_initialization_test.db](../database/system_initialization_test.db)
-
-## 运行测试
-
-### 构建测试程序
 ```bash
-cd build
-cmake ..
-make
+mkdir build && cd build
+cmake .. -DMEMOLINK_ENABLE_EDGE=ON
+make -j8
+
+# 单个闸门测试
+./test_edge_memory_store      # Q1
+./test_memory_resolver        # Q2（需本地 llama-server，见 config.ini local_url）
+./test_typed_retrieval        # Q3
+./test_longmemeval_retrieval  # Q5（需 bench/data/ 的 LongMemEval 数据）
+./test_memory_governance      # Q7
+
+# 基础设施对拍
+./test_tokenizer_parity
+./test_embed_parity
+./test_edge_embedding
+./test_vector_serializer
+
+# Q6：CLI 八命令
+./memolink stats
 ```
 
-### 运行所有测试
-```bash
-make test
-```
+- Q2 / Q4 / Q6 依赖本地 LLM：`config.ini` 的 `local_url` 填本地 llama-server 地址（如 `http://127.0.0.1:8099`）。
+- embedding 依赖 `config.ini` 的 `[edge]` 段（模型 + 分词器路径）；留空则回退云端/模拟。
+- Q5 依赖 `bench/data/` 的 LongMemEval 数据（已 gitignore，仅在 dog 上）。
 
-### 运行单个测试程序
-```bash
-./<test_executable_name>
-```
+## 关于 v1 遗留测试
 
-例如：
-```bash
-./test_embedding
-./test_clip_processor
-./test_system_initialization
-```
-
-## 测试优化
-
-### 1. 测试文件重构
-对测试文件进行了重构，删除了冗余和过时的测试文件：
-- 删除了[test_system_comprehensive.cpp](../test/test_system_comprehensive.cpp)占位符文件
-- 合并了功能重复的测试文件到[test_system_initialization.cpp](../test/test_system_initialization.cpp)
-
-### 2. 核心测试文件保留
-保留了以下核心测试文件：
-- [test_embedding_functionality.cpp](../test/test_embedding_functionality.cpp)：基础嵌入功能测试
-- [test_embedding_comprehensive.cpp](../test/test_embedding_comprehensive.cpp)：综合嵌入功能测试
-- [test_vector_serializer.cpp](../test/test_vector_serializer.cpp)：向量序列化测试
-
-### 3. 测试文件组织
-测试文件按照功能进行组织，避免功能重复和冗余：
-- 基础功能测试文件
-- 综合功能测试文件
-- 专项测试文件
-- 系统集成测试文件
-
-## 测试数据库管理
-
-所有测试数据库文件现在统一存储在`database`目录中，以避免项目根目录的混乱。这种组织方式有以下优势：
-
-1. **避免污染**：测试数据不会污染主系统数据库
-2. **易于管理**：所有数据库文件集中存储，便于查找和清理
-3. **避免重复**：每个测试程序使用独立的数据库文件
-4. **持久化存储**：数据库文件在项目根目录下，不会因构建目录清理而丢失
-
-## 文件结构
-
-为了更好地组织测试文件，我们采用了以下目录结构：
-
-```
-memolink/
-├── database/                   # 测试数据库文件目录
-│   ├── test_chat_with_model.db
-│   ├── test_embedding.db
-│   ├── test_embedding_comprehensive.db
-│   └── system_initialization_test.db
-└── test/                       # 测试源代码目录
-    ├── test_embedding_functionality.cpp
-    ├── test_embedding_comprehensive.cpp
-    ├── test_vector_serializer.cpp
-    ├── test_clip_processor.cpp
-    ├── test_chat_with_model.cpp
-    ├── test_chat_with_auto_capture.cpp
-    ├── test_real_multimodal_demo.cpp
-    ├── test_initialize_memories.cpp
-    └── test_system_initialization.cpp
-```
-
-## 持续集成
-
-系统支持持续集成测试，可以自动运行所有测试程序并生成测试报告。建议在每次代码提交前运行所有测试，确保代码变更不会破坏现有功能。
+旧 v1 / P3-P4 时代依赖 legacy 代码的测试（`test_memory_orchestrator` / `test_retrieval_eval` / `test_system_initialization` / `test_embedding_comprehensive` / `test_chat_with_model` 及 CAPTURE 系列）已于 2026-10-22 随 legacy **移出构建**，源文件留盘于 `test/` 仅作参考，不再编译运行。它们对应的功能已被 Q1–Q7 闸门测试取代。

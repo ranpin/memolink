@@ -5,23 +5,20 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # ============================================================================
-# 构建形态开关（orin-edge 分支）
+# 构建形态（orin-edge 分支）
 # ----------------------------------------------------------------------------
-# 端侧记忆系统默认只编核心：database / models / agents / utils / storage。
-# 桌面专属部分（多模态采集 + CLIP、Qt GUI、HTTP API server + CLI）默认关闭，
-# **代码一律保留不删**，需要时用开关打开：
+# 端侧记忆系统只编活跃四层：app（CLI）/ memory（api + core）/ infra（embedding +
+# llm + storage）。旧 MIRIX 桌面系统（多模态采集 + CLIP、Qt GUI、HTTP API、9 个
+# agent、12 个 v1 记忆 manager）已于 2026-10-22 整体移入 src/legacy/ 并**移出
+# 构建**——代码留盘仅作参考，不再编译进 memolink_lib。详见 docs/architecture.md
+# 「v1 设计遗产与未来方向」。
 #
-#   端侧（Orin，默认）：  cmake ..
-#   桌面（Mac，全功能）：  cmake .. -DMEMOLINK_ENABLE_CAPTURE=ON \
-#                                   -DMEMOLINK_ENABLE_GUI=ON -DMEMOLINK_ENABLE_API=ON
+#   端侧（Orin，默认）：  cmake ..                          # MEMOLINK_ENABLE_EDGE=ON
+#   纯逻辑（无 ONNX）：    cmake .. -DMEMOLINK_ENABLE_EDGE=OFF
 #
-# 关掉 CAPTURE 同时也就不需要 OpenCV / PortAudio；关掉 GUI 不需要 Qt5。
-# 这样端侧构建的依赖面只剩 sqlite3 + curl + jsoncpp（+ EDGE 的 onnxruntime）。
+# 端侧构建依赖面：sqlite3 + curl + jsoncpp + onnxruntime（aarch64）。
 # ============================================================================
-option(MEMOLINK_ENABLE_CAPTURE "相机/音频/截屏采集 + CLIP 多模态（需 OpenCV、PortAudio）" OFF)
-option(MEMOLINK_ENABLE_GUI     "Qt GUI（需 Qt5 Widgets/Core/Gui）" OFF)
-option(MEMOLINK_ENABLE_API     "HTTP API server + 命令行交互（需 CAPTURE 提供的多模态入口）" OFF)
-option(MEMOLINK_ENABLE_EDGE    "Orin 端侧本地推理（ONNX Runtime C API）" ON)
+option(MEMOLINK_ENABLE_EDGE "Orin 端侧本地推理（ONNX Runtime C API）" ON)
 
 # ---------- 必需依赖 ----------
 find_package(PkgConfig REQUIRED)
@@ -35,16 +32,6 @@ pkg_check_modules(JSONCPP REQUIRED jsoncpp)
 # 注：OpenSSL 曾是 REQUIRED，但全仓 grep `openssl/` 零命中（HTTPS 由 libcurl 内部处理），
 # 故不再要求——少一个端侧构建依赖。
 
-# ---------- 可选依赖（随开关）----------
-if(MEMOLINK_ENABLE_CAPTURE)
-    find_package(OpenCV REQUIRED)
-    pkg_check_modules(PORTAUDIO REQUIRED portaudio-2.0)
-endif()
-
-if(MEMOLINK_ENABLE_GUI)
-    find_package(Qt5 COMPONENTS Widgets Core Gui REQUIRED)
-endif()
-
 # ---------- 端侧推理：ONNX Runtime（官方 release 包，含 C 头 + 库）----------
 if(MEMOLINK_ENABLE_EDGE)
     set(MEMOLINK_ONNXRUNTIME_ROOT "$ENV{HOME}/chenrunbin/deps/onnxruntime-linux-aarch64-1.31.0"
@@ -54,7 +41,7 @@ if(MEMOLINK_ENABLE_EDGE)
     set(_ort_inc "${MEMOLINK_ONNXRUNTIME_ROOT}/include")
     if(NOT EXISTS "${_ort_inc}/onnxruntime_c_api.h")
         if(EXISTS "${_ort_inc}/onnxruntime/core/session/onnxruntime_c_api.h")
-            set(_ort_inc "${_ort_inc}/onnxruntime/core/session")
+            set(_ort_inc "${MEMOLINK_ONNXRUNTIME_ROOT}/include/onnxruntime/core/session")
         else()
             message(FATAL_ERROR
                 "MEMOLINK_ENABLE_EDGE=ON 但找不到 onnxruntime_c_api.h\n"
@@ -81,103 +68,34 @@ include_directories(${JSONCPP_INCLUDE_DIRS})
 link_directories(${CURL_LIBRARY_DIRS})
 link_directories(${JSONCPP_LIBRARY_DIRS})
 
-if(MEMOLINK_ENABLE_CAPTURE)
-    include_directories(${PORTAUDIO_INCLUDE_DIRS})
-    include_directories(${OpenCV_INCLUDE_DIRS})
-    link_directories(${PORTAUDIO_LIBRARY_DIRS})
-    link_directories(${OpenCV_LIBRARY_DIRS})
-endif()
-
 # ============================================================================
-# 源文件
+# 源文件（活跃四层：app / memory / infra；legacy 不参与构建）
 # ----------------------------------------------------------------------------
-# 注：向量检索是对 SQLite 中存储的 embedding 做暴力余弦相似度
-# （见 src/legacy/infra-alt/VectorSearchManager.cpp），并未链接 FAISS。
-# EmbeddingIndexManager 里的 FAISS 方法仍是占位符；F2 实测已证明在 agent 记忆
-# 量级（1e3~1e4）下精确检索足够（0.79ms@1万条、recall 1.0），而 HNSW 建索引要
-# 36s@10万条，故本项目刻意不接 FAISS（连带不需要 Eigen3）。
+# 注：向量检索是对 SQLite 中存储的 embedding 做暴力余弦相似度（见
+# src/memory/core/MemoryStore.cpp 的 searchByEmbedding），并未链接 FAISS。
+# F2 实测已证明在 agent 记忆量级（1e3~1e4）下精确检索足够（0.79ms@1万条、
+# recall 1.0），而 HNSW 建索引要 36s@10万条，故本项目刻意不接 FAISS（连带不
+# 需要 Eigen3）。
 # ============================================================================
 set(SOURCES
-    # ---- 数据库核心 ----
+    # ---- infra/storage ----
     src/infra/storage/StorageManager.cpp
     src/infra/storage/TransactionManager.cpp
     src/infra/storage/InitDB.cpp
     src/infra/storage/ConfigManager.cpp
-    # ---- 各类型记忆 manager（记忆系统本体，2618 行）----
-    src/legacy/core-v1/UserManager.cpp
-    src/legacy/core-v1/SessionManager.cpp
-    src/legacy/core-v1/CoreMemoryBlockManager.cpp
-    src/legacy/core-v1/EpisodicMemoryManager.cpp
-    src/legacy/core-v1/SemanticMemoryManager.cpp
-    src/legacy/core-v1/ProceduralMemoryManager.cpp
-    src/legacy/core-v1/ResourceMemoryManager.cpp
-    src/legacy/core-v1/KnowledgeVaultManager.cpp
-    src/legacy/core-v1/ArchivalMemoryManager.cpp
-    src/legacy/core-v1/RecallMemoryManager.cpp
-    src/legacy/core-v1/BackupManager.cpp
-    src/legacy/core-v1/AuditLogManager.cpp
-    src/legacy/core-v1/VisualizationManager.cpp
-    src/legacy/core-v1/MemoryOrchestrator.cpp
+    src/infra/storage/VectorSerializer.cpp
+    src/infra/storage/TimeUtils.cpp
+    # ---- infra/llm + embedding ----
+    src/infra/llm/QwenAPI.cpp
+    src/infra/embedding/TextEmbeddingGenerator.cpp
+    src/infra/embedding/WordPieceTokenizer.cpp
+    # ---- memory/core（记忆系统本体）----
     src/memory/core/MemoryStore.cpp
     src/memory/core/MemoryResolver.cpp
     src/memory/core/MemoryExtractor.cpp
+    # ---- memory/api（MemorySystem 门面）----
     src/memory/api/MemorySystem.cpp
-    # ---- 模型接口 ----
-    src/legacy/infra-alt/ModelManager.cpp
-    src/infra/llm/QwenAPI.cpp
-    src/infra/embedding/TextEmbeddingGenerator.cpp
-    src/legacy/infra-alt/VectorSearchManager.cpp
-    src/legacy/infra-alt/EmbeddingIndexManager.cpp
-    src/infra/embedding/WordPieceTokenizer.cpp
-    # ---- Agent ----
-    src/legacy/agents/AgentManager.cpp
-    src/legacy/agents/AgentWrapper.cpp
-    src/legacy/agents/ChatAgent.cpp
-    src/legacy/agents/CoreMemoryAgent.cpp
-    src/legacy/agents/EpisodicMemoryAgent.cpp
-    src/legacy/agents/SemanticMemoryAgent.cpp
-    src/legacy/agents/ProceduralMemoryAgent.cpp
-    src/legacy/agents/ResourceMemoryAgent.cpp
-    src/legacy/agents/KnowledgeVaultAgent.cpp
-    # ---- 工具 / 存储 ----
-    src/infra/storage/VectorSerializer.cpp
-    src/infra/storage/TimeUtils.cpp
-    src/legacy/storage-stub/StorageManager.cpp
 )
-
-# ---- 桌面专属：多模态采集 + CLIP（需 OpenCV / PortAudio）----
-if(MEMOLINK_ENABLE_CAPTURE)
-    list(APPEND SOURCES
-        src/legacy/infra-alt/CLIPProcessor.cpp
-        src/legacy/desktop/capture/CameraCaptureManager.cpp
-        src/legacy/desktop/capture/AudioCaptureManager.cpp
-        src/legacy/desktop/capture/ScreenActivityTracker.cpp
-        src/legacy/desktop/capture/SystemEventManager.cpp
-        src/legacy/desktop/capture/MultimodalDataManager.cpp
-    )
-endif()
-
-# ---- 桌面专属：HTTP API server + CLI ----
-# CommandLineInterface.h include 了 ../api/APIServer.h，故 CLI 随 API 一起开关。
-if(MEMOLINK_ENABLE_API)
-    list(APPEND SOURCES
-        src/legacy/desktop/api/APIServer.cpp
-        src/legacy/desktop/cli/CommandLineInterface.cpp
-    )
-endif()
-
-# ---- 桌面专属：Qt GUI ----
-if(MEMOLINK_ENABLE_GUI)
-    list(APPEND SOURCES src/legacy/desktop/gui/GUIManager.cpp)
-endif()
-
-# ---- Objective-C++（仅 macOS 截屏，属 CAPTURE）----
-if(APPLE AND MEMOLINK_ENABLE_CAPTURE)
-    file(GLOB_RECURSE OBJCPP_SOURCES "src/legacy/desktop/capture/*.mm")
-    if(OBJCPP_SOURCES)
-        list(APPEND SOURCES ${OBJCPP_SOURCES})
-    endif()
-endif()
 
 # ---- 端侧推理：ONNX Runtime 原生 C++ API（随 MEMOLINK_ENABLE_EDGE）----
 if(MEMOLINK_ENABLE_EDGE)
@@ -189,11 +107,6 @@ endif()
 # ============================================================================
 add_library(memolink_lib STATIC ${SOURCES})
 
-# VectorSearchManager 里的 CLIP 回退路径用这个宏隔离（CLIPProcessor 依赖 OpenCV
-# 且通过 popen 调 Python，端侧构建不需要也不应该有）
-if(MEMOLINK_ENABLE_CAPTURE)
-    target_compile_definitions(memolink_lib PUBLIC MEMOLINK_HAS_CLIP=1)
-endif()
 if(MEMOLINK_ENABLE_EDGE)
     target_compile_definitions(memolink_lib PUBLIC MEMOLINK_HAS_EDGE=1)
 endif()
@@ -204,39 +117,22 @@ target_link_libraries(memolink_lib
     ${JSONCPP_LIBRARIES}
     jsoncpp
 )
-if(MEMOLINK_ENABLE_CAPTURE)
-    target_link_libraries(memolink_lib ${PORTAUDIO_LIBRARIES} ${OpenCV_LIBS})
-endif()
 if(MEMOLINK_ENABLE_EDGE)
     target_link_libraries(memolink_lib onnxruntime)
 endif()
 
-if(APPLE AND MEMOLINK_ENABLE_CAPTURE)
-    if(OBJCPP_SOURCES)
-        set_source_files_properties(${OBJCPP_SOURCES} PROPERTIES LANGUAGE CXX)
-    endif()
-    # 屏幕捕获需要 ApplicationServices
-    target_link_libraries(memolink_lib "-framework ApplicationServices")
-endif()
-
 # ============================================================================
-# 可执行文件
+# 可执行文件与测试（全部 v2、legacy-free）
 # ----------------------------------------------------------------------------
-# 不依赖采集/CLIP 的测试始终构建；依赖的随 MEMOLINK_ENABLE_CAPTURE 开关。
+# Q1–Q7 闸门测试 + 端侧 embedding 基础设施测试 + memolink CLI。
+# 旧 v1/P3-P4 时代依赖 legacy 的测试（test_memory_orchestrator /
+# test_retrieval_eval / test_system_initialization / test_embedding_comprehensive /
+# test_chat_with_model 及 CAPTURE 系列）已随 legacy 移出构建，文件留盘于 test/。
 # ============================================================================
-# ⚠️ 有两个目标名与源文件名不一致，不能靠 test/${t}.cpp 拼：
-#      test_embedding       ← test/test_embedding_functionality.cpp
-#      real_multimodal_demo ← test/test_real_multimodal_demo.cpp
-#    所以这两个显式写映射，其余同名的才用 foreach。
 
-# ---- 始终构建（不依赖采集 / CLIP）----
-# 注：test/test_initialize_memories.cpp 没有 main()（既有缺陷，main 分支的 CMake
-#     也一直把它当可执行文件构建、实际从未链接成功），故不纳入构建目标。
+# ---- 始终构建（不依赖 onnxruntime）----
 set(MEMOLINK_ALWAYS_TESTS
     test_vector_serializer
-    test_system_initialization
-    test_embedding_comprehensive
-    test_chat_with_model
     test_tokenizer_parity
 )
 foreach(t ${MEMOLINK_ALWAYS_TESTS})
@@ -244,21 +140,14 @@ foreach(t ${MEMOLINK_ALWAYS_TESTS})
     target_link_libraries(${t} memolink_lib)
 endforeach()
 
-# 端侧 ONNX embedding 对拍工具 + TextEmbeddingGenerator 接线验证（依赖 onnxruntime，随 EDGE 开关）
+# ---- 端侧（依赖 onnxruntime，随 EDGE 开关）----
 if(MEMOLINK_ENABLE_EDGE)
+    # 端侧 ONNX embedding 对拍工具 + TextEmbeddingGenerator 接线验证
     add_executable(test_embed_parity test/test_embed_parity.cpp)
     target_link_libraries(test_embed_parity memolink_lib)
 
     add_executable(test_edge_embedding test/test_edge_embedding.cpp)
     target_link_libraries(test_edge_embedding memolink_lib)
-
-    # P3：记忆编排（写入/跨类型检索/敏感标记/实时写入/分类型 FIFO 淘汰）
-    add_executable(test_memory_orchestrator test/test_memory_orchestrator.cpp)
-    target_link_libraries(test_memory_orchestrator memolink_lib)
-
-    # P4：三域带标注检索评测（recall@k / MRR / hit@1），与 LLM 生成解耦
-    add_executable(test_retrieval_eval test/test_retrieval_eval.cpp)
-    target_link_libraries(test_retrieval_eval memolink_lib)
 
     # Q1：v2 记忆存储（独立 memory 表 + 显式 CRUD + 非破坏性版本化）
     add_executable(test_edge_memory_store test/test_edge_memory_store.cpp)
@@ -285,42 +174,6 @@ if(MEMOLINK_ENABLE_EDGE)
     target_link_libraries(memolink memolink_lib)
 endif()
 
-# ---- 依赖多模态采集 / CLIP（随 MEMOLINK_ENABLE_CAPTURE 开关）----
-if(MEMOLINK_ENABLE_CAPTURE)
-    add_executable(test_embedding test/test_embedding_functionality.cpp)
-    target_link_libraries(test_embedding memolink_lib)
-
-    add_executable(test_clip_processor test/test_clip_processor.cpp)
-    target_link_libraries(test_clip_processor memolink_lib)
-
-    add_executable(test_chat_with_auto_capture test/test_chat_with_auto_capture.cpp)
-    target_link_libraries(test_chat_with_auto_capture memolink_lib)
-
-    add_executable(real_multimodal_demo test/test_real_multimodal_demo.cpp)
-    target_link_libraries(real_multimodal_demo memolink_lib)
-
-    set(MEMOLINK_CAPTURE_TESTS
-        test_embedding
-        test_clip_processor
-        test_chat_with_auto_capture
-        real_multimodal_demo
-    )
-endif()
-
-# GUI 可执行文件
-# 注：GUI 入口 src/gui_main.cpp 与 MacOSXBundleInfo.plist.in 目前并不存在
-# （src/gui/ 下只有 GUIManager.cpp/.h），补上之后再启用这段。
-# if(MEMOLINK_ENABLE_GUI)
-#     add_executable(memolink_gui WIN32 src/gui_main.cpp)
-#     target_link_libraries(memolink_gui memolink_lib Qt5::Widgets Qt5::Core Qt5::Gui)
-#     if(APPLE)
-#         set_target_properties(memolink_gui PROPERTIES
-#             MACOSX_BUNDLE TRUE
-#             MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/src/gui/MacOSXBundleInfo.plist.in
-#         )
-#     endif()
-# endif()
-
 # ============================================================================
 # 安装规则
 # ============================================================================
@@ -331,10 +184,8 @@ install(TARGETS memolink_lib
 install(TARGETS ${MEMOLINK_ALWAYS_TESTS}
     RUNTIME DESTINATION bin
 )
-if(MEMOLINK_ENABLE_CAPTURE)
-    install(TARGETS ${MEMOLINK_CAPTURE_TESTS}
-        RUNTIME DESTINATION bin
-    )
+if(MEMOLINK_ENABLE_EDGE)
+    install(TARGETS memolink RUNTIME DESTINATION bin)
 endif()
 
 install(DIRECTORY src/
@@ -350,8 +201,3 @@ enable_testing()
 foreach(t ${MEMOLINK_ALWAYS_TESTS})
     add_test(NAME ${t} COMMAND ${t})
 endforeach()
-if(MEMOLINK_ENABLE_CAPTURE)
-    foreach(t ${MEMOLINK_CAPTURE_TESTS})
-        add_test(NAME ${t} COMMAND ${t})
-    endforeach()
-endif()
