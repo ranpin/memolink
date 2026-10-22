@@ -138,7 +138,7 @@
 
     <section class="ds-section" id="demo">
       <h2 class="ds-h2">生命周期演示（真实 CLI 转录回放）</h2>
-      <p class="sec-note">以下每一步都是 <code>mirix-mem</code> 在 Orin 上的<b>真实输出</b>（2026-10-22 录制）。点「下一步」逐条回放，右侧记忆库随每步实时变化。完整生命周期：提取 → 写入 → 检索 → 矛盾更新（SUPERSEDE）→ 版本回溯 → 显式更新 → 删除 → 统计。</p>
+      <p class="sec-note">以下每一步都是 <code>memolink</code> 在 Orin 上的<b>真实输出</b>（2026-10-22 录制）。点「下一步」逐条回放，右侧记忆库随每步实时变化。完整生命周期：提取 → 写入 → 检索 → 矛盾更新（SUPERSEDE）→ 版本回溯 → 显式更新 → 删除 → 统计。</p>
 
       <div class="player">
         <div class="term">
@@ -198,9 +198,9 @@
 # config.ini 的 [edge] 段填 model_quantized.onnx 与 tokenizer.json 路径
 # config.ini 的 local_url 填本地 llama-server 地址（如 http://127.0.0.1:8099）
 mkdir build && cd build
-cmake .. -DMIRIX_ENABLE_EDGE=ON && make -j8 mirix-mem
-./mirix-mem ingest "用户喜欢深蓝色的车" --type semantic
-./mirix-mem recall "我的车是什么颜色偏好" --top 3</pre>
+cmake .. -DMEMOLINK_ENABLE_EDGE=ON && make -j8 memolink
+./memolink ingest "用户喜欢深蓝色的车" --type semantic
+./memolink recall "我的车是什么颜色偏好" --top 3</pre>
         <p class="note">代码与完整文档见 <a href="https://github.com/ranpin/memolink">github.com/ranpin/memolink</a>。记忆分层架构参考自 <a href="https://github.com/Mirix-AI/MIRIX">Mirix-AI/MIRIX</a>（Apache-2.0）。</p>
       </div>
     </section>
@@ -215,33 +215,33 @@ cmake .. -DMIRIX_ENABLE_EDGE=ON && make -j8 mirix-mem
 // ===== 真实 CLI 转录（2026-10-22 录制于 Orin dog）=====
 const STEPS = [
   {
-    cmd: 'mirix-mem extract --user "我下周三要去北京出差，帮我看看天气" --assistant "好的，北京下周三晴，气温 5 到 12 度，建议带件外套"',
+    cmd: 'memolink extract --user "我下周三要去北京出差，帮我看看天气" --assistant "好的，北京下周三晴，气温 5 到 12 度，建议带件外套"',
     out: '提取出 1 条候选事实:\n  [episodic/user/shared] 北京下周三天气晴朗，气温约5至12摄氏度',
     explain: '<b>① 提取（Q4）</b>：本地 4B 模型从对话轮提取候选事实，输出受约束为 JSON 数组（编造率 3.7% 上界）。此步只提取、不写库——寒暄/闲聊会被过滤为 []。',
     store: []
   },
   {
-    cmd: 'mirix-mem ingest "用户喜欢深蓝色的车" --type semantic',
+    cmd: 'memolink ingest "用户喜欢深蓝色的车" --type semantic',
     out: '动作=CREATED id=1 sim=0.000 [System-1]\n  理由: System-1: 空库/无同类型记忆 → CREATE',
     explain: '<b>② 消解 + 写入（Q2）</b>：System-1 确定性判定——空库无同类型记忆 → CREATE。写入 #1，无需调 LLM。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:true}]
   },
   {
-    cmd: 'mirix-mem ingest "北京下周三晴，气温 5 到 12 度" --type episodic',
+    cmd: 'memolink ingest "北京下周三晴，气温 5 到 12 度" --type episodic',
     out: '动作=CREATED id=2 sim=0.000 [System-1]\n  理由: System-1: 空库/无同类型记忆 → CREATE',
     explain: '<b>② 消解 + 写入</b>：episodic 类型（带时间的事件），空库 → CREATE。写入 #2。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:true},
             {id:2, type:'episodic', content:'北京下周三晴，气温 5 到 12 度', valid:true}]
   },
   {
-    cmd: 'mirix-mem recall "我的车是什么颜色偏好" --top 3',
+    cmd: 'memolink recall "我的车是什么颜色偏好" --top 3',
     out: '查询「我的车是什么颜色偏好」 top-3:\n  #  1 [semantic] score=0.590  用户喜欢深蓝色的车\n  #  2 [episodic] score=0.212  北京下周三晴，气温 5 到 12 度',
     explain: '<b>③ 检索（Q3）</b>：类型特化检索——查询意图识别为 semantic，同类型 boost ×1.6，故 semantic #1（0.590）排在 episodic #2（0.212）前。即使 episodic 的原始余弦不低，类型不匹配也会被压后。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:true},
             {id:2, type:'episodic', content:'北京下周三晴，气温 5 到 12 度', valid:true}]
   },
   {
-    cmd: 'mirix-mem ingest "用户现在喜欢红色的车" --type semantic   # 矛盾事实',
+    cmd: 'memolink ingest "用户现在喜欢红色的车" --type semantic   # 矛盾事实',
     out: '动作=SUPERSEDED id=3 sim=0.767 [System-2]\n  理由: System-2: {"action":"SUPERSEDE","target_id":1}',
     explain: '<b>④ 矛盾更新（Q2 核心）</b>：「深蓝→红」是矛盾事实，相似度 0.767 落入模糊地带（θ_new=0.50 ≤ 0.767 < θ_dup=0.999），System-1 无法判定 → 调 System-2 本地 4B 四选一分类，判为 <b>SUPERSEDE</b>。#1 标记失效（非破坏性），写入 #3。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
@@ -249,7 +249,7 @@ const STEPS = [
             {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
   },
   {
-    cmd: 'mirix-mem recall "我的车是什么颜色偏好" --top 3   # 应返回红色',
+    cmd: 'memolink recall "我的车是什么颜色偏好" --top 3   # 应返回红色',
     out: '查询「我的车是什么颜色偏好」 top-3:\n  #  3 [semantic] score=0.592  用户现在喜欢红色的车\n  #  2 [episodic] score=0.212  北京下周三晴，气温 5 到 12 度',
     explain: '<b>③ 检索（更新后）</b>：SUPERSEDE 后，recall 返回新事实 #3（红色），失效的 #1 不再出现在结果里——记忆系统「知道」偏好已经变了。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
@@ -257,7 +257,7 @@ const STEPS = [
             {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
   },
   {
-    cmd: 'mirix-mem history 1   # 版本链（非破坏性）',
+    cmd: 'memolink history 1   # 版本链（非破坏性）',
     out: '#1 的版本链（旧→新）:\n  #  1 [semantic] [失效]  用户喜欢深蓝色的车\n  #  3 [semantic]  用户现在喜欢红色的车',
     explain: '<b>⑤ 版本回溯（Q1）</b>：非破坏性版本化——#1 失效但<b>保留</b>，#3 是其后继（supersedes 链）。可追溯记忆的完整演变历史，而非覆盖丢失。这是 Graphiti 式边失效的端侧落地。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
@@ -265,7 +265,7 @@ const STEPS = [
             {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
   },
   {
-    cmd: 'mirix-mem update 2 "北京下周三晴转多云，气温 6 到 13 度"',
+    cmd: 'memolink update 2 "北京下周三晴转多云，气温 6 到 13 度"',
     out: '已更新 #2',
     explain: '<b>⑥ 显式更新</b>：直接修改 #2 的内容（不经过消解，用于用户/系统明确知道要改哪条的场景）。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
@@ -273,7 +273,7 @@ const STEPS = [
             {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
   },
   {
-    cmd: 'mirix-mem list',
+    cmd: 'memolink list',
     out: '共 2 条:\n  #  3 [semantic]  用户现在喜欢红色的车\n  #  2 [episodic]  北京下周三晴转多云，气温 6 到 13 度',
     explain: '<b>⑦ 列举</b>：显示所有<b>有效</b>记忆（失效的 #1 不显示，可用 --invalid 查看）。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
@@ -281,14 +281,14 @@ const STEPS = [
             {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
   },
   {
-    cmd: 'mirix-mem remove 2',
+    cmd: 'memolink remove 2',
     out: '已删除 #2',
     explain: '<b>⑧ 记录级删除</b>：删除 #2（物理删除，区别于 SUPERSEDE 的标记失效）。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},
             {id:3, type:'semantic', content:'用户现在喜欢红色的车', valid:true}]
   },
   {
-    cmd: 'mirix-mem stats',
+    cmd: 'memolink stats',
     out: 'total=2 valid=1 invalid=1\n  semantic=1 episodic=0 procedural=0',
     explain: '<b>⑨ 统计</b>：total=2（#1 失效 + #3 有效），valid=1，invalid=1。类型分布只计有效记忆（semantic=1 即 #3）。完整生命周期回放结束。',
     store: [{id:1, type:'semantic', content:'用户喜欢深蓝色的车', valid:false},

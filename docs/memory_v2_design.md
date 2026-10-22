@@ -306,14 +306,14 @@ class EdgeMemoryStore {
 **CLI**（demo 能被看见的前提）：
 
 ```
-mirix-mem extract  --user "..." --assistant "..."     # 提取生成
-mirix-mem ingest   "..." --type semantic
-mirix-mem recall   "..." --top 4 [--type episodic] [--history]
-mirix-mem update   <id> "..."
-mirix-mem remove   <id>
-mirix-mem list     [--type semantic] [--invalid]
-mirix-mem history  <id>
-mirix-mem stats
+memolink extract  --user "..." --assistant "..."     # 提取生成
+memolink ingest   "..." --type semantic
+memolink recall   "..." --top 4 [--type episodic] [--history]
+memolink update   <id> "..."
+memolink remove   <id>
+memolink list     [--type semantic] [--invalid]
+memolink history  <id>
+memolink stats
 ```
 
 ---

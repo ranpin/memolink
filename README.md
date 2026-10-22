@@ -13,7 +13,7 @@
 | **Q3** | 类型特化检索（意图路由 + 同类型加权 + 时间衰减） | 条件性提升：v2 基准 hit@1 **+31.2pp**（episodic 3/8→8/8） |
 | **Q4** | 受约束提取（本地 4B，JSON 数组输出） | 编造率 **3.7%**（上界）、答案查全 56.7%、JSON 解析 98.4% |
 | **Q5** | LongMemEval 接入 + 跨语言 config-only 切换 | s 变体 recall@10=0.78 / MRR=0.62；中英切换 5/5（dim 512↔384） |
-| **Q6** | `mirix-mem` CLI 八命令 + 生命周期 demo | 八命令 Orin 全跑通；线上 Playwright 23/23 |
+| **Q6** | `memolink` CLI 八命令 + 生命周期 demo | 八命令 Orin 全跑通；线上 Playwright 23/23 |
 
 数字均由仓库内程序在 Orin 实跑生成、可复现，与 LLM 生成解耦。**关键机制、诚实边界、跨域扩展**详见 [v2 设计文档](docs/memory_v2_design.md)。
 
@@ -29,17 +29,17 @@
 
 **五操作** `CREATE` / `UPDATE` / `REINFORCE` / `SUPERSEDE` / `NOOP`（前四类取自 FEB-30 `2610.22209` 分类法，`NOOP` 取自 Mem0）；**非破坏性版本化**：SUPERSEDE 不删旧记忆，标记失效并建 `superseded_by`/`supersedes` 链，`history` 可回溯整条演化。
 
-## CLI：`mirix-mem` 八命令
+## CLI：`memolink` 八命令
 
 ```bash
-mirix-mem extract  --user "..." --assistant "..."   # ① 提取候选事实
-mirix-mem ingest   "..." --type semantic            # ②③ 消解 + 存储
-mirix-mem recall   "..." --top 4 [--type T]         # ④ 类型特化检索
-mirix-mem update   <id> "..."                       # 显式更新
-mirix-mem remove   <id>                             # 记录级删除
-mirix-mem list     [--type T] [--invalid]           # 列举
-mirix-mem history  <id>                             # 版本链
-mirix-mem stats                                     # 统计
+memolink extract  --user "..." --assistant "..."   # ① 提取候选事实
+memolink ingest   "..." --type semantic            # ②③ 消解 + 存储
+memolink recall   "..." --top 4 [--type T]         # ④ 类型特化检索
+memolink update   <id> "..."                       # 显式更新
+memolink remove   <id>                             # 记录级删除
+memolink list     [--type T] [--invalid]           # 列举
+memolink history  <id>                             # 版本链
+memolink stats                                     # 统计
 ```
 
 ## 构建与复现（Orin）
@@ -49,13 +49,13 @@ sudo apt install -y libsqlite3-dev libcurl4-openssl-dev libjsoncpp-dev
 # config.ini 的 [edge] 段填本地 embedding 模型与分词器路径
 # config.ini 的 local_url 填本地 llama-server 地址（System-2 消解 + 提取用）
 mkdir build && cd build
-cmake .. -DMIRIX_ENABLE_EDGE=ON
-make -j8 mirix-mem
-./mirix-mem ingest "用户喜欢深蓝色的车" --type semantic
-./mirix-mem recall "我的车是什么颜色偏好" --top 3
+cmake .. -DMEMOLINK_ENABLE_EDGE=ON
+make -j8 memolink
+./memolink ingest "用户喜欢深蓝色的车" --type semantic
+./memolink recall "我的车是什么颜色偏好" --top 3
 ```
 
-> 桌面版（采集/GUI/API）经 CMake 开关 `-DMIRIX_ENABLE_CAPTURE=ON -DMIRIX_ENABLE_GUI=ON -DMIRIX_ENABLE_API=ON` 保留、默认关闭；端侧构建只依赖 sqlite3 + curl + jsoncpp + onnxruntime。
+> 桌面版（采集/GUI/API）经 CMake 开关 `-DMEMOLINK_ENABLE_CAPTURE=ON -DMEMOLINK_ENABLE_GUI=ON -DMEMOLINK_ENABLE_API=ON` 保留、默认关闭；端侧构建只依赖 sqlite3 + curl + jsoncpp + onnxruntime。
 
 ## 文档
 

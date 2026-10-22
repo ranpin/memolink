@@ -142,10 +142,10 @@ memolink 的 6+1 类记忆源自认知科学分类，**本就领域无关**：
 - `QwenAPI`（cURL）→ 指向本地 llama-server，**保留它原有的 local/cloud 切换**
 
 ```cmake
-option(MIRIX_ENABLE_CAPTURE "相机/音频/截屏采集（桌面）"   OFF)
-option(MIRIX_ENABLE_GUI     "Qt GUI（桌面）"              OFF)
-option(MIRIX_ENABLE_API     "HTTP API server（桌面）"      OFF)
-option(MIRIX_ENABLE_EDGE    "Orin 端侧推理（ONNX+llama）"  ON)
+option(MEMOLINK_ENABLE_CAPTURE "相机/音频/截屏采集（桌面）"   OFF)
+option(MEMOLINK_ENABLE_GUI     "Qt GUI（桌面）"              OFF)
+option(MEMOLINK_ENABLE_API     "HTTP API server（桌面）"      OFF)
+option(MEMOLINK_ENABLE_EDGE    "Orin 端侧推理（ONNX+llama）"  ON)
 ```
 
 ### ❌ 不需要
@@ -160,7 +160,7 @@ option(MIRIX_ENABLE_EDGE    "Orin 端侧推理（ONNX+llama）"  ON)
 | 闸门 | 内容 | 判据（可验证） |
 |---|---|---|
 | **P0** | 依赖 + 构建基线：`apt install libsqlite3-dev`；下 onnxruntime aarch64 C release（含头）；memolink 同步到 dog | `cmake` configure 通过 |
-| **P1** | CMake 开关化（桌面代码保留、默认不编）；Orin 编译过 | `MIRIX_ENABLE_EDGE=ON` 在 Orin 编译通过，**且桌面配置在 Mac 上仍能编**（没破坏桌面版） |
+| **P1** | CMake 开关化（桌面代码保留、默认不编）；Orin 编译过 | `MEMOLINK_ENABLE_EDGE=ON` 在 Orin 编译通过，**且桌面配置在 Mac 上仍能编**（没破坏桌面版） |
 | **P2** | C++ WordPiece 分词器 + ONNX C API 跑 INT8，替换 `TextEmbeddingGenerator` 实现（接口不变） | 与 Python `tokenizers` **逐 token 对拍一致**；embedding 与 Python 参考**余弦 ~0.99** |
 | **P3** | 实现 `MemoryOrchestrator`：按类型写入 + 跨类型检索合并（C）+ 实时写入（B2）+ 分类型有界淘汰（B3）+ embedding 持久化与内存缓存（B1）+ 语料配置驱动（D） | 写入→检索→淘汰闭环跑通；重启后 embedding 从库恢复、不重算 |
 | **P4** | **三域检索评测（核心交付）**：座舱 40 + 机器人 ~25 + AV ~25，全部带标注 GT，**同一二进制跑三遍**；并测 **INT8 vs FP32 的 top-k 命中集合是否一致** | 三域各出 recall@k / MRR；量化对排序的影响有数 |
