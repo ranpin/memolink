@@ -342,6 +342,19 @@ mirix-mem stats
 
 > 同一个二进制、同一套 C++ 代码，**只改 config.ini 的模型路径**即可在「中文三域 demo」与「英文 LongMemEval」之间切换。这把 v1 的「换域只换语料」升级成**「换域 + 换语言 + 换模型都只换配置」**。
 
+**Q5 实测（2026-10-22，dog，bge-small-en-v1.5 INT8，`test_longmemeval_retrieval`）**——config-only swap 主张**已验证**：
+
+- **同一份 C++ 二进制、零代码改动**，只把 config.ini 的 `[edge]` 模型路径从 bge-small-zh（512 维）换成 bge-small-en-v1.5（384 维），`test_edge_embedding` 即 5/5 通过（dim=384、norm=1）——自写 WordPiece 分词器 + OnnxEmbedder 对英文模型直接可用（唯一改动是把测试里写死的 512 维断言改成读模型实际维度）。
+- **turn 级检索评测**（has_answer 金标，不需 LLM），确定性分层子集 30 题/每题型前 5、topK=10：
+
+| 变体 | haystack 规模 | recall@10 | MRR |
+|---|---|---|---|
+| oracle（仅证据 session） | 22–46 turns/题 | 0.9156 | 0.6578 |
+| **s（完整 haystack，主评测）** | **396–616 turns/题** | **0.7822** | **0.6203** |
+
+- s 变体分题型 recall@10：single-session-user 1.00、knowledge-update 0.90、single-session-assistant 0.80、temporal-reasoning 0.70、single-session-preference 0.67、multi-session 0.63。
+- **oracle→s 的 recall 下降（0.92→0.78）符合预期**：haystack 从几十 turns 涨到几百 turns、干扰项暴增。**multi-session 最低（0.63）**——答案散在多个 session，单条 turn 检索难全覆盖（指向 session 级检索/类型特化的价值）。
+
 ### 12.2 评测指标
 
 | 层 | 指标 | 需要 LLM |
@@ -383,7 +396,7 @@ mirix-mem stats
 | **Q2** | **五操作消解** + 三层判定 + 非破坏性 SUPERSEDE | 带标注消解场景集：五分类准确率 + **System-1 覆盖率** | ✅ 五分类 70%（可记四类 84%）、S1 覆盖 43%（Orin 实测，见 §5） |
 | **Q3** | 类型特化检索（3 类各自策略） | 对照「单一策略」基线，Recall@1 是否提升 | ✅ 条件性提升：v1 触顶 +0 / v2 +31.2pp（episodic 3/8→8/8），见 §7 |
 | **Q4** | **提取阶段**（受约束结构化输出） | 用 LongMemEval `has_answer` 金标测查全/查准 + **编造率** | ✅ 编造率 3.7%（上界）、查全 56.7%、JSON 解析 98.4%（见 §6） |
-| **Q5** | **LongMemEval 接入**：英文模型（bge-small-en-v1.5 INT8）+ 数据加载 + turn/session 级召回评测 | 跑出 recall@k / MRR；**同一二进制只改 config 即切换中英** | — |
+| **Q5** | **LongMemEval 接入**：英文模型（bge-small-en-v1.5 INT8）+ 数据加载 + turn/session 级召回评测 | 跑出 recall@k / MRR；**同一二进制只改 config 即切换中英** | ✅ config-swap 验证（test_edge_embedding 5/5、dim=384）+ s 变体 recall@10=0.7822 / MRR=0.6203（见 §12.1） |
 | **Q6** | CLI 八命令 + 在 Orin 录真实转录 → demo 页重建为**生命周期演示**（分步回放，非指标陈列） | 命令全跑通；线上 URL + Playwright 验证 | — |
 | Q7（可选） | 治理标签三元组 + 强度衰减淘汰 | 看时间 | — |
 

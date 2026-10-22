@@ -269,6 +269,10 @@ if(MIRIX_ENABLE_EDGE)
     # Q3：类型特化检索 vs 单一策略基线（hit@1 对照 + 意图识别准确率）
     add_executable(test_typed_retrieval test/test_typed_retrieval.cpp)
     target_link_libraries(test_typed_retrieval mirix_lib)
+
+    # Q5：LongMemEval turn 级检索评测（recall@k / MRR），英文模型 config-only swap
+    add_executable(test_longmemeval_retrieval test/test_longmemeval_retrieval.cpp)
+    target_link_libraries(test_longmemeval_retrieval mirix_lib)
 endif()
 
 # ---- 依赖多模态采集 / CLIP（随 MIRIX_ENABLE_CAPTURE 开关）----

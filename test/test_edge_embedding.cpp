@@ -35,13 +35,16 @@ int main() {
         "我有点冷",
     };
 
+    // 维度用模型实际值（bge-small-zh=512 / bge-small-en-v1.5=384），不写死——
+    // 这正是 Q5「同一套 C++ 代码、只换 config 模型路径」的前提。
+    const size_t expectedDim = gen.getEmbeddingDimension();
     int ok = 0;
     for (const auto& t : tests) {
         std::vector<float> emb = gen.generateTextEmbedding(t);
         float ss = 0.f;
         for (float x : emb) ss += x * x;
         const float norm = std::sqrt(ss);
-        const bool good = (emb.size() == 512) && (std::fabs(norm - 1.0f) < 0.01f);
+        const bool good = (emb.size() == expectedDim) && (std::fabs(norm - 1.0f) < 0.01f);
         if (good) ++ok;
         std::cout << "  " << (good ? "✅" : "❌") << " dim=" << emb.size()
                   << " norm=" << norm
