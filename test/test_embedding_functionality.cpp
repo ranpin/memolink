@@ -146,7 +146,7 @@ void testEmbeddingFunctionalityMain() {
     std::vector<float> textEmbedding = clipProcessor.generateEmbedding("这是一个测试消息，用于验证embedding存储方案");
     std::cout << "生成图像embedding..." << std::endl;
     // 修复：使用正确的图像文件路径
-    std::vector<float> imageEmbedding = multimodalDataManager.generateImageEmbedding("test_images/sample_image.png");
+    std::vector<float> imageEmbedding = multimodalDataManager.generateImageEmbedding("src/legacy/desktop/test_images/sample_image.png");
     
     std::cout << "文本embedding维度: " << textEmbedding.size() << std::endl;
     std::cout << "图像embedding维度: " << imageEmbedding.size() << std::endl;

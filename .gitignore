@@ -76,7 +76,7 @@ Thumbs.db
 # Backup files
 *.bak
 
-# Model weights / binaries (由 scripts/download_clip_model.py 等按需下载，不入库)
+# Model weights / binaries (由 src/legacy/desktop/scripts/download_clip_model.py 等按需下载，不入库)
 *.onnx
 *.pb
 *.pt

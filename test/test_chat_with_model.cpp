@@ -245,7 +245,7 @@ public:
             std::cerr << "[图片处理] 请确保文件路径正确，例如:" << std::endl;
             std::cerr << "[图片处理]   macOS/Linux绝对路径: /Users/username/Pictures/sample.jpg" << std::endl;
             std::cerr << "[图片处理]   Windows绝对路径: C:\\Users\\username\\Pictures\\sample.jpg" << std::endl;
-            std::cerr << "[图片处理]   相对路径: test_images/sample.jpg (相对于当前工作目录)" << std::endl;
+            std::cerr << "[图片处理]   相对路径: src/legacy/desktop/test_images/sample.jpg (相对于当前工作目录)" << std::endl;
             std::cout << "\n================================================================================" << std::endl;
             std::cout << "[图片处理] 图片处理结束(失败)" << std::endl;
             std::cout << "================================================================================\n" << std::endl;

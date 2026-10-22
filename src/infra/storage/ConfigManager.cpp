@@ -153,7 +153,7 @@ void ConfigManager::setLocalApiUrl(const std::string& localApiUrl) {
 
 // 数据库配置
 std::string ConfigManager::getDatabasePath() const {
-    return getConfig("database.db_path", "mirix.db");
+    return getConfig("database.db_path", "memolink.db");
 }
 
 void ConfigManager::setDatabasePath(const std::string& dbPath) {

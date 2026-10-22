@@ -43,7 +43,7 @@ int main() {
     
     // 测试图像编码（使用真实图像）
     std::cout << "\n测试图像编码..." << std::endl;
-    std::vector<float> imageEmbedding = clipProcessor.encodeImage("test_images/sample_image.png");
+    std::vector<float> imageEmbedding = clipProcessor.encodeImage("src/legacy/desktop/test_images/sample_image.png");
     std::cout << "图像embedding维度: " << imageEmbedding.size() << std::endl;
     if (!imageEmbedding.empty()) {
         std::cout << "前5个维度值: ";
@@ -62,7 +62,7 @@ int main() {
     std::cout << "MultimodalDataManager生成的文本embedding维度: " << generatedTextEmbedding.size() << std::endl;
     
     // 生成图像embedding (使用正确的相对路径)
-    std::vector<float> generatedImageEmbedding = dataManager.generateImageEmbedding("test_images/sample_image.png");
+    std::vector<float> generatedImageEmbedding = dataManager.generateImageEmbedding("src/legacy/desktop/test_images/sample_image.png");
     std::cout << "MultimodalDataManager生成的图像embedding维度: " << generatedImageEmbedding.size() << std::endl;
     
     // 测试向量序列化
