@@ -224,6 +224,15 @@ v1 只有一个 `sensitive` 布尔。v2 升级为三元标签（旁证 SAFE-Mem 
 
 隐私路由规则不变：命中 `scope=private` → 强制端侧，原文不出设备。
 
+**访问控制语义**：读路径（recall / recallTyped / list / searchByEmbedding）按 `GovernanceFilter{owner, scope, authority}` 过滤（AND 语义）。多租户「看自己的 ∪ 共享」因 AND 无法单条表达，由应用层两路查询合并（座舱助手 `recallForDriver`）。
+
+**strict 模式（fail-closed，2026-10-23）**：`GovernanceFilter` 默认 fail-open——空 filter 不过滤、返回全部（向后兼容，适合单用户 CLI）。隐患：调用方忘传 filter 就读到全部。故加 `strict` 标志：`strict=true` 时空 filter 返回空（fail-closed），堵住这个隐患。多租户应用（座舱助手多驾驶员）已开 strict。**诚实边界**：这是检索期访问控制，**不是加密**——SQLite 里仍是明文，拿到 DB 文件就能看全部；**也不是 unlearning**——拦住访问 ≠ 删掉数据。
+
+**未来展望（未实现，不着急）**：
+
+- **private 落盘加密**：scope=private 的记忆内容加密存储，拿到 DB 也读不出——把「访问控制」升级成「真隐私」。需引入密钥管理。
+- **API 层强制 owner**：读接口签名强制带 owner，从 API 上杜绝「忘传 filter」——比 strict 标志更硬。
+
 ---
 
 ## 9. 淘汰策略

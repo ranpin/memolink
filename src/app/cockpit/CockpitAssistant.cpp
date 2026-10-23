@@ -76,8 +76,10 @@ std::vector<Memory> CockpitAssistant::recallForDriver(const std::string& query, 
 
     GovernanceFilter own;
     own.owner = driver_;
+    own.strict = true;   // fail-closed：多驾驶员场景开 strict，driver_ 异常为空时也不泄露全部
     GovernanceFilter shared;
     shared.scope = std::string("shared");
+    shared.strict = true;
 
     // 每路多取一些候选，合并后再截 topK，跨路合并的 top-k 更准
     const int perPath = topK * 2;

@@ -64,10 +64,16 @@ const char* memoryActionName(MemoryAction a);
 // Q7：治理三元标签过滤器（docs/memory_v2_design.md §8）。三字段均可选，
 // empty() 时不过滤（向后兼容）。检索/列举时按 owner/scope/authority 做访问控制，
 // 是「命中 scope=private → 原文不出设备」这条隐私路由的第一道闸。
+//
+// strict（fail-closed，2026-10-23 加）：默认 false = 空 filter 不过滤、返回全部
+// （fail-open，向后兼容，适合单用户 CLI）。true = 空 filter 返回空（fail-closed），
+// 堵住「调用方忘传 filter 就读到全部」这个隐患——多租户应用（如座舱助手多驾驶员）
+// 应开 strict。注意 strict 只在 filter 为空时改变行为；非空 filter 照常按字段过滤。
 struct GovernanceFilter {
     std::optional<std::string> owner;
     std::optional<std::string> scope;
     std::optional<std::string> authority;
+    bool strict = false;   // true：空 filter → 返回空（fail-closed），而非返回全部
     bool empty() const { return !owner && !scope && !authority; }
 };
 

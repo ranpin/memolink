@@ -151,6 +151,39 @@ int main(int argc, char** argv) {
 
     clearAll();
 
+    // ------------------------------------------------------------------
+    // 5. strict 模式（fail-closed，2026-10-23）：空 filter 返回空，堵住 fail-open 隐患
+    // ------------------------------------------------------------------
+    std::cout << "\n-- strict 模式（fail-closed）--" << std::endl;
+    auto k1 = store.ingestText("用户喜欢深蓝色的车", MemoryType::Semantic,
+                                "user", "private", "asserted");
+    auto k2 = store.ingestText("团队共享会议室在 3 楼", MemoryType::Semantic,
+                                "system", "shared", "asserted");
+    check(k1.action == MemoryAction::Created && k2.action == MemoryAction::Created,
+          "写入 2 条记忆用于 strict 测试");
+
+    // fail-open（默认）：空 filter 返回全部（向后兼容，单用户 CLI 依赖此行为）
+    GovernanceFilter govOpen;   // strict=false（默认）+ 空 filter
+    check(store.list(std::nullopt, 0, false, govOpen).size() == 2,
+          "默认（非 strict）空 filter == 返回全部 2 条（fail-open）",
+          "实际 " + std::to_string(store.list(std::nullopt, 0, false, govOpen).size()));
+
+    // fail-closed：strict=true + 空 filter → 三条读路径都返回空
+    GovernanceFilter govStrictEmpty; govStrictEmpty.strict = true;
+    check(store.list(std::nullopt, 0, false, govStrictEmpty).empty(),
+          "strict 空 filter list == 空（fail-closed）");
+    check(store.recall("车的颜色", 4, std::nullopt, false, govStrictEmpty).empty(),
+          "strict 空 filter recall == 空（fail-closed）");
+    check(store.recallTyped("车的颜色", 4, false, govStrictEmpty).empty(),
+          "strict 空 filter recallTyped == 空（fail-closed）");
+
+    // strict + 非空 filter 照常过滤（strict 只在空 filter 时改变行为）
+    GovernanceFilter govStrictShared; govStrictShared.scope = "shared"; govStrictShared.strict = true;
+    auto lss = store.list(std::nullopt, 0, false, govStrictShared);
+    check(lss.size() == 1 && lss[0].id == k2.id, "strict + scope=shared == 照常返回 k2");
+
+    clearAll();
+
     std::cout << "\n=== 结果: PASS " << g_pass << " / FAIL " << g_fail << " ===" << std::endl;
     return 0;   // 评测工具恒 0，判据看 PASS/FAIL 计数
 }

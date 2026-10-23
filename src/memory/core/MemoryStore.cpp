@@ -240,6 +240,7 @@ std::vector<Memory> MemoryStore::searchByEmbedding(const std::vector<float>& qem
                                                        const GovernanceFilter& gov) {
     std::vector<Memory> results;
     if (qemb.empty()) return results;
+    if (gov.strict && gov.empty()) return results;   // fail-closed：strict 模式空 filter 不返回任何记忆
 
     std::string sql = std::string("SELECT ") + kSelectCols + " FROM memory WHERE 1=1";
     if (!includeHistory) sql += " AND valid_until IS NULL";
@@ -527,6 +528,7 @@ int MemoryStore::evictToCapacity(int capacity) {
 std::vector<Memory> MemoryStore::list(std::optional<MemoryType> type, int limit,
                                           bool includeInvalid, const GovernanceFilter& gov) {
     std::vector<Memory> results;
+    if (gov.strict && gov.empty()) return results;   // fail-closed：strict 模式空 filter 不返回任何记忆
     std::string sql = std::string("SELECT ") + kSelectCols + " FROM memory WHERE 1=1";
     if (!includeInvalid) sql += " AND valid_until IS NULL";
     if (type.has_value()) sql += " AND type = ?";
