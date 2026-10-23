@@ -1,6 +1,8 @@
 # memolink — 端侧 Agent 记忆系统（Jetson Orin）
 
-> 🎬 **在线演示**：<https://ranpin.github.io/memolink/> —— 真实 CLI 转录的**生命周期分步回放**（提取 → 消解 → 检索 → 矛盾更新 → 版本回溯 → 删除），非模拟、非指标陈列。
+> 🎬 **在线演示**（均为 Orin 真实转录回放，非模拟、非指标陈列）：
+> - 🚗 **座舱助手**（记忆系统驱动的车载应用）：<https://ranpin.github.io/memolink/cockpit.html> —— SUPERSEDE 版本化 + 类型特化检索 + **多驾驶员治理拦截**
+> - 🧠 **记忆系统生命周期**：<https://ranpin.github.io/memolink/> —— 提取 → 消解 → 检索 → 矛盾更新 → 版本回溯 → 删除
 
 在 **Jetson Orin** 上离线跑通的**多类型 Agent 记忆系统**：记忆的**提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯**全程在本地完成，不依赖云端。C++ 实现——自写 WordPiece 分词器 + ONNX INT8 推理做本地 embedding（与 HuggingFace 逐 token 对拍 25/25、与 Python onnxruntime 余弦 1.00000000），本地 4B LLM 做矛盾消解与事实提取。记忆分层架构参考自 [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX)（Apache-2.0），**v2 记忆系统本体与端侧推理为本仓库新写**。
 
@@ -29,6 +31,20 @@ memolink remove   <id>                             # 记录级删除
 memolink list     [--type T] [--invalid]           # 列举
 memolink history  <id>                             # 版本链
 memolink stats                                     # 统计
+```
+
+## 应用示例：座舱助手（app 层第二公民）
+
+`cockpit_assistant` 是记忆系统驱动的**车载对话应用**，与 `memolink` CLI 共用同一个记忆核、只依赖 `MemorySystem` 门面——「应用可替换、门面稳定」的活证明。一段多轮对话点亮独有机制：
+
+- **SUPERSEDE 版本化**：搬家后地址更新，旧值失效保留、`history` 可回溯
+- **类型特化检索**：「上次充电在哪」→ episodic、「座椅加热怎么开」→ procedural
+- **多驾驶员治理**：换驾驶员后，他人私人记忆（住址/孩子学校）被拦截，共享记忆（车辆参数）仍可见
+
+```bash
+make -j8 cockpit_assistant                                    # 构建（需 EDGE=ON + 本地 llama-server）
+./cockpit_assistant run ../bench/cockpit_demo_script.json     # 脚本化对话（demo 转录来源）
+./cockpit_assistant chat --owner 张三                          # 交互式
 ```
 
 ## 构建与复现（Orin）

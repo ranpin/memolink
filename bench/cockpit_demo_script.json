@@ -1,0 +1,44 @@
+{
+  "_comment": "座舱助手 demo 脚本。seed 自 bench/corpus/cockpit.json（owner=张三）。7 轮点亮 memolink 独有机制：①搬家→家庭地址 SUPERSEDE（单值矛盾，旧值失效/新值入库/建版本链）②版本化检索返回当前值 ③新偏好→CREATE ④『上次充电』→episodic 类型特化检索 ⑤『怎么语音开座椅加热』→procedural ⑥换驾驶员李四问张三家地址→治理拦截（private 不可见）⑦李四问车辆电池→shared 可见（治理对照）。查询轮天然 NOOP。",
+  "seed": {
+    "corpus": "../bench/corpus/cockpit.json",
+    "owner": "张三"
+  },
+  "turns": [
+    {
+      "_demo": "SUPERSEDE：家庭地址从西湖区换成滨江区（单值矛盾，地址换新是消解器明列的 SUPERSEDE 触发），旧值失效、新值入库、建版本链",
+      "driver": "张三",
+      "text": "我搬家了，家庭地址从西湖区改成滨江区"
+    },
+    {
+      "_demo": "版本化检索：返回当前值（滨江区），旧的西湖区已失效不再返回",
+      "driver": "张三",
+      "text": "我家现在住在哪个区？"
+    },
+    {
+      "_demo": "CREATE：叙述性新事实（宠物，与座舱语料无相似）→ 提取出候选 → System-1 CREATE",
+      "driver": "张三",
+      "text": "我家里养了一只柯基犬叫豆豆，每天下班都要遛它"
+    },
+    {
+      "_demo": "episodic 类型特化检索：意图路由到 episodic + 时间衰减",
+      "driver": "张三",
+      "text": "上次充电是在哪充的？"
+    },
+    {
+      "_demo": "procedural 类型特化检索：意图路由到 procedural",
+      "driver": "张三",
+      "text": "座椅加热怎么用语音打开？"
+    },
+    {
+      "_demo": "治理拦截：李四问张三的私人家庭地址，scope=private 对李四不可见",
+      "driver": "李四",
+      "text": "导航到张三家的地址"
+    },
+    {
+      "_demo": "治理对照：车辆电池是 shared，李四可见",
+      "driver": "李四",
+      "text": "这台车电池多大？满电能跑多少公里？"
+    }
+  ]
+}

@@ -13,8 +13,9 @@ memolink 是跑在 **Jetson Orin** 上的端侧多类型 Agent 记忆系统：�
 ```
 ┌───────────────────────────────────────────────────────────────┐
 │  应用层  src/app/                              （多样、可替换） │
-│    cli/memolink — 八命令 CLI；评测 harness 在 test/ + bench/    │
-│    未来：HTTP API / agent tool / SDK 都只依赖下面的门面         │
+│    cli/memolink — 八命令 CLI（记忆系统的第一种用法）            │
+│    cockpit/cockpit_assistant — 座舱助手（带记忆的车载对话应用）  │
+│    评测 harness 在 test/ + bench/；未来：HTTP API / agent tool  │
 └───────────────────────────┬───────────────────────────────────┘
                             │ 只依赖一个统一入口
 ┌───────────────────────────▼───────────────────────────────────┐
@@ -46,7 +47,12 @@ memolink 是跑在 **Jetson Orin** 上的端侧多类型 Agent 记忆系统：�
 ## 各层职责
 
 ### 应用层 `src/app/`
-系统的各种「用法」，彼此独立、可增删替换。当前只有 `cli/memolink`（八命令：extract / ingest / recall / update / remove / list / history / stats）。评测 harness（`test/`、`bench/`）也属这一层——它们是记忆系统的消费方，不是记忆系统本身。未来加 HTTP API、agent tool、语言绑定，都只是在这一层新增一个依赖 `MemorySystem` 的薄壳。
+系统的各种「用法」，彼此独立、可增删替换。当前有两个公民：
+
+- `cli/memolink`——八命令 CLI（extract / ingest / recall / update / remove / list / history / stats），记忆系统的第一种用法。
+- `cockpit/cockpit_assistant`——**座舱助手**：一个带记忆的车载对话应用，在座舱场景里点亮 SUPERSEDE 版本化、episodic/procedural 类型特化检索、多驾驶员治理拦截。它只依赖 `MemorySystem` 门面 + `QwenAPI`（回复生成），core/infra 一行不动——是「应用可替换、门面稳定」的活证明（在线演示见 [cockpit.html](cockpit.html)）。
+
+评测 harness（`test/`、`bench/`）也属这一层——它们是记忆系统的消费方，不是记忆系统本身。未来加 HTTP API、agent tool、语言绑定，都只是在这一层新增一个依赖 `MemorySystem` 的薄壳。
 
 ### 接口层 `src/memory/api/`
 只有一个类 `MemorySystem`，是记忆系统对外的**唯一契约**。它把核心三件套（Store / Resolver / Extractor）组装起来，对外暴露生命周期各阶段的方法。应用层拿到一个 `MemorySystem` 就能用，不必知道内部由几个类、按什么顺序构造。这是「应用可替换」得以成立的关键——没有这层，每个应用都得自己拼三个具体类。

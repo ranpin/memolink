@@ -172,6 +172,13 @@ if(MEMOLINK_ENABLE_EDGE)
     # Q6：memolink CLI——八命令串完整管线（提取→消解→存储→检索→更新→删除→历史→统计）
     add_executable(memolink src/app/cli/MemoryCLI.cpp)
     target_link_libraries(memolink memolink_lib)
+
+    # 座舱助手——app 层第二个公民（带记忆的座舱助手；演示 SUPERSEDE 版本化 /
+    # episodic·procedural 类型特化检索 / 多驾驶员治理拦截）。只依赖 MemorySystem 门面。
+    add_executable(cockpit_assistant
+        src/app/cockpit/CockpitAssistant.cpp
+        src/app/cockpit/cockpit_main.cpp)
+    target_link_libraries(cockpit_assistant memolink_lib)
 endif()
 
 # ============================================================================
