@@ -1,3 +1,18 @@
+# 座舱助手 demo 完整输出（Orin 真实转录）
+
+> 这是 `cockpit_assistant run bench/cockpit_demo_script.json` 在 **Jetson Orin（dog）** 上的真实输出（2026-10-23 录制），是 [cockpit.html](cockpit.html) 分步回放的原始依据。全程离线：本地 bge-small-zh INT8 embedding + 本地 qwen3-4b（消解 / 提取 / 回复生成）。除逐条 embedding 的基础设施日志外，输出原样保留。
+
+**场景**：seed 40 条座舱记忆（owner=张三）→ 7 轮对话，逐个点亮 memolink 的独有机制——
+
+1. **SUPERSEDE 版本化**：搬家后地址西湖区→滨江区，旧值失效保留、建版本链
+2. **版本化检索**：问地址返回当前值（滨江区），失效旧值不再出现
+3. **CREATE**：新事实（养柯基犬豆豆）入库
+4. **episodic 类型特化检索**：「上次充电在哪」路由到 episodic
+5. **procedural 类型特化检索**：「座椅加热怎么语音开」路由到 procedural
+6. **多驾驶员治理拦截**：换驾驶员李四，张三的私人记忆（住址/孩子学校）不可见
+7. **治理对照**：shared 记忆（车辆电池/续航）李四照常可见
+
+```text
 [seed] 库为空，已从 ../bench/corpus/cockpit.json 载入 40 条记忆（owner=张三）
 
 ════════════════ 第 1 轮 ════════════════
@@ -88,3 +103,6 @@
 
 ════════════════ 结束 ════════════════
 最终库: total=43 valid=42 invalid=1
+```
+
+**注**：第 6 轮的 `[治理拦截]` 是 demo 标注——展示「无过滤本会命中、但被治理过滤掉」的私人记忆；实际 `recallTyped` 对李四只返回 `scope=shared` 的记忆。治理是检索期访问控制（fail-closed strict 模式），不是加密，详见 [memory_v2_design.md](memory_v2_design.md) §8。
