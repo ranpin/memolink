@@ -161,7 +161,7 @@
 
     <section class="ds-section" id="results">
       <h2 class="ds-h2">评测结果</h2>
-      <p class="sec-note">上面的演示是「能看见功能在跑」；这里是「跑得多好」的量化证据。全部数字由仓库内程序在 Orin 上实跑生成、可复现（<code>bench/results/*.json</code>）。</p>
+      <p class="sec-note">上面的演示是「能看见功能在跑」；这里是「跑得多好」的量化证据。统计卡数字由仓库内程序在 Orin 上实跑生成、可复现（<code>bench/results/*.json</code>）；末尾另附一组独立原型的检索/embedding 取舍实测作为设计佐证（来源已标注）。</p>
       <div class="stats">
         <div class="stat"><div class="v">5<small> 操作</small></div><div class="k">CREATE/UPDATE<br>REINFORCE/SUPERSEDE/NOOP</div></div>
         <div class="stat"><div class="v">70<small>%</small></div><div class="k">System-2 消解<br>五分类准确率（30 场景）</div></div>
@@ -169,6 +169,18 @@
         <div class="stat"><div class="v">0.96<small>7</small></div><div class="k">三域 recall@4<br>同一二进制零改码</div></div>
       </div>
       <p class="note">Q1–Q5 闸门全部在 Orin 真机跑通：五操作消解（Q2）、类型特化检索（Q3，v2 基准 +31.2pp）、受约束提取（Q4，编造率 3.7%）、LongMemEval 英文模型 config-only swap（Q5，dim 384，5/5 验证）。详见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>。</p>
+
+      <p style="font-weight:700;font-size:14.5px;color:var(--ds-text);margin:26px 0 6px">设计取舍的实测佐证 · 为什么用精确检索、INT8 embedding</p>
+      <p class="sec-note" style="margin:0 0 4px">下面两组数字来自一个独立的 Python/faiss 原型（<a href="https://github.com/ranpin/edge-agent-memory">edge-agent-memory</a>，完整基准与复现见其仓库），<b>非 memolink 自身 C++/SQLite 实现的测量</b>——绝对值不直接迁移，但结论与 memolink 的设计选择一致，作为「为什么这么选」的实测依据。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>检索方式（512 维 · recall@5）</th><th>N=1,000</th><th>N=10,000</th><th>N=100,000</th></tr>
+          <tr><td>精确 faiss flat · 延迟 / recall</td><td>0.127ms / 1.0</td><td>0.787ms / 1.0</td><td>6.63ms / 1.0</td></tr>
+          <tr><td>HNSW ef=64 · 延迟 / recall</td><td>0.074ms / 0.998</td><td>0.171ms / 1.0</td><td>0.139ms / 1.0</td></tr>
+          <tr><td>HNSW 建索引耗时</td><td>0.25s</td><td>3.86s</td><td><b>36.1s</b></td></tr>
+        </table>
+      </div>
+      <p class="note"><b>结论：agent 记忆的现实量级是 1e3~1e4 且增量更新</b>——精确检索亚毫秒、recall 恒 1.0、建索引近乎免费、追加 O(1)；HNSW 在 10 万条上建索引要 36s，换来的查询加速却发生在本就不是瓶颈的环节（生成 ~920ms vs 检索 0.16ms）。<b>故 memolink 刻意用精确检索（SQLite 暴力余弦），ANN 在此量级是过度设计。</b>embedding 侧：INT8 相对 FP32 余弦 0.99+、单线程比 FP32 双线程还快、模型 23.9MB vs 94.8MB——佐证 memolink 的 ONNX INT8 embedding 选择。</p>
     </section>
 
     <section class="ds-section" id="method">
