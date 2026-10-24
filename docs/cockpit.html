@@ -88,14 +88,17 @@
   .sstatus.lock{color:var(--ds-warn)}
   [data-theme="dark"] .sstatus.good{color:#6ee7b7}
   [data-theme="dark"] .sstatus.bad{color:#fca5a5}
-  .srow.sadd{border-color:#a7f3d0;box-shadow:0 0 0 1px #a7f3d0 inset}
-  [data-theme="dark"] .srow.sadd{border-color:#065f46;box-shadow:0 0 0 1px #065f46 inset}
+  /* 本轮变化行：大面积底色突出（新增=绿底 / 本轮失效=红底），明暗双主题 */
+  .srow.sadd{background:#d1fae5;border-color:#10b981;box-shadow:0 0 0 1px #10b981 inset}
+  [data-theme="dark"] .srow.sadd{background:#064e3b;border-color:#10b981;box-shadow:0 0 0 1px #10b981 inset}
   .srow.sinv{border-style:dashed;opacity:.75}
   .srow.sinv .scontent{text-decoration:line-through;opacity:.6}
-  .srow.sinvfresh{border-color:#fecaca}
-  [data-theme="dark"] .srow.sinvfresh{border-color:#7f1d1d}
+  .srow.sinvfresh{background:#fee2e2;border-color:#ef4444;opacity:1}
+  [data-theme="dark"] .srow.sinvfresh{background:#7f1d1d;border-color:#ef4444}
   .srow.slocked{opacity:.5;border-color:var(--ds-warn-ring)}
   .srow.flash{animation:flash .7s ease}
+  /* 本轮有变化时，未变化行整体压暗——变化 vs 未变化对比最大化 */
+  .store__body.has-changes .srow:not(.sadd):not(.sinvfresh){opacity:.5}
 
   .write{font-family:var(--ds-mono);font-size:12px;line-height:1.6;color:var(--ds-text);
     background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:8px;padding:8px 10px}
@@ -360,8 +363,10 @@ function renderStore(step){
   }
   document.getElementById('storeCount').innerHTML=
     '共 <b>'+mems.length+'</b> 条 · 有效 <b>'+nValid+'</b> · 失效 <b>'+(mems.length-nValid)+'</b>'+chg;
+  const body=document.getElementById('storeBody');
+  body.classList.toggle('has-changes', added.size+inv.size>0);   // 本轮有变化时压暗未变化行
   let firstChanged=null;
-  document.getElementById('storeBody').innerHTML=mems.map(m=>{
+  body.innerHTML=mems.map(m=>{
     const invisible=(m.owner!==s.driver&&m.scope!=='shared');   // 治理：对当前驾驶员不可见
     const cls=['srow'];
     if(!m.valid){cls.push('sinv');if(inv.has(m.id))cls.push('sinvfresh');}
