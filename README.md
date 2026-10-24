@@ -47,6 +47,8 @@ make -j8 cockpit_assistant                                    # 构建（需 EDG
 ./cockpit_assistant chat --owner 张三                          # 交互式
 ```
 
+> **诚实边界**：消解与提取由本地 4B 完成、有已知误差（五分类 ~70%、提取查全 ~57%，详见[设计文档 §15](docs/memory_v2_design.md)），故 demo 脚本用叙述性、单值矛盾的话术让机制稳定触发；治理是检索期访问控制、不是 unlearning（被拦记忆仍在库、对 owner 可见）；回复由本地 qwen3-4b 生成、是跑通闭环的配角而非贡献点（贡献点是记忆系统本身）；单设备、未测热降频与功耗。
+
 ## 构建与复现（Orin）
 
 ```bash

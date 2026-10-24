@@ -140,18 +140,8 @@
   .mech__card{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:15px}
   .mech__card h3{font-size:14px;margin:0 0 6px;color:var(--ds-accent-strong)}
   .mech__card p{font-size:12.5px;color:var(--ds-muted);line-height:1.6;margin:0}
-  .limits{counter-reset:l;margin:6px 0 0;padding:0;list-style:none}
-  .limits li{counter-increment:l;position:relative;padding:10px 12px 10px 40px;margin:8px 0;
-    background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:10px;font-size:13.5px;line-height:1.6}
-  .limits li::before{content:counter(l);position:absolute;left:12px;top:10px;width:20px;height:20px;
-    border-radius:50%;background:var(--ds-warn-soft);color:var(--ds-warn);border:1px solid var(--ds-warn-ring);
-    font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
-  pre.cmd{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:10px;
-    padding:14px 16px;overflow-x:auto;font-family:var(--ds-mono);font-size:12.5px;line-height:1.65;margin:6px 0 0}
   code{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:5px;padding:1px 6px;
     font-family:var(--ds-mono);font-size:12.5px;color:var(--ds-accent-strong)}
-  .note{font-size:12.5px;color:var(--ds-faint);margin-top:12px;line-height:1.55}
-  .card{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:16px}
 </style>
 </head>
 <body>
@@ -209,39 +199,25 @@
       </div>
     </section>
 
-    <section class="ds-section" id="mechanisms">
-      <h2 class="ds-h2">这段演示点亮了哪些机制</h2>
+    <section class="ds-section" id="results">
+      <h2 class="ds-h2">评测结果</h2>
+      <p class="sec-note">上面演示点亮的机制，其量化证据全部在 Orin 真机实测、可复现（完整 Q1–Q7 闸门见<a href="./">首页</a>核心结果与 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">设计文档</a>）。</p>
+      <div class="mech">
+        <div class="mech__card"><h3>SUPERSEDE 版本化</h3><p>Q1 版本化 CRUD <b>41/41</b> 单元测试（独立 memory 表 + 非破坏性版本化 + 双向链）</p></div>
+        <div class="mech__card"><h3>五操作消解</h3><p>Q2 五分类准确率 <b>70%</b>、可记四类 <b>84%</b>、目标定位 14/14（System-2 本地 4B）</p></div>
+        <div class="mech__card"><h3>类型特化检索</h3><p>Q3 v2 基准 hit@1 <b>+31.2pp</b>（episodic 3/8→8/8，条件性提升）</p></div>
+        <div class="mech__card"><h3>多驾驶员治理</h3><p>Q7 GovernanceFilter owner/scope/authority 过滤 + 强度衰减淘汰 + strict fail-closed，<code>test_memory_governance</code> 全过</p></div>
+      </div>
+    </section>
+
+    <section class="ds-section" id="method">
+      <h2 class="ds-h2">核心方法</h2>
       <p class="sec-note">座舱域天然把 memolink 的独有机制变成「看得见、且非它不可」的功能——而不是一个套了记忆库的聊天机器人。</p>
       <div class="mech">
         <div class="mech__card"><h3>SUPERSEDE 版本化</h3><p>搬家后家庭地址从西湖区改成滨江区：旧记忆标失效但<b>保留</b>，新记忆入库并建双向链。检索只返回当前值，<code>history</code> 可回溯整条演化。</p></div>
         <div class="mech__card"><h3>类型特化检索</h3><p>「上次充电在哪」路由到 <b>episodic</b>（+时间衰减），「座椅加热怎么开」路由到 <b>procedural</b>，偏好类路由到 <b>semantic</b>——意图识别驱动检索，不是全类型一起搜。</p></div>
         <div class="mech__card"><h3>多驾驶员治理</h3><p>换驾驶员李四后，张三的<b>私人</b>记忆（家庭住址、孩子学校）被 <code>GovernanceFilter</code> 拦截、对李四不可见；而<b>共享</b>记忆（车辆电池/续航）仍可见。隐私按 owner+scope 强制端侧隔离。</p></div>
         <div class="mech__card"><h3>五操作消解</h3><p>每轮用户话经本地 4B 提取候选事实，再由三层消解判定 CREATE / SUPERSEDE / NOOP——查询轮天然 NOOP，不污染记忆库。</p></div>
-      </div>
-    </section>
-
-    <section class="ds-section" id="limits">
-      <h2 class="ds-h2">诚实边界</h2>
-      <ol class="limits">
-        <li><b>消解与提取由本地 4B 完成，有已知误差</b>：五分类准确率 ~70%（Q2 实测），REINFORCE/UPDATE/SUPERSEDE 的区分是 4B 的系统性弱点；提取查全 ~57%（Q4 实测），故演示脚本用叙述性、单值矛盾的话术让机制稳定触发。</li>
-        <li><b>治理是检索期访问控制，不是 unlearning</b>：李四看不到张三的私人记忆，但数据仍在库里（对张三可见）；<code>remove</code> 是记录级删除，不是模型层面的遗忘。</li>
-        <li><b>回复由本地 qwen3-4b 生成</b>，是跑通闭环的配角而非贡献点；贡献点是记忆系统本身（提取/消解/版本化/类型检索/治理）。</li>
-        <li><b>单设备、未测热降频与功耗</b>；embedding 走 CPU（onnxruntime 在 Orin 上 CPU-only），GPU 整块留给 LLM。</li>
-      </ol>
-    </section>
-
-    <section class="ds-section" id="run">
-      <h2 class="ds-h2">复现</h2>
-      <div class="card">
-<pre class="cmd"># 端侧构建（Orin，需 onnxruntime + 本地 llama-server）
-mkdir build &amp;&amp; cd build
-cmake .. -DMEMOLINK_ENABLE_EDGE=ON &amp;&amp; make -j8 cockpit_assistant
-
-# 载入座舱语料 + 跑脚本化对话（真实转录即本页回放来源）
-./cockpit_assistant run ../bench/cockpit_demo_script.json
-# 或交互式
-./cockpit_assistant chat --owner 张三</pre>
-        <p class="note">座舱助手是 app 层第二个公民，与 <code>memolink</code> CLI 共用同一个 <code>MemorySystem</code> 门面与记忆核——换应用只重写 app/，core/infra 一行不动。代码与完整文档见 <a href="https://github.com/ranpin/memolink">github.com/ranpin/memolink</a>；记忆系统本体的生命周期演示见 <a href="./">首页 demo</a>。</p>
       </div>
     </section>
 
