@@ -71,6 +71,32 @@
   .mem__content{font-size:12.5px;color:var(--ds-text);line-height:1.5}
   .mem__lock{font-size:10.5px;color:var(--ds-warn);font-weight:700}
 
+  /* ---- 底部：记忆库（每轮后全库状态，数据来自 --dump 真实快照）---- */
+  .store{grid-column:1/-1;background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:14px}
+  .store__h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .store__h .t{font-size:12px;font-weight:700;color:var(--ds-muted);text-transform:uppercase;letter-spacing:.06em}
+  #storeCount{font-size:12.5px;color:var(--ds-muted)}
+  .store__body{position:relative;max-height:330px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-right:4px}
+  .srow{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;border:1px solid var(--ds-border);border-radius:8px;padding:6px 9px;background:var(--ds-code-bg);font-size:12.5px}
+  .sid{font-family:var(--ds-mono);font-weight:700;color:var(--ds-accent-strong);font-size:11.5px}
+  .sowner{font-size:11px;color:var(--ds-muted);border:1px solid var(--ds-border);border-radius:999px;padding:0 7px;white-space:nowrap}
+  .scontent{flex:1;min-width:200px;color:var(--ds-text);line-height:1.5}
+  .sstatus{font-size:11px;font-weight:600;white-space:nowrap}
+  .sstatus.ok{color:var(--ds-faint)}
+  .sstatus.good{color:#047857}
+  .sstatus.bad{color:#b91c1c}
+  .sstatus.lock{color:var(--ds-warn)}
+  [data-theme="dark"] .sstatus.good{color:#6ee7b7}
+  [data-theme="dark"] .sstatus.bad{color:#fca5a5}
+  .srow.sadd{border-color:#a7f3d0;box-shadow:0 0 0 1px #a7f3d0 inset}
+  [data-theme="dark"] .srow.sadd{border-color:#065f46;box-shadow:0 0 0 1px #065f46 inset}
+  .srow.sinv{border-style:dashed;opacity:.75}
+  .srow.sinv .scontent{text-decoration:line-through;opacity:.6}
+  .srow.sinvfresh{border-color:#fecaca}
+  [data-theme="dark"] .srow.sinvfresh{border-color:#7f1d1d}
+  .srow.slocked{opacity:.5;border-color:var(--ds-warn-ring)}
+  .srow.flash{animation:flash .7s ease}
+
   .write{font-family:var(--ds-mono);font-size:12px;line-height:1.6;color:var(--ds-text);
     background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:8px;padding:8px 10px}
   .write .act{font-weight:700}
@@ -138,7 +164,7 @@
 
     <section class="ds-section" id="demo">
       <h2 class="ds-h2">座舱助手演示（真实转录回放）</h2>
-      <p class="sec-note">每一步都是 <code>cockpit_assistant</code> 在 Orin 上的<b>真实输出</b>。左侧是驾驶员与助手的对话，右侧是这一轮的<b>记忆操作</b>（检索到什么、治理拦截了什么、写入了什么）。点「下一步」逐轮回放。语料 seed 自 40 条座舱记忆（owner=张三）。完整真实转录见 <a href="./cockpit_demo_transcript.md" style="color:var(--ds-accent)">cockpit_demo_transcript.md</a>。</p>
+      <p class="sec-note">每一步都是 <code>cockpit_assistant</code> 在 Orin 上的<b>真实输出</b>。左侧是驾驶员与助手的对话，右侧是这一轮的<b>记忆操作</b>（检索到什么、治理拦截了什么、写入了什么），下方是<b>记忆库全库状态</b>——每轮后 memory 表里哪些记忆新增（绿）、哪些失效（红删除线）、哪些对当前驾驶员不可见（🔒），数据来自 <code>--dump</code> 的真实全库快照。点「下一轮」逐轮回放。完整真实转录见 <a href="./cockpit_demo_transcript.md" style="color:var(--ds-accent)">cockpit_demo_transcript.md</a>。</p>
 
       <div class="player">
         <div class="chat">
@@ -148,6 +174,10 @@
         <div class="memops">
           <div class="chat__h">本轮记忆操作</div>
           <div id="opsBody" style="display:flex;flex-direction:column;gap:11px;flex:1;overflow-y:auto"></div>
+        </div>
+        <div class="store">
+          <div class="store__h"><span class="t">记忆库 · memory 表全库状态（每轮后）</span><span id="storeCount"></span></div>
+          <div class="store__body" id="storeBody"></div>
         </div>
         <div class="explain" id="explain"></div>
         <div class="ctrl">
@@ -296,6 +326,67 @@ const STEPS = [
 let cur=0, playing=false, timer=null;
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
+// ===== 记忆库数据：seed 快照 + 每轮真实变化 =====
+// 由 cockpit_assistant run --dump 的真实全库快照生成（bench/cockpit_demo_store.json），
+// SEED=[id,type,scope,owner,content]，DELTAS[i]=第 i+1 轮对库的改动（inv=失效 / add=新增）。
+const SEED = [[1,"semantic","shared","张三","用户说过他喜欢深蓝色的车，尤其是深蓝和墨蓝。"],[2,"semantic","shared","张三","车辆上次保养是 2026 年 8 月，里程 12000 公里。"],[3,"semantic","private","张三","用户住在杭州西湖区，家庭地址已存入导航常用地点。"],[4,"semantic","shared","张三","空调偏好：夏季 22 度、风量 2 档，喜欢座椅通风。"],[5,"episodic","shared","张三","国庆假期用户计划自驾去千岛湖，已查询过路线和充电桩。"],[6,"semantic","private","张三","用户的手机号尾号 8899，已绑定车机账号。"],[7,"semantic","shared","张三","用户早上通勤喜欢听新闻类播客，常听的是财经和科技频道。"],[8,"procedural","shared","张三","用户习惯用语音打开座椅加热，说“把座椅加热开到三档”。"],[9,"semantic","shared","张三","车辆是纯电动 SUV，电池容量 100 度，满电续航约 620 公里。"],[10,"episodic","shared","张三","上次充电是在公司楼下快充站，充到 90%，花了 45 分钟。"],[11,"semantic","shared","张三","用户不喜欢车内氛围灯太亮，通常调到 30% 暖白色。"],[12,"semantic","private","张三","用户的孩子在文三路上小学，每天 7:40 需要出发送学。"],[13,"procedural","shared","张三","用户常用“导航回家”指令，默认走避开高速的路线。"],[14,"episodic","shared","张三","用户上周五下班路上遇到过严重拥堵，改走了之江路。"],[15,"semantic","shared","张三","用户喜欢把驾驶模式设为舒适模式，动能回收调到中。"],[16,"semantic","shared","张三","轮胎是 255/45 R20，胎压建议 2.5 bar，上次补胎是 3 月。"],[17,"episodic","private","张三","用户曾在车里讨论过换工作的想法，提到在考虑一家自动驾驶公司。"],[18,"semantic","shared","张三","用户午餐常在车上解决，喜欢点清淡的简餐，不喝含糖饮料。"],[19,"procedural","shared","张三","用户停车后习惯让车机自动关窗、折叠后视镜并开启哨兵模式。"],[20,"semantic","shared","张三","车机流量套餐每月 20G，本月已用 12G，主要是音乐和导航。"],[21,"episodic","shared","张三","今天早上用户出门晚了，让助手规划了最快路线并提前开启了空调。"],[22,"semantic","shared","张三","用户晚上开车喜欢把仪表和中控调成深色主题，降低亮度。"],[23,"semantic","private","张三","用户的紧急联系人是配偶，电话已存入车机紧急呼叫。"],[24,"procedural","shared","张三","用户会用“打开露营模式”让空调低功耗运行并关闭锁车提示音。"],[25,"episodic","shared","张三","用户上周参加了一次车友会自驾活动，去了莫干山。"],[26,"semantic","shared","张三","用户通勤路线固定：从西湖区到滨江，早高峰约 40 分钟。"],[27,"semantic","shared","张三","车辆软件版本 v3.2.1，上个月 OTA 升级后新增了城市领航辅助。"],[28,"episodic","shared","张三","用户昨天问过附近哪家咖啡店评分高，助手推荐了一家并导航过去。"],[29,"semantic","shared","张三","用户喜欢香氛系统的海洋香型，浓度调到最低。"],[30,"procedural","shared","张三","用户习惯说“我有点冷”，助手应把空调温度调高两度并开座椅加热。"],[31,"semantic","shared","张三","后备箱常放着一个儿童安全座椅和一个折叠露营椅。"],[32,"episodic","private","张三","用户曾在车内接听过一个关于房贷利率的电话，讨论提前还款。"],[33,"semantic","shared","张三","用户下班路上喜欢听轻音乐放松，音量通常 40%。"],[34,"semantic","shared","张三","车辆保险到期日是 2027 年 1 月，投保的是全险。"],[35,"procedural","shared","张三","用户说“准备出发”时，助手应播报天气、路况和今日日程。"],[36,"episodic","shared","张三","用户本周三预约了 4S 店的免费检测，时间是周六上午。"],[37,"semantic","shared","张三","用户希望助手回答简洁，不要啰嗦，重要信息优先。"],[38,"semantic","private","张三","用户的家庭Wi-Fi密码和公司门禁信息曾口头告知助手，属敏感。"],[39,"episodic","shared","张三","用户昨晚让助手提醒今天早上带伞，因为预报有雨。"],[40,"procedural","shared","张三","用户说“太晒了”时，助手应关闭对应侧车窗并调低该侧空调出风。"]];
+const DELTAS = [[{"op":"inv","id":3,"by":41},{"op":"add","id":41,"type":"semantic","scope":"private","owner":"张三","content":"用户搬家，家庭地址从西湖区改为滨江区","supersedes":3}],[],[{"op":"add","id":42,"type":"semantic","scope":"private","owner":"张三","content":"用户养了一只名为豆豆的柯基犬","supersedes":0},{"op":"add","id":43,"type":"procedural","scope":"private","owner":"张三","content":"用户每天下班后都要遛豆豆","supersedes":0}],[],[],[],[]];
+
+// 第 step 轮（0 起）之后的全库状态：seed 累积应用 DELTAS[0..step]（无状态，前后跳步都正确）
+function dbAt(step){
+  const db=new Map();
+  for(const [id,type,scope,owner,content] of SEED)
+    db.set(id,{id,type,scope,owner,content,valid:true,supersededBy:0,supersedes:0});
+  for(let i=0;i<=step;i++)
+    for(const op of DELTAS[i]){
+      if(op.op==='add') db.set(op.id,{id:op.id,type:op.type,scope:op.scope,owner:op.owner,content:op.content,valid:true,supersededBy:0,supersedes:op.supersedes||0});
+      else if(op.op==='inv'){const m=db.get(op.id); if(m){m.valid=false;m.supersededBy=op.by;}}
+    }
+  return db;
+}
+
+function renderStore(step){
+  const s=STEPS[step];
+  const db=dbAt(step);
+  const added=new Set(), inv=new Set();
+  for(const op of DELTAS[step]){ if(op.op==='add') added.add(op.id); else inv.add(op.id); }
+  const mems=Array.from(db.values()).sort((a,b)=>a.id-b.id);
+  const nValid=mems.filter(m=>m.valid).length;
+  let chg=' · 本轮库无变化';
+  if(added.size||inv.size){
+    chg='';
+    if(added.size) chg+=' · <span style="color:#047857;font-weight:700">+'+added.size+' 新增</span>';
+    if(inv.size) chg+=' · <span style="color:#b91c1c;font-weight:700">'+inv.size+' 失效</span>';
+  }
+  document.getElementById('storeCount').innerHTML=
+    '共 <b>'+mems.length+'</b> 条 · 有效 <b>'+nValid+'</b> · 失效 <b>'+(mems.length-nValid)+'</b>'+chg;
+  let firstChanged=null;
+  document.getElementById('storeBody').innerHTML=mems.map(m=>{
+    const invisible=(m.owner!==s.driver&&m.scope!=='shared');   // 治理：对当前驾驶员不可见
+    const cls=['srow'];
+    if(!m.valid){cls.push('sinv');if(inv.has(m.id))cls.push('sinvfresh');}
+    if(added.has(m.id))cls.push('sadd','flash');
+    if(m.valid&&invisible)cls.push('slocked');
+    let status;
+    if(!m.valid) status='<span class="sstatus bad">失效'+(m.supersededBy?' · 被 #'+m.supersededBy+' 取代':'')+'</span>';
+    else if(added.has(m.id)) status='<span class="sstatus good">新增'+(m.supersedes?' · supersedes #'+m.supersedes:'')+'</span>';
+    else if(invisible) status='<span class="sstatus lock">🔒 对 '+s.driver+' 不可见</span>';
+    else status='<span class="sstatus ok">有效</span>';
+    if((added.has(m.id)||inv.has(m.id))&&firstChanged===null) firstChanged=m.id;
+    return '<div class="'+cls.join(' ')+'" id="srow-'+m.id+'">'+
+      '<span class="sid">#'+m.id+'</span>'+
+      '<span class="tag '+m.type+'">'+m.type+'</span>'+
+      '<span class="tag '+m.scope+'">'+(m.scope==='private'?'🔒 private':'shared')+'</span>'+
+      '<span class="sowner">'+m.owner+'</span>'+
+      '<span class="scontent">'+esc(m.content)+'</span>'+
+      status+'</div>';
+  }).join('');
+  if(firstChanged!==null){   // 自动滚到本轮第一条变化
+    const el=document.getElementById('srow-'+firstChanged), p=document.getElementById('storeBody');
+    if(el&&p) p.scrollTop=el.offsetTop-10;
+  }
+}
+
 function memCard(m, cls){
   return '<div class="mem '+(cls||'')+'">'+
     '<div class="mem__top">'+
@@ -352,7 +443,7 @@ function renderOps(s){
 
 function render(){
   const s=STEPS[cur];
-  renderChat(s); renderOps(s);
+  renderChat(s); renderOps(s); renderStore(cur);
   document.getElementById('explain').innerHTML=s.explain;
   document.getElementById('stepLabel').textContent='第 '+(cur+1)+' / '+STEPS.length+' 轮';
   document.getElementById('btnPrev').disabled=cur===0;

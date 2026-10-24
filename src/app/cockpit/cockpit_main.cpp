@@ -15,6 +15,7 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 #include <json/json.h>
 #include "infra/storage/InitDB.h"
 #include "infra/storage/StorageManager.h"
@@ -27,7 +28,7 @@ static void usage() {
         "座舱助手（memolink app 层第二公民）\n"
         "用法:\n"
         "  cockpit_assistant seed [--corpus path] [--owner 张三] [--db path]\n"
-        "  cockpit_assistant run  <script.json> [--db path]\n"
+        "  cockpit_assistant run  <script.json> [--db path] [--dump store.json]\n"
         "  cockpit_assistant chat [--owner 张三] [--db path]\n";
 }
 
@@ -41,7 +42,8 @@ static std::string getOpt(const std::vector<std::string>& args, const std::strin
 // 第一个非选项位置参数（跳过 --db 这类带值选项）
 static std::string getPositional(const std::vector<std::string>& args) {
     for (size_t i = 0; i < args.size(); ++i) {
-        if (args[i] == "--db" || args[i] == "--corpus" || args[i] == "--owner") { ++i; continue; }
+        if (args[i] == "--db" || args[i] == "--corpus" || args[i] == "--owner" ||
+            args[i] == "--dump") { ++i; continue; }
         if (args[i].rfind("--", 0) == 0) continue;
         return args[i];
     }
@@ -134,6 +136,7 @@ int main(int argc, char** argv) {
     if (cmd == "run") {
         const std::string scriptPath = getPositional(args);
         if (scriptPath.empty()) { usage(); return 1; }
+        const std::string dumpPath = getOpt(args, "--dump", "");
         std::ifstream ifs(scriptPath);
         if (!ifs.is_open()) { std::cerr << "打不开脚本: " << scriptPath << "\n"; return 1; }
         std::stringstream ss; ss << ifs.rdbuf();
@@ -144,6 +147,33 @@ int main(int argc, char** argv) {
             std::cerr << "脚本 JSON 解析失败: " << errs << "\n"; return 1;
         }
 
+        // --dump：seed 后与每轮后各 dump 一次全库快照（含失效记忆），供 demo 页
+        // 「记忆库」面板回放每轮数据库状态变化。假设全新库（跑前 rm cockpit.db）。
+        Json::Value snapshots(Json::arrayValue);
+        auto dumpSnapshot = [&](const std::string& label) {
+            if (dumpPath.empty()) return;
+            std::vector<Memory> all = mem.list(std::nullopt, 0, /*includeInvalid=*/true);
+            std::sort(all.begin(), all.end(),
+                      [](const Memory& a, const Memory& b) { return a.id < b.id; });
+            Json::Value mems(Json::arrayValue);
+            for (const auto& m : all) {
+                Json::Value jm;
+                jm["id"] = m.id;
+                jm["type"] = memoryTypeName(m.type);
+                jm["content"] = m.content;
+                jm["scope"] = m.scope;
+                jm["owner"] = m.owner;
+                jm["valid"] = m.valid;
+                jm["supersededBy"] = m.supersededBy;
+                jm["supersedes"] = m.supersedes;
+                mems.append(jm);
+            }
+            Json::Value snap;
+            snap["label"] = label;
+            snap["memories"] = mems;
+            snapshots.append(snap);
+        };
+
         // 库为空且脚本带 seed 配置 → 自动载入语料
         if (mem.stats().total == 0 && script.isMember("seed")) {
             const std::string corpus =
@@ -153,6 +183,7 @@ int main(int argc, char** argv) {
             std::cout << "[seed] 库为空，已从 " << corpus << " 载入 " << n
                       << " 条记忆（owner=" << owner << "）\n";
         }
+        dumpSnapshot("seed");
 
         const Json::Value& turns = script["turns"];
         int turnNo = 0;
@@ -162,7 +193,19 @@ int main(int argc, char** argv) {
             assistant.setDriver(t.get("driver", "张三").asString());
             const int topK = t.get("topk", 4).asInt();
             printTurn(assistant.respond(text, topK), ++turnNo);
+            dumpSnapshot("turn" + std::to_string(turnNo));
         }
+
+        if (!dumpPath.empty()) {
+            Json::Value root;
+            root["snapshots"] = snapshots;
+            Json::StreamWriterBuilder wb;
+            wb["indentation"] = "";
+            std::ofstream ofs(dumpPath);
+            ofs << Json::writeString(wb, root);
+            std::cout << "[dump] " << snapshots.size() << " 个快照 → " << dumpPath << "\n";
+        }
+
         const auto st = mem.stats();
         std::cout << "\n════════════════ 结束 ════════════════\n"
                   << "最终库: total=" << st.total << " valid=" << st.valid
