@@ -105,4 +105,6 @@
 最终库: total=43 valid=42 invalid=1
 ```
 
-**注**：第 6 轮的 `[治理拦截]` 是 demo 标注——展示「无过滤本会命中、但被治理过滤掉」的私人记忆；实际 `recallTyped` 对李四只返回 `scope=shared` 的记忆。治理是检索期访问控制（fail-closed strict 模式），不是加密，详见 [memory_v2_design.md](memory_v2_design.md) §8。
+**注 1**：`[检索]` 里的 `score=` 是 `recallTyped` 的**排序分** = 余弦相似度 × 同类型加权（记忆类型命中查询意图时 ×1.6）× episodic 时间衰减（exp(-age_days/365)）——**不是裸余弦**，乘了加权所以可以大于 1（如第 5 轮 #8 的 1.279 ≈ 裸余弦 0.799 × 1.6）。它只用于排序，不当相似度解读。
+
+**注 2**：第 6 轮的 `[治理拦截]` 是 demo 标注——展示「无过滤本会命中、但被治理过滤掉」的私人记忆；实际 `recallTyped` 对李四只返回 `scope=shared` 的记忆。治理是检索期访问控制（fail-closed strict 模式），不是加密，详见 [memory_v2_design.md](memory_v2_design.md) §8。

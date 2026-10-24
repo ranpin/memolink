@@ -41,6 +41,7 @@
   .ops-sec{display:flex;flex-direction:column;gap:6px}
   .ops-sec__h{font-size:11px;font-weight:700;color:var(--ds-muted);text-transform:uppercase;
     letter-spacing:.05em;display:flex;align-items:center;gap:7px}
+  .ops-note{font-size:11px;color:var(--ds-faint);line-height:1.5;margin:-2px 0 2px}
   .intent{font-size:10.5px;padding:1px 8px;border-radius:999px;font-weight:700;text-transform:none;letter-spacing:0}
   .intent.semantic{color:#1d4ed8;background:#dbeafe;border:1px solid #bfdbfe}
   .intent.episodic{color:#9333ea;background:#f3e8ff;border:1px solid #e9d5ff}
@@ -390,7 +391,7 @@ function memCard(m, cls){
       '<span class="mem__id">#'+m.id+'</span>'+
       '<span class="tag '+m.type+'">'+m.type+'</span>'+
       '<span class="tag '+m.scope+'">'+(m.scope==='private'?'🔒 private':'shared')+'</span>'+
-      (m.score!=null?'<span class="mem__score">'+m.score.toFixed(3)+'</span>':'')+
+      (m.score!=null?'<span class="mem__score" title="排序分 = 余弦相似度 × 同类型加权 1.6 × episodic 时间衰减 exp(-age/365d)；不是裸余弦，可大于 1">排序分 '+m.score.toFixed(3)+'</span>':'')+
     '</div>'+
     '<div class="mem__content">'+esc(m.content)+'</div>'+
   '</div>';
@@ -408,6 +409,7 @@ function renderOps(s){
   let h='';
   // 检索
   h+='<div class="ops-sec"><div class="ops-sec__h">④ 检索 <span class="intent '+s.intent+'">'+s.intent+'</span></div>';
+  h+='<div class="ops-note">排序分 = 余弦相似度 × 同类型加权 1.6 × episodic 时间衰减 exp(-age/365d)——不是裸余弦，可大于 1</div>';
   h+= s.recalled.length ? s.recalled.map(m=>memCard(m,'')).join('') : '<div class="noop">无可见命中</div>';
   h+='</div>';
   // 治理拦截
