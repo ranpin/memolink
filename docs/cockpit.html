@@ -73,9 +73,19 @@
 
   /* ---- 底部：记忆库（每轮后全库状态，数据来自 --dump 真实快照）---- */
   .store{grid-column:1/-1;background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:14px}
-  .store__h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .store__h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
   .store__h .t{font-size:12px;font-weight:700;color:var(--ds-muted);text-transform:uppercase;letter-spacing:.06em}
   #storeCount{font-size:12.5px;color:var(--ds-muted)}
+  /* 图例：色块与行状态用同一套颜色，第一次看也能对上 */
+  .store__legend{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 10px;font-size:11.5px;color:var(--ds-muted)}
+  .store__legend .lg{display:inline-flex;align-items:center;gap:5px}
+  .store__legend .sw{width:16px;height:10px;border-radius:3px;border:1px solid var(--ds-border);display:inline-block;flex:none}
+  .sw-add{background:#d1fae5;border-color:#10b981 !important}
+  .sw-inv{background:#fee2e2;border-color:#ef4444 !important}
+  [data-theme="dark"] .sw-add{background:#064e3b}
+  [data-theme="dark"] .sw-inv{background:#7f1d1d}
+  .sw-dim{background:var(--ds-code-bg);opacity:.5}
+  .sw-lock{background:var(--ds-code-bg);opacity:.5;border-color:var(--ds-warn-ring) !important}
   .store__body{position:relative;max-height:330px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;padding-right:4px}
   .srow{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;border:1px solid var(--ds-border);border-radius:8px;padding:6px 9px;background:var(--ds-code-bg);font-size:12.5px}
   .sid{font-family:var(--ds-mono);font-weight:700;color:var(--ds-accent-strong);font-size:11.5px}
@@ -180,6 +190,12 @@
         </div>
         <div class="store">
           <div class="store__h"><span class="t">记忆库 · memory 表全库状态（每轮后）</span><span id="storeCount"></span></div>
+          <div class="store__legend">
+            <span class="lg"><i class="sw sw-add"></i>本轮新增</span>
+            <span class="lg"><i class="sw sw-inv"></i>本轮失效（旧值被取代，保留可回溯）</span>
+            <span class="lg"><i class="sw sw-dim"></i>本轮无变化（有变化时压暗）</span>
+            <span class="lg"><i class="sw sw-lock"></i>🔒 对当前驾驶员不可见（治理）</span>
+          </div>
           <div class="store__body" id="storeBody"></div>
         </div>
         <div class="explain" id="explain"></div>

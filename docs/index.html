@@ -100,19 +100,9 @@
   .tbl .hl{color:var(--ds-accent-strong);font-weight:700}
   .tbl-wrap{overflow-x:auto}
 
-  .limits{counter-reset:l;margin:6px 0 0;padding:0;list-style:none}
-  .limits li{counter-increment:l;position:relative;padding:10px 12px 10px 40px;margin:8px 0;
-    background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:10px;font-size:13.5px;line-height:1.6}
-  .limits li::before{content:counter(l);position:absolute;left:12px;top:10px;width:20px;height:20px;
-    border-radius:50%;background:var(--ds-warn-soft);color:var(--ds-warn);border:1px solid var(--ds-warn-ring);
-    font-size:11.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
-
-  pre.cmd{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:10px;
-    padding:14px 16px;overflow-x:auto;font-family:var(--ds-mono);font-size:12.5px;line-height:1.65;margin:6px 0 0}
   code{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:5px;padding:1px 6px;
     font-family:var(--ds-mono);font-size:12.5px;color:var(--ds-accent-strong)}
   .note{font-size:12.5px;color:var(--ds-faint);margin-top:12px;line-height:1.55}
-  .card{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:16px}
 </style>
 </head>
 <body>
@@ -170,7 +160,7 @@
     </section>
 
     <section class="ds-section" id="results">
-      <h2 class="ds-h2">核心结果（次要 · 量化指标）</h2>
+      <h2 class="ds-h2">评测结果</h2>
       <p class="sec-note">上面的演示是「能看见功能在跑」；这里是「跑得多好」的量化证据。全部数字由仓库内程序在 Orin 上实跑生成、可复现（<code>bench/results/*.json</code>）。</p>
       <div class="stats">
         <div class="stat"><div class="v">5<small> 操作</small></div><div class="k">CREATE/UPDATE<br>REINFORCE/SUPERSEDE/NOOP</div></div>
@@ -181,28 +171,17 @@
       <p class="note">Q1–Q5 闸门全部在 Orin 真机跑通：五操作消解（Q2）、类型特化检索（Q3，v2 基准 +31.2pp）、受约束提取（Q4，编造率 3.7%）、LongMemEval 英文模型 config-only swap（Q5，dim 384，5/5 验证）。详见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>。</p>
     </section>
 
-    <section class="ds-section" id="limits">
-      <h2 class="ds-h2">诚实边界</h2>
-      <ol class="limits">
-        <li><b>System-1 覆盖率实测 ≈32%</b>（非设计文档声称的 70–80%）——新颖度信号无法区分 UPDATE/SUPERSEDE/REINFORCE，矛盾是语义量，故模糊地带必须交给 System-2 本地 LLM。</li>
-        <li><b>类型特化检索的收益是有条件的</b>：v1 基准饱和（+0），v2 基准 +31.2pp——不是普适提升，取决于语料是否可分。</li>
-        <li><b>提取编造率 3.7% 是上界</b>，多为改写非捏造；受约束 JSON 输出规避了 P2 实测的开放式生成编造。</li>
-        <li><b>检索评测与 LLM 生成解耦</b>：本项目只评测记忆检索/消解质量，不含生成质量评测。</li>
-        <li><b>embedding 走 CPU</b>（onnxruntime 在 Orin 上是 CPU-only），GPU 整块留给 LLM；单设备、未测热降频与功耗。</li>
-      </ol>
-    </section>
-
-    <section class="ds-section" id="run">
-      <h2 class="ds-h2">复现</h2>
-      <div class="card">
-<pre class="cmd">sudo apt install -y libsqlite3-dev libcurl4-openssl-dev libjsoncpp-dev
-# config.ini 的 [edge] 段填 model_quantized.onnx 与 tokenizer.json 路径
-# config.ini 的 local_url 填本地 llama-server 地址（如 http://127.0.0.1:8099）
-mkdir build && cd build
-cmake .. -DMEMOLINK_ENABLE_EDGE=ON && make -j8 memolink
-./memolink ingest "用户喜欢深蓝色的车" --type semantic
-./memolink recall "我的车是什么颜色偏好" --top 3</pre>
-        <p class="note">代码与完整文档见 <a href="https://github.com/ranpin/memolink">github.com/ranpin/memolink</a>。记忆分层架构参考自 <a href="https://github.com/Mirix-AI/MIRIX">Mirix-AI/MIRIX</a>（Apache-2.0）。</p>
+    <section class="ds-section" id="method">
+      <h2 class="ds-h2">核心方法</h2>
+      <p class="sec-note">记忆生命周期全程在本地完成：提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯。核心机制如下，细节见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>（含诚实边界与复现）。</p>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>机制</th><th>做法</th></tr>
+          <tr><td>双过程消解</td><td>System-1 确定性规则（空库/无同类型→CREATE、逐字重复→REINFORCE）处理约 32%；相似度落入模糊地带的交给 System-2 本地 4B LLM 五分类（CREATE/UPDATE/REINFORCE/SUPERSEDE/NOOP）</td></tr>
+          <tr><td>类型特化检索</td><td>查询意图路由 + 同类型加权（×1.6）+ 时间衰减——v2 基准 hit@1 +31.2pp（episodic 3/8→8/8）</td></tr>
+          <tr><td>非破坏性版本化</td><td>SUPERSEDE 把旧值标记失效但保留，<code>history</code> 可回溯完整演变（Graphiti 式边失效的端侧落地）</td></tr>
+          <tr><td>端侧实现</td><td>C++，自写 WordPiece 分词器 + ONNX INT8 embedding（与 HF 逐 token 对拍 25/25），本地 4B LLM 做消解与提取，全程离线</td></tr>
+        </table>
       </div>
     </section>
 
