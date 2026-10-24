@@ -1,8 +1,8 @@
 # memolink — 端侧 Agent 记忆系统（Jetson Orin）
 
-> 🎬 **在线演示**（均为 Orin 真实转录回放，非模拟、非指标陈列）：
-> - 🚗 **座舱助手**（记忆系统驱动的车载应用）：<https://ranpin.github.io/memolink/cockpit.html> —— SUPERSEDE 版本化 + 类型特化检索 + **多驾驶员治理拦截**
+> 🎬 **在线演示**（均为 Orin 真实转录回放，非模拟、非指标陈列；两段演示已合并到同一页、顶部标签切换）：
 > - 🧠 **记忆系统生命周期**：<https://ranpin.github.io/memolink/> —— 提取 → 消解 → 检索 → 矛盾更新 → 版本回溯 → 删除
+> - 🚗 **座舱助手**（记忆系统驱动的车载应用）：<https://ranpin.github.io/memolink/#cockpit> —— SUPERSEDE 版本化 + 类型特化检索 + **多驾驶员治理拦截**
 
 在 **Jetson Orin** 上离线跑通的**多类型 Agent 记忆系统**：记忆的**提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯**全程在本地完成，不依赖云端。C++ 实现——自写 WordPiece 分词器 + ONNX INT8 推理做本地 embedding（与 HuggingFace 逐 token 对拍 25/25、与 Python onnxruntime 余弦 1.00000000），本地 4B LLM 做矛盾消解与事实提取。记忆分层架构参考自 [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX)（Apache-2.0），**v2 记忆系统本体与端侧推理为本仓库新写**。
 
