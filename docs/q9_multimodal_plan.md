@@ -1,6 +1,6 @@
 # 多模态记忆方案（Q9）：方案 A caption-then-embed + authority 感知消解
 
-- **状态**：机制已实现并真机验证（commit `cf46a62`，`test_multimodal_authority` 36/36 + M3 回归全绿）；**Q9 闸门未整体通过**——M2 端到端与 M4a/M4b 完整场景集待做，详见 §8
+- **状态**：机制已实现并真机验证（代码 `cf46a62` + M2 端到端 `947bfa7`；`test_multimodal_authority` 36/36、`test_authority_e2e` 闸门 5/5、M3 回归全绿）；**Q9 闸门未整体通过**——M2 完整测量（升级路径 + 更大 n）与 M4a/M4b 完整场景集待做，详见 §8
 - **定位**：记忆系统层的**新能力**（承载应用仍是座舱助手）。**不是** agent harness，**不是**视觉管线
 - **路线**：方案 A（caption-then-embed）——用户 2026-10-25 拍板
 - **日期**：2026-10-25
@@ -352,9 +352,34 @@ VLM caption → extract → ingest(authority=observed, source_image) 在 dog 端
 
 Q2 的 30 个场景**全部是 asserted vs asserted（同 authority）**，闸门按设计一次都没触发 ⇒ 五分类结果与文档记录逐条一致，**M3 成立**。（此前会话曾测到 20/30，属 System-2 本地 4B 非确定性波动；本次 21/30 与文档一致。）
 
-### 8.3 尚未完成（**Q9 闸门未整体通过**）
+### 8.3 M2 端到端：✅ 核心链路已验证（dog 实跑，commit `947bfa7`）
 
-- **M2 端到端**：需要冲突场景集 + 本地 LLM 让 System-2 产出 SUPERSEDE/UPDATE，闸门才会在 `resolve()` 里真实触发。**目前只验证了闸门纯函数逻辑（B）与存储路径（C），没有验证「System-2 → 闸门 → 落库」的端到端链路。**
+`test_authority_e2e`：真实「System-2（qwen3-4b :8099）→ 闸门 → 落库」链路，6 场景。断言按「**给定 System-2 实际产出的 preGateAction，验闸门是否做出正确的 authority 感知结果**」设计，对 LLM 非确定性稳健。
+
+| 场景 | sim | preGate | final | 结果 |
+|---|---|---|---|---|
+| S1 胜出（地址 西湖→滨江） | 0.755 | SUPERSEDE | SUPERSEDE | ✅ 新记录 observed + 版本链 |
+| S2 胜出（停车 B1→B2） | 0.866 | SUPERSEDE | SUPERSEDE | ✅ |
+| S3 拦下（停车 B2→B1） | 0.749 | SUPERSEDE | **CREATE [被拦下]** | ✅ observed 仍有效、asserted 并存 |
+| S4 拦下（地址） | 0.554 | SUPERSEDE | **CREATE [被拦下]** | ✅ |
+| S5 升级 | 0.665 | SUPERSEDE | SUPERSEDE | ✅（见下方缺口说明） |
+| S6 对照（同 authority） | 0.755 | SUPERSEDE | SUPERSEDE | ✅ 闸门未介入（M3 e2e 对照） |
+
+**触达闸门 5/6，闸门判定正确 5/5，22 PASS / 0 FAIL。** 两条主规则端到端成立：
+
+- observed vs asserted 冲突 → **SUPERSEDE + 版本链**，新记录带 observed（S1/S2/S5）
+- asserted vs observed 冲突 → **拦下为并存 CREATE**，observed 保持当前值、不被静默覆盖（S3/S4）
+- 同 authority → 闸门不介入，行为与无闸门一致（S6，M3 e2e 对照）
+
+**如实标注的缺口**：
+
+- **升级路径（UPDATE→SUPERSEDE）未在端到端触发**：S5 本想让 System-2 产出 UPDATE，但它直接判了 SUPERSEDE，`authorityPromoted=true` 没在真实链路里走到。该路径只在纯函数层验过（`test_multimodal_authority` B5/B9）。
+- **n=5 触达闸门场景**，小于方案要求的 ~12–20；这是首次端到端验证，不是 M2 的完整测量。
+- LLM 非确定性：本次 System-2 对所有冲突场景都判 SUPERSEDE，换一次跑可能产出别的动作（测试设计对此稳健，但触达的动作组合会变）。
+
+### 8.4 尚未完成（**Q9 闸门未整体通过**）
+
+- **M2 完整测量**：核心链路已验证（§8.3），但 ① 升级路径（UPDATE→SUPERSEDE）未在端到端触发；② n=5 触达闸门场景 < 方案要求的 ~12–20，需扩冲突场景集。
 - **M4a/M4b 完整场景集**：§1.7 只测了 2 张文字牌（12/12）+ 3 张场景图，未达方案要求的 ~12–20 个冲突场景；难例（小字号 / 逆光 / 运动模糊 / 脏污）未测。
 - **座舱 app 多模态轮次**：VLM caption → extract → ingest(authority=observed) 的应用层接线未做，`cockpit_assistant` 还没有图像入口。
 - **caption prompt 定型**：§4 记录的张力（定向提问输出 6–20 tok 太短、喂不进要叙述句的提取器）未解决。
