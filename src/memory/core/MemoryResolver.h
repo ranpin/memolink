@@ -37,6 +37,9 @@ struct ResolveDecision {
     bool blockedByAuthority = false;   // 低可信度候选被拦下 → 改为并存 CREATE
     int blockedTargetId = 0;           // 被拦下时原本要操作的高可信度记忆 id
     bool authorityPromoted = false;    // UPDATE 因候选 authority 更高而升级为 SUPERSEDE
+    // 过闸门前 System-1/2 的原始判定。M2 的 before/after 对照用它当「authority-blind
+    // 基线会做什么」；座舱 demo 展示「本想 SUPERSEDE 但被 authority 拦下」也靠它。
+    MemoryAction preGateAction = MemoryAction::Created;
 };
 
 class MemoryResolver {

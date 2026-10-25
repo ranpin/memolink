@@ -174,6 +174,10 @@ if(MEMOLINK_ENABLE_EDGE)
     add_executable(test_multimodal_authority test/test_multimodal_authority.cpp)
     target_link_libraries(test_multimodal_authority memolink_lib)
 
+    # Q9 · M2 端到端：真实「System-2（本地 LLM）→ 闸门 → 落库」链路（需 :8099 qwen3-4b）
+    add_executable(test_authority_e2e test/test_authority_e2e.cpp)
+    target_link_libraries(test_authority_e2e memolink_lib)
+
     # Q6：memolink CLI——八命令串完整管线（提取→消解→存储→检索→更新→删除→历史→统计）
     add_executable(memolink src/app/cli/MemoryCLI.cpp)
     target_link_libraries(memolink memolink_lib)

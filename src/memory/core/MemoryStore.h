@@ -52,6 +52,10 @@ struct IngestResult {
     bool usedLlm = false;
     // Q9 authority 闸门：低可信度候选撞上高可信度已有记忆时被拦下（入库但不建取代关系）
     bool blockedByAuthority = false;
+    // Q9：候选 authority 更高时把 UPDATE 升级为 SUPERSEDE（观察取代口述，建版本链）
+    bool authorityPromoted = false;
+    // Q9 M2：过闸门前 System-1/2 的原始判定（仅 resolver.ingest 填；store.ingestText 不填）
+    MemoryAction preGateAction = MemoryAction::Failed;
 };
 
 struct MemoryStats {

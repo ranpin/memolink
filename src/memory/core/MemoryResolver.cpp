@@ -132,12 +132,14 @@ ResolveDecision MemoryResolver::resolve(const std::string& candidate, MemoryType
         d.action = MemoryAction::Reinforced;
         d.targetId = matches[0].id;
         d.reason = "System-1: score ≥ θ_dup → REINFORCE（近逐字）";
+        d.preGateAction = d.action;
         applyAuthorityGate(d, matches[0], authority);   // REINFORCE 是同一事实，闸门不改它
         return d;
     }
 
     // ---- System-2：模糊地带交给本地 LLM ----
     d = runSystem2(candidate, matches);
+    d.preGateAction = d.action;   // 记录过闸门前 System-2 的原始判定（M2 before/after 对照）
 
     // ---- Q9：authority 闸门（只在候选与目标 authority 不同时介入）----
     if (d.targetId != 0) {
@@ -240,6 +242,8 @@ IngestResult MemoryResolver::ingest(const std::string& candidate, MemoryType typ
     r.usedLlm = d.usedLlm;
     r.reason = d.reason;
     r.blockedByAuthority = d.blockedByAuthority;
+    r.authorityPromoted = d.authorityPromoted;
+    r.preGateAction = d.preGateAction;
 
     switch (d.action) {
         case MemoryAction::Created: {
@@ -251,6 +255,7 @@ IngestResult MemoryResolver::ingest(const std::string& candidate, MemoryType typ
             created.similarity = d.similarity;
             created.usedLlm = d.usedLlm;
             created.blockedByAuthority = d.blockedByAuthority;
+            created.preGateAction = d.preGateAction;
             if (created.action == MemoryAction::Created) created.reason = d.reason;
             return created;
         }
