@@ -69,18 +69,45 @@ ALTER TABLE memory ADD COLUMN source_image TEXT;
 | asserted(新) vs observed(旧) | **拦下，不静默覆盖** | 低可信度来源不得静默改写高可信度观察 |
 | 同 authority | **走现有五操作消解，行为不变** | 保证 Q2 数字不回退 |
 
+**「拦下」的确切语义（用户 2026-10-25 拍板）**：asserted 候选撞上已有 observed 记忆时，**入库但不建取代关系**——两条并存，observed 仍是当前有效值，asserted 作为一条独立的低可信度记忆留下（不丢弃）。理由：符合 resolver 既有回退原则「CREATE，绝不覆盖或丢失旧记忆」，且不丢信息。「被拦」这件事要在 `ResolveDecision.reason` 里记明，demo 可展示。
+
 **触发条件的硬约束**：规则**只在 authority 不同时介入**。这是 M3（不回归）的设计保证——纯文本对话里所有记忆都是 asserted，规则永不触发，Q2 的 30 场景消解结果必须逐条不变。
 
 **落点**：`MemoryResolver::resolve` 需要拿到候选的 authority（现签名只有 candidate+type）。推荐把 authority 加进 `resolve` 参数，让决策逻辑集中在 resolver；matched 记忆的 authority 已可从 `Memory.authority`（`MemoryStore.h:38`）读到，不需额外查询。
 
 **明确不在 Q9 范围**：「驾驶员显式纠正摄像头」（如「不对，我停的是 B1」）应允许 asserted 覆盖 observed——这需要 System-2 额外判「是否显式纠正」，而 4B 模型这个判断本身不可靠。Q9 先只做单向规则 + 拦下，显式纠正作为 Q9 之后的细化。
 
-### 1.5 VLM 部署（dog 已实测可行，2026-10-25）
+### 1.5 VLM 部署（step 0 已实测，2026-10-25）
 
-- **llama-server 当前 build 已支持多模态**：`--help` 实测有 `--mmproj FILE` / `--mmproj-url` / `--mmproj-auto` / `--image-max-tokens`，**无需重新编译**。
-- **内存余量够**：`free -h` 实测 29Gi total / 12Gi used / **17Gi available**（旧记忆里 system_agent 占 26.5GB 已过时，该进程现已不在运行）；12Gi used 的大头是常驻 qwen3-4b llama-server（RSS 8.7GB）。再塞一个 2–3B Q4 VLM（约 2–4GB）可行。
-- **两实例分端口**：qwen3-4b 保持 :8099 不动，VLM 另起 :8098。
-- **缺 VLM 权重**：dog 上现在只有 qwen3-4b + llama.cpp 的 vocab 测试 gguf，**没有任何 VLM**。需下 Qwen2.5-VL-3B-Instruct Q4_K_M gguf + mmproj（候选，尺寸待 §4 step 0 核实网络后定）。
+**⚠️ 先纠正一个前提：dog 上的 qwen3-4b 不是多模态模型，必须另下 VLM。** 三条独立证据：
+
+- gguf `general.architecture` = **`qwen3`**（纯文本架构；多模态会是 `qwen3vl` / `qwen2.5vl` / `qwen3omni`）
+- llama-server `/props` 明确报 **`"modalities":{"vision":false,"video":false,"audio":false}`**
+- 全机 `find -iname "*mmproj*"` **零命中**，且运行中的 server 命令行没有 `--mmproj`（llama.cpp 的视觉能力必须靠独立 mmproj gguf）
+
+命名易混：**Qwen3-4B**（纯文本 dense）≠ **Qwen3-Omni**（多模态，但只有 30B-A3B MoE，无 4B 变体）≠ **Qwen3-VL-4B**（存在，是另一个模型）。
+
+**🔴 顺带查出的披露问题：这个 qwen3-4b 是微调 checkpoint，不是 stock instruct。**
+
+- 路径 `~/chenrunbin/qwen-trajectory-prediction/qwen3-4b-q4_k_m.gguf`，gguf `general.name` = **"Checkpoint 500 Merged"**，同目录还有 `.bak` / `.world.gguf` / `server.log`。
+- ⇒ **Q2 五分类 70%、Q4 编造率 3.7%、座舱 demo 的全部回复，都是这个轨迹预测微调 checkpoint 产出的**，不是通用 instruct 模型。数字本身有效（实测就是它跑的），但**对外披露模型身份时必须写准**，不能写「Qwen3-4B-Instruct」。这也可能解释提取器为何偏爱叙述句。
+
+**step 0 结论：网络通、盘够、内存够，可以下 VLM。**
+
+| 项 | 实测 | 结论 |
+|---|---|---|
+| huggingface.co | `000` / FAIL | 直连被墙 |
+| **hf-mirror.com** | **`200`** | ✅ 可用旁路 |
+| modelscope.cn | `302` | ✅ 可用备选 |
+| 磁盘 | 916G total / **507G avail** | ✅ 够 |
+| 内存 | 29Gi total / **17Gi available** | ✅ 够（qwen3-4b 常驻 RSS 8.7GB） |
+| llama.cpp build | `version: 1 (f3e1828)`，aarch64 | `--mmproj` 支持已确认；**具体 VLM 架构支持待运行时验证** |
+
+**VLM 选型（hf-mirror API 实查到的可用仓）**：
+
+- **首选 `Qwen/Qwen3-VL-4B-Instruct-GGUF`**（官方仓，488,364 下载）——4B Q4 约 2.5–3GB + mmproj 约 1GB，17Gi 余量放得下，中文能力强（caption 要喂中文提取器）。
+- **回退 `Qwen2.5-VL-3B-Instruct` GGUF**（`Mungert/` 29,669 或 `mradermacher/` 8,650 下载）——更小，且 llama.cpp 对 Qwen2.5-VL 的支持早得多（2025-02 起），**若 build f3e1828 不认 Qwen3-VL 的 mmproj 就退到这个**。
+- 部署：qwen3-4b 保持 :8099 不动，VLM 另起 **:8098**，两实例并存。
 
 ---
 
@@ -161,7 +188,9 @@ VLM 对场景帧的描述是否编造帧里没有的实体/属性——人工逐
 
 ## 4. 基础设施盘点（现成 / 需搭）
 
-**执行 step 0（先做，决定后续可行性）**：核实 dog 能否下载 VLM 权重（网络可达性 / 是否需 hf-mirror 旁路 / 或本机下载再 scp）。**这一步不通，整个 Q9 阻塞**——先验证再动手。
+**执行 step 0：✅ 已完成（2026-10-25）**——dog 直连 huggingface.co 被墙（000），但 **hf-mirror.com 通（200）**、modelscope 通（302）；磁盘 507G 可用、内存 17Gi 可用；hf-mirror API 实查到官方 `Qwen/Qwen3-VL-4B-Instruct-GGUF`（488k 下载）可下。**Q9 不再阻塞。** 详见 §1.5。
+
+**step 0 附带查出两件事**（已写进 §1.5）：① dog 的 qwen3-4b **不是多模态**（arch=`qwen3`、`modalities.vision=false`、无 mmproj），必须另下 VLM；② 它是**轨迹预测微调 checkpoint**（`general.name`="Checkpoint 500 Merged"），不是 stock instruct——影响对外模型身份披露口径。
 
 **现成**：
 
@@ -189,6 +218,7 @@ VLM 对场景帧的描述是否编造帧里没有的实体/属性——人工逐
 5. **VLM caption 编造是新风险**，M4 单独测，不默认它和文本提取一样干净。
 6. **方案 A 不动 embedding 空间，Q1–Q7 数字有效**；若将来要「以图搜图」才考虑方案 B（需重标 System-1 阈值 + 新闸门，**不在 Q9 范围**）。
 7. **单设备、未测热降频与功耗**（延续设计文档 §15 第 7 条）；两个 llama-server 常驻的内存/延迟数字是冷启动短负载下的。
+8. **🔴 文本侧模型身份要写准**：dog 上跑提取/消解/回复的 qwen3-4b 实为 `qwen-trajectory-prediction` 的**微调 checkpoint**（gguf `general.name` = "Checkpoint 500 Merged"），**不是 stock Qwen3-4B-Instruct**。Q2/Q4/座舱 demo 的所有数字都由它产出——数字有效，但任何表格列头、README、简历里都不得写成「Qwen3-4B-Instruct」，应写「qwen3-4b-q4_k_m（Checkpoint 500 Merged 微调）」。
 
 ---
 
@@ -196,7 +226,8 @@ VLM 对场景帧的描述是否编造帧里没有的实体/属性——人工逐
 
 | 风险 | 等级 | 缓解 |
 |---|---|---|
-| dog 下不动 VLM 权重（网络受限） | **高** | step 0 先核实；hf-mirror 旁路或本机下载再 scp |
+| ~~dog 下不动 VLM 权重（网络受限）~~ | ~~高~~ | **✅ step 0 已排除**：hf-mirror 200 通、官方 `Qwen/Qwen3-VL-4B-Instruct-GGUF` 可下、盘 507G / 内存 17Gi 够 |
+| llama.cpp build `f3e1828` 不认 Qwen3-VL 的 mmproj | 中 | 先小成本试跑；不认就回退 Qwen2.5-VL-3B（llama.cpp 支持早得多，2025-02 起），或重编 llama.cpp |
 | VLM caption 编造 / 漏关键细节 | **高** | 受约束 prompt + M4 实测编造率；必要时降级为只取高置信描述 |
 | caption 文体不被提取器接住（裸事实句 → NOOP） | 中 | caption prompt 强制输出完整叙述句（座舱 demo 已验证的教训） |
 | 两 llama-server 实例内存不够 | 中 | 已测 17Gi 余量；不够则换更小 VLM 或串行换模型 |
@@ -207,7 +238,7 @@ VLM 对场景帧的描述是否编造帧里没有的实体/属性——人工逐
 
 ## 7. 交付物
 
-- **Q9 数字表**：M2 authority 消解正确率（感知 vs authority-blind 基线，before/after）+ M4 caption 编造率上界。列头写清模型全名（caption=Qwen2.5-VL-3B-Instruct、消解/提取=qwen3-4b、embed=bge-small-zh-v1.5 INT8），报 n。
+- **Q9 数字表**：M2 authority 消解正确率（感知 vs authority-blind 基线，before/after）+ M4 caption 编造率上界。列头写清模型全名（caption=Qwen3-VL-4B-Instruct Q4_K_M，或回退的 Qwen2.5-VL-3B-Instruct；消解/提取=qwen3-4b-q4_k_m「Checkpoint 500 Merged」微调；embed=bge-small-zh-v1.5 INT8），报 n。
 - **冲突场景逐例分析**：observed 是否按规则胜出、asserted 是否被拦、版本链是否正确。
 - **M3 回归证据**：Q2 30 场景重跑结果，System-1 逐条不变的核对。
 - 设计文档 §14 闸门表加 **Q9 行**；README 核心结果加 Q9。
