@@ -1,6 +1,6 @@
 # 多模态记忆方案（Q9）：方案 A caption-then-embed + authority 感知消解
 
-- **状态**：机制已实现并真机验证（代码 `cf46a62` + M2 端到端 `947bfa7`；`test_multimodal_authority` 36/36、`test_authority_e2e` 闸门 5/5、M3 回归全绿）；**Q9 闸门未整体通过**——M2 完整测量（升级路径 + 更大 n）与 M4a/M4b 完整场景集待做，详见 §8
+- **状态**：机制已实现并真机验证（代码 `cf46a62`、M2 完整测量 `c3ff53c`；`test_multimodal_authority` 36/36、`test_authority_e2e` 18/18 复跑一致、M3 回归全绿）；**Q9 闸门未整体通过**——M4a/M4b 完整场景集与座舱 app 图像入口待做，详见 §8
 - **定位**：记忆系统层的**新能力**（承载应用仍是座舱助手）。**不是** agent harness，**不是**视觉管线
 - **路线**：方案 A（caption-then-embed）——用户 2026-10-25 拍板
 - **日期**：2026-10-25
@@ -352,36 +352,37 @@ VLM caption → extract → ingest(authority=observed, source_image) 在 dog 端
 
 Q2 的 30 个场景**全部是 asserted vs asserted（同 authority）**，闸门按设计一次都没触发 ⇒ 五分类结果与文档记录逐条一致，**M3 成立**。（此前会话曾测到 20/30，属 System-2 本地 4B 非确定性波动；本次 21/30 与文档一致。）
 
-### 8.3 M2 端到端：✅ 核心链路已验证（dog 实跑，commit `947bfa7`）
+### 8.3 M2 完整测量：✅ 通过（dog 实跑，commit `c3ff53c`，复跑结果一致）
 
-`test_authority_e2e`：真实「System-2（qwen3-4b :8099）→ 闸门 → 落库」链路，6 场景。断言按「**给定 System-2 实际产出的 preGateAction，验闸门是否做出正确的 authority 感知结果**」设计，对 LLM 非确定性稳健。
+`test_authority_e2e`（数据驱动，场景集 `bench/eval/authority_scenarios.json`）：真实「System-2（qwen3-4b :8099）→ 闸门 → 落库」链路，**18 个冲突场景**。措辞刻意**复用 Q2 已验证能稳定触发对应动作的 pair**（UPDATE 6/6、SUPERSEDE 5/6），避免自编措辞让 System-2 判不出冲突、场景触达不了闸门。
 
-| 场景 | sim | preGate | final | 结果 |
+断言按「**给定 System-2 实际产出的 preGateAction，验闸门是否做出正确的 authority 感知结果**」设计，对 LLM 非确定性稳健；`preGateAction ∉ {SUPERSEDE, UPDATE}` 的场景视为「未触达闸门」单独统计，把 System-2 判定质量与闸门判定质量分开归因。
+
+| 组 | 场景数 | 触达闸门 | 判定正确 | 验的是什么 |
 |---|---|---|---|---|
-| S1 胜出（地址 西湖→滨江） | 0.755 | SUPERSEDE | SUPERSEDE | ✅ 新记录 observed + 版本链 |
-| S2 胜出（停车 B1→B2） | 0.866 | SUPERSEDE | SUPERSEDE | ✅ |
-| S3 拦下（停车 B2→B1） | 0.749 | SUPERSEDE | **CREATE [被拦下]** | ✅ observed 仍有效、asserted 并存 |
-| S4 拦下（地址） | 0.554 | SUPERSEDE | **CREATE [被拦下]** | ✅ |
-| S5 升级 | 0.665 | SUPERSEDE | SUPERSEDE | ✅（见下方缺口说明） |
-| S6 对照（同 authority） | 0.755 | SUPERSEDE | SUPERSEDE | ✅ 闸门未介入（M3 e2e 对照） |
+| win（observed 胜 asserted） | 5 | 5 | **5/5** | SUPERSEDE + 版本链，新记录带 observed |
+| block（asserted 撞 observed） | 4 | 4 | **4/4** | 拦下为并存 CREATE，observed 保持当前值 |
+| promote（observed 补充 asserted） | 4 | 4 | **4/4** | **UPDATE→SUPERSEDE 升级，`authorityPromoted` 端到端触发** |
+| control（同 authority） | 3 | 3 | **3/3** | 闸门不介入，final == preGate（M3 e2e 对照） |
+| inferred（最低可信度） | 2 | 2 | **2/2** | inferred<asserted 被拦、asserted>inferred 胜出 |
+| **合计** | **18** | **18** | **18/18** | **70 PASS / 0 FAIL** |
 
-**触达闸门 5/6，闸门判定正确 5/5，22 PASS / 0 FAIL。** 两条主规则端到端成立：
+**上一轮的两个缺口都补上了**：
 
-- observed vs asserted 冲突 → **SUPERSEDE + 版本链**，新记录带 observed（S1/S2/S5）
-- asserted vs observed 冲突 → **拦下为并存 CREATE**，observed 保持当前值、不被静默覆盖（S3/S4）
-- 同 authority → 闸门不介入，行为与无闸门一致（S6，M3 e2e 对照）
+- **升级路径（UPDATE→SUPERSEDE）端到端触发 4/4**。上一轮 S5 失败的根因是我给候选加了「摄像头观察到」前缀、**破坏了 Q2 验证过的「候选 = seed 原文 + 追加细节」包含关系**，System-2 因此判成矛盾而非补充。改用 Q2 原措辞后 C1–C4 全部稳定产出 UPDATE 并被闸门升级。
+- **n 从 5 扩到 18**，落在方案要求的 ~12–20 区间内。
 
-**如实标注的缺口**：
+**复跑确认稳定**：同一二进制连跑两次，分组汇总与 70/0 断言**完全一致**（qwen3-4b 即使 temperature=0 也有轻微非确定性，Q2 曾出现 20/30 vs 21/30 波动，故按「单次测量须复测」纪律复跑）。
 
-- **升级路径（UPDATE→SUPERSEDE）未在端到端触发**：S5 本想让 System-2 产出 UPDATE，但它直接判了 SUPERSEDE，`authorityPromoted=true` 没在真实链路里走到。该路径只在纯函数层验过（`test_multimodal_authority` B5/B9）。
-- **n=5 触达闸门场景**，小于方案要求的 ~12–20；这是首次端到端验证，不是 M2 的完整测量。
-- LLM 非确定性：本次 System-2 对所有冲突场景都判 SUPERSEDE，换一次跑可能产出别的动作（测试设计对此稳健，但触达的动作组合会变）。
+**如实标注的边界**：
+
+- 本集测的是**闸门机制**，不是 caption 语义真实性——C 组里「observed 观察到颜色偏好」在真实座舱未必由摄像头产生。语义真实性由 M4 场景集负责（§8.4）。
+- before/after 对照的「before」= `preGateAction`（即 authority-blind 消解器会做的事）。block 组 4 个场景的 before 都是 SUPERSEDE（会静默覆盖 observed），after 是拦下——这就是闸门带来的差异。按 §2 的诚实说明，**这是 before/after，不是公平对抗**。
 
 ### 8.4 尚未完成（**Q9 闸门未整体通过**）
 
-- **M2 完整测量**：核心链路已验证（§8.3），但 ① 升级路径（UPDATE→SUPERSEDE）未在端到端触发；② n=5 触达闸门场景 < 方案要求的 ~12–20，需扩冲突场景集。
 - **M4a/M4b 完整场景集**：§1.7 只测了 2 张文字牌（12/12）+ 3 张场景图，未达方案要求的 ~12–20 个冲突场景；难例（小字号 / 逆光 / 运动模糊 / 脏污）未测。
 - **座舱 app 多模态轮次**：VLM caption → extract → ingest(authority=observed) 的应用层接线未做，`cockpit_assistant` 还没有图像入口。
 - **caption prompt 定型**：§4 记录的张力（定向提问输出 6–20 tok 太短、喂不进要叙述句的提取器）未解决。
 - **demo 页多模态轮次 + 帧附件展示**。
-- 设计文档 §14 闸门表加 Q9 行、README 核心结果加 Q9——**等 M2 端到端通过后再加，不提前声称**。
+- 设计文档 §14 闸门表加 Q9 行、README 核心结果加 Q9——**等 M4 与座舱接线完成后再加，不提前声称**。
