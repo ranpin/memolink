@@ -50,7 +50,50 @@ constexpr const char* kSystem2Model = "qwen3-4b";
 MemoryResolver::MemoryResolver(MemoryStore& store, QwenAPI* llm)
     : store_(store), llm_(llm) {}
 
-ResolveDecision MemoryResolver::resolve(const std::string& candidate, MemoryType type) {
+// ---------------------------------------------------------------------------
+// Q9：authority 优先级闸门（docs/q9_multimodal_plan.md §1.4）
+// 此前 authority 只用于治理过滤（MemoryStore.cpp 的 `AND authority = ?`），从不参与
+// 消解；多模态引入 observed 来源后，让它第一次参与决策。纯函数 + public static，
+// 便于无 LLM 时离线单测（System-2 回退 CREATE 时闸门逻辑仍可独立验证）。
+// ---------------------------------------------------------------------------
+int MemoryResolver::authorityRank(const std::string& authority) {
+    if (authority == "observed") return 2;
+    if (authority == "inferred") return 0;
+    return 1;   // asserted 及任何未知值一律按 asserted 处理
+}
+
+void MemoryResolver::applyAuthorityGate(ResolveDecision& d, const Memory& target,
+                                        const std::string& candAuthority) {
+    if (d.targetId == 0 || d.targetId != target.id) return;   // 无目标/目标不匹配，无需裁决
+    const int rc = authorityRank(candAuthority);
+    const int rt = authorityRank(target.authority);
+    if (rc == rt) return;   // 同 authority → 现有五操作行为逐条不变（M3 硬闸门保证）
+
+    if (rc > rt) {
+        // 高可信度来源胜出：UPDATE 升级为 SUPERSEDE（观察取代口述，建版本链）。
+        // SUPERSEDE 本就正确、REINFORCE 是同一事实，均不动。
+        if (d.action == MemoryAction::Updated) {
+            d.action = MemoryAction::Superseded;
+            d.authorityPromoted = true;
+            d.reason += " | authority 闸门: " + candAuthority + " > " + target.authority
+                        + " → UPDATE 升级为 SUPERSEDE";
+        }
+    } else {
+        // 低可信度来源不得静默改写高可信度观察：SUPERSEDE/UPDATE 降级为 CREATE
+        // （入库但不建取代关系，两条并存——用户 2026-10-25 拍板的「拦下」语义）。
+        if (d.action == MemoryAction::Superseded || d.action == MemoryAction::Updated) {
+            d.blockedByAuthority = true;
+            d.blockedTargetId = d.targetId;
+            d.targetId = 0;
+            d.action = MemoryAction::Created;
+            d.reason += " | authority 闸门拦下: " + candAuthority + " < " + target.authority
+                        + " → 不覆盖，改为并存 CREATE";
+        }
+    }
+}
+
+ResolveDecision MemoryResolver::resolve(const std::string& candidate, MemoryType type,
+                                        const std::string& authority) {
     ResolveDecision d;
     if (candidate.empty()) {
         d.action = MemoryAction::Failed;
@@ -89,11 +132,20 @@ ResolveDecision MemoryResolver::resolve(const std::string& candidate, MemoryType
         d.action = MemoryAction::Reinforced;
         d.targetId = matches[0].id;
         d.reason = "System-1: score ≥ θ_dup → REINFORCE（近逐字）";
+        applyAuthorityGate(d, matches[0], authority);   // REINFORCE 是同一事实，闸门不改它
         return d;
     }
 
     // ---- System-2：模糊地带交给本地 LLM ----
-    return runSystem2(candidate, matches);
+    d = runSystem2(candidate, matches);
+
+    // ---- Q9：authority 闸门（只在候选与目标 authority 不同时介入）----
+    if (d.targetId != 0) {
+        for (const auto& m : matches) {
+            if (m.id == d.targetId) { applyAuthorityGate(d, m, authority); break; }
+        }
+    }
+    return d;
 }
 
 ResolveDecision MemoryResolver::runSystem2(const std::string& candidate,
@@ -179,21 +231,26 @@ ResolveDecision MemoryResolver::runSystem2(const std::string& candidate,
 IngestResult MemoryResolver::ingest(const std::string& candidate, MemoryType type,
                                     const std::string& owner, const std::string& scope,
                                     const std::string& authority,
-                                    const std::string& sourceSession, int sourceTurn) {
-    const ResolveDecision d = resolve(candidate, type);
+                                    const std::string& sourceSession, int sourceTurn,
+                                    const std::string& sourceImage) {
+    const ResolveDecision d = resolve(candidate, type, authority);
 
     IngestResult r;
     r.similarity = d.similarity;
     r.usedLlm = d.usedLlm;
     r.reason = d.reason;
+    r.blockedByAuthority = d.blockedByAuthority;
 
     switch (d.action) {
         case MemoryAction::Created: {
-            // 直接走 MemoryStore 的 CREATE（保留 owner/scope/authority/来源）
+            // 直接走 MemoryStore 的 CREATE（保留 owner/scope/authority/来源）。
+            // 被 authority 闸门拦下的候选也走这里：入库但不建取代关系，两条并存。
             IngestResult created = store_.ingestText(candidate, type, owner, scope,
-                                                     authority, sourceSession, sourceTurn);
+                                                     authority, sourceSession, sourceTurn,
+                                                     /*validFrom=*/"", sourceImage);
             created.similarity = d.similarity;
             created.usedLlm = d.usedLlm;
+            created.blockedByAuthority = d.blockedByAuthority;
             if (created.action == MemoryAction::Created) created.reason = d.reason;
             return created;
         }
@@ -211,7 +268,10 @@ IngestResult MemoryResolver::ingest(const std::string& candidate, MemoryType typ
         }
         case MemoryAction::Superseded: {
             int newId = 0;
-            const bool ok = store_.supersede(d.targetId, candidate, &newId);
+            // Q9：新记录带**候选**的 authority + source_image。observed 取代 asserted 时
+            // 必须写 observed，不能继承旧记录的 asserted（否则 authority 优先级白做）。
+            const bool ok = store_.supersede(d.targetId, candidate, &newId,
+                                             authority, sourceImage);
             r.action = ok ? MemoryAction::Superseded : MemoryAction::Failed;
             r.id = newId;
             return r;

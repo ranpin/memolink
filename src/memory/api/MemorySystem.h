@@ -40,12 +40,14 @@ public:
                                        const std::string& assistantTurn);
 
     // ②③ 消解 + 存储：候选事实 → 五操作之一 → 落库
+    //    sourceImage = Q9 视觉来源帧路径（caption-then-embed 的溯源附件，无则空）。
     IngestResult ingest(const std::string& text, MemoryType type,
                         const std::string& owner = "user",
                         const std::string& scope = "private",
                         const std::string& authority = "asserted",
                         const std::string& sourceSession = "",
-                        int sourceTurn = 0);
+                        int sourceTurn = 0,
+                        const std::string& sourceImage = "");
 
     // ④ 检索：recall 纯余弦；recallTyped 类型特化（意图路由 + 加权 + 时间衰减）
     //    gov 为 Q7 治理过滤器（owner/scope/authority），默认空 = 不过滤（向后兼容）。

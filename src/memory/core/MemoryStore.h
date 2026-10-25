@@ -39,6 +39,7 @@ struct Memory {
     std::string validFrom, validUntil;
     std::string sourceSession;
     int sourceTurn = 0;
+    std::string sourceImage;    // Q9：视觉来源帧路径（caption-then-embed 的溯源附件）
     std::string createdAt, updatedAt;
     float score = 0.f;          // 仅 recall 结果里填
 };
@@ -49,6 +50,8 @@ struct IngestResult {
     float similarity = 0.f;
     std::string reason;
     bool usedLlm = false;
+    // Q9 authority 闸门：低可信度候选撞上高可信度已有记忆时被拦下（入库但不建取代关系）
+    bool blockedByAuthority = false;
 };
 
 struct MemoryStats {
@@ -95,7 +98,8 @@ public:
                             const std::string& authority = "asserted",
                             const std::string& sourceSession = "",
                             int sourceTurn = 0,
-                            const std::string& validFrom = "");
+                            const std::string& validFrom = "",
+                            const std::string& sourceImage = "");   // Q9：视觉来源帧路径
 
     // ---- 检索 ----
     // gov 为治理过滤器（Q7）：默认空 = 不过滤，向后兼容。
@@ -129,7 +133,12 @@ public:
     // ---- 显式 CRUD ----
     bool update(int id, const std::string& newContent);   // 原地改内容 + 重算 embedding
     bool remove(int id);                                  // 物理删除（记录级，非 unlearning）
-    bool supersede(int oldId, const std::string& newContent, int* newIdOut = nullptr);  // 非破坏性替换
+    // 非破坏性替换。Q9：authorityOverride 非空时新记录用它（否则继承旧记录的 authority）——
+    // observed 取代 asserted 时新记录必须带 observed，不能继承 asserted。sourceImage 为新
+    // 记录的视觉来源帧路径（无则空）。
+    bool supersede(int oldId, const std::string& newContent, int* newIdOut = nullptr,
+                   const std::string& authorityOverride = "",
+                   const std::string& sourceImage = "");
     bool reinforce(int id, float strengthDelta = 1.0f);   // 等价重述：只提升 strength，不改内容
 
     // ---- Q7：强度衰减 + 按强度淘汰（docs/memory_v2_design.md §9）----

@@ -94,13 +94,13 @@ constexpr int COL_ID = 0, COL_TYPE = 1, COL_CONTENT = 2, COL_EMBEDDING = 3,
               COL_STRENGTH = 4, COL_ACCESS = 5, COL_VALID_UNTIL = 6,
               COL_SUPERSEDED_BY = 7, COL_SUPERSEDES = 8, COL_OWNER = 9,
               COL_SCOPE = 10, COL_AUTHORITY = 11, COL_VALID_FROM = 12,
-              COL_SOURCE_SESSION = 13, COL_SOURCE_TURN = 14,
-              COL_CREATED = 15, COL_UPDATED = 16;
+              COL_SOURCE_SESSION = 13, COL_SOURCE_TURN = 14, COL_SOURCE_IMAGE = 15,
+              COL_CREATED = 16, COL_UPDATED = 17;
 
 const char* kSelectCols =
     "id, type, content, embedding, strength, access_count, valid_until, "
     "superseded_by, supersedes, owner, scope, authority, valid_from, "
-    "source_session, source_turn, created_at, updated_at";
+    "source_session, source_turn, source_image, created_at, updated_at";
 
 std::string colText(sqlite3_stmt* stmt, int idx) {
     const unsigned char* t = sqlite3_column_text(stmt, idx);
@@ -126,6 +126,7 @@ Memory rowToMemory(sqlite3_stmt* stmt) {
     m.validFrom    = colText(stmt, COL_VALID_FROM);
     m.sourceSession= colText(stmt, COL_SOURCE_SESSION);
     m.sourceTurn   = sqlite3_column_int(stmt, COL_SOURCE_TURN);
+    m.sourceImage  = colText(stmt, COL_SOURCE_IMAGE);
     m.createdAt    = colText(stmt, COL_CREATED);
     m.updatedAt    = colText(stmt, COL_UPDATED);
     return m;
@@ -169,7 +170,8 @@ IngestResult MemoryStore::ingestText(const std::string& text, MemoryType type,
                                          const std::string& owner, const std::string& scope,
                                          const std::string& authority,
                                          const std::string& sourceSession, int sourceTurn,
-                                         const std::string& validFrom) {
+                                         const std::string& validFrom,
+                                         const std::string& sourceImage) {
     IngestResult result;
     if (text.empty()) {
         result.action = MemoryAction::Failed;
@@ -194,8 +196,8 @@ IngestResult MemoryStore::ingestText(const std::string& text, MemoryType type,
 
     static const char* kSql =
         "INSERT INTO memory (type, content, embedding, embed_model, strength, "
-        " owner, scope, authority, valid_from, source_session, source_turn) "
-        "VALUES (?, ?, ?, ?, 1.0, ?, ?, ?, ?, ?, ?);";
+        " owner, scope, authority, valid_from, source_session, source_turn, source_image) "
+        "VALUES (?, ?, ?, ?, 1.0, ?, ?, ?, ?, ?, ?, ?);";
 
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(db, kSql, -1, &stmt, nullptr) != SQLITE_OK) {
@@ -214,6 +216,7 @@ IngestResult MemoryStore::ingestText(const std::string& text, MemoryType type,
     sqlite3_bind_text(stmt, 8, validFromVal.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 9, sourceSession.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 10, sourceTurn);
+    sqlite3_bind_text(stmt, 11, sourceImage.c_str(), -1, SQLITE_TRANSIENT);
 
     const bool ok = (sqlite3_step(stmt) == SQLITE_DONE);
     sqlite3_finalize(stmt);
@@ -416,7 +419,11 @@ bool MemoryStore::remove(int id) {
 
 // 非破坏性替换：新记录写入并 supersedes=oldId，旧记录标 valid_until + superseded_by。
 // 依据 Graphiti 的边失效（32k⭐）；绕开 Mem0 论文 DELETE 分支不插入新事实的缺口。
-bool MemoryStore::supersede(int oldId, const std::string& newContent, int* newIdOut) {
+// Q9：authorityOverride 非空时新记录用它，否则继承旧记录的 authority——observed 取代
+// asserted 时新记录必须带 observed（docs/q9_multimodal_plan.md §1.4）。
+bool MemoryStore::supersede(int oldId, const std::string& newContent, int* newIdOut,
+                            const std::string& authorityOverride,
+                            const std::string& sourceImage) {
     const Memory old = get(oldId);
     if (old.id == 0) return false;
     if (newContent.empty()) return false;
@@ -430,8 +437,11 @@ bool MemoryStore::supersede(int oldId, const std::string& newContent, int* newId
 
     static const char* kInsert =
         "INSERT INTO memory (type, content, embedding, embed_model, strength, owner, scope, "
-        " authority, valid_from, supersedes, source_session, source_turn) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?, ?);";
+        " authority, valid_from, supersedes, source_session, source_turn, source_image) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), ?, ?, ?, ?);";
+
+    const std::string newAuthority =
+        authorityOverride.empty() ? old.authority : authorityOverride;
 
     sqlite3_stmt* stmt = nullptr;
     if (sqlite3_prepare_v2(db, kInsert, -1, &stmt, nullptr) != SQLITE_OK) return false;
@@ -442,10 +452,11 @@ bool MemoryStore::supersede(int oldId, const std::string& newContent, int* newId
     sqlite3_bind_double(stmt, 5, old.strength);
     sqlite3_bind_text(stmt, 6, old.owner.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 7, old.scope.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 8, old.authority.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 8, newAuthority.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 9, oldId);
     sqlite3_bind_text(stmt, 10, old.sourceSession.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 11, old.sourceTurn);
+    sqlite3_bind_text(stmt, 12, sourceImage.c_str(), -1, SQLITE_TRANSIENT);
 
     const bool inserted = (sqlite3_step(stmt) == SQLITE_DONE);
     sqlite3_finalize(stmt);

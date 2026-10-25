@@ -13,8 +13,9 @@ std::vector<CandidateFact> MemorySystem::extract(const std::string& userTurn,
 IngestResult MemorySystem::ingest(const std::string& text, MemoryType type,
                                   const std::string& owner, const std::string& scope,
                                   const std::string& authority, const std::string& sourceSession,
-                                  int sourceTurn) {
-    return resolver_.ingest(text, type, owner, scope, authority, sourceSession, sourceTurn);
+                                  int sourceTurn, const std::string& sourceImage) {
+    return resolver_.ingest(text, type, owner, scope, authority, sourceSession, sourceTurn,
+                            sourceImage);
 }
 
 std::vector<Memory> MemorySystem::recall(const std::string& query, int topK,

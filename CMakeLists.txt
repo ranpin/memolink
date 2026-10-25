@@ -169,6 +169,11 @@ if(MEMOLINK_ENABLE_EDGE)
     add_executable(test_memory_governance test/test_memory_governance.cpp)
     target_link_libraries(test_memory_governance memolink_lib)
 
+    # Q9：authority 参与消解决策（observed > asserted > inferred，低不得静默覆盖高）
+    #     + source_image 视觉溯源列。A/B 部分是纯函数、无需模型即可验证闸门真值表。
+    add_executable(test_multimodal_authority test/test_multimodal_authority.cpp)
+    target_link_libraries(test_multimodal_authority memolink_lib)
+
     # Q6：memolink CLI——八命令串完整管线（提取→消解→存储→检索→更新→删除→历史→统计）
     add_executable(memolink src/app/cli/MemoryCLI.cpp)
     target_link_libraries(memolink memolink_lib)

@@ -33,6 +33,10 @@ struct ResolveDecision {
     float similarity = 0.f;    // 与最相似已有记忆的余弦分数
     bool usedLlm = false;      // 是否走了 System-2
     std::string reason;        // 判定理由 / LLM 原始输出（调试用）
+    // ---- Q9 authority 闸门（docs/q9_multimodal_plan.md §1.4）----
+    bool blockedByAuthority = false;   // 低可信度候选被拦下 → 改为并存 CREATE
+    int blockedTargetId = 0;           // 被拦下时原本要操作的高可信度记忆 id
+    bool authorityPromoted = false;    // UPDATE 因候选 authority 更高而升级为 SUPERSEDE
 };
 
 class MemoryResolver {
@@ -40,16 +44,31 @@ public:
     // llm 可为 nullptr：此时 System-2 直接走回退 CREATE（用于离线/无模型测试）
     explicit MemoryResolver(MemoryStore& store, QwenAPI* llm = nullptr);
 
-    // 三层消解：只决策，不写库
-    ResolveDecision resolve(const std::string& candidate, MemoryType type);
+    // 三层消解：只决策，不写库。authority = 候选记忆的来源可信度（Q9 闸门用）。
+    ResolveDecision resolve(const std::string& candidate, MemoryType type,
+                            const std::string& authority = "asserted");
 
-    // 消解 + 落库
+    // 消解 + 落库。sourceImage = Q9 视觉来源帧路径（caption-then-embed 的溯源附件）。
     IngestResult ingest(const std::string& candidate, MemoryType type,
                         const std::string& owner = "user",
                         const std::string& scope = "private",
                         const std::string& authority = "asserted",
                         const std::string& sourceSession = "",
-                        int sourceTurn = 0);
+                        int sourceTurn = 0,
+                        const std::string& sourceImage = "");
+
+    // ---- Q9：authority 参与消解决策（此前 authority 只用于治理过滤，从不参与消解）----
+    // 优先级 observed > asserted > inferred；未知值按 asserted 处理。
+    static int authorityRank(const std::string& authority);
+
+    // authority 闸门。**刻意做成纯函数 + public static**：无 LLM 时 System-2 回退 CREATE，
+    // 闸门逻辑本身必须能离线独立单测（test_multimodal_authority）。
+    // 只在候选与目标 authority **不同**时介入：
+    //   候选更高 → UPDATE 升级为 SUPERSEDE（观察取代口述，建版本链）
+    //   候选更低 → SUPERSEDE/UPDATE 降级为 CREATE（入库但不建取代关系，两条并存）
+    //   相同     → 完全不介入（这是 Q2 五操作行为逐条不变的保证，M3 硬闸门）
+    static void applyAuthorityGate(ResolveDecision& d, const Memory& target,
+                                   const std::string& candAuthority);
 
     // 标定阈值（docs/memory_v2_design.md §5，从实测分布推导，勿拍脑袋改）
     static constexpr float kThetaNew = 0.50f;
