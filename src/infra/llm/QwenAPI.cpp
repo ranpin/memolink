@@ -119,10 +119,12 @@ QwenAPI::~QwenAPI() {
 }
 
 bool QwenAPI::shouldUseLocalAPI() const {
+    // Q9：实例级 override 优先——座舱多模态轮次要同时调文本 LLM(:8099) 与 VLM(:8098)
+    if (!local_url_override_.empty()) return true;
     // 检查是否配置了本地API URL
     ConfigManager& config_manager = ConfigManager::getInstance();
     std::string local_api_url = config_manager.getLocalApiUrl();
-    
+
     // 如果配置了本地API URL且不为空，则使用本地API
     return !local_api_url.empty();
 }
@@ -135,6 +137,10 @@ void QwenAPI::set_base_url(const std::string& base_url) {
     base_url_ = base_url;
 }
 
+void QwenAPI::set_local_url_override(const std::string& url) {
+    local_url_override_ = url;
+}
+
 QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequest& request) {
     CURL* curl = curl_easy_init();
     QwenChatCompletionResponse response;
@@ -143,9 +149,11 @@ QwenChatCompletionResponse QwenAPI::chat_completion(const QwenChatCompletionRequ
         // 确定使用的API端点
         std::string url;
         if (shouldUseLocalAPI()) {
-            // 使用本地API
-            ConfigManager& config_manager = ConfigManager::getInstance();
-            url = config_manager.getLocalApiUrl() + "/v1/chat/completions";
+            // 使用本地API（Q9：实例级 override 优先于 config.ini 的 api.local_url）
+            const std::string base = local_url_override_.empty()
+                ? ConfigManager::getInstance().getLocalApiUrl()
+                : local_url_override_;
+            url = base + "/v1/chat/completions";
         } else {
             // 使用阿里云DashScope API
             url = base_url_ + "/compatible-mode/v1/chat/completions";

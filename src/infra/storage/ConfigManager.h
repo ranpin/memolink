@@ -28,6 +28,11 @@ public:
     // 本地API配置
     std::string getLocalApiUrl() const;
     void setLocalApiUrl(const std::string& localApiUrl);
+
+    // Q9：VLM（视觉语言模型）本地服务 URL——caption-then-embed 的图像描述端点。
+    // 与 local_url（文本 LLM）分开：座舱多模态轮次要同时调两个 llama-server 实例。
+    std::string getVlmApiUrl() const;
+    void setVlmApiUrl(const std::string& vlmApiUrl);
     
     // 数据库配置
     std::string getDatabasePath() const;

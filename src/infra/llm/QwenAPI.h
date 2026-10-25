@@ -53,13 +53,17 @@ public:
     
     void set_api_key(const std::string& api_key);
     void set_base_url(const std::string& base_url);
-    
+    // Q9：非空时优先于 config.ini 的 api.local_url——让同一进程能同时调两个本地
+    // llama-server 实例（文本 LLM :8099 与 VLM :8098）。座舱多模态轮次靠它。
+    void set_local_url_override(const std::string& url);
+
     QwenChatCompletionResponse chat_completion(const QwenChatCompletionRequest& request);
     QwenEmbeddingResponse generate_embeddings(const QwenEmbeddingRequest& request);
 
 private:
     std::string api_key_;
     std::string base_url_;
+    std::string local_url_override_;   // Q9：见 set_local_url_override
     bool use_local_api_;
     
     // 辅助方法，用于判断是否使用本地API

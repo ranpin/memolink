@@ -6,11 +6,37 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <filesystem>
 
 // 生成回复用的模型名：刻意不含 "omni"（QwenAPI 见到 omni 会切流式解析）。
 // llama-server 实际忽略该名、只用已加载的 qwen3-4b，这里只为避开流式分支。
 namespace {
 constexpr const char* kChatModel = "qwen3-4b";
+// Q9：VLM 模型名，同样刻意不含 "omni"。llama-server 忽略该名、只用已加载的 Qwen3-VL。
+constexpr const char* kVlmModel = "qwen3vl";
+
+// Q9：受约束 caption prompt（V4 持久状态式，2026-10-25 在 dog 上对 4 个变体实测选定）。
+//   解决 docs/q9_multimodal_plan.md §4 记录的张力，并修掉一个更深的坑：
+//
+//   🔴 caption 的**语法框架决定提取器判的记忆类型**，而类型决定 authority 闸门能否触发
+//   ——resolver 只在**同类型内**比对（searchByEmbedding 带 type 过滤）。驾驶员口述天然
+//   被判 semantic，若 caption 是场景描述句（「车内有一个幼儿坐在…」）会被判 episodic，
+//   两者永不见面 ⇒ 闸门在真实应用里根本不会触发（实测 sim=0.000、System-1 直接 CREATE）。
+//
+//   V4 要求「持久状态或固定配置」句式（「车内安装了儿童安全座椅」）⇒ 提取器判 semantic，
+//   与口述同类型，闸门才有机会裁决。且 V4 让提取器拆出多条原子事实（座椅图 5 条、
+//   仪表盘 4 条），首条与口述几乎同义、相似度够高。
+//
+//   变体实测：V1 纯描述式（39 tok，冗长视觉细节，提取器原样照搬）；V2 事实式（18 tok，
+//   简洁但仍是场景句 → episodic）；V3 两步式（「事实」行会做推断，图里只有牌子却输出
+//   「车辆所在位置…」，M4a 编造风险，弃用）；**V4 持久状态式（选定）**。
+constexpr const char* kCaptionPrompt =
+    "这是座舱摄像头拍摄的画面。请用一句完整的陈述句，记录画面中车辆或乘员的持久状态或固定配置"
+    "（例如车内安装或放置了什么设备物品、车辆停放的楼层与车位号、仪表的警告状态）。"
+    "不要描述瞬时的动作、人物姿态或场景氛围。要求：\n"
+    "① 只陈述画面中确实存在的内容，不要推测画面之外的信息；\n"
+    "② 画面中若有文字或数字，必须逐字准确读出并写进句子里；\n"
+    "③ 看不清的部分直接说「看不清」，不要猜。";
 
 // 语料 v1 类型 → v2 三类：preference/fact 并入 semantic，episodic/procedural 保留。
 MemoryType mapCorpusType(const std::string& t) {
@@ -18,10 +44,62 @@ MemoryType mapCorpusType(const std::string& t) {
     if (t == "procedural") return MemoryType::Procedural;
     return MemoryType::Semantic;   // preference / fact
 }
+
+std::string base64Encode(const std::string& in) {
+    static const char* kTbl =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    std::string out;
+    out.reserve(((in.size() + 2) / 3) * 4);
+    size_t i = 0;
+    while (i + 2 < in.size()) {
+        const unsigned v = (static_cast<unsigned char>(in[i]) << 16) |
+                           (static_cast<unsigned char>(in[i + 1]) << 8) |
+                            static_cast<unsigned char>(in[i + 2]);
+        out.push_back(kTbl[(v >> 18) & 63]);
+        out.push_back(kTbl[(v >> 12) & 63]);
+        out.push_back(kTbl[(v >> 6) & 63]);
+        out.push_back(kTbl[v & 63]);
+        i += 3;
+    }
+    const size_t rem = in.size() - i;
+    if (rem == 1) {
+        const unsigned v = static_cast<unsigned char>(in[i]) << 16;
+        out.push_back(kTbl[(v >> 18) & 63]);
+        out.push_back(kTbl[(v >> 12) & 63]);
+        out.push_back('=');
+        out.push_back('=');
+    } else if (rem == 2) {
+        const unsigned v = (static_cast<unsigned char>(in[i]) << 16) |
+                           (static_cast<unsigned char>(in[i + 1]) << 8);
+        out.push_back(kTbl[(v >> 18) & 63]);
+        out.push_back(kTbl[(v >> 12) & 63]);
+        out.push_back(kTbl[(v >> 6) & 63]);
+        out.push_back('=');
+    }
+    return out;
+}
+
+// 图像文件 → data URL。QwenAPI 的 image_url 约定由调用方拼好完整 `data:...;base64,`
+// 前缀（QwenAPI.cpp 里直接塞进 {"image_url":{"url":...}}，不再二次处理）。
+std::string imageToDataUrl(const std::string& path) {
+    std::ifstream f(path, std::ios::binary);
+    if (!f.is_open()) return "";
+    std::stringstream ss;
+    ss << f.rdbuf();
+    const std::string bytes = ss.str();
+    if (bytes.empty()) return "";
+    std::string mime = "image/jpeg";
+    const std::string ext = std::filesystem::path(path).extension().string();
+    if (ext == ".png")       mime = "image/png";
+    else if (ext == ".webp") mime = "image/webp";
+    else if (ext == ".gif")  mime = "image/gif";
+    else if (ext == ".bmp")  mime = "image/bmp";
+    return "data:" + mime + ";base64," + base64Encode(bytes);
+}
 }  // namespace
 
-CockpitAssistant::CockpitAssistant(MemorySystem& mem, QwenAPI& llm)
-    : mem_(mem), llm_(llm) {}
+CockpitAssistant::CockpitAssistant(MemorySystem& mem, QwenAPI& llm, QwenAPI* vlm)
+    : mem_(mem), llm_(llm), vlm_(vlm) {}
 
 // ---------------------------------------------------------------------------
 // 载入语料：直接 CREATE（不走消解——语料是已知事实），validFrom=ts 供 episodic
@@ -191,6 +269,74 @@ CockpitAssistant::TurnResult CockpitAssistant::respond(const std::string& userTe
         if (scope != "private" && scope != "shared") scope = "private";
         const IngestResult ir =
             mem_.ingest(f.text, f.type, driver_, scope, "asserted", "cockpit-chat", 0);
+        r.ingested.push_back(ir);
+        if (ir.action == MemoryAction::Superseded && r.supersedeChain.empty())
+            r.supersedeChain = mem_.history(ir.id);
+    }
+    return r;
+}
+
+// ---------------------------------------------------------------------------
+// Q9 多模态轮次：图像 → VLM caption → extract → ingest(authority=observed)
+// ---------------------------------------------------------------------------
+// 与 respond() 的分工：respond 处理驾驶员口述（authority=asserted），observe 处理
+// 摄像头帧（authority=observed）。两者共用同一记忆核，authority 闸门在 ingest 里
+// 自动裁决冲突——这是 Q9「让 authority 从只做过滤升级为参与消解」的应用层落点。
+//
+// ⚠️ observe 的候选 authority 恒为 observed（最高），所以闸门只可能「放行」或
+// 「把 UPDATE 升级为 SUPERSEDE」，**永远不会拦下**。拦下只发生在 respond（asserted
+// 撞上已有 observed）——那正是 demo 要展示的非对称行为。
+CockpitAssistant::ObserveResult CockpitAssistant::observe(const std::string& imagePath) {
+    ObserveResult r;
+    r.driver = driver_;
+    r.imagePath = imagePath;
+
+    if (!vlm_) {
+        std::cerr << "[CockpitAssistant] VLM 未配置（config.ini [api] vlm_url 为空）"
+                     "——多模态轮次跳过\n";
+        return r;
+    }
+
+    // ① 图像 → data URL（QwenAPI 约定由调用方拼好完整 data: 前缀）
+    const std::string dataUrl = imageToDataUrl(imagePath);
+    if (dataUrl.empty()) {
+        std::cerr << "[CockpitAssistant] 读不到图像或文件为空: " << imagePath << "\n";
+        return r;
+    }
+
+    // ② VLM caption。temperature=0：caption 要可复现，不要创造性。
+    {
+        QwenChatCompletionRequest req;
+        req.model = kVlmModel;
+        req.temperature = 0.0f;
+        req.top_p = 1.0f;
+        req.max_tokens = 256;
+        QwenMessage msg;
+        msg.role = "user";
+        QwenContent tc; tc.type = "text";      tc.text      = kCaptionPrompt;
+        QwenContent ic; ic.type = "image_url"; ic.image_url = dataUrl;
+        msg.contents.push_back(tc);
+        msg.contents.push_back(ic);
+        req.messages.push_back(msg);
+        const QwenChatCompletionResponse resp = vlm_->chat_completion(req);
+        r.caption = resp.content;
+    }
+    if (r.caption.empty() || r.caption.rfind("Error:", 0) == 0) {
+        std::cerr << "[CockpitAssistant] VLM caption 失败: " << r.caption << "\n";
+        r.caption.clear();
+        return r;
+    }
+
+    // ③ 提取——文本侧仍走 qwen3-4b（经 MemorySystem 门面）。VLM 只做 caption，
+    //    不顶替文本模型，否则 Q2/Q4 的标定全部失效（方案 §1.2）。
+    r.extracted = mem_.extract(r.caption, "");
+
+    // ④ 消解 + 落库：authority=observed、source_image=帧路径
+    for (const auto& f : r.extracted) {
+        std::string scope = f.scope;
+        if (scope != "private" && scope != "shared") scope = "private";
+        const IngestResult ir = mem_.ingest(f.text, f.type, driver_, scope,
+                                            "observed", "cockpit-cam", 0, imagePath);
         r.ingested.push_back(ir);
         if (ir.action == MemoryAction::Superseded && r.supersedeChain.empty())
             r.supersedeChain = mem_.history(ir.id);

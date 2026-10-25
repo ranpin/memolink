@@ -151,6 +151,15 @@ void ConfigManager::setLocalApiUrl(const std::string& localApiUrl) {
     setConfig("api.local_url", localApiUrl);
 }
 
+// Q9：VLM 本地服务 URL（caption-then-embed 的图像描述端点，与文本 LLM 的 local_url 分开）
+std::string ConfigManager::getVlmApiUrl() const {
+    return getConfig("api.vlm_url", "");
+}
+
+void ConfigManager::setVlmApiUrl(const std::string& vlmApiUrl) {
+    setConfig("api.vlm_url", vlmApiUrl);
+}
+
 // 数据库配置
 std::string ConfigManager::getDatabasePath() const {
     return getConfig("database.db_path", "memolink.db");

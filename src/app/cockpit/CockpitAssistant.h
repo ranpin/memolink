@@ -22,11 +22,13 @@ class QwenAPI;
 // ============================================================================
 class CockpitAssistant {
 public:
-    CockpitAssistant(MemorySystem& mem, QwenAPI& llm);
+    // vlm 可为 nullptr：未配置 api.vlm_url 时多模态轮次（observe）不可用，文本轮照常。
+    CockpitAssistant(MemorySystem& mem, QwenAPI& llm, QwenAPI* vlm = nullptr);
 
     // 当前驾驶员（治理 owner）。检索时按 (owner=driver) ∪ (scope=shared) 过滤。
     void setDriver(const std::string& driver) { driver_ = driver; }
     const std::string& driver() const { return driver_; }
+    bool vlmReady() const { return vlm_ != nullptr; }
 
     // 载入语料（bench/corpus/cockpit.json）作为初始记忆库。
     // 映射：type preference/fact→semantic、episodic→episodic、procedural→procedural；
@@ -50,9 +52,23 @@ public:
     // 一轮对话：④ 检索（治理感知）→ 生成回复 → ①提取 + ②③消解存储。
     TurnResult respond(const std::string& userText, int topK = 4);
 
+    // ---- Q9 多模态轮次：图像 → VLM caption → extract → ingest(authority=observed) ----
+    struct ObserveResult {
+        std::string driver;
+        std::string imagePath;      // 视觉来源帧路径（落库到 source_image）
+        std::string caption;        // VLM 原始输出（受约束叙述句）
+        std::vector<CandidateFact> extracted;
+        std::vector<IngestResult> ingested;
+        std::vector<Memory> supersedeChain;   // observed 取代 asserted 时的版本链
+    };
+
+    // vlm_ 为 nullptr（未配 api.vlm_url）或图像读不到时返回空 caption、不写库。
+    ObserveResult observe(const std::string& imagePath);
+
 private:
     MemorySystem& mem_;
     QwenAPI& llm_;
+    QwenAPI* vlm_ = nullptr;   // Q9：VLM 实例（:8098），nullptr = 多模态不可用
     std::string driver_ = "张三";
 
     // 治理感知检索：(owner=driver) ∪ (scope=shared)，去重、按分重排、取 topK。
