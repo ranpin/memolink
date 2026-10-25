@@ -1,8 +1,11 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include <filesystem>
+#include <map>
 #include <sqlite3.h>
+#include <json/json.h>
 #include "infra/storage/InitDB.h"
 #include "infra/storage/StorageManager.h"
 #include "memory/core/MemoryStore.h"
@@ -10,20 +13,20 @@
 #include "infra/llm/QwenAPI.h"
 
 // ============================================================================
-// Q9 · M2 端到端：authority 感知消解在真实 resolve()+ingest() 链路里是否正确触发。
+// Q9 · M2 完整测量：authority 感知消解在真实「System-2 → 闸门 → 落库」链路里的正确率。
 // ----------------------------------------------------------------------------
-// 与 test_multimodal_authority 的分工：那个测的是闸门**纯函数逻辑**（B 部分）与
-// 存储路径（C 部分）；本测测的是「**System-2（本地 LLM）产出 SUPERSEDE/UPDATE →
-// 闸门 → 落库**」的完整链路——这才是 M2 的端到端判据（docs/q9_multimodal_plan.md §2）。
+// 与 test_multimodal_authority 的分工：那个测闸门**纯函数真值表**（离线确定性）；
+// 本测测端到端链路，场景集在 bench/eval/authority_scenarios.json（措辞复用 Q2 已验证
+// 能稳定触发 SUPERSEDE/UPDATE 的 pair，避免自编措辞让 System-2 判不出冲突）。
 //
-// 断言策略（对 LLM 非确定性稳健）：不假设 System-2 一定产出某个动作，而是
-//   **给定它实际产出的 preGateAction，验证闸门做出了正确的 authority 感知结果**。
-//   同时报告有多少场景真正触达了闸门（preGateAction ∈ {SUPERSEDE, UPDATE} 且
-//   候选/目标 authority 不同）——没触达的场景不算闸门测试样本。
+// 断言策略（对 LLM 非确定性稳健）：不假设 System-2 一定产出某动作，而是
+//   **给定它实际产出的 preGateAction，验闸门是否做出正确的 authority 感知结果**。
+//   preGateAction ∉ {SUPERSEDE, UPDATE} 的场景视为「未触达闸门」，不计入闸门样本，
+//   单独统计——这样 System-2 的判定质量与闸门的判定质量被分开归因。
 //
-// 用法: test_authority_e2e [db路径]
+// 用法: test_authority_e2e [scenarios.json] [db路径]
 // 前置：config.ini [edge] 配好模型/分词器；[api] local_url 指向本地 llama-server
-//       （System-2 用，:8099 的 qwen3-4b）。LLM 不可用则无法触达闸门，测试跳过。
+//       （:8099 qwen3-4b）。LLM 不可用则模糊地带回退 CREATE、触达不了闸门。
 // ============================================================================
 
 static int g_pass = 0, g_fail = 0;
@@ -51,17 +54,22 @@ static void clearMemory(StorageManager& storage) {
     if (db) sqlite3_exec(db, "DELETE FROM memory;", nullptr, nullptr, nullptr);
 }
 
-struct Scenario {
-    std::string name;
-    std::string seedText;
-    std::string seedAuthority;
-    std::string candText;
-    std::string candAuthority;
-    std::string desc;
-};
-
 int main(int argc, char** argv) {
-    const std::string dbPath = argc > 1 ? argv[1] : "../database/authority_e2e.db";
+    const std::string scenPath = argc > 1 ? argv[1] : "../bench/eval/authority_scenarios.json";
+    const std::string dbPath   = argc > 2 ? argv[2] : "../database/authority_e2e.db";
+
+    Json::Value root;
+    {
+        std::ifstream f(scenPath);
+        if (!f.is_open()) { std::cerr << "打不开场景集: " << scenPath << "\n"; return 2; }
+        Json::CharReaderBuilder rb;
+        std::string errs;
+        if (!Json::parseFromStream(rb, f, &root, &errs)) {
+            std::cerr << "场景集解析失败: " << errs << "\n"; return 2;
+        }
+    }
+    const Json::Value& scenarios = root["scenarios"];
+    if (!scenarios.isArray() || scenarios.empty()) { std::cerr << "场景集为空\n"; return 2; }
 
     if (std::filesystem::exists(dbPath)) std::filesystem::remove(dbPath);
     if (!InitDB::initializeDatabase(dbPath)) { std::cerr << "DB init failed\n"; return 1; }
@@ -70,60 +78,46 @@ int main(int argc, char** argv) {
     MemoryStore store(storage);
     if (!store.ready()) { std::cerr << "store 未就绪（[edge] 模型没配？）\n"; return 1; }
 
-    QwenAPI llm;                       // config.ini [api] local_url → 本地 llama-server
+    QwenAPI llm;
     MemoryResolver resolver(store, &llm);
 
-    std::cout << "=== Q9 · M2 端到端：authority 感知消解（System-2 → 闸门 → 落库）===\n"
-              << "  embed=" << store.embedModelTag()
+    std::cout << "=== Q9 · M2 完整测量：authority 感知消解端到端 ===\n"
+              << "  场景数=" << scenarios.size() << "  embed=" << store.embedModelTag()
               << "  θ_new=" << MemoryResolver::kThetaNew
               << "  θ_dup=" << MemoryResolver::kThetaDup << "\n\n";
 
-    // 场景集：覆盖 胜出 / 拦下 / 升级 / 同 authority 对照 四类。
-    // 文本取自座舱 demo 已验证能可靠触发 SUPERSEDE 的单值矛盾（西湖区→滨江区 sim≈0.755）。
-    const std::vector<Scenario> scenarios = {
-        {"S1 胜出", "用户住在杭州西湖区，家庭地址已存入导航常用地点。", "asserted",
-                     "用户搬家，家庭地址从西湖区改为滨江区", "observed",
-                     "observed 候选 vs asserted 已有 → 应 SUPERSEDE，新记录带 observed"},
-        {"S2 胜出(停车)", "车辆停在 B1 层", "asserted",
-                     "摄像头观察到车辆实际停在 B2 层", "observed",
-                     "observed 候选 vs asserted 已有 → 应 SUPERSEDE"},
-        {"S3 拦下", "摄像头观察到车辆停在 B2 层靠电梯口的位置", "observed",
-                     "驾驶员说他记得车辆停在 B1 层", "asserted",
-                     "asserted 候选 vs observed 已有 → 应被拦下，两条并存"},
-        {"S4 拦下(地址)", "摄像头观察到车辆登记地址为杭州滨江区", "observed",
-                     "用户说家庭地址其实在杭州西湖区", "asserted",
-                     "asserted 候选 vs observed 已有 → 应被拦下"},
-        {"S5 升级", "车辆是一辆 SUV", "asserted",
-                     "摄像头观察到车辆是一辆红色的新能源 SUV", "observed",
-                     "observed 候选补充细节（UPDATE）→ 应升级为 SUPERSEDE"},
-        {"S6 对照(同authority)", "用户住在杭州西湖区，家庭地址已存入导航常用地点。", "asserted",
-                     "用户搬家，家庭地址从西湖区改为滨江区", "asserted",
-                     "同 asserted → 闸门不介入，正常 SUPERSEDE（M3 端到端对照）"},
-    };
+    // 分组统计：触达闸门数 / 闸门判定正确数
+    std::map<std::string, int> grpTotal, grpReached, grpCorrect;
+    int promotionFired = 0, promotionExpected = 0;
 
-    int reachedGate = 0, gateCorrect = 0;
+    for (const auto& s : scenarios) {
+        const std::string id   = s["id"].asString();
+        const std::string grp  = s.get("group", "?").asString();
+        const std::string expectGate = s["expect_gate"].asString();
+        const std::string seedAuth = s["seed_authority"].asString();
+        const std::string candAuth = s["cand_authority"].asString();
+        MemoryType type = MemoryType::Semantic;
+        memoryTypeFromName(s.get("type", "semantic").asString(), type);
 
-    for (const auto& sc : scenarios) {
-        std::cout << "── " << sc.name << "：" << sc.desc << "\n";
+        grpTotal[grp]++;
+        std::cout << "── " << id << "  [" << grp << "]  seed=" << seedAuth
+                  << " cand=" << candAuth << " 期望闸门=" << expectGate << "\n";
+
         clearMemory(storage);
-
-        // seed（直接 CREATE，带指定 authority）
-        const auto seedR = store.ingestText(sc.seedText, MemoryType::Semantic,
-                                            "张三", "private", sc.seedAuthority);
+        const auto seedR = store.ingestText(s["seed"].asString(), type, "张三", "private", seedAuth);
         if (seedR.action != MemoryAction::Created) {
             std::cout << "    [SKIP] seed 写入失败\n\n"; continue;
         }
         const int seedId = seedR.id;
 
-        // 消解 + 落库（候选带 candAuthority）
-        const IngestResult r = resolver.ingest(sc.candText, MemoryType::Semantic,
-                                               "张三", "private", sc.candAuthority);
+        const IngestResult r = resolver.ingest(s["candidate"].asString(), type,
+                                               "张三", "private", candAuth);
 
-        const int candRank = MemoryResolver::authorityRank(sc.candAuthority);
-        const int seedRank = MemoryResolver::authorityRank(sc.seedAuthority);
+        const int candRank = MemoryResolver::authorityRank(candAuth);
+        const int seedRank = MemoryResolver::authorityRank(seedAuth);
         const bool authDiffer = (candRank != seedRank);
-        const bool preGateConflict =
-            (r.preGateAction == MemoryAction::Superseded || r.preGateAction == MemoryAction::Updated);
+        const bool preGateConflict = (r.preGateAction == MemoryAction::Superseded ||
+                                      r.preGateAction == MemoryAction::Updated);
         const bool gateReached = authDiffer && preGateConflict;
 
         std::cout << "    sim=" << r.similarity
@@ -135,37 +129,50 @@ int main(int argc, char** argv) {
 
         if (!gateReached) {
             std::cout << "    [INFO] 未触达闸门（preGate=" << actName(r.preGateAction)
-                      << (authDiffer ? "" : "，且 authority 相同")
-                      << "）——不计入闸门样本\n\n";
-            // 同 authority 对照（S6）：即便不触达闸门，也应验证行为正常
-            if (!authDiffer) {
-                const Memory newM = store.get(r.id);
-                check(r.action == r.preGateAction, "同 authority：final == preGate（闸门未介入）",
-                      std::string("final=") + actName(r.action));
-                if (r.action == MemoryAction::Superseded)
-                    check(newM.authority == sc.candAuthority, "同 authority SUPERSEDE：新记录 authority 正确");
+                      << (authDiffer ? "，非冲突动作" : "，authority 相同") << "）\n";
+            // 同 authority 对照：即便不触达闸门也要验「闸门没乱动」
+            if (expectGate == "none") {
+                grpReached[grp]++;
+                bool ok = (r.action == r.preGateAction);
+                check(ok, "对照：final == preGate（闸门未介入）",
+                      std::string("preGate=") + actName(r.preGateAction) + " final=" + actName(r.action));
+                if (r.action == MemoryAction::Superseded) {
+                    const Memory nm = store.get(r.id);
+                    check(nm.authority == candAuth, "对照：SUPERSEDE 新记录 authority 正确");
+                    ok = ok && (nm.authority == candAuth);
+                }
+                if (r.action == MemoryAction::Updated) {
+                    const Memory nm = store.get(r.id);
+                    check(nm.authority == seedAuth && nm.valid,
+                          "对照：UPDATE 原地改写、authority 不变、记录仍有效");
+                    ok = ok && (nm.authority == seedAuth);
+                }
+                if (ok) grpCorrect[grp]++;
             }
+            std::cout << "\n";
             continue;
         }
 
-        ++reachedGate;
+        grpReached[grp]++;
         bool ok = true;
 
-        if (candRank > seedRank) {
-            // 胜出方向：应 SUPERSEDE，新记录带候选 authority，旧记录失效 + 版本链
+        if (expectGate == "win") {
             const Memory newM = store.get(r.id);
             const Memory oldM = store.get(seedId);
+            if (r.preGateAction == MemoryAction::Updated) {
+                promotionExpected++;
+                if (r.authorityPromoted) promotionFired++;
+                check(r.authorityPromoted, "胜出(升级)：UPDATE 被升级为 SUPERSEDE");
+            }
             check(r.action == MemoryAction::Superseded && !r.blockedByAuthority,
                   "胜出：final=SUPERSEDE 且未被拦", std::string("final=") + actName(r.action));
-            check(newM.authority == sc.candAuthority,
-                  "胜出：新记录 authority=" + sc.candAuthority, "实际「" + newM.authority + "」");
+            check(newM.authority == candAuth, "胜出：新记录 authority=" + candAuth,
+                  "实际「" + newM.authority + "」");
             check(!oldM.valid && oldM.supersededBy == r.id, "胜出：旧记录失效 + superseded_by 指向新记录");
             check(newM.supersedes == seedId, "胜出：新记录 supersedes 指向旧记录");
-            if (r.preGateAction == MemoryAction::Updated)
-                check(r.authorityPromoted, "胜出：UPDATE 被升级为 SUPERSEDE（authorityPromoted）");
-            ok = (r.action == MemoryAction::Superseded && newM.authority == sc.candAuthority);
-        } else {
-            // 拦下方向：应降级为并存 CREATE，两条都有效，observed 仍是当前值
+            ok = (r.action == MemoryAction::Superseded && newM.authority == candAuth &&
+                  !oldM.valid && oldM.supersededBy == r.id && newM.supersedes == seedId);
+        } else if (expectGate == "block") {
             const Memory newM = store.get(r.id);
             const Memory oldM = store.get(seedId);
             check(r.action == MemoryAction::Created && r.blockedByAuthority,
@@ -173,21 +180,39 @@ int main(int argc, char** argv) {
                   std::string("final=") + actName(r.action) + (r.blockedByAuthority ? " blocked" : " NOT-blocked"));
             check(oldM.valid && oldM.supersededBy == 0,
                   "拦下：高可信度旧记录仍有效、未被取代", "valid=" + std::to_string(oldM.valid));
-            check(newM.valid && newM.authority == sc.candAuthority,
+            check(newM.valid && newM.authority == candAuth,
                   "拦下：低可信度候选作为独立记忆并存", "authority=" + newM.authority);
             check(newM.supersedes == 0, "拦下：并存记忆不建取代关系");
-            ok = (r.action == MemoryAction::Created && r.blockedByAuthority && oldM.valid);
+            ok = (r.action == MemoryAction::Created && r.blockedByAuthority &&
+                  oldM.valid && oldM.supersededBy == 0 && newM.supersedes == 0);
+        } else {
+            std::cout << "    [WARN] expect_gate=" << expectGate << " 但触达了闸门——场景标注可能有误\n";
+            ok = false;
         }
 
-        if (ok) ++gateCorrect;
+        if (ok) grpCorrect[grp]++;
         std::cout << "\n";
     }
 
-    std::cout << "=== M2 端到端结果 ===\n";
-    std::cout << "  触达闸门的场景: " << reachedGate << "/" << scenarios.size() << "\n";
-    std::cout << "  闸门判定正确:   " << gateCorrect << "/" << reachedGate << "\n";
-    std::cout << "  单元断言:       " << g_pass << " PASS / " << g_fail << " FAIL\n";
-    if (reachedGate == 0)
+    // ---- 汇总 ----
+    std::cout << "=== M2 分组汇总（触达闸门 / 判定正确）===\n";
+    int totReached = 0, totCorrect = 0, totAll = 0;
+    for (const auto& kv : grpTotal) {
+        const std::string& g = kv.first;
+        std::cout << "  " << g;
+        for (size_t i = g.size(); i < 10; ++i) std::cout << " ";
+        std::cout << " 场景 " << kv.second
+                  << "  触达闸门 " << grpReached[g]
+                  << "  正确 " << grpCorrect[g] << "/" << grpReached[g] << "\n";
+        totAll += kv.second; totReached += grpReached[g]; totCorrect += grpCorrect[g];
+    }
+    std::cout << "\n  合计: 场景 " << totAll << "，触达闸门 " << totReached
+              << "，闸门判定正确 " << totCorrect << "/" << totReached << "\n";
+    std::cout << "  升级路径（UPDATE→SUPERSEDE）端到端触发: " << promotionFired
+              << "/" << promotionExpected << "\n";
+    std::cout << "  单元断言: " << g_pass << " PASS / " << g_fail << " FAIL\n";
+    if (totReached == 0)
         std::cout << "  ⚠️ 没有场景触达闸门——检查 LLM 是否可用、场景相似度是否落在 System-2 区间\n";
-    return (g_fail == 0 && reachedGate > 0) ? 0 : 1;
+
+    return (g_fail == 0 && totReached > 0) ? 0 : 1;
 }
