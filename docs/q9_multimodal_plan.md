@@ -1,6 +1,6 @@
 # 多模态记忆方案（Q9）：方案 A caption-then-embed + authority 感知消解
 
-- **状态**：方案待拍板（判据预注册，未开工）
+- **状态**：机制已实现并真机验证（commit `cf46a62`，`test_multimodal_authority` 36/36 + M3 回归全绿）；**Q9 闸门未整体通过**——M2 端到端与 M4a/M4b 完整场景集待做，详见 §8
 - **定位**：记忆系统层的**新能力**（承载应用仍是座舱助手）。**不是** agent harness，**不是**视觉管线
 - **路线**：方案 A（caption-then-embed）——用户 2026-10-25 拍板
 - **日期**：2026-10-25
@@ -317,3 +317,46 @@ VLM caption → extract → ingest(authority=observed, source_image) 在 dog 端
 - 设计文档 §14 闸门表加 **Q9 行**；README 核心结果加 Q9。
 - demo 页多模态轮次 + 帧附件展示（延续既有 demo 纪律：变化项强视觉对比 + 图例 + 数值标口径）。
 - 若 M2 阳性，成为机制句：**「authority 从只做检索期过滤升级为参与消解决策——摄像头观察（observed）与驾驶员口述（asserted）冲突时按可信度裁决，而非按相似度裁决。」**
+
+---
+
+## 8. 实现状态（2026-10-25，commit `cf46a62`，dog/Orin 真机验证）
+
+### 8.1 已实现并验证
+
+| 项 | 内容 | 验证 |
+|---|---|---|
+| schema | `memory` 表加 `source_image TEXT` + **幂等迁移**（`PRAGMA table_info` 检查后才 ALTER，旧库可升级、新库 no-op） | C1 |
+| 存储路径 | `ingestText` / `supersede` 收 `sourceImage`；**`supersede` 加 `authorityOverride`**——observed 取代 asserted 时新记录写 observed，**不继承旧记录的 asserted**（原实现继承，会让 authority 优先级白做） | C2–C13 |
+| authority 闸门 | `authorityRank`（observed=2 > asserted=1 > inferred=0，未知/空按 asserted）+ `applyAuthorityGate`（**刻意做成 public static 纯函数**） | A1–A6、B1–B13 |
+| 接线 | `resolve(candidate, type, authority)` 在 System-1 REINFORCE 与 System-2 两条出口后过闸门；`ingest(..., sourceImage)` 透传；`MemorySystem` 门面同步 | D1–D4 |
+| 测试 | `test/test_multimodal_authority.cpp`（CMake EDGE 块注册） | **36/36 PASS** |
+
+**为什么闸门必须是纯函数**：无 LLM 时 System-2 回退 CREATE、`targetId=0`，闸门在 `resolve()` 里**根本不会触发**。做成 public static 纯函数才能离线确定性验证整张真值表——这是本实现最关键的可测性设计。
+
+**闸门真值表（B1–B13，离线确定性）**：
+
+- 同 authority → **完全不介入**（B1/B2/B3）——M3 的机制级保证
+- 候选更高 → UPDATE **升级为 SUPERSEDE** + `authorityPromoted=true`（B5/B9）；本就是 SUPERSEDE 则不动（B4）
+- 候选更低 → SUPERSEDE/UPDATE **降级为并存 CREATE** + `blockedByAuthority=true`、`targetId` 清零、`blockedTargetId` 记住原目标（B6/B7/B8）
+- REINFORCE / NOOP / 无目标 / targetId 不匹配 → **不介入**（B10–B13，防误伤）
+
+### 8.2 M3 不回归：✅ 已通过（dog 实跑）
+
+| 闸门 | 本次 | 文档记录 | 结论 |
+|---|---|---|---|
+| Q1 `test_edge_memory_store` | **41/41** | 41/41 | 一致 |
+| Q2 `test_memory_resolver` | **21/30 = 70%** | 21/30 = 70% | **一致**（CREATE 7/7、UPDATE 6/6、REINFORCE 3/6、SUPERSEDE 5/6、NOOP 0/5；System-1 覆盖 13/30=43.3%；目标定位 14/14） |
+| Q3 `test_typed_retrieval` | **18/18 → 18/18** | 基线 18/18 → 类型特化 18/18 | 一致 |
+| Q7 `test_memory_governance` | **27/27** | 27/27 | 一致 |
+
+Q2 的 30 个场景**全部是 asserted vs asserted（同 authority）**，闸门按设计一次都没触发 ⇒ 五分类结果与文档记录逐条一致，**M3 成立**。（此前会话曾测到 20/30，属 System-2 本地 4B 非确定性波动；本次 21/30 与文档一致。）
+
+### 8.3 尚未完成（**Q9 闸门未整体通过**）
+
+- **M2 端到端**：需要冲突场景集 + 本地 LLM 让 System-2 产出 SUPERSEDE/UPDATE，闸门才会在 `resolve()` 里真实触发。**目前只验证了闸门纯函数逻辑（B）与存储路径（C），没有验证「System-2 → 闸门 → 落库」的端到端链路。**
+- **M4a/M4b 完整场景集**：§1.7 只测了 2 张文字牌（12/12）+ 3 张场景图，未达方案要求的 ~12–20 个冲突场景；难例（小字号 / 逆光 / 运动模糊 / 脏污）未测。
+- **座舱 app 多模态轮次**：VLM caption → extract → ingest(authority=observed) 的应用层接线未做，`cockpit_assistant` 还没有图像入口。
+- **caption prompt 定型**：§4 记录的张力（定向提问输出 6–20 tok 太短、喂不进要叙述句的提取器）未解决。
+- **demo 页多模态轮次 + 帧附件展示**。
+- 设计文档 §14 闸门表加 Q9 行、README 核心结果加 Q9——**等 M2 端到端通过后再加，不提前声称**。
