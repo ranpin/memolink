@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <filesystem>
+#include <cctype>
 
 // 生成回复用的模型名：刻意不含 "omni"（QwenAPI 见到 omni 会切流式解析）。
 // llama-server 实际忽略该名、只用已加载的 qwen3-4b，这里只为避开流式分支。
@@ -37,6 +38,18 @@ constexpr const char* kCaptionPrompt =
     "① 只陈述画面中确实存在的内容，不要推测画面之外的信息；\n"
     "② 画面中若有文字或数字，必须逐字准确读出并写进句子里；\n"
     "③ 看不清的部分直接说「看不清」，不要猜。";
+
+// Q9 二次确认 prompt（E4b 缓解）。**刻意中性**——不带「座舱摄像头」前提：实测带座舱
+// 前提的 prompt 在非座舱画面上会拒答（「画面中不存在座舱摄像头拍摄的车辆或乘员」），
+// 那样就拿不到可对比的文字读数了。只要求逐字读文字/数字 + 读不清就弃读。
+//
+// 为什么这能挡住漂移：实测同一张座椅图，V4 叙述式硬读出「PARENTA」，而中性定向复读
+// 一致回答「看不清」⇒ 两者不一致 ⇒ 该文字字段不可信 ⇒ 降为 inferred。
+// ⚠️ 已知上限：**挡不住「稳定误读」**——speed20 两种 prompt 都读「2.0」，自一致性
+// 原理上抓不到「一致地读错」（见 q9_multimodal_plan.md §8.7）。
+constexpr const char* kVerifyPrompt =
+    "请只读出这张图片中出现的文字和数字，逐个准确读出，"
+    "看不清的写「看不清」，不要描述其它内容。";
 
 // 语料 v1 类型 → v2 三类：preference/fact 并入 semantic，episodic/procedural 保留。
 MemoryType mapCorpusType(const std::string& t) {
@@ -95,6 +108,25 @@ std::string imageToDataUrl(const std::string& path) {
     else if (ext == ".gif")  mime = "image/gif";
     else if (ext == ".bmp")  mime = "image/bmp";
     return "data:" + mime + ";base64," + base64Encode(bytes);
+}
+
+// Q9 二次确认用：把串里所有 ASCII 字母/数字**按原顺序压紧**（大写归一，丢掉分隔符、
+// 标点与中文叙述）。
+//
+// 🔴 压紧而非分词是刻意的——分词对空格敏感会误判：实测 sign_level2a 的 caption 读
+// 「2A」（连续 ⇒ 一个 token），而定向复读读「2 A」（空格 ⇒ 两个 token），集合比对
+// 判「不一致」而把一条**读对了的**事实错误降级。压紧后两者都是 "2A"，子串比对即正确
+// 匹配；而漂移案例（caption「PARENTA」vs 复读「看不清」→ 压紧后 "" ）仍判不一致。
+std::string asciiCompact(const std::string& s) {
+    std::string out;
+    for (unsigned char c : s) {
+        if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z')) {
+            out.push_back(static_cast<char>(c));
+        } else if (c >= 'a' && c <= 'z') {
+            out.push_back(static_cast<char>(std::toupper(c)));
+        }
+    }
+    return out;
 }
 }  // namespace
 
@@ -286,6 +318,24 @@ CockpitAssistant::TurnResult CockpitAssistant::respond(const std::string& userTe
 // ⚠️ observe 的候选 authority 恒为 observed（最高），所以闸门只可能「放行」或
 // 「把 UPDATE 升级为 SUPERSEDE」，**永远不会拦下**。拦下只发生在 respond（asserted
 // 撞上已有 observed）——那正是 demo 要展示的非对称行为。
+// Q9：向 VLM 发一次 (prompt + 图像) 请求。temperature=0 保证可复现。
+std::string CockpitAssistant::vlmAsk(const std::string& prompt,
+                                     const std::string& imageDataUrl) {
+    QwenChatCompletionRequest req;
+    req.model = kVlmModel;
+    req.temperature = 0.0f;
+    req.top_p = 1.0f;
+    req.max_tokens = 256;
+    QwenMessage msg;
+    msg.role = "user";
+    QwenContent tc; tc.type = "text";      tc.text      = prompt;
+    QwenContent ic; ic.type = "image_url"; ic.image_url = imageDataUrl;
+    msg.contents.push_back(tc);
+    msg.contents.push_back(ic);
+    req.messages.push_back(msg);
+    return vlm_->chat_completion(req).content;
+}
+
 CockpitAssistant::ObserveResult CockpitAssistant::observe(const std::string& imagePath) {
     ObserveResult r;
     r.driver = driver_;
@@ -304,23 +354,11 @@ CockpitAssistant::ObserveResult CockpitAssistant::observe(const std::string& ima
         return r;
     }
 
-    // ② VLM caption。temperature=0：caption 要可复现，不要创造性。
-    {
-        QwenChatCompletionRequest req;
-        req.model = kVlmModel;
-        req.temperature = 0.0f;
-        req.top_p = 1.0f;
-        req.max_tokens = 256;
-        QwenMessage msg;
-        msg.role = "user";
-        QwenContent tc; tc.type = "text";      tc.text      = kCaptionPrompt;
-        QwenContent ic; ic.type = "image_url"; ic.image_url = dataUrl;
-        msg.contents.push_back(tc);
-        msg.contents.push_back(ic);
-        req.messages.push_back(msg);
-        const QwenChatCompletionResponse resp = vlm_->chat_completion(req);
-        r.caption = resp.content;
-    }
+    // ② VLM caption（V4 持久状态式）。
+    //    🔴 分辨率由**服务端** `--image-max-tokens 300` 钉住，C++ 侧不缩放、不引图像库。
+    //    实测该配置等价客户端 le=640（M4b 6/7、prompt_tok 均值 422 vs 402、~1.5s/帧），
+    //    而 400 档只有 5/7、1600 档只 3/7 ⇒ 300 是实测最优档，必须写进部署口径。
+    r.caption = vlmAsk(kCaptionPrompt, dataUrl);
     if (r.caption.empty() || r.caption.rfind("Error:", 0) == 0) {
         std::cerr << "[CockpitAssistant] VLM caption 失败: " << r.caption << "\n";
         r.caption.clear();
@@ -331,12 +369,38 @@ CockpitAssistant::ObserveResult CockpitAssistant::observe(const std::string& ima
     //    不顶替文本模型，否则 Q2/Q4 的标定全部失效（方案 §1.2）。
     r.extracted = mem_.extract(r.caption, "");
 
-    // ④ 消解 + 落库：authority=observed、source_image=帧路径
+    // ④ Q9 二次确认（E4b 缓解）：caption 里若含 ASCII 文字/数字字段，对**同一帧**再做
+    //    一次中性定向复读；复读确认不了的字段 → 该事实 authority 降为 inferred（最低
+    //    可信度，不覆盖任何记忆、反可被任何来源覆盖）。
+    //    实测能挡住「读数随分辨率漂移」：座椅标签叙述式硬读「PARENTA」、定向复读一致
+    //    答「看不清」⇒ 判不可信。⚠️ 挡不住「稳定误读」（speed20 两种 prompt 都读 2.0）。
+    //    比对用 asciiCompact（压紧子串匹配）而非分词集合——分词对空格敏感会误判
+    //    （caption「2A」vs 复读「2 A」，见 asciiCompact 注释）。
+    std::string confirmed;   // 复读结果的压紧 ASCII
+    bool needVerify = false;
+    for (const auto& f : r.extracted)
+        if (!asciiCompact(f.text).empty()) { needVerify = true; break; }
+    if (needVerify) {
+        r.verification = vlmAsk(kVerifyPrompt, dataUrl);
+        confirmed = asciiCompact(r.verification);
+    }
+
+    // ⑤ 消解 + 落库：authority=observed（文字字段未获复读确认则降为 inferred）、
+    //    source_image=帧路径
     for (const auto& f : r.extracted) {
         std::string scope = f.scope;
         if (scope != "private" && scope != "shared") scope = "private";
+
+        std::string authority = "observed";
+        const std::string fc = asciiCompact(f.text);
+        if (!fc.empty() && confirmed.find(fc) == std::string::npos) {
+            authority = "inferred";
+            ++r.downgraded;
+        }
+        r.factAuthority.push_back(authority);
+
         const IngestResult ir = mem_.ingest(f.text, f.type, driver_, scope,
-                                            "observed", "cockpit-cam", 0, imagePath);
+                                            authority, "cockpit-cam", 0, imagePath);
         r.ingested.push_back(ir);
         if (ir.action == MemoryAction::Superseded && r.supersedeChain.empty())
             r.supersedeChain = mem_.history(ir.id);

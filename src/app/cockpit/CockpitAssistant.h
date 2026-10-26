@@ -57,7 +57,12 @@ public:
         std::string driver;
         std::string imagePath;      // 视觉来源帧路径（落库到 source_image）
         std::string caption;        // VLM 原始输出（受约束叙述句）
+        // Q9 二次确认（E4b 缓解）：对同一帧再做一次中性定向复读，文字/数字字段若复读
+        // 不一致（含「看不清」弃读），该事实 authority 从 observed 降为 inferred。
+        std::string verification;   // 定向复读的原始输出
+        int downgraded = 0;         // 因复读不一致而降为 inferred 的事实数
         std::vector<CandidateFact> extracted;
+        std::vector<std::string> factAuthority;  // 与 extracted 一一对应：实际落库的 authority
         std::vector<IngestResult> ingested;
         std::vector<Memory> supersedeChain;   // observed 取代 asserted 时的版本链
     };
@@ -70,6 +75,9 @@ private:
     QwenAPI& llm_;
     QwenAPI* vlm_ = nullptr;   // Q9：VLM 实例（:8098），nullptr = 多模态不可用
     std::string driver_ = "张三";
+
+    // Q9：向 VLM 发一次 (prompt + 图像) 请求，返回文本（失败返回 "Error: ..."）。
+    std::string vlmAsk(const std::string& prompt, const std::string& imageDataUrl);
 
     // 治理感知检索：(owner=driver) ∪ (scope=shared)，去重、按分重排、取 topK。
     // intentOut 回填检测到的类型意图名（semantic/episodic/procedural）。

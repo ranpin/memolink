@@ -112,7 +112,7 @@ static void printTurn(const CockpitAssistant::TurnResult& r, int turnNo) {
     }
 }
 
-// Q9 多模态轮次的转录：图像 → caption → observed 记忆（authority 闸门可能升级 UPDATE）
+// Q9 多模态轮次的转录：图像 → caption → 二次确认 → observed/inferred 记忆
 static void printObserve(const CockpitAssistant::ObserveResult& r, int turnNo) {
     std::cout << "\n════════════════ 第 " << turnNo << " 轮 [摄像头] ════════════════\n";
     std::cout << "[驾驶员] " << r.driver << "\n";
@@ -123,20 +123,33 @@ static void printObserve(const CockpitAssistant::ObserveResult& r, int turnNo) {
     }
     std::cout << "[caption] " << r.caption << "\n";
 
+    // Q9 二次确认（E4b 缓解）：对同一帧做中性定向复读，文字字段对不上就降为 inferred
+    if (!r.verification.empty()) {
+        std::cout << "[二次确认] 定向复读: " << r.verification << "\n";
+        if (r.downgraded > 0)
+            std::cout << "           ↳ " << r.downgraded
+                      << " 条事实的文字字段未获复读确认 → authority 降为 inferred"
+                         "（最低可信度，不覆盖任何记忆）\n";
+    }
+
     if (r.extracted.empty()) {
         std::cout << "[写入] 无可记事实（NOOP）\n";
     } else {
         std::cout << "[写入] 提取 " << r.extracted.size()
-                  << " 条候选事实（authority=observed，来源=cockpit-cam）:\n";
+                  << " 条候选事实（来源=cockpit-cam）:\n";
         for (size_t i = 0; i < r.extracted.size(); ++i) {
             const auto& f = r.extracted[i];
-            std::cout << "  [" << memoryTypeName(f.type) << "] 「" << f.text << "」 → ";
+            const std::string auth =
+                i < r.factAuthority.size() ? r.factAuthority[i] : std::string("?");
+            std::cout << "  [" << memoryTypeName(f.type) << "/" << auth << "] 「"
+                      << f.text << "」 → ";
             if (i < r.ingested.size()) {
                 const auto& ir = r.ingested[i];
                 std::cout << memoryActionName(ir.action) << " id=" << ir.id
                           << " sim=" << std::fixed << std::setprecision(3) << ir.similarity
                           << (ir.usedLlm ? " [System-2]" : " [System-1]")
-                          << (ir.authorityPromoted ? " [authority升级]" : "") << "\n";
+                          << (ir.authorityPromoted ? " [authority升级]" : "")
+                          << (auth == "inferred" ? " [文字未确认→降级]" : "") << "\n";
                 if (ir.authorityPromoted)
                     std::cout << "      ↳ 观察(observed) 可信度高于口述(asserted)，"
                                  "UPDATE 升级为 SUPERSEDE 以保留版本链\n";
@@ -147,7 +160,7 @@ static void printObserve(const CockpitAssistant::ObserveResult& r, int turnNo) {
     }
 
     if (!r.supersedeChain.empty()) {
-        std::cout << "[版本链] observed SUPERSEDE 演化（旧→新，标注 authority）:\n";
+        std::cout << "[版本链] SUPERSEDE 演化（旧→新，标注 authority）:\n";
         for (const auto& m : r.supersedeChain)
             std::cout << "  #" << std::setw(2) << m.id << (m.valid ? " [有效]" : " [失效]")
                       << " [" << m.authority << "]  " << m.content << "\n";
