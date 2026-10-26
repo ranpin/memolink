@@ -111,6 +111,9 @@
   #demo-ck .bubble.user{align-self:flex-end;background:var(--ds-accent);color:#fff;border-bottom-right-radius:4px}
   #demo-ck .bubble.assist{align-self:flex-start;background:var(--ds-code-bg);border:1px solid var(--ds-border);color:var(--ds-text);border-bottom-left-radius:4px}
   #demo-ck .bubble .who{display:block;font-size:10.5px;opacity:.7;margin-bottom:3px;font-weight:600}
+  #demo-ck .bubble.cam{align-self:flex-start;background:var(--ds-code-bg);border:1px solid var(--ds-border);color:var(--ds-text);border-bottom-left-radius:4px;max-width:94%}
+  #demo-ck .cam-frame{display:block;width:100%;max-width:300px;border-radius:8px;border:1px solid var(--ds-border);margin:5px 0 7px}
+  #demo-ck .cam-cap{font-size:12.5px;line-height:1.55;color:var(--ds-text)}
   #demo-ck .memops{background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:14px;display:flex;flex-direction:column;gap:11px;min-height:330px;overflow:hidden}
   #demo-ck .ops-sec{display:flex;flex-direction:column;gap:6px}
   #demo-ck .ops-sec__h{font-size:11px;font-weight:700;color:var(--ds-muted);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:7px}
@@ -139,6 +142,14 @@
   #demo-ck .tag.shared{color:#047857;background:#d1fae5;border-color:#a7f3d0}
   [data-theme="dark"] #demo-ck .tag.private{color:#fca5a5;background:#450a0a;border-color:#7f1d1d}
   [data-theme="dark"] #demo-ck .tag.shared{color:#6ee7b7;background:#022c22;border-color:#065f46}
+  #demo-ck .auth{font-size:10px;padding:1px 6px;border-radius:999px;font-weight:700;border:1px solid;font-family:var(--ds-mono);white-space:nowrap}
+  #demo-ck .auth.observed{color:#0369a1;background:#e0f2fe;border-color:#bae6fd}
+  #demo-ck .auth.asserted{color:#6b7280;background:#f3f4f6;border-color:#e5e7eb}
+  #demo-ck .auth.inferred{color:#9333ea;background:#f3e8ff;border-color:#e9d5ff}
+  [data-theme="dark"] #demo-ck .auth.observed{color:#7dd3fc;background:#082f49;border-color:#0c4a6e}
+  [data-theme="dark"] #demo-ck .auth.asserted{color:#9ca3af;background:#1f2937;border-color:#374151}
+  [data-theme="dark"] #demo-ck .auth.inferred{color:#d8b4fe;background:#3b0764;border-color:#6b21a8}
+  #demo-ck .cam-icon{font-size:11px;opacity:.9;flex:none}
   #demo-ck .mem__score{font-size:10.5px;color:var(--ds-faint);margin-left:auto;font-variant-numeric:tabular-nums}
   #demo-ck .mem__content{font-size:12.5px;color:var(--ds-text);line-height:1.5}
   #demo-ck .mem__lock{font-size:10.5px;color:var(--ds-warn);font-weight:700}
@@ -182,6 +193,10 @@
   #demo-ck .write .act.NOOP{color:var(--ds-faint)}#demo-ck .write .act.UPDATED{color:#1d4ed8}
   [data-theme="dark"] #demo-ck .write .act.CREATED{color:#6ee7b7}
   [data-theme="dark"] #demo-ck .write .act.SUPERSEDED{color:#fbbf24}
+  #demo-ck .write .promoted{color:#0369a1;font-weight:700}
+  #demo-ck .write .downgraded{color:#9333ea;font-weight:700}
+  [data-theme="dark"] #demo-ck .write .promoted{color:#7dd3fc}
+  [data-theme="dark"] #demo-ck .write .downgraded{color:#d8b4fe}
   #demo-ck .chain{display:flex;flex-direction:column;gap:4px;font-size:12px}
   #demo-ck .chain .arrow{color:var(--ds-faint);text-align:center;font-size:11px}
   #demo-ck .noop{font-size:12px;color:var(--ds-faint);font-style:italic}
@@ -275,6 +290,9 @@
               <span class="lg"><i class="sw sw-inv"></i>本轮失效（旧值被取代，保留可回溯）</span>
               <span class="lg"><i class="sw sw-dim"></i>本轮无变化（有变化时压暗）</span>
               <span class="lg"><i class="sw sw-lock"></i>🔒 对当前驾驶员不可见（治理）</span>
+              <span class="lg"><span class="auth observed">observed</span>摄像头观察</span>
+              <span class="lg"><span class="auth inferred">inferred</span>推断（文字未获复读确认）</span>
+              <span class="lg">📷 摄像头来源帧（asserted=口述，默认不标）</span>
             </div>
             <div class="store__body" id="ck-storeBody"></div>
           </div>
@@ -543,6 +561,32 @@
       explain:'<b>⑤ procedural 类型特化检索</b>：「怎么…打开」触发意图识别 → <b>procedural</b>（技能/怎么做），同类型加权把语音操作习惯顶到第一。类型让检索「按需路由」，而不是全类型一锅搜。'
     },
     {
+      driver:'张三', image:'frames/seat_rearfacing.jpg',
+      caption:'车内安装了儿童安全座椅，座椅上固定着一名身穿红色衣服的幼儿，座椅靠背右上角有“PARENTA”字样，座椅安全带穿过幼儿身体并固定在车内。',
+      verification:'看不清', downgraded:1,
+      writes:[
+        {fact:'车内安装了儿童安全座椅',action:'SUPERSEDED',id:44,sim:0.707,sys:'System-2',authority:'observed',promoted:true},
+        {fact:'座椅上固定着一名身穿红色衣服的幼儿',action:'CREATED',id:45,sim:0.413,sys:'System-1',authority:'observed'},
+        {fact:'座椅靠背右上角有“PARENTA”字样',action:'NOOP',id:0,sim:0.503,sys:'System-2',authority:'inferred',downgraded:true},
+        {fact:'座椅安全带穿过幼儿身体并固定在车内',action:'CREATED',id:46,sim:0.447,sys:'System-1',authority:'observed'}
+      ],
+      chain:[{id:31,content:'后备箱常放着一个儿童安全座椅和一个折叠露营椅。',valid:false,authority:'asserted'},
+             {id:44,content:'车内安装了儿童安全座椅',valid:true,authority:'observed'}],
+      explain:'<b>⑥ 多模态观察 + authority 闸门</b>：摄像头帧 → VLM caption（V4 持久状态式）→ 提取器拆出 4 条原子事实。<b>二次确认</b>对同帧做中性定向复读：标签「PARENTA」复读答「看不清」→ 该事实降为 <b>inferred</b>（NOOP 不写库）；其余 3 条 → <b>observed</b>。其中「车内安装了儿童安全座椅」与 seed 里口述的 #31（asserted「后备箱常放着儿童安全座椅」）相似度 0.707 落入模糊地带，System-2 判 UPDATE，<b>authority 闸门把 UPDATE 升级为 SUPERSEDE</b>（observed &gt; asserted）——#31 失效保留、#44 入库建版本链。这是 Q9「authority 从只做过滤升级为参与消解」的真实落地。'
+    },
+    {
+      driver:'张三', user:'我后座装了什么？',
+      response:'后座装了儿童安全座椅。', intent:'semantic',
+      recalled:[
+        {id:44,type:'semantic',scope:'shared',owner:'张三',score:0.784,content:'车内安装了儿童安全座椅',authority:'observed'},
+        {id:46,type:'semantic',scope:'private',owner:'张三',score:0.676,content:'座椅安全带穿过幼儿身体并固定在车内',authority:'observed'},
+        {id:4,type:'semantic',scope:'shared',owner:'张三',score:0.621,content:'空调偏好：夏季 22 度、风量 2 档，喜欢座椅通风。'},
+        {id:18,type:'semantic',scope:'shared',owner:'张三',score:0.618,content:'用户午餐常在车上解决，喜欢点清淡的简餐，不喝含糖饮料。'}
+      ],
+      blocked:[], writes:[], chain:[],
+      explain:'<b>⑦ 视觉接地记忆参与检索</b>：问「后座装了什么」→ 召回摄像头观察到的 <b>observed</b> 记忆 #44（排序分 0.784）+ #46，助手据此作答。多模态写入的记忆与口述记忆同库同检索——视觉观察成了可被问答的一等记忆。'
+    },
+    {
       driver:'李四', user:'导航到张三家的地址',
       response:'抱歉，我这边没有张三家的地址记录。', intent:'semantic',
       recalled:[
@@ -555,7 +599,7 @@
         {id:12,type:'semantic',scope:'private',owner:'张三',content:'用户的孩子在文三路上小学，每天 7:40 需要出发送学。'}
       ],
       writes:[], chain:[],
-      explain:'<b>⑥ 多驾驶员治理拦截</b>：换驾驶员李四后，检索按 <code>(owner=李四) ∪ (scope=shared)</code> 过滤。张三的<b>私人</b>记忆——家庭住址 #41、孩子学校 #12——<b>对李四不可见</b>（右侧红色「拦截」）。助手拿不到地址，如实说没有记录，绝不编造。这是 Q7 治理标签的真实用武之地：共享车辆里，隐私按 owner+scope 强制隔离。'
+      explain:'<b>⑧ 多驾驶员治理拦截</b>：换驾驶员李四后，检索按 <code>(owner=李四) ∪ (scope=shared)</code> 过滤。张三的<b>私人</b>记忆——家庭住址 #41、孩子学校 #12——<b>对李四不可见</b>（右侧红色「拦截」）。助手拿不到地址，如实说没有记录，绝不编造。这是 Q7 治理标签的真实用武之地：共享车辆里，隐私按 owner+scope 强制隔离。'
     },
     {
       driver:'李四', user:'这台车电池多大？满电能跑多少公里？',
@@ -566,13 +610,13 @@
         {id:16,type:'semantic',scope:'shared',owner:'张三',score:0.733,content:'轮胎是 255/45 R20，胎压建议 2.5 bar，上次补胎是 3 月。'}
       ],
       blocked:[], writes:[], chain:[],
-      explain:'<b>⑦ 治理对照（shared 可见）</b>：同样换驾驶员李四，但车辆电池/续航是 <code>scope=shared</code> 的<b>共享</b>记忆，李四正常可见、助手正常回答。与上一轮的私人拦截形成对照——治理不是「一刀切禁访」，而是按 owner+scope 精确放行。'
+      explain:'<b>⑨ 治理对照（shared 可见）</b>：同样换驾驶员李四，但车辆电池/续航是 <code>scope=shared</code> 的<b>共享</b>记忆，李四正常可见、助手正常回答。与上一轮的私人拦截形成对照——治理不是「一刀切禁访」，而是按 owner+scope 精确放行。'
     }
   ];
 
   // 记忆库数据：seed 快照 + 每轮真实变化（由 cockpit_assistant run --dump 的真实全库快照生成，bench/cockpit_demo_store.json）
   const SEED = [[1,"semantic","shared","张三","用户说过他喜欢深蓝色的车，尤其是深蓝和墨蓝。"],[2,"semantic","shared","张三","车辆上次保养是 2026 年 8 月，里程 12000 公里。"],[3,"semantic","private","张三","用户住在杭州西湖区，家庭地址已存入导航常用地点。"],[4,"semantic","shared","张三","空调偏好：夏季 22 度、风量 2 档，喜欢座椅通风。"],[5,"episodic","shared","张三","国庆假期用户计划自驾去千岛湖，已查询过路线和充电桩。"],[6,"semantic","private","张三","用户的手机号尾号 8899，已绑定车机账号。"],[7,"semantic","shared","张三","用户早上通勤喜欢听新闻类播客，常听的是财经和科技频道。"],[8,"procedural","shared","张三","用户习惯用语音打开座椅加热，说“把座椅加热开到三档”。"],[9,"semantic","shared","张三","车辆是纯电动 SUV，电池容量 100 度，满电续航约 620 公里。"],[10,"episodic","shared","张三","上次充电是在公司楼下快充站，充到 90%，花了 45 分钟。"],[11,"semantic","shared","张三","用户不喜欢车内氛围灯太亮，通常调到 30% 暖白色。"],[12,"semantic","private","张三","用户的孩子在文三路上小学，每天 7:40 需要出发送学。"],[13,"procedural","shared","张三","用户常用“导航回家”指令，默认走避开高速的路线。"],[14,"episodic","shared","张三","用户上周五下班路上遇到过严重拥堵，改走了之江路。"],[15,"semantic","shared","张三","用户喜欢把驾驶模式设为舒适模式，动能回收调到中。"],[16,"semantic","shared","张三","轮胎是 255/45 R20，胎压建议 2.5 bar，上次补胎是 3 月。"],[17,"episodic","private","张三","用户曾在车里讨论过换工作的想法，提到在考虑一家自动驾驶公司。"],[18,"semantic","shared","张三","用户午餐常在车上解决，喜欢点清淡的简餐，不喝含糖饮料。"],[19,"procedural","shared","张三","用户停车后习惯让车机自动关窗、折叠后视镜并开启哨兵模式。"],[20,"semantic","shared","张三","车机流量套餐每月 20G，本月已用 12G，主要是音乐和导航。"],[21,"episodic","shared","张三","今天早上用户出门晚了，让助手规划了最快路线并提前开启了空调。"],[22,"semantic","shared","张三","用户晚上开车喜欢把仪表和中控调成深色主题，降低亮度。"],[23,"semantic","private","张三","用户的紧急联系人是配偶，电话已存入车机紧急呼叫。"],[24,"procedural","shared","张三","用户会用“打开露营模式”让空调低功耗运行并关闭锁车提示音。"],[25,"episodic","shared","张三","用户上周参加了一次车友会自驾活动，去了莫干山。"],[26,"semantic","shared","张三","用户通勤路线固定：从西湖区到滨江，早高峰约 40 分钟。"],[27,"semantic","shared","张三","车辆软件版本 v3.2.1，上个月 OTA 升级后新增了城市领航辅助。"],[28,"episodic","shared","张三","用户昨天问过附近哪家咖啡店评分高，助手推荐了一家并导航过去。"],[29,"semantic","shared","张三","用户喜欢香氛系统的海洋香型，浓度调到最低。"],[30,"procedural","shared","张三","用户习惯说“我有点冷”，助手应把空调温度调高两度并开座椅加热。"],[31,"semantic","shared","张三","后备箱常放着一个儿童安全座椅和一个折叠露营椅。"],[32,"episodic","private","张三","用户曾在车内接听过一个关于房贷利率的电话，讨论提前还款。"],[33,"semantic","shared","张三","用户下班路上喜欢听轻音乐放松，音量通常 40%。"],[34,"semantic","shared","张三","车辆保险到期日是 2027 年 1 月，投保的是全险。"],[35,"procedural","shared","张三","用户说“准备出发”时，助手应播报天气、路况和今日日程。"],[36,"episodic","shared","张三","用户本周三预约了 4S 店的免费检测，时间是周六上午。"],[37,"semantic","shared","张三","用户希望助手回答简洁，不要啰嗦，重要信息优先。"],[38,"semantic","private","张三","用户的家庭Wi-Fi密码和公司门禁信息曾口头告知助手，属敏感。"],[39,"episodic","shared","张三","用户昨晚让助手提醒今天早上带伞，因为预报有雨。"],[40,"procedural","shared","张三","用户说“太晒了”时，助手应关闭对应侧车窗并调低该侧空调出风。"]];
-  const DELTAS = [[{"op":"inv","id":3,"by":41},{"op":"add","id":41,"type":"semantic","scope":"private","owner":"张三","content":"用户搬家，家庭地址从西湖区改为滨江区","supersedes":3}],[],[{"op":"add","id":42,"type":"semantic","scope":"private","owner":"张三","content":"用户养了一只名为豆豆的柯基犬","supersedes":0},{"op":"add","id":43,"type":"procedural","scope":"private","owner":"张三","content":"用户每天下班后都要遛豆豆","supersedes":0}],[],[],[],[]];
+  const DELTAS = [[{"op":"inv","id":3,"by":41},{"op":"add","id":41,"type":"semantic","scope":"private","owner":"张三","content":"用户搬家，家庭地址从西湖区改为滨江区","supersedes":3,"authority":"asserted"}],[],[{"op":"add","id":42,"type":"semantic","scope":"private","owner":"张三","content":"用户养了一只名为豆豆的柯基犬","supersedes":0,"authority":"asserted"},{"op":"add","id":43,"type":"procedural","scope":"private","owner":"张三","content":"用户每天下班后都要遛豆豆","supersedes":0,"authority":"asserted"}],[],[],[{"op":"inv","id":31,"by":44},{"op":"add","id":44,"type":"semantic","scope":"shared","owner":"张三","content":"车内安装了儿童安全座椅","supersedes":31,"authority":"observed","sourceImage":"frames/seat_rearfacing.jpg"},{"op":"add","id":45,"type":"semantic","scope":"private","owner":"张三","content":"座椅上固定着一名身穿红色衣服的幼儿","supersedes":0,"authority":"observed","sourceImage":"frames/seat_rearfacing.jpg"},{"op":"add","id":46,"type":"semantic","scope":"private","owner":"张三","content":"座椅安全带穿过幼儿身体并固定在车内","supersedes":0,"authority":"observed","sourceImage":"frames/seat_rearfacing.jpg"}],[],[],[]];
 
   let cur=0, playing=false, timer=null, inited=false;
   const root=document.getElementById('demo-ck');
@@ -581,10 +625,10 @@
   function dbAt(step){
     const db=new Map();
     for(const [id,type,scope,owner,content] of SEED)
-      db.set(id,{id,type,scope,owner,content,valid:true,supersededBy:0,supersedes:0});
+      db.set(id,{id,type,scope,owner,authority:'asserted',sourceImage:'',content,valid:true,supersededBy:0,supersedes:0});
     for(let i=0;i<=step;i++)
       for(const op of DELTAS[i]){
-        if(op.op==='add') db.set(op.id,{id:op.id,type:op.type,scope:op.scope,owner:op.owner,content:op.content,valid:true,supersededBy:0,supersedes:op.supersedes||0});
+        if(op.op==='add') db.set(op.id,{id:op.id,type:op.type,scope:op.scope,owner:op.owner,authority:op.authority||'asserted',sourceImage:op.sourceImage||'',content:op.content,valid:true,supersededBy:0,supersedes:op.supersedes||0});
         else if(op.op==='inv'){const m=db.get(op.id); if(m){m.valid=false;m.supersededBy=op.by;}}
       }
     return db;
@@ -624,6 +668,8 @@
         '<span class="sid">#'+m.id+'</span>'+
         '<span class="tag '+m.type+'">'+m.type+'</span>'+
         '<span class="tag '+m.scope+'">'+(m.scope==='private'?'🔒 private':'shared')+'</span>'+
+        (m.authority&&m.authority!=='asserted'?'<span class="auth '+m.authority+'" title="来源可信度：observed=摄像头观察 / asserted=驾驶员口述 / inferred=推断（文字未获复读确认）">'+m.authority+'</span>':'')+
+        (m.sourceImage?'<span class="cam-icon" title="来源帧: '+esc(m.sourceImage)+'">📷</span>':'')+
         '<span class="sowner">'+m.owner+'</span>'+
         '<span class="scontent">'+esc(m.content)+'</span>'+
         status+'</div>';
@@ -640,6 +686,7 @@
         '<span class="mem__id">#'+m.id+'</span>'+
         '<span class="tag '+m.type+'">'+m.type+'</span>'+
         '<span class="tag '+m.scope+'">'+(m.scope==='private'?'🔒 private':'shared')+'</span>'+
+        (m.authority?'<span class="auth '+m.authority+'" title="来源可信度：observed=摄像头观察 / asserted=驾驶员口述 / inferred=推断（未获复读确认）">'+m.authority+'</span>':'')+
         (m.score!=null?'<span class="mem__score" title="排序分 = 余弦相似度 × 同类型加权 1.6 × episodic 时间衰减 exp(-age/365d)；不是裸余弦，可大于 1">排序分 '+m.score.toFixed(3)+'</span>':'')+
       '</div>'+
       '<div class="mem__content">'+esc(m.content)+'</div>'+
@@ -648,32 +695,53 @@
 
   function renderChat(s){
     const dcls = s.driver==='张三'?'zs':'ls';
-    document.getElementById('ck-chatBody').innerHTML =
-      '<span class="driver '+dcls+'">👤 '+s.driver+'（当前驾驶员）</span>'+
-      '<div class="bubble user"><span class="who">'+s.driver+'</span>'+esc(s.user)+'</div>'+
-      '<div class="bubble assist"><span class="who">座舱助手</span>'+esc(s.response)+'</div>';
+    let h = '<span class="driver '+dcls+'">👤 '+s.driver+'（当前驾驶员）</span>';
+    if(s.image){
+      // Q9 多模态轮：摄像头帧 + VLM caption（观察轮无对话回复）
+      h += '<div class="bubble cam"><span class="who">📷 座舱摄像头</span>'+
+           '<img class="cam-frame" src="'+s.image+'" alt="来源帧">'+
+           '<div class="cam-cap">'+esc(s.caption)+'</div></div>';
+    } else {
+      h += '<div class="bubble user"><span class="who">'+s.driver+'</span>'+esc(s.user)+'</div>'+
+           '<div class="bubble assist"><span class="who">座舱助手</span>'+esc(s.response)+'</div>';
+    }
+    document.getElementById('ck-chatBody').innerHTML = h;
+  }
+
+  function renderWrites(writes){
+    if(!writes.length) return '<div class="noop">无可记事实 → NOOP（查询轮不污染记忆库）</div>';
+    return '<div class="write">'+writes.map(w=>
+      '「'+esc(w.fact)+'」<br>→ <span class="act '+w.action+'">'+w.action+'</span> id='+w.id+
+      ' sim='+w.sim.toFixed(3)+' ['+w.sys+']'+
+      (w.authority?' <span class="auth '+w.authority+'">'+w.authority+'</span>':'')+
+      (w.promoted?' <span class="promoted">[authority升级]</span>':'')+
+      (w.downgraded?' <span class="downgraded">[文字未确认→降级]</span>':'')).join('<br>')+'</div>';
   }
 
   function renderOps(s){
     let h='';
-    h+='<div class="ops-sec"><div class="ops-sec__h">④ 检索 <span class="intent '+s.intent+'">'+s.intent+'</span></div>';
-    h+='<div class="ops-note">排序分 = 余弦相似度 × 同类型加权 1.6 × episodic 时间衰减 exp(-age/365d)——不是裸余弦，可大于 1</div>';
-    h+= s.recalled.length ? s.recalled.map(m=>memCard(m,'')).join('') : '<div class="noop">无可见命中</div>';
-    h+='</div>';
-    if(s.blocked.length){
-      h+='<div class="ops-sec"><div class="ops-sec__h">🔒 治理拦截 <span class="mem__lock">对 '+s.driver+' 不可见</span></div>';
-      h+= s.blocked.map(m=>memCard(m,'blocked')).join('');
+    if(s.image){
+      // Q9 多模态轮：二次确认 → 提取写入 → 版本链（caption 已在对话面板展示）
+      h+='<div class="ops-sec"><div class="ops-sec__h">🔁 二次确认（中性定向复读）</div>';
+      h+='<div class="ops-note">对同一帧再做一次定向复读，结果:「'+esc(s.verification)+'」'+
+         (s.downgraded?' → '+s.downgraded+' 条文字字段未获确认，authority 降为 <b>inferred</b>':' → 文字字段已确认')+'</div></div>';
+      h+='<div class="ops-sec"><div class="ops-sec__h">①②③ 提取 + 消解写入</div>';
+      h+= renderWrites(s.writes);
+      h+='</div>';
+    } else {
+      h+='<div class="ops-sec"><div class="ops-sec__h">④ 检索 <span class="intent '+s.intent+'">'+s.intent+'</span></div>';
+      h+='<div class="ops-note">排序分 = 余弦相似度 × 同类型加权 1.6 × episodic 时间衰减 exp(-age/365d)——不是裸余弦，可大于 1</div>';
+      h+= s.recalled.length ? s.recalled.map(m=>memCard(m,'')).join('') : '<div class="noop">无可见命中</div>';
+      h+='</div>';
+      if(s.blocked.length){
+        h+='<div class="ops-sec"><div class="ops-sec__h">🔒 治理拦截 <span class="mem__lock">对 '+s.driver+' 不可见</span></div>';
+        h+= s.blocked.map(m=>memCard(m,'blocked')).join('');
+        h+='</div>';
+      }
+      h+='<div class="ops-sec"><div class="ops-sec__h">①②③ 提取 + 消解写入</div>';
+      h+= renderWrites(s.writes);
       h+='</div>';
     }
-    h+='<div class="ops-sec"><div class="ops-sec__h">①②③ 提取 + 消解写入</div>';
-    if(s.writes.length){
-      h+='<div class="write">'+s.writes.map(w=>
-          '「'+esc(w.fact)+'」<br>→ <span class="act '+w.action+'">'+w.action+'</span> id='+w.id+
-          ' sim='+w.sim.toFixed(3)+' ['+w.sys+']').join('<br>')+'</div>';
-    } else {
-      h+='<div class="noop">无可记事实 → NOOP（查询轮不污染记忆库）</div>';
-    }
-    h+='</div>';
     if(s.chain.length){
       h+='<div class="ops-sec"><div class="ops-sec__h">🔗 版本链（非破坏性）</div><div class="chain">';
       s.chain.forEach((m,i)=>{

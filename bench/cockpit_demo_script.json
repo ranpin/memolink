@@ -1,5 +1,5 @@
 {
-  "_comment": "座舱助手 demo 脚本。seed 自 bench/corpus/cockpit.json（owner=张三）。7 轮点亮 memolink 独有机制：①搬家→家庭地址 SUPERSEDE（单值矛盾，旧值失效/新值入库/建版本链）②版本化检索返回当前值 ③新偏好→CREATE ④『上次充电』→episodic 类型特化检索 ⑤『怎么语音开座椅加热』→procedural ⑥换驾驶员李四问张三家地址→治理拦截（private 不可见）⑦李四问车辆电池→shared 可见（治理对照）。查询轮天然 NOOP。",
+  "_comment": "座舱助手 demo 脚本。seed 自 bench/corpus/cockpit.json（owner=张三）。9 轮点亮 memolink 独有机制：①搬家→家庭地址 SUPERSEDE（单值矛盾，旧值失效/新值入库/建版本链）②版本化检索返回当前值 ③新偏好→CREATE ④『上次充电』→episodic 类型特化检索 ⑤『怎么语音开座椅加热』→procedural ⑥【Q9 多模态】摄像头观察后座→VLM caption→二次确认→observed 记忆入库（标签文字复读不一致→降为 inferred）⑦『我后座装了什么』→检索 observed 记忆作答 ⑧换驾驶员李四问张三家地址→治理拦截（private 不可见）⑨李四问车辆电池→shared 可见（治理对照）。查询轮天然 NOOP。",
   "seed": {
     "corpus": "../bench/corpus/cockpit.json",
     "owner": "张三"
@@ -29,6 +29,16 @@
       "_demo": "procedural 类型特化检索：意图路由到 procedural",
       "driver": "张三",
       "text": "座椅加热怎么用语音打开？"
+    },
+    {
+      "_demo": "【Q9 多模态】摄像头观察后座：VLM caption（V4 持久状态式）→ 提取器拆原子事实 → 二次确认（中性定向复读）→ 文字字段复读不一致的降为 inferred，其余 observed 入库，source_image 记录来源帧",
+      "driver": "张三",
+      "image": "../docs/frames/seat_rearfacing.jpg"
+    },
+    {
+      "_demo": "【Q9 多模态】检索：问后座装了什么 → 召回摄像头观察到的 observed 记忆作答（视觉接地的记忆参与检索）",
+      "driver": "张三",
+      "text": "我后座装了什么？"
     },
     {
       "_demo": "治理拦截：李四问张三的私人家庭地址，scope=private 对李四不可见",
