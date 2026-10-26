@@ -1,0 +1,271 @@
+[
+ {
+  "file": "sign_level2a.jpg",
+  "cat": "text-sign",
+  "gt": [
+   "2A"
+  ],
+  "hits": [
+   [
+    "2A",
+    true
+   ]
+  ],
+  "caption": "画面中有一个橙色标牌，标牌上从左至右清晰显示文字“2 A”，标牌四角各有一个螺丝固定。",
+  "wall": 1.2,
+  "size": [
+   640,
+   480
+  ],
+  "desc": "Sign denoting Level 2A at Huntington parking garage",
+  "lic": "CC BY-SA 4.0",
+  "artist": "Ser Amantio di Nicolao"
+ },
+ {
+  "file": "sign_stairb_level3.jpg",
+  "cat": "text-sign",
+  "gt": [
+   "Stair B",
+   "Level 3"
+  ],
+  "hits": [
+   [
+    "Stair B",
+    true
+   ],
+   [
+    "Level 3",
+    true
+   ]
+  ],
+  "caption": "画面中显示一个标牌，标牌上文字为“Stair B”、“Level 3”、“EXIT DISCHARGE LEVEL 1”和“STAIR”。",
+  "wall": 1.1,
+  "size": [
+   359,
+   640
+  ],
+  "desc": "RTD Westminster Station garage, Stair B Level 3 sign",
+  "lic": "CC BY-SA 4.0",
+  "artist": "Xnatedawgx"
+ },
+ {
+  "file": "speed20.jpg",
+  "cat": "text-sign",
+  "gt": [
+   "20"
+  ],
+  "hits": [
+   [
+    "20",
+    false
+   ]
+  ],
+  "caption": "画面中不存在座舱摄像头拍摄的车辆或乘员，仅可见户外道路旁的限速标志，标志牌上文字为“SPEED LIMIT 2.0”。",
+  "wall": 1.2,
+  "size": [
+   426,
+   640
+  ],
+  "desc": "Speed Limit 20 sign, Commercial Drive, Southbridge MA",
+  "lic": "CC0",
+  "artist": "Peter Cooper Jr."
+ },
+ {
+  "file": "speed30nl.jpg",
+  "cat": "text-sign",
+  "gt": [
+   "30"
+  ],
+  "hits": [
+   [
+    "30",
+    true
+   ]
+  ],
+  "caption": "画面中不存在座舱摄像头拍摄的车辆或乘员，仅可见一个交通标志牌，标志牌上文字为“ZONE”和“30”，标志牌旁有一盏路灯，背景为砖砌建筑和天空，无车辆或乘员相关内容。",
+  "wall": 1.7,
+  "size": [
+   640,
+   426
+  ],
+  "desc": "A 30km/h speed limit sign in Hengelo, Overijssel",
+  "lic": "CC BY 4.0",
+  "artist": "Mart de Groot"
+ },
+ {
+  "file": "sign_staira_lv2.jpg",
+  "cat": "text-sign",
+  "gt": [
+   "Stair A",
+   "Level 2"
+  ],
+  "hits": [
+   [
+    "Stair A",
+    true
+   ],
+   [
+    "Level 2",
+    true
+   ]
+  ],
+  "caption": "墙上贴有橙色标牌，标牌上文字为“Level 2 Stair A Remove Valuables Lock Your Car Not Responsible for Valuables and Contents”。",
+  "wall": 1.2,
+  "size": [
+   640,
+   480
+  ],
+  "desc": "Sign for Stair A, Level 2 of Huntington parking garage",
+  "lic": "CC BY-SA 4.0",
+  "artist": "Ser Amantio di Nicolao"
+ },
+ {
+  "file": "floor7.jpg",
+  "cat": "text-sign",
+  "gt": [
+   "7"
+  ],
+  "hits": [
+   [
+    "7",
+    true
+   ]
+  ],
+  "caption": "墙上悬挂着一块标有“LEVEL 7 SEVEN”的装饰性铭牌。",
+  "wall": 0.7,
+  "size": [
+   640,
+   495
+  ],
+  "desc": "Sign identifying the seventh floor of Venetian parking garage",
+  "lic": "CC BY-SA 4.0",
+  "artist": "Eric Polk"
+ },
+ {
+  "file": "neon_boulevard.jpg",
+  "cat": "hard-night",
+  "gt": [
+   "Boulevard"
+  ],
+  "hits": [
+   [
+    "Boulevard",
+    true
+   ]
+  ],
+  "caption": "画面中不存在车辆或乘员，也无座舱摄像头拍摄的车内场景，仅显示一座建筑的霓虹灯招牌，招牌上文字为“BOULEVARD Hotel”，建筑外墙为红色，招牌轮廓由橙色霓虹灯勾勒，右侧可见棕榈叶轮廓，背景为黑色夜空。",
+  "wall": 2.1,
+  "size": [
+   640,
+   427
+  ],
+  "desc": "Neon sign of the Boulevard Hotel, Ocean Drive Miami Beach",
+  "lic": "Public domain",
+  "artist": "Radomianin"
+ },
+ {
+  "file": "faded_ponyexpress.jpg",
+  "cat": "hard-faded",
+  "gt": [],
+  "hits": [],
+  "caption": "画面中是一个黄铜色的圆形铭牌，铭牌上刻有文字，顶部可见“the station”字样，铭牌边缘有四个黑色固定螺栓，铭牌周围是碎石地面。",
+  "wall": 1.4,
+  "size": [
+   640,
+   360
+  ],
+  "desc": "A worn sign details history of Simpson Springs station",
+  "lic": "Public domain",
+  "artist": "BLMUtah"
+ },
+ {
+  "file": "faded_welaka.jpg",
+  "cat": "hard-faded",
+  "gt": [],
+  "hits": [],
+  "caption": "画面中车辆的右侧后视镜可见，车辆正行驶在一条铺装路面上，路边有绿色植被和树木，路旁立有一块棕色标牌，标牌上可见文字“BEAR CREEK TRAIL”和“BEAR CREEK TRAILHEAD”，下方有“BEAR CREEK TRAILHEAD”字样，标牌下方还有一行小字“BEAR CREEK TRAILHEAD”，但其余文字因模糊看不清。",
+  "wall": 3.0,
+  "size": [
+   640,
+   480
+  ],
+  "desc": "Worn out sign at Welaka State Forest HQ entrance",
+  "lic": "CC BY-SA 4.0",
+  "artist": "DanTD"
+ },
+ {
+  "file": "floor_indicator.jpg",
+  "cat": "text-sign",
+  "gt": [],
+  "hits": [],
+  "caption": "电梯轿厢内壁上方的显示屏显示数字“1”，其下方左侧有“DOVER”标识，右侧有“CAPACITY 2100 LBS.”字样。",
+  "wall": 1.2,
+  "size": [
+   640,
+   480
+  ],
+  "desc": "Floor indicator in Dover Elevator, Port Charlotte HS C building",
+  "lic": "CC BY-SA 3.0",
+  "artist": "PCHS-NJROTC"
+ },
+ {
+  "file": "dash_parkingbrake.jpg",
+  "cat": "scene",
+  "gt": [],
+  "hits": [],
+  "caption": "车辆驻车制动按钮亮起，仪表盘上显示“P”档位指示灯为黄色，档位旋钮当前位于“0”档位，旋钮周围标有“P”、“R”、“N”、“D”等档位标识。",
+  "wall": 1.7,
+  "size": [
+   640,
+   427
+  ],
+  "desc": "Amber parking brake warning light glows on car dashboard",
+  "lic": "CC BY 2.0",
+  "artist": "Shixart1985"
+ },
+ {
+  "file": "seat_rearfacing.jpg",
+  "cat": "scene",
+  "gt": [],
+  "hits": [],
+  "caption": "车内安装了儿童安全座椅，座椅上坐着一个身穿红色衣服的幼儿，座椅靠背上有“PARENTA”字样，座椅旁可见方向盘和仪表盘，座椅下方有蓝色系带。",
+  "wall": 1.4,
+  "size": [
+   640,
+   480
+  ],
+  "desc": "Rear-facing infant car seat",
+  "lic": "CC BY-SA 3.0",
+  "artist": "Pieter Kuiper"
+ },
+ {
+  "file": "parkingspace_cc0.jpg",
+  "cat": "scene",
+  "gt": [],
+  "hits": [],
+  "caption": "画面中不存在座舱摄像头拍摄的车内场景，仅显示外部停车场及道路环境，因此无法记录车辆或乘员的持久状态或固定配置。",
+  "wall": 1.1,
+  "size": [
+   640,
+   480
+  ],
+  "desc": "Parking space at I-10 rest area, Suwannee County FL",
+  "lic": "CC0",
+  "artist": "DanTD"
+ },
+ {
+  "file": "dash_vfd.jpg",
+  "cat": "scene",
+  "gt": [],
+  "hits": [],
+  "caption": "仪表盘显示速度为0 MPH，燃油经济性为25.6 MILES/GAL，档位为P R N D 2，且“ANTHI-LOCK”、“BRAKE”、“CHECK ENGINE”灯亮起，燃油量指示器显示“FUEL FILL”，“UNLEADED FUEL ONLY”字样可见。",
+  "wall": 2.2,
+  "size": [
+   640,
+   372
+  ],
+  "desc": "Digital dashboard cluster of Mercury Grand Marquis, three VFD displays",
+  "lic": "CC BY-SA 3.0",
+  "artist": "Ruben de Rijcke"
+ }
+]
