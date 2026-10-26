@@ -242,6 +242,41 @@ static void testResolverPath(MemoryStore& store) {
     check(!r.blockedByAuthority, "D4 无冲突时 blockedByAuthority=false");
 }
 
+// ---------------------------------------------------------------------------
+// E. 同图批次隔离：同一 source_image 拆出的多条事实不互相比对（§8.6 问题 1 的修复）。
+//    确定性、无需 LLM：过滤后 matches 为空 → 必然 CREATE 且 sim=0。
+// ---------------------------------------------------------------------------
+static void testSameImageBatch(MemoryStore& store) {
+    std::cout << "\n-- E. 同图批次隔离（同一 source_image 不互相取代）--" << std::endl;
+    MemoryResolver resolver(store, /*llm=*/nullptr);
+
+    const auto r1 = store.ingestText("车内安装了儿童安全座椅", MemoryType::Semantic,
+                                     "张三", "private", "observed",
+                                     "cockpit-cam", 0, /*validFrom=*/"", "/img/seat.jpg");
+    check(r1.action == MemoryAction::Created && r1.id > 0, "E1 首条 observed 事实入库");
+
+    // 候选与 id=1 近义改写，保证 id=1 是跨来源时的最高相似匹配。
+    // 注：C/D 段已入库的记忆仍在库里，过滤只移除同图记忆，故用相对比较而非「恰为 0」。
+    const std::string cand = "车内装了一个儿童安全座椅，是给孩子坐的";
+
+    // 跨来源（sourceImage 为空 → 不过滤）：应匹配到 id=1，相似度较高
+    const auto d_diff = resolver.resolve(cand, MemoryType::Semantic, "observed", "");
+    check(d_diff.similarity > 0.f, "E2 跨来源：不过滤，能匹配到同图记忆",
+          "sim=" + std::to_string(d_diff.similarity));
+
+    // 同图批次（sourceImage 相同 → 过滤掉 id=1）：相似度应更低
+    const auto d_same = resolver.resolve(cand, MemoryType::Semantic, "observed", "/img/seat.jpg");
+    check(d_same.similarity < d_diff.similarity,
+          "E3 同图批次：同图记忆被过滤 → 相似度低于跨来源",
+          "same=" + std::to_string(d_same.similarity) + " < diff=" + std::to_string(d_diff.similarity));
+
+    // 不同 sourceImage → 不过滤（不同图可以互相取代），相似度应高于被过滤的同图批次
+    const auto d_other = resolver.resolve(cand, MemoryType::Semantic, "observed", "/img/other.jpg");
+    check(d_other.similarity > d_same.similarity,
+          "E4 不同图：不过滤，相似度高于被过滤的同图批次",
+          "other=" + std::to_string(d_other.similarity) + " > same=" + std::to_string(d_same.similarity));
+}
+
 int main(int argc, char** argv) {
     std::cout << "=== Q9 authority 感知消解 + source_image 溯源 验证 ===" << std::endl;
 
@@ -264,6 +299,7 @@ int main(int argc, char** argv) {
     } else {
         testStorePath(storage, store);
         testResolverPath(store);
+        testSameImageBatch(store);
     }
 
     std::cout << "\n=== 结果: " << g_pass << " PASS / " << g_fail << " FAIL ===" << std::endl;

@@ -47,9 +47,13 @@ public:
     // llm 可为 nullptr：此时 System-2 直接走回退 CREATE（用于离线/无模型测试）
     explicit MemoryResolver(MemoryStore& store, QwenAPI* llm = nullptr);
 
-    // 三层消解：只决策，不写库。authority = 候选记忆的来源可信度（Q9 闸门用）。
+    // 三层消解：只决策，不写库。authority = 候选记忆的来源可信度（Q9 闸门用）；
+    // sourceImage = 视觉来源帧路径——**非空时同图批次内的记忆不参与比对**：同一张图
+    // 拆出的多条事实是同一时刻的互补观察，不应互相取代（q9_multimodal_plan.md §8.6
+    // 问题 1：实测「车内安装了儿童安全座椅」被同图的「座椅上贴有TAKTRA标签」作废）。
     ResolveDecision resolve(const std::string& candidate, MemoryType type,
-                            const std::string& authority = "asserted");
+                            const std::string& authority = "asserted",
+                            const std::string& sourceImage = "");
 
     // 消解 + 落库。sourceImage = Q9 视觉来源帧路径（caption-then-embed 的溯源附件）。
     IngestResult ingest(const std::string& candidate, MemoryType type,

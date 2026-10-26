@@ -1,6 +1,7 @@
 #include "memory/core/MemoryResolver.h"
 #include "infra/llm/QwenAPI.h"
 #include <json/json.h>
+#include <algorithm>
 #include <sstream>
 #include <iostream>
 
@@ -93,7 +94,8 @@ void MemoryResolver::applyAuthorityGate(ResolveDecision& d, const Memory& target
 }
 
 ResolveDecision MemoryResolver::resolve(const std::string& candidate, MemoryType type,
-                                        const std::string& authority) {
+                                        const std::string& authority,
+                                        const std::string& sourceImage) {
     ResolveDecision d;
     if (candidate.empty()) {
         d.action = MemoryAction::Failed;
@@ -108,14 +110,28 @@ ResolveDecision MemoryResolver::resolve(const std::string& candidate, MemoryType
         return d;
     }
 
-    // 与同类型、当前有效的记忆比对（不含历史版本；消解只关心现行记忆）
-    const std::vector<Memory> matches =
-        store_.searchByEmbedding(emb, kSystem2TopK, type, /*includeHistory=*/false);
+    // 与同类型、当前有效的记忆比对（不含历史版本；消解只关心现行记忆）。
+    // Q9：sourceImage 非空时**过滤掉同一张图批次的记忆**——同一张图拆出的多条事实是
+    // 同一时刻的互补观察，不应互相取代（q9_multimodal_plan.md §8.6 问题 1：实测
+    // 「车内安装了儿童安全座椅」被同图的「座椅上贴有TAKTRA标签」SUPERSEDE 作废）。
+    // 多取一些再过滤，避免过滤后丢掉真正该比对的跨来源记忆。
+    const int searchK = sourceImage.empty() ? kSystem2TopK : kSystem2TopK * 4;
+    std::vector<Memory> matches =
+        store_.searchByEmbedding(emb, searchK, type, /*includeHistory=*/false);
+    if (!sourceImage.empty()) {
+        matches.erase(std::remove_if(matches.begin(), matches.end(),
+                                     [&](const Memory& m) { return m.sourceImage == sourceImage; }),
+                      matches.end());
+        if (matches.size() > static_cast<size_t>(kSystem2TopK))
+            matches.resize(kSystem2TopK);
+    }
 
     if (matches.empty()) {
         d.action = MemoryAction::Created;
         d.similarity = 0.f;
-        d.reason = "System-1: 空库/无同类型记忆 → CREATE";
+        d.reason = sourceImage.empty()
+            ? "System-1: 空库/无同类型记忆 → CREATE"
+            : "System-1: 仅同图批次记忆、无跨来源冲突 → CREATE";
         return d;
     }
 
@@ -235,7 +251,7 @@ IngestResult MemoryResolver::ingest(const std::string& candidate, MemoryType typ
                                     const std::string& authority,
                                     const std::string& sourceSession, int sourceTurn,
                                     const std::string& sourceImage) {
-    const ResolveDecision d = resolve(candidate, type, authority);
+    const ResolveDecision d = resolve(candidate, type, authority, sourceImage);
 
     IngestResult r;
     r.similarity = d.similarity;
