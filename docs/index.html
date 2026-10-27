@@ -154,7 +154,11 @@
   #demo-ck .mem__content{font-size:12.5px;color:var(--ds-text);line-height:1.5}
   #demo-ck .mem__lock{font-size:10.5px;color:var(--ds-warn);font-weight:700}
   #demo-ck .store{grid-column:1/-1;background:var(--ds-panel);border:1px solid var(--ds-border);border-radius:var(--ds-radius);padding:14px}
-  #demo-ck .store__h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  #demo-ck .store__h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px;cursor:pointer;user-select:none}
+  #demo-ck .store__chevron{margin-left:auto;font-size:11px;color:var(--ds-muted);transition:transform .2s;flex:none}
+  #demo-ck .store.collapsed .store__chevron{transform:rotate(-90deg)}
+  #demo-ck .store.collapsed .store__collapsible{display:none}
+  #demo-ck .store.collapsed .store__h{margin-bottom:0}
   #demo-ck .store__h .t{font-size:12px;font-weight:700;color:var(--ds-muted);text-transform:uppercase;letter-spacing:.06em}
   #ck-storeCount{font-size:12.5px;color:var(--ds-muted)}
   #demo-ck .store__legend{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 10px;font-size:11.5px;color:var(--ds-muted)}
@@ -202,6 +206,7 @@
   #demo-ck .noop{font-size:12px;color:var(--ds-faint);font-style:italic}
   #demo-ck .explain{grid-column:1/-1;background:var(--ds-accent-soft);border:1px solid var(--ds-accent-ring);border-radius:10px;padding:12px 15px;font-size:13.5px;line-height:1.65;color:var(--ds-text)}
   #demo-ck .explain b{color:var(--ds-accent-strong)}
+  #demo-ck .ctrl-bar{position:sticky;bottom:0;z-index:20;background:var(--ds-bg);border-top:1px solid var(--ds-border);box-shadow:0 -3px 10px rgba(0,0,0,.05);padding:10px 0 8px;margin-top:14px;display:flex;flex-direction:column;gap:6px}
   #demo-ck .ctrl{grid-column:1/-1;display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap}
   #demo-ck .ctrl button{font-size:13px;font-weight:600;padding:7px 18px;border-radius:8px;cursor:pointer;border:1px solid var(--ds-border);background:var(--ds-panel);color:var(--ds-text);transition:all .15s}
   #demo-ck .ctrl button:hover:not(:disabled){border-color:var(--ds-accent);color:var(--ds-accent-strong)}
@@ -283,20 +288,24 @@
             <div class="chat__h">本轮记忆操作</div>
             <div id="ck-opsBody" style="display:flex;flex-direction:column;gap:11px;flex:1;overflow-y:auto"></div>
           </div>
-          <div class="store">
-            <div class="store__h"><span class="t">记忆库 · memory 表全库状态（每轮后）</span><span id="ck-storeCount"></span></div>
-            <div class="store__legend">
-              <span class="lg"><i class="sw sw-add"></i>本轮新增</span>
-              <span class="lg"><i class="sw sw-inv"></i>本轮失效（旧值被取代，保留可回溯）</span>
-              <span class="lg"><i class="sw sw-dim"></i>本轮无变化（有变化时压暗）</span>
-              <span class="lg"><i class="sw sw-lock"></i>🔒 对当前驾驶员不可见（治理）</span>
-              <span class="lg"><span class="auth observed">observed</span>摄像头观察</span>
-              <span class="lg"><span class="auth inferred">inferred</span>推断（文字未获复读确认）</span>
-              <span class="lg">📷 摄像头来源帧（asserted=口述，默认不标）</span>
+          <div class="store collapsed" id="ck-store">
+            <div class="store__h" id="ck-storeToggle"><span class="t">记忆库 · memory 表全库状态（每轮后）</span><span id="ck-storeCount"></span><span class="store__chevron">▼</span></div>
+            <div class="store__collapsible">
+              <div class="store__legend">
+                <span class="lg"><i class="sw sw-add"></i>本轮新增</span>
+                <span class="lg"><i class="sw sw-inv"></i>本轮失效（旧值被取代，保留可回溯）</span>
+                <span class="lg"><i class="sw sw-dim"></i>本轮无变化（有变化时压暗）</span>
+                <span class="lg"><i class="sw sw-lock"></i>🔒 对当前驾驶员不可见（治理）</span>
+                <span class="lg"><span class="auth observed">observed</span>摄像头观察</span>
+                <span class="lg"><span class="auth inferred">inferred</span>推断（文字未获复读确认）</span>
+                <span class="lg">📷 摄像头来源帧（asserted=口述，默认不标）</span>
+              </div>
+              <div class="store__body" id="ck-storeBody"></div>
             </div>
-            <div class="store__body" id="ck-storeBody"></div>
           </div>
           <div class="explain" id="ck-explain"></div>
+        </div>
+        <div class="ctrl-bar">
           <div class="ctrl">
             <button id="ck-btnPrev" type="button">← 上一轮</button>
             <button id="ck-btnPlay" class="primary" type="button">▶ 自动播放</button>
@@ -776,6 +785,17 @@
     document.getElementById('ck-btnPrev').addEventListener('click',()=>step(-1));
     document.getElementById('ck-btnNext').addEventListener('click',()=>step(1));
     document.getElementById('ck-btnPlay').addEventListener('click',togglePlay);
+    const storeEl=document.getElementById('ck-store');
+    document.getElementById('ck-storeToggle').addEventListener('click',()=>{
+      storeEl.classList.toggle('collapsed');
+      if(!storeEl.classList.contains('collapsed')){
+        requestAnimationFrame(()=>{
+          const body=document.getElementById('ck-storeBody');
+          const fc=body.querySelector('.sadd,.sinvfresh');
+          if(fc) body.scrollTop=fc.offsetTop-10;
+        });
+      }
+    });
     render();
   }
   window.__memolinkCkInit = init;
