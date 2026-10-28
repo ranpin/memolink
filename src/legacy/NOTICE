@@ -1,0 +1,20 @@
+memolink — Third-Party Attribution for src/legacy/
+==================================================
+
+The code under this src/legacy/ directory is derived from the MIRIX project:
+
+    MIRIX — https://github.com/Mirix-AI/MIRIX
+    Licensed under the Apache License, Version 2.0
+    http://www.apache.org/licenses/LICENSE-2.0
+
+This legacy code is the original MIRIX desktop memory system (screen/audio
+capture, GUI, API, agents). It has been isolated and excluded from the build
+since 2026-10-22 and is retained on disk for reference only. It is NOT part
+of the active memolink system and is NOT compiled into any memolink binary.
+
+The active memolink system — src/app/, src/memory/, src/infra/ — is original
+work newly written in this repository, licensed under the MIT License (see
+the top-level LICENSE file at the repository root).
+
+This NOTICE preserves the attribution required by Apache License 2.0 §4 for
+the MIRIX-derived code redistributed in this directory.

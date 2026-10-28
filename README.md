@@ -4,7 +4,7 @@
 > - 🧠 **记忆系统生命周期**：<https://ranpin.github.io/memolink/> —— 提取 → 消解 → 检索 → 矛盾更新 → 版本回溯 → 删除
 > - 🚗 **座舱助手**（记忆系统驱动的车载应用）：<https://ranpin.github.io/memolink/#cockpit> —— SUPERSEDE 版本化 + 类型特化检索 + **多驾驶员治理拦截** + **摄像头多模态观察（Q9）**
 
-在 **Jetson Orin** 上离线跑通的**多类型 Agent 记忆系统**：记忆的**提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯**全程在本地完成，不依赖云端。C++ 实现——自写 WordPiece 分词器 + ONNX INT8 推理做本地 embedding（与 HuggingFace 逐 token 对拍 25/25、与 Python onnxruntime 余弦 1.00000000），本地 4B LLM 做矛盾消解与事实提取、本地 Qwen3-VL-4B 做摄像头帧 caption（多模态记忆 Q9）。记忆分层架构参考自 [Mirix-AI/MIRIX](https://github.com/Mirix-AI/MIRIX)（Apache-2.0），**v2 记忆系统本体与端侧推理为本仓库新写**。
+在 **Jetson Orin** 上离线跑通的**多类型 Agent 记忆系统**：记忆的**提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯**全程在本地完成，不依赖云端。C++ 实现——自写 WordPiece 分词器 + ONNX INT8 推理做本地 embedding（与 HuggingFace 逐 token 对拍 25/25、与 Python onnxruntime 余弦 1.00000000），本地 4B LLM 做矛盾消解与事实提取、本地 Qwen3-VL-4B 做摄像头帧 caption（多模态记忆 Q9）。**v2 记忆系统本体与端侧推理均为本仓库新写**。
 
 ## 核心结果（Orin 实测，可复现）
 
@@ -34,9 +34,9 @@ memolink history  <id>                             # 版本链
 memolink stats                                     # 统计
 ```
 
-## 应用示例：座舱助手（app 层第二公民）
+## 应用示例：座舱助手
 
-`cockpit_assistant` 是记忆系统驱动的**车载对话应用**，与 `memolink` CLI 共用同一个记忆核、只依赖 `MemorySystem` 门面——「应用可替换、门面稳定」的活证明。一段多轮对话点亮独有机制：
+`cockpit_assistant` 是记忆系统驱动的**车载对话应用**，与 `memolink` CLI 共用同一个记忆核——同一套记忆系统既能驱动命令行工具，也能驱动车载助手。一段多轮对话点亮独有机制：
 
 - **SUPERSEDE 版本化**：搬家后地址更新，旧值失效保留、`history` 可回溯
 - **类型特化检索**：「上次充电在哪」→ episodic、「座椅加热怎么开」→ procedural
@@ -64,7 +64,7 @@ make -j8 memolink
 ./memolink recall "我的车是什么颜色偏好" --top 3
 ```
 
-> 旧 MIRIX 桌面系统（采集/GUI/API/agents）已整体移入 `src/legacy/` 并**移出构建**（2026-10-22），代码留盘仅作参考；端侧构建只依赖 sqlite3 + curl + jsoncpp + onnxruntime。
+> 旧桌面端系统代码（采集/GUI/API/agents）已整体移入 `src/legacy/` 并**移出构建**（2026-10-22），留盘仅作参考、不参与端侧构建（该目录第三方代码署名见 `src/legacy/NOTICE`）；端侧构建只依赖 sqlite3 + curl + jsoncpp + onnxruntime。
 
 ## 文档
 
