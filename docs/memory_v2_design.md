@@ -407,7 +407,7 @@ memolink stats
 | **Q4** | **提取阶段**（受约束结构化输出） | 用 LongMemEval `has_answer` 金标测查全/查准 + **编造率** | ✅ 编造率 3.7%（上界）、查全 56.7%、JSON 解析 98.4%（见 §6） |
 | **Q5** | **LongMemEval 接入**：英文模型（bge-small-en-v1.5 INT8）+ 数据加载 + turn/session 级召回评测 | 跑出 recall@k / MRR；**同一二进制只改 config 即切换中英** | ✅ config-swap 验证（test_edge_embedding 5/5、dim=384）+ s 变体 recall@10=0.7822 / MRR=0.6203（见 §12.1） |
 | **Q6** | CLI 八命令 + 在 Orin 录真实转录 → demo 页重建为**生命周期演示**（分步回放，非指标陈列） | 命令全跑通；线上 URL + Playwright 验证 | ✅ 八命令 Orin 全跑通（含 System-2 SUPERSEDE sim=0.767 + 非破坏性版本链）；demo 页重建为 11 步真实转录分步回放，线上 URL Playwright 23/23 无控制台错误 |
-| **Q7** | 治理标签三元组过滤 + 强度衰减淘汰 | 治理过滤（owner/scope/authority）+ 淘汰按强度（episodic 先 / procedural 后）有测试 | ✅ test_memory_governance 21/21（Orin 实跑）：三元标签过滤 + 类型优先级淘汰 + reinforce 耐淘汰 + updated_at 时间衰减 |
+| **Q7** | 治理标签三元组过滤 + 强度衰减淘汰 | 治理过滤（owner/scope/authority）+ 淘汰按强度（episodic 先 / procedural 后）有测试 | ✅ test_memory_governance 27/27（Orin 实跑）：三元标签过滤 + 类型优先级淘汰 + reinforce 耐淘汰 + updated_at 时间衰减 |
 | **Q9** | 多模态记忆（方案 A：帧→VLM caption→既有提取/消解管线，authority=observed + source_image）+ **authority 感知消解**（observed>asserted>inferred 参与裁决，从仅检索期过滤升级为消解决策） | M2 authority 裁决正确率（冲突场景集）+ M3 既有闸门不回归 + M4 caption 可靠性（编造 M4a / 误读 M4b 分开报） | ✅ M2 18/18（win5/block4/promote4/control3/inferred2，70 断言，复跑一致）；M3 不回归（Q2 30 场景全同 authority、闸门零触发，五分类仍 21/30；Q1/Q3/Q7 复跑一致）；M4b 关键字段 8/9（14 帧 Commons 真实图，640 长边）、M4a 未见明确编造（真值粒度所限报不出精确率）；E4b 缓解=钉分辨率 `--image-max-tokens 300` + 二次确认未复读字段降 inferred；单元 test_multimodal_authority 40/40。拦下方向真机 demo 受提取器既有限制未演示（机制层 18/18 已验）。详见 [Q9 方案](q9_multimodal_plan.md) |
 
 **Q2 与 Q4 是技术风险所在**（本地 4B 的分类与提取准确率未知，已知它会编造）。Q5 是可信度跃升最大的一环（自证 GT → 公开基准）。**Q9 把 authority 从检索期过滤升级为消解决策**——摄像头观察（observed）与口述（asserted）冲突时按可信度裁决而非按相似度裁决；其新风险是 VLM caption 误读会以最高可信度静默写库，故 E4b（钉分辨率 + 二次确认降级）设为硬缓解。

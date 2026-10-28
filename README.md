@@ -16,7 +16,7 @@
 | **Q4** | 受约束提取（本地 4B，JSON 数组输出） | 编造率 **3.7%**（上界）、答案查全 56.7%、JSON 解析 98.4% |
 | **Q5** | LongMemEval 接入 + 跨语言 config-only 切换 | s 变体 recall@10=0.78 / MRR=0.62；中英切换 5/5（dim 512↔384） |
 | **Q6** | `memolink` CLI 八命令 + 生命周期 demo | 八命令 Orin 全跑通；线上 Playwright 23/23 |
-| **Q7** | 治理标签过滤 + 强度衰减淘汰 | test_memory_governance 21/21（owner/scope/authority 过滤 + episodic 先淘汰 / procedural 最后） |
+| **Q7** | 治理标签过滤 + 强度衰减淘汰 | test_memory_governance 27/27（owner/scope/authority 过滤 + episodic 先淘汰 / procedural 最后） |
 | **Q9** | 多模态记忆（帧→VLM caption→observed 记忆）+ authority 感知消解 | M2 authority 裁决 **18/18**（冲突场景集）；M3 既有闸门不回归；M4b 关键字段 **8/9**（14 帧 Commons 真实图）+ 钉分辨率 + 二次确认降级；详见 [Q9 方案](docs/q9_multimodal_plan.md) |
 
 数字均由仓库内程序在 Orin 实跑生成、可复现，与 LLM 生成解耦。**生命周期五操作、三层消解、类型特化检索、治理与淘汰、authority 感知消解与多模态记忆等机制细节，以及诚实边界、跨域扩展**详见 [v2 设计文档](docs/memory_v2_design.md)。

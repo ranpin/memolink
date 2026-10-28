@@ -18,7 +18,7 @@
 | **Q4** | `bench/extract_eval.py` | 受约束提取（本地 4B，JSON 数组输出） | 编造率 **3.7%**（上界）、答案查全 56.7%、JSON 解析 98.4% |
 | **Q5** | `test_longmemeval_retrieval` | LongMemEval 接入 + 跨语言 config-only 切换 | s 变体 recall@10=0.7822 / MRR=0.6203；中英切换 5/5（dim 512↔384） |
 | **Q6** | `memolink` CLI + demo 页 | 八命令串完整管线 + 生命周期回放 | 八命令 Orin 全跑通；线上 Playwright 23/23 无控制台错误 |
-| **Q7** | `test_memory_governance` | 治理标签过滤 + 强度衰减淘汰 | 21/21（owner/scope/authority 过滤 + episodic 先淘汰 / procedural 最后 + reinforce 耐淘汰） |
+| **Q7** | `test_memory_governance` | 治理标签过滤 + 强度衰减淘汰 | 27/27（owner/scope/authority 过滤 + episodic 先淘汰 / procedural 最后 + reinforce 耐淘汰） |
 
 > Q4 是 Python 评测脚本（`bench/extract_eval.py`），用 LongMemEval oracle 确定性分层子集（30 题/每题型前 5）评测本地 4B 的受约束提取；其余闸门为 C++ 测试可执行文件。
 
