@@ -328,7 +328,7 @@
       </div>
       <p class="note">Q1–Q7 闸门全部在 Orin 真机跑通：版本化 CRUD（Q1，41/41 单测）、五操作消解（Q2，五分类 70% / 可记四类 84% / 目标定位 14/14）、类型特化检索（Q3，v2 基准 hit@1 +31.2pp、episodic 3/8→8/8）、受约束提取（Q4，编造率 3.7%）、LongMemEval 英文模型 config-only swap（Q5，dim 384、5/5）、多驾驶员治理（Q7，GovernanceFilter owner/scope/authority 过滤 + 强度衰减淘汰 + strict fail-closed，<code>test_memory_governance</code> 全过）。详见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>。</p>
 
-      <p style="font-weight:700;font-size:14.5px;color:var(--ds-text);margin:26px 0 6px">设计取舍的实测佐证 · 为什么用精确检索、INT8 embedding</p>
+      <p style="font-weight:700;font-size:14.5px;color:var(--ds-text);margin:26px 0 6px;text-indent:0">设计取舍的实测佐证 · 为什么用精确检索、INT8 embedding</p>
       <p class="sec-note" style="margin:0 0 4px">下面两组数字来自一个独立的 Python/faiss 原型（<a href="https://github.com/ranpin/edge-agent-memory">edge-agent-memory</a>，完整基准与复现见其仓库），<b>非 memolink 自身 C++/SQLite 实现的测量</b>——绝对值不直接迁移，但结论与 memolink 的设计选择一致，作为「为什么这么选」的实测依据。</p>
       <div class="tbl-wrap">
         <table class="tbl">
