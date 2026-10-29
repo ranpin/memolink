@@ -319,6 +319,7 @@
 
     <section class="ds-section" id="results">
       <h2 class="ds-h2">评测结果</h2>
+      <p class="sec-note">测试数据集：自建中文车载记忆基准——v1 集（24 条记忆、18 条查询，跨类型话题互异）与 v2 集（16 条记忆，含 episodic「近期 vs 久远」近重复对）；System-2 消解五分类用 30 个构造场景（Q2），受约束提取编造率（Q4）与英文模型 config-only swap（Q5）用 LongMemEval，多驾驶员治理（Q7）用仓库内 <code>test_memory_governance</code> 测试集；末尾的检索规模实验另用独立 Python/faiss 原型构造 1,000 / 10,000 / 100,000 条记忆三档（来源见下方标注）。</p>
       <p class="sec-note">上面的演示是「能看见功能在跑」；这里是「跑得多好」的量化证据。统计卡数字由仓库内程序在 Orin 上实跑生成、可复现（<code>bench/results/*.json</code>）；末尾另附一组独立原型的检索/embedding 取舍实测作为设计佐证（来源已标注）。</p>
       <div class="stats">
         <div class="stat"><div class="v">5<small> 操作</small></div><div class="k">CREATE/UPDATE<br>REINFORCE/SUPERSEDE/NOOP</div></div>
@@ -332,6 +333,7 @@
       <p class="sec-note" style="margin:0 0 4px">下面两组数字来自一个独立的 Python/faiss 原型（<a href="https://github.com/ranpin/edge-agent-memory">edge-agent-memory</a>，完整基准与复现见其仓库），<b>非 memolink 自身 C++/SQLite 实现的测量</b>——绝对值不直接迁移，但结论与 memolink 的设计选择一致，作为「为什么这么选」的实测依据。</p>
       <div class="tbl-wrap">
         <table class="tbl">
+          <caption>表 1 · 精确检索 vs HNSW：三档记忆规模下的延迟 / recall / 建索引耗时（512 维 · recall@5 · 独立 faiss 原型实测）</caption>
           <tr><th>检索方式（512 维 · recall@5）</th><th>N=1,000</th><th>N=10,000</th><th>N=100,000</th></tr>
           <tr><td class="rowh">精确 faiss flat · 延迟 / recall</td><td>0.127ms / 1.0</td><td>0.787ms / 1.0</td><td>6.63ms / 1.0</td></tr>
           <tr><td class="rowh">HNSW ef=64 · 延迟 / recall</td><td>0.074ms / 0.998</td><td>0.171ms / 1.0</td><td>0.139ms / 1.0</td></tr>
@@ -346,6 +348,7 @@
       <p class="sec-note">记忆生命周期全程在本地完成：提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯。座舱域天然把这些机制变成「看得见、且非它不可」的功能——而不是一个套了记忆库的聊天机器人。细节见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>（含诚实边界与复现）。</p>
       <div class="tbl-wrap">
         <table class="tbl">
+          <caption>表 2 · 记忆系统核心机制与做法</caption>
           <tr><th>机制</th><th>做法</th></tr>
           <tr><td class="rowh">双过程消解</td><td>System-1 确定性规则（空库/无同类型→CREATE、逐字重复→REINFORCE）处理约 32%；相似度落入模糊地带的交给 System-2 本地 4B LLM 五分类（CREATE/UPDATE/REINFORCE/SUPERSEDE/NOOP）</td></tr>
           <tr><td class="rowh">类型特化检索</td><td>查询意图路由 + 同类型加权（×1.6）+ 时间衰减——v2 基准 hit@1 +31.2pp（episodic 3/8→8/8）。「上次充电在哪」路由到 episodic、「座椅加热怎么开」路由到 procedural，不是全类型一锅搜</td></tr>
