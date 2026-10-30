@@ -49,7 +49,7 @@ make -j8 cockpit_assistant                                    # 构建（需 EDG
 ./cockpit_assistant chat --owner 张三                          # 交互式
 ```
 
-> **诚实边界**：消解与提取由本地 4B 完成、有已知误差（五分类 ~70%、提取查全 ~57%，详见[设计文档 §15](docs/memory_v2_design.md)），故 demo 脚本用叙述性、单值矛盾的话术让机制稳定触发；治理是检索期访问控制、不是 unlearning（被拦记忆仍在库、对 owner 可见）；回复由本地 qwen3-4b 生成、是跑通闭环的配角而非贡献点（贡献点是记忆系统本身）；**Q9 多模态是「视觉接地的文本记忆」（caption-then-embed），不是跨模态检索/以图搜图，VLM 同为配角、贡献点是 authority 感知消解；caption 误读会以 observed 最高可信度静默写库，二次确认只挡读数漂移、挡不住稳定误读**；单设备、未测热降频与功耗。
+> **诚实边界**：消解/提取由本地 4B 完成、有已知误差；治理是检索期访问控制、不是 unlearning；回复与 Q9 caption 由本地模型生成、是配角而非贡献点（Q9 caption 误读会以 observed 可信度写库）；demo 脚本用叙述性话术让机制稳定触发。完整清单见[设计文档 §15](docs/memory_v2_design.md)。
 
 ## 构建与复现（Orin）
 
@@ -66,8 +66,28 @@ make -j8 memolink
 
 > 旧桌面端系统代码（采集/GUI/API/agents）已整体移入 `src/legacy/` 并**移出构建**（2026-10-22），留盘仅作参考、不参与端侧构建（该目录第三方代码署名见 `src/legacy/NOTICE`）；端侧构建只依赖 sqlite3 + curl + jsoncpp + onnxruntime。
 
+## 仓库结构
+
+```
+src/
+├── app/          应用层：cli/（memolink 八命令）+ cockpit/（座舱助手）
+├── memory/
+│   ├── api/      MemorySystem 门面（应用唯一入口）
+│   └── core/     记忆核：存储 / 消解 / 检索 / 治理 / 淘汰
+├── infra/        基础设施：embedding（ONNX INT8）/ llm（llama-server 客户端）/ storage（SQLite）
+└── legacy/       旧桌面端代码（已移出构建，仅参考；署名见 src/legacy/NOTICE）
+bench/            基准脚本（embed / retrieval / 阈值校准）
+docs/             设计文档（memory_v2_design.md 为权威）+ 展示页（index.html / cockpit.html）
+```
+
 ## 文档
 
 - **[v2 记忆系统设计](docs/memory_v2_design.md)** —— 权威方案 · Q1–Q7 + Q9 闸门 · 实测结果 · 关键机制 · 诚实边界
 - **[Q9 多模态记忆方案](docs/q9_multimodal_plan.md)** —— caption-then-embed · authority 感知消解 · M1–M4 闸门 · caption 实测基线 · 诚实边界
 - [架构文档](docs/architecture.md) · [数据库设计](docs/database.md) · [测试说明](docs/testing.md)
+
+## 许可与致谢
+
+MIT——见 [`LICENSE`](LICENSE)。embedding 用 bge-small-zh-v1.5 ONNX INT8（与 HuggingFace 逐 token
+对拍 25/25）；消解/提取用本地 4B LLM（llama-server）；Q9 多模态 caption 用 Qwen3-VL-4B。均为本地
+推理，零 API 成本。
