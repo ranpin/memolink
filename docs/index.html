@@ -43,6 +43,9 @@
   /* 表格已迁外壳三线表（.ds-table/.ds-tablewrap，demo-shell.css）；页面只保留数字等宽与高亮补充 */
   .ds-table td{font-variant-numeric:tabular-nums}
   .ds-table .hl{color:var(--ds-accent-strong);font-weight:700}
+  /* 生命周期动画视频（图 2，HyperFrames 自 HTML 合成渲染，暗色固定画面） */
+  .memo-vidwrap{margin:14px 0 0}
+  .memo-vidwrap video{display:block;width:100%;border-radius:12px;border:1px solid var(--ds-border);background:#0f172a}
 
   /* ===== 生命周期演示（scope 到 #demo-lc）===== */
   #demo-lc .player{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin:6px 0 0}
@@ -400,6 +403,10 @@
         </svg>
       </div>
       <p class="ds-figcap">图 1 · 记忆生命周期全链路（全程本地离线）：提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用</p>
+      <div class="memo-vidwrap">
+        <video src="figures/lifecycle.mp4" autoplay loop muted playsinline controls preload="metadata" poster="figures/lifecycle-poster.jpg"></video>
+      </div>
+      <p class="ds-figcap">图 2 · 记忆生命周期动态版（内容同图 1，含对话轮输入：对话轮 → 提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用；16 秒循环，HyperFrames 自 HTML 合成渲染）</p>
       <div class="ds-tablewrap">
         <table class="ds-table">
           <caption>表 2 · 记忆系统核心机制与做法</caption>

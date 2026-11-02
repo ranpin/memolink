@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      /* 中文字体：本机渲染，local() 解析（Google Fonts 不可达环境的既定方案） */
+      @font-face { font-family: 'PingFang SC'; src: local('PingFang SC'); }
+      :root {
+        /* 与 demo-shell.css 暗主题同值——视频与页面暗色观感一致 */
+        --ground: #0f172a;
+        --ink: #e2e8f0;
+        --muted: #94a3b8;
+        --faint: #64748b;
+        --blue: #60a5fa;   --blue-bg: #1a3352;  /* 比外壳 #1e3a5f 略深：muted 副标签在其上对比度 4.49→5.0，过 WCAG AA */
+        --purple: #a78bfa; --purple-bg: #2e1065;
+        --amber: #fbbf24;  --amber-bg: #3a2a06;
+        --green: #34d399;  --green-bg: #06301f;
+        --neutral-bg: #16213a;
+        --font-display: 'PingFang SC', sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: var(--ground); }
+      #root { width: 100%; height: 100%; position: relative; font-family: var(--font-display); }
+      #lc-stage { position: absolute; inset: 0; background: var(--ground); }
+      #lc-glow { position: absolute; left: 360px; top: 380px; width: 1200px; height: 420px;
+        background: radial-gradient(ellipse at center, rgba(96,165,250,.07) 0%, rgba(96,165,250,0) 70%); z-index: 0; }
+
+      #lc-title { position: absolute; left: 0; top: 60px; width: 1920px; text-align: center; z-index: 2; }
+      #lc-title .t1 { font-size: 44px; font-weight: 700; color: var(--ink); letter-spacing: .01em; }
+      #lc-title .t2 { font-size: 24px; color: var(--muted); margin-top: 12px; }
+
+      .lc-node { position: absolute; top: 510px; width: 200px; height: 120px; border-radius: 14px;
+        border: 1.5px solid; display: flex; flex-direction: column; align-items: center;
+        justify-content: center; gap: 5px; z-index: 5; }
+      .lc-name { font-size: 26px; font-weight: 600; color: var(--ink); }
+      .lc-sub { font-size: 15px; color: var(--muted); line-height: 1.45; text-align: center; padding: 0 10px; }
+      .lc-sub.tight { font-size: 14px; }
+      .c-blue   { background: var(--blue-bg);   border-color: var(--blue); }
+      .c-purple { background: var(--purple-bg); border-color: var(--purple); }
+      .c-amber  { background: var(--amber-bg);  border-color: var(--amber); }
+      .c-green  { background: var(--green-bg);  border-color: var(--green); }
+      .c-neutral{ background: var(--neutral-bg);border-color: var(--faint); }
+      #lc-n1 { left: 140px; }  #lc-n2 { left: 380px; }  #lc-n3 { left: 620px; }
+      #lc-n4 { left: 860px; }  #lc-n5 { left: 1100px; } #lc-n6 { left: 1340px; }
+      #lc-n7 { left: 1580px; }
+
+      .lc-arrow { position: absolute; top: 562px; width: 40px; height: 16px; z-index: 4; }
+      .lc-arrow line { stroke: var(--faint); stroke-width: 2; }
+      .lc-arrow polygon { fill: var(--faint); }
+      #lc-a1 { left: 340px; }  #lc-a2 { left: 580px; }  #lc-a3 { left: 820px; }
+      #lc-a4 { left: 1060px; } #lc-a5 { left: 1300px; } #lc-a6 { left: 1540px; }
+
+      #lc-query { position: absolute; left: 1080px; top: 340px; width: 240px; height: 64px;
+        border-radius: 12px; background: var(--blue-bg); border: 1.5px solid var(--blue);
+        color: var(--ink); font-size: 24px; font-weight: 600; display: flex; align-items: center;
+        justify-content: center; z-index: 5; }
+      #lc-qarrow { position: absolute; left: 1192px; top: 404px; width: 16px; height: 106px; z-index: 4; }
+      #lc-qarrow line { stroke: var(--faint); stroke-width: 2; }
+      #lc-qarrow polygon { fill: var(--faint); }
+
+      #lc-fb { position: absolute; left: 700px; top: 630px; width: 280px; height: 78px; z-index: 4; }
+      #lc-fb path { stroke: var(--faint); stroke-width: 2; fill: none; }
+      #lc-fb polygon { fill: var(--faint); }
+      #lc-fbdot { position: absolute; left: 955px; top: 625px; width: 10px; height: 10px;
+        border-radius: 50%; background: var(--muted); z-index: 6; }
+      #lc-fblabel { position: absolute; left: 720px; top: 712px; width: 240px; text-align: center;
+        font-size: 18px; color: var(--muted); z-index: 4; }
+
+      #lc-packet { position: absolute; left: 232px; top: 562px; width: 16px; height: 16px;
+        border-radius: 50%; background: var(--blue); box-shadow: 0 0 18px rgba(96,165,250,.75); z-index: 10; }
+
+      .lc-note { position: absolute; left: 0; width: 1920px; text-align: center;
+        font-size: 21px; color: var(--muted); z-index: 2; }
+      #lc-note1 { top: 800px; }
+      #lc-note2 { top: 842px; font-size: 19px; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="16"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="lc-stage">
+        <div id="lc-glow"></div>
+
+        <div id="lc-title" class="clip" data-start="0" data-duration="16" data-track-index="0">
+          <div class="t1">记忆生命周期全链路</div>
+          <div class="t2">memolink · 全程本地离线 · C++ · Jetson Orin</div>
+        </div>
+
+        <!-- 主链 7 节点：对话轮 → 提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用 -->
+        <div id="lc-n1" class="clip lc-node c-blue" data-start="0.8" data-duration="15.2" data-track-index="1">
+          <div class="lc-name">对话轮</div>
+          <div class="lc-sub">user/assistant</div>
+          <div class="lc-sub">＋ 会话上下文</div>
+        </div>
+        <div id="lc-n2" class="clip lc-node c-purple" data-start="1.42" data-duration="14.58" data-track-index="1">
+          <div class="lc-name">提取</div>
+          <div class="lc-sub">本地 4B</div>
+          <div class="lc-sub">受约束 JSON</div>
+        </div>
+        <div id="lc-n3" class="clip lc-node c-purple" data-start="2.04" data-duration="13.96" data-track-index="1">
+          <div class="lc-name">消解</div>
+          <div class="lc-sub">System-1 规则 ~32%</div>
+          <div class="lc-sub">System-2 4B 五分类</div>
+        </div>
+        <div id="lc-n4" class="clip lc-node c-neutral" data-start="2.66" data-duration="13.34" data-track-index="1">
+          <div class="lc-name">版本化存储</div>
+          <div class="lc-sub">SQLite · 非破坏</div>
+          <div class="lc-sub">history 回溯</div>
+        </div>
+        <div id="lc-n5" class="clip lc-node c-purple" data-start="3.28" data-duration="12.72" data-track-index="1">
+          <div class="lc-name">类型化检索</div>
+          <div class="lc-sub">意图路由 + 类型加权×1.6</div>
+          <div class="lc-sub">＋ 时间衰减</div>
+        </div>
+        <div id="lc-n6" class="clip lc-node c-amber" data-start="3.9" data-duration="12.1" data-track-index="1">
+          <div class="lc-name">治理过滤</div>
+          <div class="lc-sub tight">owner/scope/authority</div>
+          <div class="lc-sub">strict fail-closed</div>
+        </div>
+        <div id="lc-n7" class="clip lc-node c-green" data-start="4.52" data-duration="11.48" data-track-index="1">
+          <div class="lc-name">座舱应用</div>
+          <div class="lc-sub">Top-K 可见记忆</div>
+        </div>
+
+        <!-- 链间箭头 -->
+        <svg id="lc-a1" class="clip lc-arrow" data-start="1.12" data-duration="14.88" data-track-index="2" viewBox="0 0 40 16"><line x1="0" y1="8" x2="30" y2="8" stroke-dasharray="30"/><polygon points="30,2 40,8 30,14"/></svg>
+        <svg id="lc-a2" class="clip lc-arrow" data-start="1.74" data-duration="14.26" data-track-index="2" viewBox="0 0 40 16"><line x1="0" y1="8" x2="30" y2="8" stroke-dasharray="30"/><polygon points="30,2 40,8 30,14"/></svg>
+        <svg id="lc-a3" class="clip lc-arrow" data-start="2.36" data-duration="13.64" data-track-index="2" viewBox="0 0 40 16"><line x1="0" y1="8" x2="30" y2="8" stroke-dasharray="30"/><polygon points="30,2 40,8 30,14"/></svg>
+        <svg id="lc-a4" class="clip lc-arrow" data-start="2.98" data-duration="13.02" data-track-index="2" viewBox="0 0 40 16"><line x1="0" y1="8" x2="30" y2="8" stroke-dasharray="30"/><polygon points="30,2 40,8 30,14"/></svg>
+        <svg id="lc-a5" class="clip lc-arrow" data-start="3.6" data-duration="12.4" data-track-index="2" viewBox="0 0 40 16"><line x1="0" y1="8" x2="30" y2="8" stroke-dasharray="30"/><polygon points="30,2 40,8 30,14"/></svg>
+        <svg id="lc-a6" class="clip lc-arrow" data-start="4.22" data-duration="11.78" data-track-index="2" viewBox="0 0 40 16"><line x1="0" y1="8" x2="30" y2="8" stroke-dasharray="30"/><polygon points="30,2 40,8 30,14"/></svg>
+
+        <!-- 查询输入 → 类型化检索 -->
+        <div id="lc-query" class="clip" data-start="5.4" data-duration="10.6" data-track-index="3">自然语言查询</div>
+        <svg id="lc-qarrow" class="clip" data-start="5.85" data-duration="10.15" data-track-index="3" viewBox="0 0 16 106"><line x1="8" y1="0" x2="8" y2="92" stroke-dasharray="92"/><polygon points="2,92 8,104 14,92"/></svg>
+
+        <!-- 反馈：版本化存储 → 消解（同类型记忆对比） -->
+        <svg id="lc-fb" class="clip" data-start="6.8" data-duration="9.2" data-track-index="4" viewBox="0 0 280 78"><path d="M260,2 V60 H20 V14" stroke-dasharray="8 6"/><polygon points="14,16 20,4 26,16"/></svg>
+        <div id="lc-fbdot" class="clip" data-start="7.2" data-duration="1.4" data-track-index="4"></div>
+        <div id="lc-fblabel" class="clip" data-start="7.5" data-duration="8.5" data-track-index="4">同类型记忆对比</div>
+
+        <!-- 端到端数据包 -->
+        <div id="lc-packet" class="clip" data-start="9.2" data-duration="2.9" data-track-index="5"></div>
+
+        <div id="lc-note1" class="clip lc-note" data-start="12.4" data-duration="3.6" data-track-index="6">消解五分类：CREATE / UPDATE / REINFORCE / SUPERSEDE / NOOP</div>
+        <div id="lc-note2" class="clip lc-note" data-start="12.8" data-duration="3.2" data-track-index="6">embedding：自写 WordPiece 分词器 + ONNX INT8（与 HF 逐 token 对拍 25/25）</div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // 标题（第 0 帧即完整可见——首帧是播放器缩略图，只做位移不做淡入）
+      tl.fromTo("#lc-title", { y: -14 }, { y: 0, duration: 0.7, ease: "power3.out" }, 0);
+
+      // 主链节点逐个弹出
+      const nt = [0.8, 1.42, 2.04, 2.66, 3.28, 3.9, 4.52];
+      nt.forEach((t, i) => {
+        tl.fromTo(`#lc-n${i + 1}`, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.42, ease: "back.out(1.7)" }, t);
+      });
+
+      // 箭头描绘（线 dashoffset + 头淡入）
+      const at = [1.12, 1.74, 2.36, 2.98, 3.6, 4.22];
+      at.forEach((t, i) => {
+        tl.fromTo(`#lc-a${i + 1} line`, { attr: { "stroke-dashoffset": 30 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.26, ease: "power2.out" }, t);
+        tl.fromTo(`#lc-a${i + 1} polygon`, { opacity: 0 }, { opacity: 1, duration: 0.12 }, t + 0.24);
+      });
+
+      // 查询落入 → 检索节点亮起
+      tl.fromTo("#lc-query", { opacity: 0, y: -18 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, 5.4);
+      tl.fromTo("#lc-qarrow line", { attr: { "stroke-dashoffset": 92 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.3, ease: "power2.out" }, 5.85);
+      tl.fromTo("#lc-qarrow polygon", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 6.1);
+      tl.fromTo("#lc-n5", { boxShadow: "0 0 0 rgba(96,165,250,0)" }, { boxShadow: "0 0 26px rgba(96,165,250,.5)", duration: 0.25, yoyo: true, repeat: 1 }, 6.2);
+
+      // 反馈虚线 + 反馈点 存储→消解 + 消解脉冲
+      tl.fromTo("#lc-fb", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 6.8);
+      tl.fromTo("#lc-fbdot", { opacity: 0, x: 0, y: 0 }, { opacity: 1, duration: 0.15 }, 7.2);
+      tl.fromTo("#lc-fbdot", { y: 0 }, { y: 60, duration: 0.22, ease: "power1.inOut", immediateRender: false }, 7.3);
+      tl.fromTo("#lc-fbdot", { x: 0 }, { x: -240, duration: 0.45, ease: "power1.inOut", immediateRender: false }, 7.52);
+      tl.fromTo("#lc-fbdot", { y: 60 }, { y: 12, duration: 0.28, ease: "power1.inOut", immediateRender: false }, 7.97);
+      tl.fromTo("#lc-fbdot", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 8.3);
+      tl.fromTo("#lc-fblabel", { opacity: 0 }, { opacity: 1, duration: 0.35 }, 7.6);
+      tl.fromTo("#lc-n3", { boxShadow: "0 0 0 rgba(167,139,250,0)" }, { boxShadow: "0 0 26px rgba(167,139,250,.55)", duration: 0.25, yoyo: true, repeat: 1 }, 8.3);
+
+      // 端到端数据包（匀速，节点闪光时刻=数据包过节点中心时刻）
+      tl.fromTo("#lc-packet", { opacity: 0, x: 0 }, { opacity: 1, duration: 0.15 }, 9.2);
+      tl.fromTo("#lc-packet", { x: 0 }, { x: 1440, duration: 2.6, ease: "none", immediateRender: false }, 9.2);
+      tl.fromTo("#lc-packet", { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, 11.85);
+      const ft = [9.2, 9.63, 10.07, 10.5, 10.93, 11.37];
+      ft.forEach((t, i) => {
+        tl.fromTo(`#lc-n${i + 1}`, { scale: 1 }, { scale: 1.045, duration: 0.11, ease: "power2.out" }, t);
+        tl.fromTo(`#lc-n${i + 1}`, { scale: 1.045 }, { scale: 1, duration: 0.2, ease: "power2.inOut" }, t + 0.11);
+      });
+      tl.fromTo("#lc-n7", { scale: 1, boxShadow: "0 0 0 rgba(52,211,153,0)" }, { scale: 1.05, boxShadow: "0 0 34px rgba(52,211,153,.55)", duration: 0.3, ease: "power2.out" }, 11.8);
+
+      // 脚注
+      tl.fromTo("#lc-note1", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 12.4);
+      tl.fromTo("#lc-note2", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, 12.8);
+
+      // 收尾整体淡出（loop 回跳平滑）
+      tl.fromTo("#lc-stage", { opacity: 1 }, { opacity: 0, duration: 0.7, ease: "power2.inOut" }, 15.3);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
