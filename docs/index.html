@@ -350,6 +350,35 @@
             <marker id="mm-dg-arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
               <polygon points="0 0, 9 3.5, 0 7" fill="var(--ds-faint)"/>
             </marker>
+            <!-- 视觉层·渐变立体盒：两 stop 属性值均为纯色回退，外壳 CSS 把末 stop 升级为 color-mix 加深（随主题翻转） -->
+            <linearGradient id="mm-g-accent" class="dg-grad" data-c="accent" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--ds-accent-soft)"/>
+              <stop offset="1" stop-color="var(--ds-accent-soft)"/>
+            </linearGradient>
+            <linearGradient id="mm-g-alt" class="dg-grad" data-c="alt" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--ds-alt-soft)"/>
+              <stop offset="1" stop-color="var(--ds-alt-soft)"/>
+            </linearGradient>
+            <linearGradient id="mm-g-neutral" class="dg-grad" data-c="neutral" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--ds-code-bg)"/>
+              <stop offset="1" stop-color="var(--ds-code-bg)"/>
+            </linearGradient>
+            <linearGradient id="mm-g-warn" class="dg-grad" data-c="warn" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--ds-warn-soft)"/>
+              <stop offset="1" stop-color="var(--ds-warn-soft)"/>
+            </linearGradient>
+            <linearGradient id="mm-g-ok" class="dg-grad" data-c="ok" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="var(--ds-ok-soft)"/>
+              <stop offset="1" stop-color="var(--ds-ok-soft)"/>
+            </linearGradient>
+            <!-- 图标 symbol：复制自 demo-page-iteration skill assets/dg-icons.svg（外部 use 引用 Chrome/Safari 静默失败，必须内联） -->
+            <symbol id="ico-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+            <symbol id="ico-extract" viewBox="0 0 24 24"><path d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></symbol>
+            <symbol id="ico-branch" viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></symbol>
+            <symbol id="ico-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+            <symbol id="ico-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></symbol>
+            <symbol id="ico-shield" viewBox="0 0 24 24"><path d="M12 2l8 3.5v5c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11v-5L12 2z"/><path d="M9 12l2 2 4-4.5"/></symbol>
+            <symbol id="ico-monitor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></symbol>
           </defs>
           <!-- 连线（data-from/to 供悬停聚焦-上下文；层序：连线 → 脉冲环 → 数据包 → 节点组） -->
           <line class="dg-edge" data-from="mm-dialogue" data-to="mm-extract" x1="121" y1="142" x2="145" y2="142" marker-end="url(#mm-dg-arr)"/>
@@ -404,47 +433,54 @@
           </g></g>
           <!-- 顶部输入盒 + 主链 7 盒：g.dg-node（data-id 供悬停聚焦、--dg-i 入场序号、--dg-glow 悬停光效色） -->
           <g class="dg-node" data-id="mm-query" style="--dg-glow:var(--ds-accent);--dg-i:7">
-            <rect x="547" y="26" width="110" height="34" rx="8" fill="var(--ds-accent-soft)" stroke="var(--ds-accent)" stroke-width="1.4"/>
+            <rect x="547" y="26" width="110" height="34" rx="8" fill="url(#mm-g-accent)" stroke="var(--ds-accent)" stroke-width="1.4"/>
             <text class="dg-name" x="602" y="47" text-anchor="middle">自然语言查询</text>
           </g>
           <g class="dg-node" data-id="mm-dialogue" style="--dg-glow:var(--ds-accent);--dg-i:0">
-            <rect x="22" y="104" width="96" height="76" rx="8" fill="var(--ds-accent-soft)" stroke="var(--ds-accent)" stroke-width="1.4"/>
+            <rect x="22" y="104" width="96" height="76" rx="8" fill="url(#mm-g-accent)" stroke="var(--ds-accent)" stroke-width="1.4"/>
+            <use class="dg-ico" href="#ico-chat" x="31" y="113" width="14" height="14" style="color:var(--ds-accent)"/>
             <text class="dg-name" x="70" y="132" text-anchor="middle">对话轮</text>
             <text class="dg-sub" x="70" y="146" text-anchor="middle">user/assistant</text>
             <text class="dg-sub" x="70" y="160" text-anchor="middle">+ 上下文</text>
           </g>
           <g class="dg-node" data-id="mm-extract" style="--dg-glow:var(--ds-alt);--dg-i:1">
-            <rect x="148" y="104" width="84" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+            <rect x="148" y="104" width="84" height="76" rx="8" fill="url(#mm-g-alt)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+            <use class="dg-ico" href="#ico-extract" x="157" y="113" width="14" height="14" style="color:var(--ds-alt)"/>
             <text class="dg-name" x="190" y="132" text-anchor="middle">提取</text>
             <text class="dg-sub" x="190" y="146" text-anchor="middle">本地 4B</text>
             <text class="dg-sub" x="190" y="160" text-anchor="middle">受约束 JSON</text>
           </g>
           <g class="dg-node" data-id="mm-resolve" style="--dg-glow:var(--ds-alt);--dg-i:2">
-            <rect x="262" y="104" width="122" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+            <rect x="262" y="104" width="122" height="76" rx="8" fill="url(#mm-g-alt)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+            <use class="dg-ico" href="#ico-branch" x="271" y="113" width="14" height="14" style="color:var(--ds-alt)"/>
             <text class="dg-name" x="323" y="132" text-anchor="middle">消解</text>
             <text class="dg-sub" x="323" y="146" text-anchor="middle">System-1 规则 ~32%</text>
             <text class="dg-sub" x="323" y="160" text-anchor="middle">System-2 4B 五分类</text>
           </g>
           <g class="dg-node" data-id="mm-store" style="--dg-glow:var(--ds-muted);--dg-i:3">
-            <rect x="414" y="104" width="98" height="76" rx="8" fill="var(--ds-code-bg)" stroke="var(--ds-faint)" stroke-width="1.4"/>
+            <rect x="414" y="104" width="98" height="76" rx="8" fill="url(#mm-g-neutral)" stroke="var(--ds-faint)" stroke-width="1.4"/>
+            <use class="dg-ico" href="#ico-database" x="420" y="113" width="14" height="14" style="color:var(--ds-muted)"/>
             <text class="dg-name" x="463" y="132" text-anchor="middle">版本化存储</text>
             <text class="dg-sub" x="463" y="146" text-anchor="middle">SQLite · 非破坏</text>
             <text class="dg-sub" x="463" y="160" text-anchor="middle">history 回溯</text>
           </g>
           <g class="dg-node" data-id="mm-retrieve" style="--dg-glow:var(--ds-alt);--dg-i:4">
-            <rect x="542" y="104" width="120" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+            <rect x="542" y="104" width="120" height="76" rx="8" fill="url(#mm-g-alt)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+            <use class="dg-ico" href="#ico-search" x="551" y="113" width="14" height="14" style="color:var(--ds-alt)"/>
             <text class="dg-name" x="602" y="132" text-anchor="middle">类型化检索</text>
             <text class="dg-sub" x="602" y="146" text-anchor="middle">意图路由 + 类型加权</text>
             <text class="dg-sub" x="602" y="160" text-anchor="middle">×1.6 + 时间衰减</text>
           </g>
           <g class="dg-node" data-id="mm-govern" style="--dg-glow:var(--ds-warn);--dg-i:5">
-            <rect x="692" y="104" width="138" height="76" rx="8" fill="var(--ds-warn-soft)" stroke="var(--ds-warn)" stroke-width="1.4"/>
+            <rect x="692" y="104" width="138" height="76" rx="8" fill="url(#mm-g-warn)" stroke="var(--ds-warn)" stroke-width="1.4"/>
+            <use class="dg-ico" href="#ico-shield" x="701" y="113" width="14" height="14" style="color:var(--ds-warn)"/>
             <text class="dg-name" x="761" y="132" text-anchor="middle">治理过滤</text>
             <text class="dg-sub" x="761" y="146" text-anchor="middle">owner/scope/authority</text>
             <text class="dg-sub" x="761" y="160" text-anchor="middle">fail-closed</text>
           </g>
           <g class="dg-node" data-id="mm-app" style="--dg-glow:var(--ds-ok);--dg-i:6">
-            <rect x="860" y="104" width="98" height="76" rx="8" fill="var(--ds-ok-soft)" stroke="var(--ds-ok)" stroke-width="1.4"/>
+            <rect x="860" y="104" width="98" height="76" rx="8" fill="url(#mm-g-ok)" stroke="var(--ds-ok)" stroke-width="1.4"/>
+            <use class="dg-ico" href="#ico-monitor" x="869" y="113" width="14" height="14" style="color:var(--ds-ok)"/>
             <text class="dg-name" x="909" y="132" text-anchor="middle">座舱应用</text>
             <text class="dg-sub" x="909" y="146" text-anchor="middle">Top-K</text>
             <text class="dg-sub" x="909" y="160" text-anchor="middle">可见记忆</text>
@@ -453,6 +489,13 @@
           <text class="dg-note" x="393" y="222" text-anchor="middle">同类型记忆对比</text>
           <text class="dg-note" x="490" y="252" text-anchor="middle">消解五分类：<tspan class="dg-cyc">CREATE</tspan> / <tspan class="dg-cyc" style="animation-delay:1.2s">UPDATE</tspan> / <tspan class="dg-cyc" style="animation-delay:2.4s">REINFORCE</tspan> / <tspan class="dg-cyc" style="animation-delay:3.6s">SUPERSEDE</tspan> / <tspan class="dg-cyc" style="animation-delay:4.8s">NOOP</tspan> · embedding：自写 WordPiece + ONNX INT8（与 HF 对拍 25/25）</text>
         </svg>
+        <div class="dg-legend">
+          <span style="--c:var(--ds-accent)"><i></i>输入 / 查询</span>
+          <span style="--c:var(--ds-alt)"><i></i>本地模型推理</span>
+          <span style="--c:var(--ds-faint)"><i></i>存储</span>
+          <span style="--c:var(--ds-warn)"><i></i>治理</span>
+          <span style="--c:var(--ds-ok)"><i></i>输出</span>
+        </div>
       </div>
       <p class="ds-figcap">图 1 · 记忆生命周期全链路（全程本地离线）：提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用</p>
       <div class="ds-tablewrap">
