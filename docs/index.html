@@ -345,82 +345,113 @@
       <p class="sec-note">记忆生命周期全程在本地完成：提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯。座舱域天然把这些机制变成「看得见、且非它不可」的功能——而不是一个套了记忆库的聊天机器人。细节见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>（含诚实边界与复现）。</p>
       <p><b>各机制输入输出</b>：提取——对话轮（user/assistant 消息对 + 会话上下文）→ 候选事实集（受约束 JSON，每条含 text/type/owner/scope）；消解——候选事实 + 库内同类型记忆 → 五分类决策（CREATE/UPDATE/REINFORCE/SUPERSEDE/NOOP）+ target_id；检索——自然语言查询 → Top-K 记忆（意图路由 + 类型加权 + 时间衰减）；治理——驾驶员身份 + 记忆三标签（owner/scope/authority）→ 可见性过滤（strict fail-closed）。</p>
       <div class="ds-dgwrap">
-        <svg class="ds-dg" viewBox="0 0 980 280" role="img" aria-label="记忆生命周期主链：对话轮 → 提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用；自然语言查询从顶部接入类型化检索；版本化存储向消解回送同类型记忆对比">
+        <svg class="ds-dg" viewBox="0 0 980 280" role="img" aria-label="记忆生命周期主链（动态图）：数据包沿 对话轮 → 提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用 穿行，经过的节点逐个脉冲亮起；自然语言查询从顶部定期落入类型化检索；版本化存储向消解回送同类型记忆对比">
           <defs>
             <marker id="mm-dg-arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
               <polygon points="0 0, 9 3.5, 0 7" fill="var(--ds-faint)"/>
             </marker>
           </defs>
-          <!-- 连线（层序：连线 → 数据流 → 节点组） -->
-          <line class="dg-edge" x1="121" y1="142" x2="145" y2="142" marker-end="url(#mm-dg-arr)"/>
-          <line class="dg-edge" x1="235" y1="142" x2="259" y2="142" marker-end="url(#mm-dg-arr)"/>
-          <line class="dg-edge" x1="387" y1="142" x2="411" y2="142" marker-end="url(#mm-dg-arr)"/>
-          <line class="dg-edge" x1="515" y1="142" x2="539" y2="142" marker-end="url(#mm-dg-arr)"/>
-          <line class="dg-edge" x1="665" y1="142" x2="689" y2="142" marker-end="url(#mm-dg-arr)"/>
-          <line class="dg-edge" x1="833" y1="142" x2="857" y2="142" marker-end="url(#mm-dg-arr)"/>
-          <line class="dg-edge" x1="602" y1="60" x2="602" y2="101" marker-end="url(#mm-dg-arr)"/>
-          <path class="dg-edge dg-dash" d="M463 180 V208 H323 V184" marker-end="url(#mm-dg-arr)"/>
-          <!-- 数据流：SVG 原生 SMIL 虚线沿轨迹流动（非 CSS keyframes）。主链轨迹贯通各盒中心、
-               绘制在盒子下层，不透明盒体遮挡 → 流光只在盒间空隙可见，读作数据逐环节穿行 -->
-          <path class="dg-flow" d="M70,142 H909" fill="none" stroke="var(--ds-accent)" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="10 14" opacity="0.9">
-            <animate attributeName="stroke-dashoffset" from="24" to="0" dur="1.1s" repeatCount="indefinite"/>
-          </path>
-          <path class="dg-flow" d="M602,60 V101" fill="none" stroke="var(--ds-accent)" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="8 10" opacity="0.9">
-            <animate attributeName="stroke-dashoffset" from="18" to="0" dur="1s" repeatCount="indefinite"/>
-          </path>
-          <path class="dg-flow" d="M463,180 V208 H323 V184" fill="none" stroke="var(--ds-alt)" stroke-width="2" stroke-linecap="round" stroke-dasharray="8 12" opacity="0.65">
-            <animate attributeName="stroke-dashoffset" from="20" to="0" dur="1.4s" repeatCount="indefinite"/>
-          </path>
-          <!-- 顶部输入盒 + 主链 7 盒：每盒一个 g.dg-node（悬停光效色 = 语义色，规则在外壳） -->
-          <g class="dg-node" style="--dg-glow:var(--ds-accent)">
+          <!-- 连线（data-from/to 供悬停聚焦-上下文；层序：连线 → 脉冲环 → 数据包 → 节点组） -->
+          <line class="dg-edge" data-from="mm-dialogue" data-to="mm-extract" x1="121" y1="142" x2="145" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" data-from="mm-extract" data-to="mm-resolve" x1="235" y1="142" x2="259" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" data-from="mm-resolve" data-to="mm-store" x1="387" y1="142" x2="411" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" data-from="mm-store" data-to="mm-retrieve" x1="515" y1="142" x2="539" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" data-from="mm-retrieve" data-to="mm-govern" x1="665" y1="142" x2="689" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" data-from="mm-govern" data-to="mm-app" x1="833" y1="142" x2="857" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" data-from="mm-query" data-to="mm-retrieve" x1="602" y1="60" x2="602" y2="101" marker-end="url(#mm-dg-arr)"/>
+          <path class="dg-edge dg-dash" data-from="mm-store" data-to="mm-resolve" d="M463 180 V208 H323 V184" marker-end="url(#mm-dg-arr)"/>
+          <!-- 脉冲环：数据包经过时亮起（与数据包同 6s 周期，keyTimes 按到达时刻开槽） -->
+          <rect class="dg-ring" x="19" y="101" width="102" height="82" rx="11" stroke="var(--ds-accent)" opacity="0">
+            <animate attributeName="opacity" values="0;.85;0;0" keyTimes="0;.05;.2;1" dur="6s" begin="indefinite" repeatCount="indefinite"/>
+          </rect>
+          <rect class="dg-ring" x="145" y="101" width="90" height="82" rx="11" stroke="var(--ds-alt)" opacity="0">
+            <animate attributeName="opacity" values="0;0;.85;0;0" keyTimes="0;.13;.18;.33;1" dur="6s" begin="indefinite" repeatCount="indefinite"/>
+          </rect>
+          <rect class="dg-ring" x="259" y="101" width="128" height="82" rx="11" stroke="var(--ds-alt)" opacity="0">
+            <animate attributeName="opacity" values="0;0;.85;0;0" keyTimes="0;.29;.34;.49;1" dur="6s" begin="indefinite" repeatCount="indefinite"/>
+          </rect>
+          <rect class="dg-ring" x="411" y="101" width="104" height="82" rx="11" stroke="var(--ds-faint)" opacity="0">
+            <animate attributeName="opacity" values="0;0;.85;0;0" keyTimes="0;.45;.50;.65;1" dur="6s" begin="indefinite" repeatCount="indefinite"/>
+          </rect>
+          <rect class="dg-ring" x="539" y="101" width="126" height="82" rx="11" stroke="var(--ds-alt)" opacity="0">
+            <animate attributeName="opacity" values="0;0;.85;0;0" keyTimes="0;.62;.67;.82;1" dur="6s" begin="indefinite" repeatCount="indefinite"/>
+          </rect>
+          <rect class="dg-ring" x="689" y="101" width="144" height="82" rx="11" stroke="var(--ds-warn)" opacity="0">
+            <animate attributeName="opacity" values="0;0;.85;0;0" keyTimes="0;.81;.86;.98;1" dur="6s" begin="indefinite" repeatCount="indefinite"/>
+          </rect>
+          <rect class="dg-ring" x="857" y="101" width="104" height="82" rx="11" stroke="var(--ds-ok)" opacity="0">
+            <animate attributeName="opacity" values="0;0;.85;0" keyTimes="0;.94;.98;1" dur="6s" begin="indefinite" repeatCount="indefinite"/>
+          </rect>
+          <!-- 数据包：主链单包 6s 匀速穿行（画在盒子下层，盒间空隙可见 = 数据逐环节穿行，
+               首尾折返点在首末盒中心、被盒体遮挡）；查询包定期落入；反馈包 存储→消解 -->
+          <g transform="translate(70,142)"><g class="dg-packet-g" opacity="0">
+            <circle r="8" fill="var(--ds-accent)" opacity=".22"/>
+            <circle r="3.2" fill="var(--ds-accent)"/>
+            <animateMotion dur="6s" begin="indefinite" repeatCount="indefinite" calcMode="linear" path="M0,0 H839"/>
+            <animate attributeName="opacity" from="1" to="1" dur="6s" begin="indefinite" repeatCount="indefinite"/>
+          </g></g>
+          <g transform="translate(602,60)"><g class="dg-packet-g" opacity="0">
+            <circle r="6.5" fill="var(--ds-accent)" opacity=".22"/>
+            <circle r="2.8" fill="var(--ds-accent)"/>
+            <animateMotion dur="4.5s" begin="indefinite" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;.14;1" path="M0,0 V41"/>
+            <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;.03;.12;.16;1" dur="4.5s" begin="indefinite" repeatCount="indefinite"/>
+          </g></g>
+          <g transform="translate(323,180)"><g class="dg-packet-g" opacity="0">
+            <circle r="6" fill="var(--ds-alt)" opacity=".2"/>
+            <circle r="2.6" fill="var(--ds-alt)"/>
+            <animateMotion dur="5s" begin="indefinite" repeatCount="indefinite" calcMode="linear" keyPoints="0;1;1" keyTimes="0;.34;1" path="M140,0 V28 H0 V4"/>
+            <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;.04;.3;.34;1" dur="5s" begin="indefinite" repeatCount="indefinite"/>
+          </g></g>
+          <!-- 顶部输入盒 + 主链 7 盒：g.dg-node（data-id 供悬停聚焦、--dg-i 入场序号、--dg-glow 悬停光效色） -->
+          <g class="dg-node" data-id="mm-query" style="--dg-glow:var(--ds-accent);--dg-i:7">
             <rect x="547" y="26" width="110" height="34" rx="8" fill="var(--ds-accent-soft)" stroke="var(--ds-accent)" stroke-width="1.4"/>
             <text class="dg-name" x="602" y="47" text-anchor="middle">自然语言查询</text>
           </g>
-          <g class="dg-node" style="--dg-glow:var(--ds-accent)">
+          <g class="dg-node" data-id="mm-dialogue" style="--dg-glow:var(--ds-accent);--dg-i:0">
             <rect x="22" y="104" width="96" height="76" rx="8" fill="var(--ds-accent-soft)" stroke="var(--ds-accent)" stroke-width="1.4"/>
             <text class="dg-name" x="70" y="132" text-anchor="middle">对话轮</text>
             <text class="dg-sub" x="70" y="146" text-anchor="middle">user/assistant</text>
             <text class="dg-sub" x="70" y="160" text-anchor="middle">+ 上下文</text>
           </g>
-          <g class="dg-node" style="--dg-glow:var(--ds-alt)">
+          <g class="dg-node" data-id="mm-extract" style="--dg-glow:var(--ds-alt);--dg-i:1">
             <rect x="148" y="104" width="84" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
             <text class="dg-name" x="190" y="132" text-anchor="middle">提取</text>
             <text class="dg-sub" x="190" y="146" text-anchor="middle">本地 4B</text>
             <text class="dg-sub" x="190" y="160" text-anchor="middle">受约束 JSON</text>
           </g>
-          <g class="dg-node" style="--dg-glow:var(--ds-alt)">
+          <g class="dg-node" data-id="mm-resolve" style="--dg-glow:var(--ds-alt);--dg-i:2">
             <rect x="262" y="104" width="122" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
             <text class="dg-name" x="323" y="132" text-anchor="middle">消解</text>
             <text class="dg-sub" x="323" y="146" text-anchor="middle">System-1 规则 ~32%</text>
             <text class="dg-sub" x="323" y="160" text-anchor="middle">System-2 4B 五分类</text>
           </g>
-          <g class="dg-node" style="--dg-glow:var(--ds-muted)">
+          <g class="dg-node" data-id="mm-store" style="--dg-glow:var(--ds-muted);--dg-i:3">
             <rect x="414" y="104" width="98" height="76" rx="8" fill="var(--ds-code-bg)" stroke="var(--ds-faint)" stroke-width="1.4"/>
             <text class="dg-name" x="463" y="132" text-anchor="middle">版本化存储</text>
             <text class="dg-sub" x="463" y="146" text-anchor="middle">SQLite · 非破坏</text>
             <text class="dg-sub" x="463" y="160" text-anchor="middle">history 回溯</text>
           </g>
-          <g class="dg-node" style="--dg-glow:var(--ds-alt)">
+          <g class="dg-node" data-id="mm-retrieve" style="--dg-glow:var(--ds-alt);--dg-i:4">
             <rect x="542" y="104" width="120" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
             <text class="dg-name" x="602" y="132" text-anchor="middle">类型化检索</text>
             <text class="dg-sub" x="602" y="146" text-anchor="middle">意图路由 + 类型加权</text>
             <text class="dg-sub" x="602" y="160" text-anchor="middle">×1.6 + 时间衰减</text>
           </g>
-          <g class="dg-node" style="--dg-glow:var(--ds-warn)">
+          <g class="dg-node" data-id="mm-govern" style="--dg-glow:var(--ds-warn);--dg-i:5">
             <rect x="692" y="104" width="138" height="76" rx="8" fill="var(--ds-warn-soft)" stroke="var(--ds-warn)" stroke-width="1.4"/>
             <text class="dg-name" x="761" y="132" text-anchor="middle">治理过滤</text>
             <text class="dg-sub" x="761" y="146" text-anchor="middle">owner/scope/authority</text>
             <text class="dg-sub" x="761" y="160" text-anchor="middle">fail-closed</text>
           </g>
-          <g class="dg-node" style="--dg-glow:var(--ds-ok)">
+          <g class="dg-node" data-id="mm-app" style="--dg-glow:var(--ds-ok);--dg-i:6">
             <rect x="860" y="104" width="98" height="76" rx="8" fill="var(--ds-ok-soft)" stroke="var(--ds-ok)" stroke-width="1.4"/>
             <text class="dg-name" x="909" y="132" text-anchor="middle">座舱应用</text>
             <text class="dg-sub" x="909" y="146" text-anchor="middle">Top-K</text>
             <text class="dg-sub" x="909" y="160" text-anchor="middle">可见记忆</text>
           </g>
-          <!-- 反馈虚线标签 + 底部脚注 -->
+          <!-- 反馈虚线标签 + 底部脚注（五分类逐词轮播高亮） -->
           <text class="dg-note" x="393" y="222" text-anchor="middle">同类型记忆对比</text>
-          <text class="dg-note" x="490" y="252" text-anchor="middle">消解五分类：CREATE / UPDATE / REINFORCE / SUPERSEDE / NOOP · embedding：自写 WordPiece + ONNX INT8（与 HF 对拍 25/25）</text>
+          <text class="dg-note" x="490" y="252" text-anchor="middle">消解五分类：<tspan class="dg-cyc">CREATE</tspan> / <tspan class="dg-cyc" style="animation-delay:1.2s">UPDATE</tspan> / <tspan class="dg-cyc" style="animation-delay:2.4s">REINFORCE</tspan> / <tspan class="dg-cyc" style="animation-delay:3.6s">SUPERSEDE</tspan> / <tspan class="dg-cyc" style="animation-delay:4.8s">NOOP</tspan> · embedding：自写 WordPiece + ONNX INT8（与 HF 对拍 25/25）</text>
         </svg>
       </div>
       <p class="ds-figcap">图 1 · 记忆生命周期全链路（全程本地离线）：提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用</p>
