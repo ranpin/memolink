@@ -18,7 +18,9 @@
   .sec-note{color:var(--ds-muted);font-size:13.5px;margin:0 0 16px;line-height:1.6}
   code{background:var(--ds-code-bg);border:1px solid var(--ds-border);border-radius:5px;padding:1px 6px;
     font-family:var(--ds-mono);font-size:12.5px;color:var(--ds-accent-strong)}
-  .note{font-size:12.5px;color:var(--ds-faint);margin-top:12px;line-height:1.55}
+  .note{font-size:12.5px;color:var(--ds-muted);margin-top:12px;line-height:1.55}
+  /* 板块内小标题（原内联样式改走类）：与正文同字号、加粗、不缩进 */
+  .sub{font-size:1rem;font-weight:700;color:var(--ds-text);margin:26px 0 6px;text-indent:0}
   @keyframes flash{0%{box-shadow:0 0 0 2px var(--ds-accent);transform:scale(1.02)}100%{box-shadow:0 0 0 0 transparent;transform:scale(1)}}
 
   /* ===== 演示双 tab ===== */
@@ -38,14 +40,9 @@
   .stat .v{font-size:24px;font-weight:700;color:var(--ds-accent);line-height:1.1;font-variant-numeric:tabular-nums}
   .stat .v small{font-size:13px;font-weight:600}
   .stat .k{font-size:12px;color:var(--ds-muted);margin-top:6px;line-height:1.4}
-  .tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin:6px 0 0;background:var(--ds-panel);
-    border:1px solid var(--ds-border);border-radius:var(--ds-radius);overflow:hidden}
-  .tbl th,.tbl td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--ds-border);font-variant-numeric:tabular-nums;vertical-align:top;line-height:1.6}
-  .tbl th{background:var(--ds-code-bg);font-weight:600;font-size:12.5px;color:var(--ds-muted)}
-  .tbl tr:last-child td{border-bottom:none}
-  .tbl td.rowh{color:var(--ds-muted);font-weight:600;white-space:nowrap}
-  .tbl .hl{color:var(--ds-accent-strong);font-weight:700}
-  .tbl-wrap{overflow-x:auto}
+  /* 表格已迁外壳三线表（.ds-table/.ds-tablewrap，demo-shell.css）；页面只保留数字等宽与高亮补充 */
+  .ds-table td{font-variant-numeric:tabular-nums}
+  .ds-table .hl{color:var(--ds-accent-strong);font-weight:700}
 
   /* ===== 生命周期演示（scope 到 #demo-lc）===== */
   #demo-lc .player{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin:6px 0 0}
@@ -329,10 +326,10 @@
       </div>
       <p class="note">Q1–Q7 闸门全部在 Orin 真机跑通：版本化 CRUD（Q1，41/41 单测）、五操作消解（Q2，五分类 70% / 可记四类 84% / 目标定位 14/14）、类型特化检索（Q3，v2 基准 hit@1 +31.2pp、episodic 3/8→8/8）、受约束提取（Q4，编造率 3.7%）、LongMemEval 英文模型 config-only swap（Q5，dim 384、5/5）、多驾驶员治理（Q7，GovernanceFilter owner/scope/authority 过滤 + 强度衰减淘汰 + strict fail-closed，<code>test_memory_governance</code> 全过）。详见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>。</p>
 
-      <p style="font-weight:700;font-size:14.5px;color:var(--ds-text);margin:26px 0 6px;text-indent:0">设计取舍的实测佐证 · 为什么用精确检索、INT8 embedding</p>
+      <p class="sub">设计取舍的实测佐证 · 为什么用精确检索、INT8 embedding</p>
       <p class="sec-note" style="margin:0 0 4px">下面两组数字来自一个独立的 Python/faiss 原型（<a href="https://github.com/ranpin/edge-agent-memory">edge-agent-memory</a>，完整基准与复现见其仓库），<b>非 memolink 自身 C++/SQLite 实现的测量</b>——绝对值不直接迁移，但结论与 memolink 的设计选择一致，作为「为什么这么选」的实测依据。</p>
-      <div class="tbl-wrap">
-        <table class="tbl">
+      <div class="ds-tablewrap">
+        <table class="ds-table">
           <caption>表 1 · 精确检索 vs HNSW：三档记忆规模下的延迟 / recall / 建索引耗时（512 维 · recall@5 · 独立 faiss 原型实测）</caption>
           <tr><th>检索方式（512 维 · recall@5）</th><th>N=1,000</th><th>N=10,000</th><th>N=100,000</th></tr>
           <tr><td class="rowh">精确 faiss flat · 延迟 / recall</td><td>0.127ms / 1.0</td><td>0.787ms / 1.0</td><td>6.63ms / 1.0</td></tr>
@@ -347,8 +344,64 @@
       <h2 class="ds-h2">核心方法</h2>
       <p class="sec-note">记忆生命周期全程在本地完成：提取 → 消解 → 存储 → 检索 → 更新 → 删除 → 版本回溯。座舱域天然把这些机制变成「看得见、且非它不可」的功能——而不是一个套了记忆库的聊天机器人。细节见 <a href="https://github.com/ranpin/memolink/blob/main/docs/memory_v2_design.md">docs/memory_v2_design.md</a>（含诚实边界与复现）。</p>
       <p><b>各机制输入输出</b>：提取——对话轮（user/assistant 消息对 + 会话上下文）→ 候选事实集（受约束 JSON，每条含 text/type/owner/scope）；消解——候选事实 + 库内同类型记忆 → 五分类决策（CREATE/UPDATE/REINFORCE/SUPERSEDE/NOOP）+ target_id；检索——自然语言查询 → Top-K 记忆（意图路由 + 类型加权 + 时间衰减）；治理——驾驶员身份 + 记忆三标签（owner/scope/authority）→ 可见性过滤（strict fail-closed）。</p>
-      <div class="tbl-wrap">
-        <table class="tbl">
+      <div class="ds-dgwrap">
+        <svg class="ds-dg" viewBox="0 0 980 280" role="img" aria-label="记忆生命周期主链：对话轮 → 提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用；自然语言查询从顶部接入类型化检索；版本化存储向消解回送同类型记忆对比">
+          <defs>
+            <marker id="mm-dg-arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto">
+              <polygon points="0 0, 9 3.5, 0 7" fill="var(--ds-faint)"/>
+            </marker>
+          </defs>
+          <!-- 连线（层序：连线 → 盒子 → 文字） -->
+          <line class="dg-edge" x1="121" y1="142" x2="145" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" x1="235" y1="142" x2="259" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" x1="387" y1="142" x2="411" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" x1="515" y1="142" x2="539" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" x1="665" y1="142" x2="689" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" x1="833" y1="142" x2="857" y2="142" marker-end="url(#mm-dg-arr)"/>
+          <line class="dg-edge" x1="602" y1="60" x2="602" y2="101" marker-end="url(#mm-dg-arr)"/>
+          <path class="dg-edge dg-dash" d="M463 180 V208 H323 V184" marker-end="url(#mm-dg-arr)"/>
+          <!-- 顶部输入盒：自然语言查询 -->
+          <rect x="547" y="26" width="110" height="34" rx="8" fill="var(--ds-accent-soft)" stroke="var(--ds-accent)" stroke-width="1.4"/>
+          <!-- 主链 7 盒 -->
+          <rect x="22" y="104" width="96" height="76" rx="8" fill="var(--ds-accent-soft)" stroke="var(--ds-accent)" stroke-width="1.4"/>
+          <rect x="148" y="104" width="84" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+          <rect x="262" y="104" width="122" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+          <rect x="414" y="104" width="98" height="76" rx="8" fill="var(--ds-code-bg)" stroke="var(--ds-faint)" stroke-width="1.4"/>
+          <rect x="542" y="104" width="120" height="76" rx="8" fill="var(--ds-alt-soft)" stroke="var(--ds-alt)" stroke-width="1.4"/>
+          <rect x="692" y="104" width="138" height="76" rx="8" fill="var(--ds-warn-soft)" stroke="var(--ds-warn)" stroke-width="1.4"/>
+          <rect x="860" y="104" width="98" height="76" rx="8" fill="var(--ds-ok-soft)" stroke="var(--ds-ok)" stroke-width="1.4"/>
+          <!-- 顶部盒文字 -->
+          <text class="dg-name" x="602" y="47" text-anchor="middle">自然语言查询</text>
+          <!-- 主链文字 -->
+          <text class="dg-name" x="70" y="132" text-anchor="middle">对话轮</text>
+          <text class="dg-sub" x="70" y="146" text-anchor="middle">user/assistant</text>
+          <text class="dg-sub" x="70" y="160" text-anchor="middle">+ 上下文</text>
+          <text class="dg-name" x="190" y="132" text-anchor="middle">提取</text>
+          <text class="dg-sub" x="190" y="146" text-anchor="middle">本地 4B</text>
+          <text class="dg-sub" x="190" y="160" text-anchor="middle">受约束 JSON</text>
+          <text class="dg-name" x="323" y="132" text-anchor="middle">消解</text>
+          <text class="dg-sub" x="323" y="146" text-anchor="middle">System-1 规则 ~32%</text>
+          <text class="dg-sub" x="323" y="160" text-anchor="middle">System-2 4B 五分类</text>
+          <text class="dg-name" x="463" y="132" text-anchor="middle">版本化存储</text>
+          <text class="dg-sub" x="463" y="146" text-anchor="middle">SQLite · 非破坏</text>
+          <text class="dg-sub" x="463" y="160" text-anchor="middle">history 回溯</text>
+          <text class="dg-name" x="602" y="132" text-anchor="middle">类型化检索</text>
+          <text class="dg-sub" x="602" y="146" text-anchor="middle">意图路由 + 类型加权</text>
+          <text class="dg-sub" x="602" y="160" text-anchor="middle">×1.6 + 时间衰减</text>
+          <text class="dg-name" x="761" y="132" text-anchor="middle">治理过滤</text>
+          <text class="dg-sub" x="761" y="146" text-anchor="middle">owner/scope/authority</text>
+          <text class="dg-sub" x="761" y="160" text-anchor="middle">fail-closed</text>
+          <text class="dg-name" x="909" y="132" text-anchor="middle">座舱应用</text>
+          <text class="dg-sub" x="909" y="146" text-anchor="middle">Top-K</text>
+          <text class="dg-sub" x="909" y="160" text-anchor="middle">可见记忆</text>
+          <!-- 反馈虚线标签 + 底部脚注 -->
+          <text class="dg-note" x="393" y="222" text-anchor="middle">同类型记忆对比</text>
+          <text class="dg-note" x="490" y="252" text-anchor="middle">消解五分类：CREATE / UPDATE / REINFORCE / SUPERSEDE / NOOP · embedding：自写 WordPiece + ONNX INT8（与 HF 对拍 25/25）</text>
+        </svg>
+      </div>
+      <p class="ds-figcap">图 1 · 记忆生命周期全链路（全程本地离线）：提取 → 消解 → 版本化存储 → 类型化检索 → 治理过滤 → 座舱应用</p>
+      <div class="ds-tablewrap">
+        <table class="ds-table">
           <caption>表 2 · 记忆系统核心机制与做法</caption>
           <tr><th>机制</th><th>做法</th></tr>
           <tr><td class="rowh">双过程消解</td><td>System-1 确定性规则（空库/无同类型→CREATE、逐字重复→REINFORCE）处理约 32%；相似度落入模糊地带的交给 System-2 本地 4B LLM 五分类（CREATE/UPDATE/REINFORCE/SUPERSEDE/NOOP）</td></tr>
